@@ -1,10 +1,10 @@
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import review from "./components/ReviewBoard/ReviewList.js"
+
 
 const Main = () => {
     return (
-    <Router>
-
-    </Router>
+        <Router to="/review" element={review}></Router>
     );
 };
 
