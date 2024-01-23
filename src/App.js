@@ -1,10 +1,9 @@
-// App.js
-import Main from "./Main";
+import MyPage from "./components/User/MyPage/MyPage";
 
 function App() {
   return (
-    <div className="App">
-      <Main />
+    <div>
+      <MyPage />
     </div>
   );
 }
