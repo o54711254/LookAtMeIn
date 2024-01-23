@@ -1,22 +1,12 @@
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Link, Routes, Route } from "react-router-dom";
 import MyPage from "./components/User/MyPage/MyPage";
-import Login from "./components/Sign/Login";
-import Regist from "./components/Sign/Regist";
+import ChatModal from "./components/Chat/ChatModal";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* <Route path="/" element={<Home />} /> */}
-        {/* <Route path="chatbot" element={<ChatBot />} /> */}
-
-        <Route path="mypage" element={<MyPage />} />
-
-        <Route path="login" element={<Login />} />
-
-        <Route path="regist" element={<Regist />} />
-      </Routes>
-    </Router>
+    <div>
+      <MyPage />
+    </div>
   );
 }
 
