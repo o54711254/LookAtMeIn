@@ -7,7 +7,6 @@ function App() {
     <div>
       <BrowserRouter>
         <Link to={"/mypage"}>마이페이지</Link>
-
         <Routes>
           <Route path="/mypage/*" element={<MyPage />} />
         </Routes>
