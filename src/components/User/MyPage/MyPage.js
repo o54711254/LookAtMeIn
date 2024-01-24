@@ -8,11 +8,11 @@ function MyPage() {
     <div>
       <Link to={"/mypage/mywish"}>찜</Link>
       <Link to={"/mypage/mypost"}>내가 쓴 게시물</Link>
-      <Link to={"/mypage/mypost"}>상담내역</Link>
+      <Link to={"/mypage/review"}>상담내역</Link>
       <Routes>
         <Route path="mywish" element={<MyWish />} />
         <Route path="mypost" element={<MyPostList />} />
-        <Route path="mypost" element={<ReviewList />} />
+        <Route path="review" element={<ReviewList />} />
       </Routes>
     </div>
   );
