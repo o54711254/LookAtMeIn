@@ -52,7 +52,6 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     backend = Backend(singletonModel)
     print("uploadPath: ", uploadPath)
     backend.open(uploadPath)
-    # backend.make_sketch(sketch_points)
     backend.complete(sketch_points)
 
 
@@ -60,24 +59,30 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     saveDir = os.path.join(saveDir, customerId)
     if os.path.exists(saveDir) is False:
         os.makedirs(saveDir)
-    
-    # savePath = f"{saveDir}/{file.filename}"
-    savePath = os.path.join(saveDir,file.filename)
-    print("savePath: ", savePath)
-    backend.save_img(savePath)
-    
-    # return JSONResponse(
-    #     status_code=status.HTTP_200_OK,
-    #     content={"savePath": f"{savePath}"}
-    # )
-    return FileResponse(savePath, media_type="image/png",filename="result.png")
+    # else:
+    #     for name in os.listdir(saveDir):
+    #         file_path = os.path.join(saveDir, name)
+    #         os.remove(file_path)
 
+    print("savePath: ", os.path.join(saveDir,file.filename))
+    backend.save_img(os.path.join(saveDir,file.filename))
 
+    return {
+        "url":f"http://localhost:8000/save/{customerId}/{file.filename}"
+    }
+
+@app.get("/save/{customerId}/{fileName}")
+async def hello(customerId: str, fileName: str):
+    return FileResponse(f"./save/{customerId}/{fileName}", media_type="image/png",filename="result.png")
+
+opt = TestConfig().create_config()
+model = create_model(opt)
+singletonModel = SingletonModel(model)
 
 if __name__ == "__main__":
     # backend = Backend()
-    opt = TestConfig().create_config()
-    model = create_model(opt)
-    singletonModel = SingletonModel(model)
-    
-    uvicorn.run(app, host="localhost", port=8000)
+    # opt = TestConfig().create_config()
+    # model = create_model(opt)
+    # singletonModel = SingletonModel(model)
+    # print("hello")
+    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
