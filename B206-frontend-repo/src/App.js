@@ -1,17 +1,23 @@
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
-import MyPage from "./components/User/MyPage/MyPage";
-import FloatingChat from "./components/Chat/FloatingChat";
+import logo from './logo.svg';
+import './App.css';
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <Link to={"/mypage"}>마이페이지</Link>
-        <Routes>
-          <Route path="/mypage/*" element={<MyPage />} />
-        </Routes>
-      </BrowserRouter>
-      <FloatingChat />
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
     </div>
   );
 }
