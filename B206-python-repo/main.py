@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, Request, status, File
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 import uvicorn
 import os
 import json
@@ -66,10 +66,13 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     print("savePath: ", savePath)
     backend.save_img(savePath)
     
-    return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={"savePath": f"{savePath}"}
-    )
+    # return JSONResponse(
+    #     status_code=status.HTTP_200_OK,
+    #     content={"savePath": f"{savePath}"}
+    # )
+    return FileResponse(savePath, media_type="image/png",filename="result.png")
+
+
 
 if __name__ == "__main__":
     # backend = Backend()
