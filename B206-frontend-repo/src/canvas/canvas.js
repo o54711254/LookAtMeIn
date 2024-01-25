@@ -18,6 +18,8 @@ const Canvas = ()=>{
     const [sketchPoints, setSketchPoints] = useState([]); // 서버에 보낼 좌표를 저장하는 배열
     const [file, setFile] = useState(null)
 
+    const [surgeryImg, setSurgeryImg] = useState('')    
+
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
@@ -27,6 +29,9 @@ const Canvas = ()=>{
             context.drawImage(image,0,0,canvas.width,canvas.height);
         }
     }, [image])
+
+    useEffect(() => {
+    },[])   
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -87,7 +92,7 @@ const Canvas = ()=>{
 
 
         const formData = new FormData();
-        formData.append("customerId", "customerId"); // 고객 아이디
+        formData.append("customerId", "userId"); // 고객 아이디
         formData.append("file", file) // 업로드한 이미지
   
         const points = JSON.stringify(sketchPoints)
@@ -102,7 +107,10 @@ const Canvas = ()=>{
                 }
             })
             
-            console.log("서버 응답: ", response.data)
+            // console.log("서버 응답: ", response.data)
+            // console.log("hello")
+            console.log("url : ", response.data.url)
+            setSurgeryImg(response.data.url)
             
 
         }catch(error){
@@ -122,6 +130,7 @@ const Canvas = ()=>{
                 onMouseMove={draw}
             />    
              <button onClick={complete}>complete</button>
+             {surgeryImg && <img src={surgeryImg} alt="surgeryImg" />}
              
         <div>
            <input type="file" onChange={handleFileChange} accept="image/*" />
