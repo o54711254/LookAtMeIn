@@ -6,7 +6,7 @@ import json
 from config.test_config import TestConfig
 from backend import Backend
 from model.SingletonModel import SingletonModel
-
+import uuid
 
 from model.models import create_model
 app = FastAPI();
@@ -63,12 +63,18 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     #     for name in os.listdir(saveDir):
     #         file_path = os.path.join(saveDir, name)
     #         os.remove(file_path)
+    filename = f"{uuid.uuid4()}.png"
+    print("savePath: ", os.path.join(saveDir,filename))
+    backend.save_img(os.path.join(saveDir,filename))
 
-    print("savePath: ", os.path.join(saveDir,file.filename))
-    backend.save_img(os.path.join(saveDir,file.filename))
+    # MySQL DB에 저장해야함
+    # MySQL DB에 사진원본에 원본의 경로, 사진복사본에 성형된 사진의 경로 저장되야함
+    # 단 여기서 경로는 MySQL이 돌아가는 컨테이너의 로컬 경로
 
+
+    # 
     return {
-        "url":f"http://localhost:8000/save/{customerId}/{file.filename}"
+        "url":f"http://localhost:8000/save/{customerId}/{filename}"
     }
 
 @app.get("/save/{customerId}/{fileName}")
