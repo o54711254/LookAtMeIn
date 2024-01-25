@@ -8,7 +8,8 @@ const Canvas = ()=>{
      * 3. 사진 업로드 기능(o)
      * 4. clear버튼 누르면 그린거 사라지게 하기
      * 5. 크기 맞추기(o)
-     * 6. 오른쪽에 성형 후 사진 보이게 하기
+     * 6. 오른쪽에 성형 후 사진 보이게 하기 (o)
+     * 7. 파일 선택 다시하면 바뀐 사진 보이게 하기 (o)
      */
 
     const canvasRef = useRef(null);
@@ -19,6 +20,7 @@ const Canvas = ()=>{
     const [file, setFile] = useState(null)
 
     const [surgeryImg, setSurgeryImg] = useState('')    
+    const [url, setUrl] = useState('')
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -30,9 +32,7 @@ const Canvas = ()=>{
         }
     }, [image])
 
-    useEffect(() => {
-    },[])   
-
+    
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setFile(event.target.files[0])
@@ -109,7 +109,7 @@ const Canvas = ()=>{
             
             // console.log("서버 응답: ", response.data)
             // console.log("hello")
-            console.log("url : ", response.data.url)
+            // console.log("url : ", response.data.url)
             setSurgeryImg(response.data.url)
             
 
