@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import axiosApi from './axiosApi'; // axiosApi를 사용할 수 있는 경로에 따라 경로를 수정해야 합니다.
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const DoctorList = () => {
   const [doctorList, setDoctorList] = useState([]);
@@ -7,15 +8,15 @@ const DoctorList = () => {
   useEffect(() => {
     const fetchDoctorList = async () => {
       try {
-        const response = await axiosApi.get('/doctor/list');
+        const response = await axios.get('/doctor/list');
         const { statusCode, message, responseObj } = response.data;
         if (statusCode === '상태 코드' && message === 'success') {
           setDoctorList(responseObj);
         } else {
-          console.error('의사 리스트를 불러오지 못했습니다:', message);
+          console.error('의사 정보를 불러오는데 실패했습니다.');
         }
       } catch (error) {
-        console.error('의사 리스트를 불러오는 중 에러 발생:', error);
+        console.error('의사 정보를 불러오는데 실패했습니다:', error);
       }
     };
 
@@ -26,10 +27,9 @@ const DoctorList = () => {
     <div>
       <h2>의사 리스트</h2>
       <ul>
-        {doctorList.map((doctor, index) => (
-          <li key={index}>
-            <p>이름: {doctor.doctor_name}</p>
-            <p>카테고리: {doctor.doctor_category}</p>
+        {doctorList.map((doctor) => (
+          <li key={doctor.id}>
+            <Link to={`/list/${doctor.id}`}>{doctor.doctor_name}</Link>
           </li>
         ))}
       </ul>
