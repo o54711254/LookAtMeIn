@@ -1,6 +1,7 @@
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import MyPage from "./components/Customer/MyPage/MyPage";
 import FloatingChat from "./components/Chat/FloatingChat";
+import Login from "./components/Sign/Login";
 import LoginForm from "./components/Sign/LoginForm";
 import Regist from "./components/Sign/Regist";
 import UserRegistForm from "./components/Sign/UserRegistForm";
@@ -12,14 +13,18 @@ import ReviewBoardList from "./components/ReviewBoard/ReviewList";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import SearchList from "./components/Search/SearchList";
 import VideoRoom from "./components/OpenVidu/VideoRoom";
+import SearchInput from "./components/Search/SearchInput";
+
 
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <Link to={"/mypage"}>마이페이지</Link>
+        <Link to={"/mypage"}>마이페이지d</Link>
+        <SearchInput />
         <Routes>
           {/*Sign*/}
+          <Route path="/login" element={<Login />} />
           <Route path="/login/*" element={<LoginForm />} />
           <Route path="/regist" element={<Regist />} />
           <Route path="/regist/*" element={<UserRegistForm />} />
@@ -44,6 +49,7 @@ function App() {
           <Route path="/search/*" element={<SearchList />} />
           {/* meeting */}
           <Route path="/meeting/*" element={<VideoRoom />} />
+          <Route path="/search/:query" element={<SearchList />} />
         </Routes>
       </BrowserRouter>
       <FloatingChat />

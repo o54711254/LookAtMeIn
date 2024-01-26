@@ -1,4 +1,3 @@
-[remote "S10P12B206"]
         username = token
         password = zDzzANG94h8KV4hshpJ3
 
