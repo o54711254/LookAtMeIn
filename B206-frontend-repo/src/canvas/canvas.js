@@ -20,8 +20,9 @@ const Canvas = ()=>{
     const [file, setFile] = useState(null)
 
     const [surgeryImg, setSurgeryImg] = useState('')    
-    const [url, setUrl] = useState('')
 
+
+    // 사진에 그림 그리는 부분
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext('2d');
@@ -32,7 +33,7 @@ const Canvas = ()=>{
         }
     }, [image])
 
-    
+    // 이미지 업로드 되면 그림 그려질 수 있도록 활성화하는 부분
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         setFile(event.target.files[0])
@@ -47,6 +48,7 @@ const Canvas = ()=>{
         reader.readAsDataURL(file);
     }
 
+    // 그림 그리기 시작
     const startDrawing = ({ nativeEvent }) => {
         setIsDrawing(true);
         const { offsetX, offsetY } = nativeEvent;
@@ -55,6 +57,7 @@ const Canvas = ()=>{
 
     }
 
+    // 그림 그리기 중
     const draw = ({nativeEvent}) => {   
         if(!isDrawing)
             return;
@@ -81,19 +84,31 @@ const Canvas = ()=>{
         context.stroke();
     }
 
+
+    // 그림 그리기 멈춤
     const stopDrawing = () => {
         setIsDrawing(false);
         // setLines([]);   
     }
 
+
+    // complete 버튼 누르면 서버에 그린 그림의 좌표를 전송
     const complete = async () => {
         // console.log(lines)
         setLines([])
 
+        /**
+         * 프론트에 이미지 업로드하는 방법
+         * 1. formData를 만들고
+         * 2. formData에 업로드할 이미지를 key,value 설정해서 append
+         *    예를 들어 fromData.append("file", file)sms "file"이라는 이름으로 file 객체를 formData에 추가한다
+         *    formData에 append할때마다 key-value형식으로 formData에 추가되며 서버쪽에서는 key값으로 value를 찾을 수 있다
+         * 3. axios를 사용해서 서버에 전송한다. 이때 header에 'Content-Type': 'multipart/form-data'를 추가해야한다
+         */
 
         const formData = new FormData();
         formData.append("customerId", "userId"); // 고객 아이디
-        formData.append("file", file) // 업로드한 이미지
+        formData.append("file", file) // 업로드한 이미지, 서버쪽에 "file"이라는 이름으로 file 객체가 전송된다
   
         const points = JSON.stringify(sketchPoints)
         formData.append("sketch_points", points) // 그린 그림의 좌표
