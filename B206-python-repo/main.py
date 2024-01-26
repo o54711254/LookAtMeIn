@@ -50,6 +50,9 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     uploaded_dir = os.path.join(uploaded_dir, customerId) # 한글 처리 안되는 문제 있음
     if os.path.exists(uploaded_dir) is False:
         os.makedirs(uploaded_dir)
+    else:
+        for name in os.listdir(uploaded_dir):
+            os.remove(os.path.join(uploaded_dir, name))
     
     # uploadPath = uploaded_dir+"/"+file.filename
     uploadPath = os.path.join(uploaded_dir, filename)
@@ -59,10 +62,6 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
   
     singletonModel = SingletonModel.getInstance()
     backend = Backend(singletonModel)
-    print("uploadPath: ", uploadPath)
-    remotePath = f"/home/ubuntu/image/origin/{customerId}/{filename}"
-    print("rempotePath: ", remotePath)
-    sftp.upload(local_path=uploadPath, remote_path=remotePath)
 
     backend.open(uploadPath)
     backend.complete(sketch_points)
@@ -70,24 +69,23 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
 
     saveDir = "./save"
     saveDir = os.path.join(saveDir, customerId)
-    if not os.path.exists(saveDir):
+    if  os.path.exists(saveDir) is False:
         os.makedirs(saveDir)
     else:
-        
         for name in os.listdir(saveDir):
-            print(name)
-            file_path = os.path.join(saveDir, name)
-            try:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    os.unlink(file_path)
-                # elif os.path.isdir(file_path):
-            except Exception as e:
-                print('Failed to delete %s. Reason: %s' % (file_path, e))
+            os.remove(os.path.join(saveDir, name))
 
-            os.remove(file_path)
   
     print("savePath: ", os.path.join(saveDir,filename))
     backend.save_img(os.path.join(saveDir,filename))
+
+    # print("uploadPath: ", uploadPath)
+    stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/origin/{customerId}")
+    remotePath = f"/home/ubuntu/image/origin/{customerId}/{filename}"
+    # print("rempotePath: ", remotePath)
+    sftp.upload(local_path=uploadPath, remote_path=remotePath)
+
+
 
     # MySQL DB에 저장해야함
     # MySQL DB에 사진원본에 원본의 경로, 사진복사본에 성형된 사진의 경로 저장되야함
