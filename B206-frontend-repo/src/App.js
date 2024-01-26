@@ -12,12 +12,9 @@ import AdminMyPage from "./components/Admin/MyPage/AdminMyPage";
 import ReviewBoardList from "./components/ReviewBoard/ReviewList";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import SearchList from "./components/Search/SearchList";
-<<<<<<< HEAD
 import VideoRoom from "./components/OpenVidu/VideoRoom";
 import SearchInput from "./components/Search/SearchInput";
 
-=======
->>>>>>> dev-FE-jinry0034
 
 function App() {
   return (
@@ -27,19 +24,11 @@ function App() {
         <SearchInput />
         <Routes>
           {/*Sign*/}
-<<<<<<< HEAD
           <Route path="/login" element={<Login />} />
           <Route path="/login/*" element={<LoginForm />} />
           <Route path="/regist" element={<Regist />} />
           <Route path="/regist/*" element={<UserRegistForm />} />
           <Route path="/regist/*" element={<HospitalRegistForm />} />
-=======
-          {/* <Route path="/login" element={<Login />} /> */}
-          <Route path="/login/*" element={<LoginForm />} />
-          {/* <Route path="/regist" element={<Regist />} /> */}
-          <Route path="/UserRegist" element={<UserRegistForm />} />
-          <Route path="/HospitalRegist" element={<HospitalRegistForm />} />
->>>>>>> dev-FE-jinry0034
           {/*Customer
           마이페이지 내부에서 라우트 하면 될듯
           */}
@@ -58,12 +47,9 @@ function App() {
           <Route path="/freeboard/*" element={<FreeBoardList />} />
           {/* Search */}
           <Route path="/search/*" element={<SearchList />} />
-<<<<<<< HEAD
           {/* meeting */}
           <Route path="/meeting/*" element={<VideoRoom />} />
           <Route path="/search/:query" element={<SearchList />} />
-=======
->>>>>>> dev-FE-jinry0034
         </Routes>
       </BrowserRouter>
       <FloatingChat />
