@@ -94,9 +94,6 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     backend.save_img(os.path.join(saveDir,filename))
 
 
-
-
-
     # 
     return {
         "url":f"http://localhost:8000/save/{customerId}/{filename}"
