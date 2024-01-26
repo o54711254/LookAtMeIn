@@ -122,14 +122,29 @@ const Canvas = ()=>{
                 }
             })
             
-            // console.log("서버 응답: ", response.data)
-            // console.log("hello")
-            // console.log("url : ", response.data.url)
             setSurgeryImg(response.data.url)
-            
-
         }catch(error){
             console.error("전송 오류: ", error)
+        }
+    }
+
+    const save= async ()=>{
+        // console.log(surgeryImg)
+        const url = "http://localhost:8000/api/surgery/save"
+        console.log(surgeryImg)
+        const formData = new FormData()
+        formData.append("customerId", "userId")
+        formData.append("afterImgPath", surgeryImg)
+     
+        try{
+            const response = await axios.post(url,formData,{
+                headers:{
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            console.log(response.data)
+        }catch(error){
+            console.error("저장 오류: ", error)
         }
     }
 
@@ -146,13 +161,17 @@ const Canvas = ()=>{
             />    
              <button onClick={complete}>complete</button>
              {surgeryImg && <img src={surgeryImg} alt="surgeryImg" />}
-             
-        <div>
-           <input type="file" onChange={handleFileChange} accept="image/*" />
+             {/* 저장 버튼은 나중에 지워야함. 상담 화면에서 종료 버튼 누르면 이미지가 DB에 저장 */}
+             <button onClick={save}>저장</button> 
 
+            <div>
+                <input type="file" onChange={handleFileChange} accept="image/*" />
+            </div>
+
+
+        </div>
           
-        </div>
-        </div>
+        
     );
 }
 
