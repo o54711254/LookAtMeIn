@@ -25,7 +25,7 @@ class Sftp:
             raise FileNotFoundError(f"Local file {local_path} not found")
         print("local_path: ", local_path, "remote_path: ", remote_path)
         self.sftp.put(local_path, remote_path) # file upload
-        self.client.close()
+        # self.client.close()
 
     
     def download(self, local_path, remote_path):

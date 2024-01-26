@@ -14,34 +14,49 @@ app = FastAPI();
 
 
 
+@app.post("/api/surgery/save")
+async def save(afterImgPath: str = File(...), customerId : str=File(...)):
+    # 상담 종료 버튼누를 때 저장됨
+    # MySQL DB에 저장해야함
+    # MySQL DB에 사진원본에 원본의 경로, 사진복사본에 성형된 사진의 경로 저장되야함
+    # 단 여기서 경로는 MySQL이 돌아가는 컨테이너의 로컬 경로
 
-@app.get("/api/backend/singleton/test1")
-def test1():
+    filename = afterImgPath.split("/")[-1]
+    afterImgPath = '/'.join(afterImgPath.split('/')[3:])
+    print("afterImgPath: ", afterImgPath)
+
+    uploaded_dir = "uploaded"
+    uploaded_dir = os.path.join(uploaded_dir, customerId) # 한글 처리 안되는 문제 있음
+    uploadImgPath = os.path.join(uploaded_dir, filename)
+    print("uploadPath: ", uploadImgPath)
     
-    singleton = SingletonModel.getInstance()
-    print(singleton.getModel())
-    return {"message": "test1 success"}
-
-@app.get("/api/backend/singleton/test2")
-def test2():
-    singleton = SingletonModel.getInstance()
-    print(singleton.getModel())
-
-    backend = Backend(singleton)
-    backend.open("./uploaded/customerId/00001.png")
-
-    return {"message": "test2 success"}
-
-
-@app.post("/api/send/sketchPoints")
-async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), customerId : str=File(...)):
-    # 고객 아이디 출력
-    # print(customerId)
-    # print(sketch_points)
+    load_dotenv()
     sftp_host = os.getenv("SFTP_HOST")
     sftp_user = os.getenv("SFTP_USER")
     sftp_key_file = os.getenv("SFTP_KEY_FILE_PATH")
     sftp = Sftp(host=sftp_host, user=sftp_user, key_file=sftp_key_file)
+    
+    arr = [["before", uploadImgPath], ["after", afterImgPath ]]
+    stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/before/{customerId}")
+    
+    stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/after/{customerId}")
+    # remotePath = f"/home/ubuntu/image/origin/{customerId}/{filename}"
+
+    for name, path in arr:
+        remote_path = f"/home/ubuntu/image/{name}/{customerId}/{filename}"
+        local_path = path
+        # print("local_path: ", local_path, "remote_path: ", remote_path)    
+        sftp.upload(local_path=local_path, remote_path=remote_path)  
+    sftp.client.close()  
+
+    # sftp.upload(local_path=uploadImgPath, remote_path=remotePath)
+    # sftp
+    return {
+        "hello" : "hello"
+    }
+
+@app.post("/api/send/sketchPoints")
+async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), customerId : str=File(...)):
     filename = f"{uuid.uuid4()}.png"
 
     contents = await file.read()
@@ -54,7 +69,6 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
         for name in os.listdir(uploaded_dir):
             os.remove(os.path.join(uploaded_dir, name))
     
-    # uploadPath = uploaded_dir+"/"+file.filename
     uploadPath = os.path.join(uploaded_dir, filename)
     with open(uploadPath, "wb") as f:
         f.write(contents)
@@ -79,17 +93,7 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     print("savePath: ", os.path.join(saveDir,filename))
     backend.save_img(os.path.join(saveDir,filename))
 
-    # print("uploadPath: ", uploadPath)
-    stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/origin/{customerId}")
-    remotePath = f"/home/ubuntu/image/origin/{customerId}/{filename}"
-    # print("rempotePath: ", remotePath)
-    sftp.upload(local_path=uploadPath, remote_path=remotePath)
 
-
-
-    # MySQL DB에 저장해야함
-    # MySQL DB에 사진원본에 원본의 경로, 사진복사본에 성형된 사진의 경로 저장되야함
-    # 단 여기서 경로는 MySQL이 돌아가는 컨테이너의 로컬 경로
 
 
 
@@ -105,7 +109,7 @@ async def hello(customerId: str, fileName: str):
 
 @app.on_event("startup")
 async def on_startup():
-    load_dotenv()
+
     opt = TestConfig().create_config()
     model = create_model(opt)
     singletonModel = SingletonModel(model)
