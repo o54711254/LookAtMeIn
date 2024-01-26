@@ -1,5 +1,7 @@
 from fastapi import FastAPI, UploadFile, Request, status, File
 from fastapi.responses import JSONResponse, FileResponse
+
+
 import uvicorn
 import os
 import json
@@ -10,7 +12,15 @@ import uuid
 from dotenv import load_dotenv
 from model.models import create_model
 from sftp import Sftp
+
+from mysql.surgery_img import add_img
+
 app = FastAPI();
+
+from sqlalchemy.orm import declarative_base
+Base = declarative_base()
+
+
 
 
 
@@ -36,17 +46,32 @@ async def save(afterImgPath: str = File(...), customerId : str=File(...)):
     sftp_key_file = os.getenv("SFTP_KEY_FILE_PATH")
     sftp = Sftp(host=sftp_host, user=sftp_user, key_file=sftp_key_file)
     
-    arr = [["before", uploadImgPath], ["after", afterImgPath ]]
+    # arr = [["before", uploadImgPath], ["after", afterImgPath ]]
     stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/before/{customerId}")
     
     stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/after/{customerId}")
     # remotePath = f"/home/ubuntu/image/origin/{customerId}/{filename}"
 
-    for name, path in arr:
-        remote_path = f"/home/ubuntu/image/{name}/{customerId}/{filename}"
-        local_path = path
-        # print("local_path: ", local_path, "remote_path: ", remote_path)    
-        sftp.upload(local_path=local_path, remote_path=remote_path)  
+    # for name, path in arr:
+    #     remote_path = f"/home/ubuntu/image/{name}/{customerId}/{filename}"
+    #     local_path = path
+    #     # print("local_path: ", local_path, "remote_path: ", remote_path)    
+    #     sftp.upload(local_path=local_path, remote_path=remote_path)  
+
+    before_local_path = uploadImgPath
+    before_remote_path = f"/home/ubuntu/image/before/{customerId}/{filename}"
+    sftp.upload(local_path=before_local_path, remote_path=before_remote_path)
+
+
+                                 
+
+    after_local_path = afterImgPath
+    after_remote_path = f"/home/ubuntu/image/after/{customerId}/{filename}"
+    sftp.upload(local_path=after_local_path, remote_path=after_remote_path)
+
+    add_img(before_remote_path, after_remote_path) 
+
+
     sftp.client.close()  
 
     # sftp.upload(local_path=uploadImgPath, remote_path=remotePath)
@@ -112,8 +137,6 @@ async def on_startup():
     singletonModel = SingletonModel(model)
 
 
-
 if __name__ == "__main__":
-
-
+    
     uvicorn.run("main:app", host="localhost", port=8000, reload=True)
