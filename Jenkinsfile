@@ -21,6 +21,8 @@ pipeline {
                         env.PYTHON_CHANGED = "true"
                     }
                 }
+
+                sh "pwd"
             }
         }
         stage('Build Frontend') {
@@ -64,6 +66,19 @@ pipeline {
                     ssh -i ~/.ssh/id_rsa ubuntu@i10b206.p.ssafy.io "cd /home/ubuntu/spring && sh init.sh"
                 '''
 
+            }
+        }
+
+        stage('Build Python'){
+            when{
+                expression { env.PYTHON_CHANGED == "true" }
+            }
+
+            steps{
+                echo "Python build"
+                sh "pwd"
+                sh "cd B206-python-repo"
+                
             }
         }
     }
