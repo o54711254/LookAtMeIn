@@ -3,6 +3,7 @@ package com.ssafy.lam.interceptor;
 import com.ssafy.lam.exception.UnAuthorizedException;
 import com.ssafy.lam.util.JWTUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -20,6 +21,7 @@ public class JWTInterceptor implements HandlerInterceptor{
 
     private JWTUtil jwtUtil;
 
+    @Autowired
     public JWTInterceptor(JWTUtil jwtUtil) {
         super();
         this.jwtUtil = jwtUtil;

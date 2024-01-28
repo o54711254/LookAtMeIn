@@ -1,10 +1,13 @@
 package com.ssafy.lam.config;
 
 import com.ssafy.lam.interceptor.JWTInterceptor;
+import com.ssafy.lam.util.JWTUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.http.HttpMethod;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableAspectJAutoProxy
 @MapperScan(basePackages = { "com.ssafy.lam.customer.model.mapper" })
+@ComponentScan(basePackages = { "com.ssafy.lam" })
 public class AppConfig implements WebMvcConfigurer {
 
     private final Logger logger = LoggerFactory.getLogger(AppConfig.class);
@@ -25,6 +29,10 @@ public class AppConfig implements WebMvcConfigurer {
         super();
         this.jwtInterceptor = jwtInterceptor;
     }
+
+
+
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

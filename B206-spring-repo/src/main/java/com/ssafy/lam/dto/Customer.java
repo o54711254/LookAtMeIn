@@ -8,9 +8,10 @@ import lombok.*;
 
 @Entity
 @Getter
-//@Setter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 //@AllArgsConstructor
+@ToString
 public class Customer {
 
     @Id
