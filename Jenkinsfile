@@ -95,14 +95,14 @@ pipeline {
                 sh "pwd"
                 sh "cd ./B206-spring-repo/"
                 sh "pwd"
-                sh "chmod +x ./gradlew"
-                sh "./gradlew build"
+                sh "chmod +x ./B206-spring-repo/gradlew"
+                sh "./B206-spring-repo/gradlew build"
                 sh "ls"
                 sh'''
                     ssh -i ~/.ssh/id_rsa ubuntu@i10b206.p.ssafy.io "rm -rf /home/ubuntu/spring && mkdir /home/ubuntu/spring"
-                    scp -i ~/.ssh/id_rsa ./build/libs/lam-0.0.1-SNAPSHOT.jar ubuntu@i10b206.p.ssafy.io:/home/ubuntu/spring/lam-0.0.1-SNAPSHOT.jar
-                    scp -i ~/.ssh/id_rsa ./dockerfile ubuntu@i10b206.p.ssafy.io:/home/ubuntu/spring/dockerfile
-                    scp -i ~/.ssh/id_rsa ./init.sh ubuntu@i10b206.p.ssafy.io:/home/ubuntu/spring/init.sh
+                    scp -i ~/.ssh/id_rsa ./B206-spring-repo/build/libs/lam-0.0.1-SNAPSHOT.jar ubuntu@i10b206.p.ssafy.io:/home/ubuntu/spring/lam-0.0.1-SNAPSHOT.jar
+                    scp -i ~/.ssh/id_rsa ./B206-spring-repo/dockerfile ubuntu@i10b206.p.ssafy.io:/home/ubuntu/spring/dockerfile
+                    scp -i ~/.ssh/id_rsa ./B206-spring-repo/init.sh ubuntu@i10b206.p.ssafy.io:/home/ubuntu/spring/init.sh
                     ssh -i ~/.ssh/id_rsa ubuntu@i10b206.p.ssafy.io "cd /home/ubuntu/spring && sh init.sh"
                 '''
 
