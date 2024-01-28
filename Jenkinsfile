@@ -8,7 +8,7 @@ pipeline {
                 script {
                     def frontendChanges = ''
                     def backendChanges = ''
-                    def pythonChanges = ''
+                    // def pythonChanges = ''
                     def globalChanges = ''
 
                     try{
@@ -31,11 +31,11 @@ pipeline {
                         echo "No backend changes detected"
                     }
 
-                    try{
-                        pythonChanges = sh(script: "git diff --name-only HEAD HEAD~1 | grep 'B206-python-repo/'", returnStdout: true).trim()
-                    }catch(Exception e){
-                        echo "No python changes detected"
-                    }
+                    // try{
+                    //     pythonChanges = sh(script: "git diff --name-only HEAD HEAD~1 | grep 'B206-python-repo/'", returnStdout: true).trim()
+                    // }catch(Exception e){
+                    //     echo "No python changes detected"
+                    // }
                      
                     if(globalChanges) {
                         echo "Global changes detected"
@@ -51,10 +51,10 @@ pipeline {
                         env.BACKEND_CHANGED = "true"
                     }
 
-                    if(pythonChanges) {
-                        echo "Python changes detected"
-                        env.PYTHON_CHANGED = "true"
-                    }
+                    // if(pythonChanges) {
+                    //     echo "Python changes detected"
+                    //     env.PYTHON_CHANGED = "true"
+                    // }
                 }
 
                 
@@ -114,20 +114,22 @@ pipeline {
             }
         }
 
-        stage('Build Python'){
-            when{
-                expression { env.PYTHON_CHANGED == "true" }
-            }
+        // stage('Build Python'){
+        //     when{
+        //         expression { env.PYTHON_CHANGED == "true" }
+        //     }
 
-            steps{
-                echo "Python build"
-                sh "pwd"
-                sh "cd B206-python-repo"
-                sh "pwd"
-                
+        //     steps{
+        //         echo "Python build"
+        //         sh "pwd"
+        //         dir("B206-python-repo"){
 
-                echo "Python build complete"
-            }
-        }
+        //             sh "pwd"
+                    
+        //         }
+
+        //         echo "Python build complete"
+        //     }
+        // }
     }
 }
