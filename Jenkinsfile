@@ -87,7 +87,7 @@ pipeline {
         }
         stage('Build Backend') {
             when {
-                expression { env.BACKEND_CHANGED == "true" || globalChanges == "true"}
+                expression { env.BACKEND_CHANGED == "true" || env.GLOBAL_CHANGED == "true"}
             }
             steps {
                 // Backend 빌드 스크립트
