@@ -11,11 +11,13 @@ version = '0.0.1-SNAPSHOT'
 sonarqube {
     properties {
         property "sonar.host.url", "http://158.180.88.174:9000"
-        property "sonar.login", "squ_a808c40c333d60b1d165e346f8de1a3b2df68b89"
+        property "sonar.login", "sqp_b990d8c89aaa36b644e892fb77595bfc61f417fb"
         property "sonar.sources", "src/main/java"
         property "sonar.tests", "src/test/java"
         property "sonar.language", "java"
         property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.projectKey", "B206-spring"
+        property "sonar.projectName", "B206-spring"
     }
 }
 
