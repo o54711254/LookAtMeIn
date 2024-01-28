@@ -68,11 +68,7 @@
         where id = #{id}
     </update>
 
-<!--    <select id="getRefreshToken" parameterType="string" resultType="string">-->
-<!--        select token-->
-<!--        from member-->
-<!--        where user_id = #{userId}-->
-<!--    </select>-->
+
 
     <select id="getRefreshToken" parameterType="string" resultType="string">
         select token
@@ -90,7 +86,7 @@
 <!--    </update>-->
 
     <update id="deleteRefreshToken" parameterType="map">
-        update lam
+        update customer
         set token = #{token, jdbcType=VARCHAR}
         where id = #{id}
     </update>
@@ -101,7 +97,7 @@
 <!--    </insert>-->
 
     <insert id="saveMember" parameterType="customer">
-        insert lam(seq, id, password, token)
+        insert customer(seq, id, password, token)
 		values (#{seq},#{id},#{password},#{token})
     </insert>
 
@@ -112,7 +108,7 @@
 <!--    </update>-->
 
     <update id="modifyMember" parameterType="Customer">
-        update lam
+        update customer
         SET password=#{password}
         where id= #{id};
     </update>
@@ -123,7 +119,7 @@
 <!--    </delete>-->
 
     <delete id="deleteMember" parameterType="string">
-        delete from lam
+        delete from customer
         where id = #{id};
     </delete>
 
