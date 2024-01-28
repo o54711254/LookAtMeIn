@@ -50,10 +50,12 @@ public class CustomerServiceImpl implements CustomerService {
 //                .password(customer.getPassword())
 //                .build();
 //        return customerRepository.save(newCustomer);
+        System.out.println("customer = " + customer);
         Customer newCustomer = customer.toEntity(customer.getSeq(), customer.getId(), customer.getPassword(), customer.getToken());
 //        Customer newCustomer = Customer.builder().seq(customer.getSeq()).id(customer.getId())
 //                .password(customer.getPassword()).token(customer.getToken()).build();
-        return customerRepository.save(newCustomer);
+        System.out.println("newCustomer = " + newCustomer);
+        return customerRepository.save(customer);
     }
 
     @Override

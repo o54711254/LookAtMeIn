@@ -40,7 +40,7 @@
 <!--    <select id="login" parameterType="MemberDto" resultMap="member">-->
     <select id="login" parameterType="Customer" resultMap="customer">
         select seq, id, password, token
-        from lam
+        from customer
         where id=#{id} and password=#{password}
     </select>
 
@@ -52,7 +52,7 @@
 
     <select id="findMemberById" parameterType="string" resultMap="customer">
         select seq, id, password, token
-        from lam
+        from customer
         where id = #{id}
     </select>
 
@@ -63,7 +63,7 @@
 <!--    </update>-->
 
     <update id="saveRefreshToken" parameterType="map">
-        update lam
+        update customer
         set token = #{token}
         where id = #{id}
     </update>
@@ -76,7 +76,7 @@
 
     <select id="getRefreshToken" parameterType="string" resultType="string">
         select token
-        from lam
+        from customer
         where id = #{id}
     </select>
 
