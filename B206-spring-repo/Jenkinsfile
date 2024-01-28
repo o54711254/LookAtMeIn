@@ -10,6 +10,7 @@ pipeline {
                     dir("B206-spring-repo"){
                         sh "pwd"
                         sh 'chmod +x gradlew'
+                        sh './gradlew sonar'
                         sh './gradlew clean booJar'
                     }
                 }
