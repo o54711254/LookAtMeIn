@@ -28,7 +28,7 @@ public class Customer {
         this.token = token;
     }
 
-    public Customer toEntity(String id, String password) {
+    public Customer toEntity(int seq, String id, String password, String token) {
         return Customer.builder()
                 .seq(seq)
                 .id(id)
@@ -36,5 +36,14 @@ public class Customer {
                 .token(token)
                 .build();
     }
+
+//    public Customer toEntity() {
+//        return Customer.builder()
+//                .seq(seq)
+//                .id(id)
+//                .password(password)
+//                .token(token)
+//                .build();
+//    }
 
 }

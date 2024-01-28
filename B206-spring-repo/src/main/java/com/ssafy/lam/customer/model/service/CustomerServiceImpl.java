@@ -50,7 +50,9 @@ public class CustomerServiceImpl implements CustomerService {
 //                .password(customer.getPassword())
 //                .build();
 //        return customerRepository.save(newCustomer);
-        Customer newCustomer = customer.toEntity(customer.getId(), customer.getPassword());
+        Customer newCustomer = customer.toEntity(customer.getSeq(), customer.getId(), customer.getPassword(), customer.getToken());
+//        Customer newCustomer = Customer.builder().seq(customer.getSeq()).id(customer.getId())
+//                .password(customer.getPassword()).token(customer.getToken()).build();
         return customerRepository.save(newCustomer);
     }
 
@@ -61,7 +63,9 @@ public class CustomerServiceImpl implements CustomerService {
 //            return customerRepository.save(updatedCustomer);
 //        }
 //        return null; // Handle error, customer not found
-        Customer oldCustomer = updatedCustomer.toEntity(updatedCustomer.getId(), updatedCustomer.getPassword());
+        Customer oldCustomer = updatedCustomer.toEntity(seq, updatedCustomer.getId(), updatedCustomer.getPassword(), updatedCustomer.getToken());
+//        Customer newCustomer = Customer.builder().seq(seq).id(updatedCustomer.getId())
+//                .password(updatedCustomer.getPassword()).token(customer.getToken()).build();
         return customerRepository.save(oldCustomer);
     }
 
@@ -108,9 +112,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void saveRefreshToken(String userId, String refreshToken) throws Exception {
+    public void saveRefreshToken(String id, String refreshToken) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("userId", userId);
+        map.put("id", id);
         map.put("token", refreshToken);
         customerMapper.saveRefreshToken(map);
     }
@@ -121,9 +125,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleRefreshToken(String userId) throws Exception {
+    public void deleRefreshToken(String id) throws Exception {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("userId", userId);
+        map.put("id", id);
         map.put("token", null);
         customerMapper.deleteRefreshToken(map);
     }
