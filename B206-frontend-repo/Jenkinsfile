@@ -7,9 +7,12 @@ pipeline {
         stage('SonarQube analysis'){
             steps{
                 withSonarQubeEnv('sonarqube') {
-                    sh 'npm install'
-                    sh 'npm run test'
-                    sh 'npm run sonar'
+                    dir("B206-frontend-repo"){
+                        sh 'npm install'
+                        sh 'npm run test'
+                        sh 'npm run sonar'
+                    }
+                    
                 }
             }
         }
