@@ -51,7 +51,7 @@
 <!--    </select>-->
 
     <select id="findMemberById" parameterType="string" resultMap="customer">
-        select seq, id, password, token
+        select id
         from customer
         where id = #{id}
     </select>

@@ -1,6 +1,6 @@
 package com.ssafy.lam.customer.model.service;
 
-import com.ssafy.lam.dto.Customer;
+import com.ssafy.lam.customer.dto.Customer;
 
 import java.sql.SQLException;
 import java.util.List;

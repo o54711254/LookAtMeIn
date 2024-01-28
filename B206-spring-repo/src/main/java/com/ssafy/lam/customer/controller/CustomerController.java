@@ -1,8 +1,7 @@
 package com.ssafy.lam.customer.controller;
 
 import com.ssafy.lam.customer.model.service.CustomerService;
-import com.ssafy.lam.dto.Customer;
-import com.ssafy.lam.member.controller.MemberController;
+import com.ssafy.lam.customer.dto.Customer;
 import com.ssafy.lam.util.JWTUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,7 +21,7 @@ import java.util.Map;
 @RequestMapping("/api/customer")
 public class CustomerController {
 
-    private Logger log = LoggerFactory.getLogger(MemberController.class);
+    private Logger log = LoggerFactory.getLogger(CustomerController.class);
 
     @Autowired
     private final CustomerService customerService;

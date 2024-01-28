@@ -1,6 +1,6 @@
 package com.ssafy.lam.customer.model.repository;
 
-import com.ssafy.lam.dto.Customer;
+import com.ssafy.lam.customer.dto.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

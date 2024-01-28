@@ -1,4 +1,4 @@
-package com.ssafy.lam.dto;
+package com.ssafy.lam.customer.dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

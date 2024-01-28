@@ -1,6 +1,6 @@
 package com.ssafy.lam.customer.model.mapper;
 
-import com.ssafy.lam.dto.Customer;
+import com.ssafy.lam.customer.dto.Customer;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.sql.SQLException;
