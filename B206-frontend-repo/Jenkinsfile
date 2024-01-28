@@ -4,56 +4,22 @@ pipeline {
         PATH = "/var/jenkins_home/tools/jenkins.plugins.nodejs.tools.NodeJSInstallation/node21/bin:$PATH"
     }
     stages {
-        stage('Check Changes') {
-            steps {
-                sh "pwd"
-
-                script {
-                    def frontendChanges = ''
-                    def backendChanges = ''
-                    // def pythonChanges = ''
-                    def globalChanges = ''
-
-                    try{
-                        globalChanges = sh(script: "git diff --name-only HEAD HEAD~1", returnStdout: true).trim()
-                        echo "Global changes: ${globalChanges}"
-                    }catch(Exception e){
-                        echo "No global changes detected"
-                    }
-
-                    try{
-                        frontendChanges = sh(script: "git diff --name-only HEAD HEAD~1 | grep 'B206-frontend-repo/'", returnStdout: true).trim()
-                        // echo "Frontend changes: ${frontendChanges}"
-                    }catch(Exception e){
-                        echo "No frontend changes detected"
-                    }
-                     
-                    if(globalChanges) {
-                        echo "Global changes detected"
-                        env.GLOBAL_CHANGED = "true"
-                    }
-
-                    if (frontendChanges) {
-                        echo "Frontend changes detected"
-                        env.FRONTEND_CHANGED = "true"
-                    }
-
+        stage('SonarQube analysis'){
+            steps{
+                withSonarQubeEnv('sonarqube') {
+                    sh 'npm install'
+                    sh 'npm run test'
+                    sh 'npm run sonar'
                 }
-
-                
             }
         }
+
         stage('Build Frontend') {
-            when {
-                expression { env.FRONTEND_CHANGED == "true" || env.GLOBAL_CHANGED == "true" }
-            }
             steps {
                 // Frontend 빌드 스크립트
                 echo "Frontend build"
                 sh "pwd"
                 dir("B206-frontend-repo"){
-                    sh "pwd"
-                    sh "npm install"
                     sh "CI=false npm run build"
                     sh '''
                         ssh -i ~/.ssh/id_rsa ubuntu@i10b206.p.ssafy.io "rm -rf /home/ubuntu/frontend/build/"
