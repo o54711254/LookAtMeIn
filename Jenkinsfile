@@ -9,6 +9,9 @@ pipeline {
                     def frontendChanges = sh(script: "git diff --name-only HEAD HEAD~1 | grep 'B206-frontend-repo/'", returnStdout: true).trim()
                     def backendChanges = sh(script: "git diff --name-only HEAD HEAD~1 | grep 'B206-spring-repo/'", returnStdout: true).trim()
                     def pythonChanges = sh(script: "git diff --name-only HEAD HEAD~1 | grep 'B206-python-repo/'", returnStdout: true).trim()
+
+                    echo "Frontend changes: ${frontendChanges}"
+
                     if (frontendChanges) {
                         echo "Frontend changes detected"
                         env.FRONTEND_CHANGED = "true"
