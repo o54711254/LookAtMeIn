@@ -2,6 +2,19 @@ pipeline {
     agent any
 
     stages {
+
+        
+        stage('SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    dir("B206-spring-repo"){
+                        sh "pwd"
+                        sh 'chmod +x gradlew'
+                        sh './gradlew clean booJar'
+                    }
+                }
+            }
+        }
      
         stage('Build spring') {
             steps {
@@ -9,9 +22,7 @@ pipeline {
                 echo "Spring build"
                 sh "pwd"
                 dir("B206-spring-repo"){
-                    sh "pwd"
-                    sh 'chmod +x gradlew'
-                    sh './gradlew clean booJar'
+                    
                     sh '''
                         ssh -i ~/.ssh/id_rsa ubuntu@i10b206.p.ssafy.io "rm -rf /home/ubuntu/spring && mkdir /home/ubuntu/spring"
                         scp -i ~/.ssh/id_rsa ./build/libs/lam-0.0.1-SNAPSHOT.jar ubuntu@i10b206.p.ssafy.io:/home/ubuntu/spring/lam-0.0.1-SNAPSHOT.jar
