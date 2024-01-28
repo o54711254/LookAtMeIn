@@ -93,9 +93,9 @@ pipeline {
                 // Backend 빌드 스크립트
                 echo "Backend build"
                 sh "pwd"
-                sh "cd B206-spring-repo"
+                sh "cd ./B206-spring-repo/"
                 sh "pwd"
-                sh "chmod +s gradlew"
+                sh "chmod +x ./gradlew"
                 sh "./gradlew build"
                 sh "ls"
                 sh'''
