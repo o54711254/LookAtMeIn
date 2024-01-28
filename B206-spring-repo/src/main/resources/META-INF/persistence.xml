@@ -7,9 +7,9 @@
 
             <!-- 필수 속성 -->
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.user" value="root"/>
-            <property name="jakarta.persistence.jdbc.password" value="10027760"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://158.180.88.174:3306/lam"/>
+            <property name="jakarta.persistence.jdbc.user" value="ssafy"/>
+            <property name="jakarta.persistence.jdbc.password" value="ssafy"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/lam"/>
 <!--            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/member"/>-->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
 
