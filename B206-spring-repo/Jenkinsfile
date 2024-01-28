@@ -8,7 +8,7 @@ pipeline {
                 // spring 빌드 스크립트
                 echo "Spring build"
                 sh "pwd"
-                dir("B206-frontend-repo"){
+                dir("B206-spring-repo"){
                     sh "pwd"
                     sh 'chmod +x gradlew'
                     sh './gradlew clean booJar'
