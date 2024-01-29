@@ -15,6 +15,7 @@ import SearchList from "./components/Search/SearchList";
 import SearchInput from "./components/Search/SearchInput";
 import ChatApp from "./components/Chat/ChatApp";
 // import Nav from "./components/Nav"
+import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry"
 
 import './styles/globals.css'
 
@@ -25,6 +26,8 @@ function App() {
       {/* <Nav/> */}
       <BrowserRouter>
         <Link to={"/mypage"}>마이페이지</Link>
+        <Link to={"/face"}>  얼굴</Link>
+
 
         <Link to={"/login"}>로그인</Link>
         {/* <SearchInput /> */}
@@ -55,7 +58,8 @@ function App() {
           {/* meeting */}
           {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
           {/* <Route path="/search/:query" element={<SearchList />} /> */}
-        </Routes>
+          <Route path="/face" element={<FacialAsy />} />
+          </Routes>
       </BrowserRouter>
       <FloatingChat />
     </div>
