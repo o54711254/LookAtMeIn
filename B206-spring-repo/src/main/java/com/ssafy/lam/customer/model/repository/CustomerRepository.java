@@ -4,6 +4,8 @@ import com.ssafy.lam.dto.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 //    Customer findCustomerByName(String name);
@@ -18,4 +20,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 //    int saveMember(Customer customer) throws SQLException;
 //    public int modifyMember(Customer customer) throws SQLException;
 //    int deleteMember(String userId) throws SQLException;
+    Optional<Customer> findById(String id);
 }

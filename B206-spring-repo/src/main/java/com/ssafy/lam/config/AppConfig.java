@@ -30,10 +30,6 @@ public class AppConfig implements WebMvcConfigurer {
         this.jwtInterceptor = jwtInterceptor;
     }
 
-
-
-
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // TODO Auto-generated method stub
