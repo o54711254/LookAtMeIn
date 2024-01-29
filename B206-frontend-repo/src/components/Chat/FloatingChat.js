@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, Button, Paper } from "@mui/material";
 import Draggable from "react-draggable";
-import ChatRoom from "./ChatRoom";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom"; // Link 컴포넌트 추가
 
 function FloatingChat() {
   const [open, setOpen] = useState(false);
@@ -17,15 +17,13 @@ function FloatingChat() {
     }
   };
 
-  const fetchChatRooms = () => {
-    axiosApi
-      .get(`/chat/rooms/${user}`) // 임의로
-      .then((res) => {
-        setChatRooms(res.data);
-      })
-      .catch((error) => {
-        console.log("채팅방 목록을 가져오는데 실패했습니다.", error);
-      });
+  const fetchChatRooms = async () => {
+    try {
+      const res = await axiosApi.get(`/chat/rooms/${user}`);
+      setChatRooms(res.data);
+    } catch (error) {
+      console.log("채팅방 목록을 가져오는데 실패했습니다.", error);
+    }
   };
 
   return (
@@ -34,7 +32,14 @@ function FloatingChat() {
         <Button onClick={handleToggleChat}>{open ? "숨기기" : "채팅"}</Button>
         {open && (
           <Box sx={{ p: 10, maxWidth: 300 }}>
-            <ChatRoom chatRooms={chatRooms} />
+            {/* ChatRoom 컴포넌트의 기능을 여기에 직접 포함시킴 */}
+            <div>
+              {chatRooms.map((room) => (
+                <Link key={room.id} to={"/chat-app/" + room.id}>
+                  {room.name}
+                </Link>
+              ))}
+            </div>
           </Box>
         )}
       </Paper>

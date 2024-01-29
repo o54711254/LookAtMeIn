@@ -1,83 +1,91 @@
-import { useRef, useState, useEffect } from "react";
+// ChatApp.js
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import * as StompJs from "@stomp/stompjs";
+import axiosApi from "../../api/axiosApi";
+import { useSelector } from "react-redux";
+import { Stomp } from "@stomp/stompjs";
 
 function ChatApp() {
-  const [chatList, setChatList] = useState([]);
-  const [chat, setChat] = useState("");
+  const { roomId } = useParams(); // URL에서 채팅방 ID 추출
+  const [messages, setMessages] = useState([]); // 채팅 메시지 상태
+  const [message, setMessage] = useState(""); // 메시지 입력 상태
+  const stompClient = useRef(null); // STOMP 클라이언트 참조
+  const currentUser = useSelector((state) => state.user); // 현재 로그인한 사용자 정보
 
-  const { apply_id } = useParams();
-  const client = useRef({});
+  useEffect(() => {
+    connect(); // 웹소켓 연결
+    fetchMessages(); // 기존 메시지 가져오기
+
+    return () => disconnect(); // 컴포넌트 언마운트 시 연결 해제
+  }, [roomId]);
 
   const connect = () => {
-    client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:8787/ws",
-      onConnect: () => {
-        console.log("success");
-        subscribe();
-      },
-    });
-    client.current.activate();
-  };
-
-  const publish = (chat) => {
-    if (!client.current.connected) return;
-
-    client.current.publish({
-      destination: "/pub/chat",
-      body: JSON.stringify({
-        applyId: apply_id,
-        chat: chat,
-      }),
-    });
-
-    setChat("");
-  };
-
-  const subscribe = () => {
-    client.current.subscribe("/sub/chat/" + apply_id, (body) => {
-      const json_body = JSON.parse(body.body);
-      setChatList((_chat_list) => [..._chat_list, json_body]);
+    const socket = new WebSocket("ws://localhost:80/ws");
+    stompClient.current = Stomp.over(socket);
+    stompClient.current.connect({}, () => {
+      stompClient.current.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+        const newMessage = JSON.parse(message.body);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
     });
   };
 
   const disconnect = () => {
-    client.current.deactivate();
+    if (stompClient.current) {
+      stompClient.current.disconnect();
+    }
   };
 
-  const handleChange = (event) => {
-    // 채팅 입력 시 state에 값 설정
-    setChat(event.target.value);
+  const fetchMessages = () => {
+    axiosApi
+      .get(`/chat/messages/${roomId}`)
+      .then((response) => setMessages(response.data))
+      .catch((error) =>
+        console.error("채팅 메시지를 가져오는데 실패했습니다.", error)
+      );
   };
 
-  const handleSubmit = (event, chat) => {
-    // 보내기 버튼 눌렀을 때 publish
-    event.preventDefault();
-
-    publish(chat);
+  const sendMessage = () => {
+    if (stompClient.current && message) {
+      const messageObj = {
+        roomId,
+        sender: currentUser.userName,
+        message: message,
+      };
+      stompClient.current.send(
+        `/pub/chat/message`,
+        {},
+        JSON.stringify(messageObj)
+      );
+      setMessage(""); // 상태를 이용한 입력 필드 초기화
+    }
   };
-
-  useEffect(() => {
-    connect();
-
-    return () => disconnect();
-  }, []);
 
   return (
     <div>
-      <div className={"chat-list"}>{chatList}</div>
-      <form onSubmit={(event) => handleSubmit(event, chat)}>
-        <div>
-          <input
-            type={"text"}
-            name={"chatInput"}
-            onChange={handleChange}
-            value={chat}
-          />
-        </div>
-        <input type={"submit"} value={"의견 보내기"} />
-      </form>
+      <div>
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            style={{
+              textAlign: msg.sender === currentUser.userName ? "right" : "left",
+            }}
+          >
+            {msg.sender !== currentUser.userName && <p>{msg.sender}</p>}
+            <p>{msg.message}</p>
+          </div>
+        ))}
+      </div>
+      <div>
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button onClick={sendMessage}>보내기</button>
+      </div>
     </div>
   );
 }
+
 export default ChatApp;
