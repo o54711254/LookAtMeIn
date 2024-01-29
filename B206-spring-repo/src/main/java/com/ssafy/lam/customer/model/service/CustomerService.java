@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface CustomerService {
     List<Customer> getAllCustomers();
-    Customer getCustomer(int seq);
+//    Customer getCustomer(int seq);
+    Customer getCustomer(String id);
     Customer createCustomer(Customer customer);
     Customer updateCustomer(int seq, Customer updatedCustomer);
 
