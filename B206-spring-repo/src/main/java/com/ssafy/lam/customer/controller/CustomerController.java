@@ -63,7 +63,7 @@ public class CustomerController {
 
     // 유저 수정 - JPA
     @PutMapping("/update/{seq}")
-
+    @Operation(summary = "회원 수정", description = "회원을 수정한다.")
     public ResponseEntity<?> updateCustomer(@PathVariable int seq, @RequestBody Customer updatedCustomer) {
         Customer customer = customerService.updateCustomer(seq, updatedCustomer);
         if (customer != null) {
@@ -75,6 +75,7 @@ public class CustomerController {
 
     // 유저 삭제 - JPA
     @DeleteMapping("/delete/{seq}")
+    @Operation(summary = "회원 삭제", description = "회원을 삭제한다.")
     public ResponseEntity<?> deleteCustomer(@PathVariable int seq) {
         customerService.deleteCustomer(seq);
         return ResponseEntity.ok("Customer deleted");
@@ -85,7 +86,7 @@ public class CustomerController {
 
     // 유저 로그인 - MyBatis
     @PostMapping("/login")
-    @ApiOperation(value = "로그인", notes = "아이디와 비밀번호를 이용하여 로그인 처리.")
+    @Operation(summary = "로그인", description = "아이디와 비밀번호를 이용하여 로그인 처리.")
     public ResponseEntity<Map<String, Object>> login(
             @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) Customer customer) {
         log.debug("login user : {}", customer);
@@ -122,7 +123,7 @@ public class CustomerController {
 
     // 유저 회원인증 - 아마 권한 확인용? - MyBatis
     @GetMapping("/info/{id}")
-    @ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
+    @Operation(summary = "회원 인증", description = "회원 정보를 담은 Token을 반환한다.")
     public ResponseEntity<Map<String, Object>> getInfo(
             @PathVariable("id") @ApiParam(value = "인증할 회원의 아이디.", required = true) String id,
             HttpServletRequest request) {
@@ -150,7 +151,7 @@ public class CustomerController {
 
     // 유저 로그아웃 - MyBatis
     @GetMapping("/logout/{id}")
-    @ApiOperation(value = "로그아웃", notes = "회원 정보를 담은 Token을 제거한다.", response = Map.class)
+    @Operation(summary = "로그아웃", description = "회원 정보를 담은 Token을 제거한다.")
     public ResponseEntity<?> removeToken(
             @PathVariable("id") @ApiParam(value = "로그아웃할 회원의 아이디.", required = true) String id) {
         Map<String, Object> resultMap = new HashMap<>();
@@ -169,7 +170,7 @@ public class CustomerController {
 
     // 유저 Refresh Token 재발급 - 딱히 필요 없을 듯? - MyBatis
     @PostMapping("/refresh")
-    @ApiOperation(value = "Access Token 재발급", notes = "만료된 access token을 재발급받는다.", response = Map.class)
+    @Operation(summary = "Refresh Token 재발급", description = "만료된 Refresh Token을 재발급받는다.")
     public ResponseEntity<?> refreshToken(@RequestBody Customer customer, HttpServletRequest request)
             throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
@@ -193,7 +194,7 @@ public class CustomerController {
 
     // 유저 아이디 중복확인 - MyBatis
     @GetMapping("/join/idcheck/{id}")
-    @ApiOperation(value = "아이디 중복확인", notes = "아이디가 중복되는지 확인합니다.", response = Map.class)
+    @Operation(summary = "아이디 중복확인", description = "아이디가 중복되는지 확인한다.")
     public ResponseEntity<?> idDuplicateCheck(
             @PathVariable("id") @ApiParam(value = "중복되는지 확인하기 위한 아이디", required = true) String id) {
         log.debug("login userId : {}", id);
@@ -218,7 +219,7 @@ public class CustomerController {
 
     // 유저 회원가입 = createCustomer + 조건, 예외처리 추가 - MyBatis
     @PostMapping("/join")
-    @ApiOperation(value = "회원확인", notes = "유저를 DB에 저장", response = Map.class)
+    @Operation(summary = "회원가입", description = "회원가입을 한다.")
     public ResponseEntity<?> saveMember(@RequestBody Customer customer) throws Exception {
         log.debug("login user :{}" , customer);
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -242,7 +243,7 @@ public class CustomerController {
 
     // 유저 수정 = updateCustomer + 조건, 예외처리 추가 - MyBatis
     @PutMapping("/modify")
-    @ApiOperation(value = "회원 정보 수정", notes = "DB에 저장되어있는 유저 정보를 수정", response = Map.class)
+    @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정한다.")
     public ResponseEntity<?> modifyMember(@RequestBody Customer customer) throws Exception {
         log.debug("login user :{}" , customer);
         Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -266,7 +267,7 @@ public class CustomerController {
 
     // 유저 삭제 = deleteCustomer + 조건, 예외처리 추가 - MyBatis
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "회원 정보 삭제", notes = "DB에 저장되어있는 유저 정보를 삭제", response = Map.class)
+    @Operation(summary = "회원 정보 삭제", description = "DB에 저장되어 있는 유저 정보 삭제")
     public ResponseEntity<?> deleteMember(@PathVariable("id") String id ) {
         log.debug("user id :{}", id);
         Map<String, Object> resultMap = new HashMap<>();
