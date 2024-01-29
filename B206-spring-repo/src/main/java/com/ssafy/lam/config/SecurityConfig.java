@@ -49,17 +49,17 @@ public class SecurityConfig {
                     }
                 }))
                 .httpBasic(HttpBasicConfigurer::disable)
-                .csrf(CsrfConfigurer::disable
+                .csrf(CsrfConfigurer::disable)
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize->
                     authorize
-                            .requestMatchers("/api/customer/login").permitAll() // 로그인 전에는 허용
-                            .requestMatchers("/api/customer/test").hasRole("CUSTOMER")
+                            .requestMatchers("/api/members/login").permitAll() // 로그인 전에는 허용
+                            .requestMatchers("/api/members/test").hasRole("USER")
                             .anyRequest()
                             .authenticated()
 
                 )
-                .addFilter((new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class));
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
                 return http.build();
     }
