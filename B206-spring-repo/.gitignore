@@ -13,7 +13,16 @@
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
-# .nfs files are created when an open file is removed but is still being accessed
+# .nfs files are1. 병원마이페이지 - 코디네이터 등록하기
+                #2. 병원마이페이지 - 의사 등록하기 구현
+                #3. 병원마이페이지 - 병원정보 수정 구현
+                #4. 고객마이페이지 - 찜 해둔 병원 나타내기
+                #5. 고객마이페이지 - 개인정보 수정 기능 구현
+                #6. WebSocket을 활용한 채팅 공부하기
+                #7. JPA 공부하기
+                #8. 고객마이페이지 - 상담한 내역 구현
+                #9. 병원마이페이지 - 상담할 내역 구현
+                #10. 채팅구현 틀 만들기 created when an open file is removed but is still being accessed
 .nfs*
 
 ### Windows ###
@@ -49,10 +58,6 @@ $RECYCLE.BIN/
 
 # Ignore Gradle GUI config
 gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-/src/main/resources/application.properties
-
 
 !gradle-wrapper.jar
 
