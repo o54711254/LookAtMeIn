@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
 import { toast, ToastContainer } from "react-toastify";
-import axiosApi from "axios";
+import axiosApi from "../../api/axiosApi.js";
 import loginUser from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -24,7 +24,7 @@ function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [membertype, setMembertype] = useState(-1);
+  const [membertype, setMembertype] = useState("");
 
   //멤버 타입(고객,병원 ,,,)이 라디오 타입으로 바꾸면 어떤 멤번지 바꿔주는 함수
   const handleChange = (e) => {
@@ -39,22 +39,19 @@ function LoginForm() {
       password: "",
     },
     validationSchema: validationSchema,
-
+    
     onSubmit: async (values) => {
-      //하나로 합칠거면 .post("./login")하고 navigate만 고치기
+      console.log(values);
       if (membertype === 1) {
-        //cutomer
+        //customer
         try {
           await axiosApi
-            .post("/customer/login", values, {
-              //values에는 id와 비밀번호가 담겨 있음
-              withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
-            })
+          .post("/api/customer/login", values)
             .then((res) => {
               //res는 서버에서 받은 응답 객체
-              if (res.data.status === 200) {
+              if (res.status === 201) {
+                alert("로그인 성공!");
                 //로그인 성공
-                console.log(res.data);
                 dispatch(
                   loginUser({
                     userSeq: res.data.responseObj.userSeq, // 사용자 일련번호

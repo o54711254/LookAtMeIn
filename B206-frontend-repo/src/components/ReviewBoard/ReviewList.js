@@ -2,13 +2,22 @@ import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
 
 function ReviewList() {
-  const [reviewBoardList, setReviewBoardList] = useState([]);
+  // const [reviewBoardList, setReviewBoardList] = useState([]);
 
-  useEffect(() => {
-    axiosApi.get(`/api/reviewBoard/list`).then((res) => {
-      setReviewBoardList(res.data.responseObj);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axiosApi.get(`/api/reviewBoard/list`).then((res) => {
+  //     setReviewBoardList(res.data.responseObj);
+  //   });
+  // }, []);
+
+  // 더미 데이터
+  const reviewBoardList = {
+    customer_id: 'user123',
+    reviewBoard_title: '테스트 리뷰',
+    reviewBoard_cnt: 100,
+    reviewBoard_regDate: '2024-01-28',
+    reviewBoard_score: 4,
+  }
 
   return (
     <div>
