@@ -12,7 +12,7 @@ import AdminMyPage from "./components/Admin/MyPage/AdminMyPage";
 import ReviewBoardList from "./components/ReviewBoard/ReviewList";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import SearchList from "./components/Search/SearchList";
-import VideoRoom from "./components/OpenVidu/VideoRoom";
+import VideoRoom from "./components/OpenVidu/video";
 import SearchInput from "./components/Search/SearchInput";
 
 
@@ -20,7 +20,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Link to={"/mypage"}>마이페이지d</Link>
+        <Link to={"/mypage"}>마이페이지</Link>
         <SearchInput />
         <Routes>
           {/*Sign*/}

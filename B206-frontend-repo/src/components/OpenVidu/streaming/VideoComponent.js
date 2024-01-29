@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import OvVideoComponent from "./OvVideo";
 import "./VideoComponent.module.css";
 
-// import MicOffIcon from "@mui/icons-material/MicOff";
-// import VideocamOffIcon from "@mui/icons-material/VideocamOff";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 
 export default class StreamComponent extends Component {
   constructor(props) {
@@ -73,13 +73,13 @@ export default class StreamComponent extends Component {
               {/* 비디오 off 상태 아이콘 */}
               {!this.props.user.isVideoActive() ? (
                 <div id="camIcon">
-                  {/* <VideocamOffIcon id="statusCam" /> */}
+                  <VideocamOffIcon id="statusCam" />
                 </div>
               ) : null}
               {/* 마이크 off 상태 아이콘 */}
               {!this.props.user.isAudioActive() ? (
                 <div id="micIcon">
-                  {/* <MicOffIcon id="statusMic" /> */}
+                  <MicOffIcon id="statusMic" />
                 </div>
               ) : null}
             </div>

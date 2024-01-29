@@ -1,13 +1,13 @@
 import { OpenVidu } from "openvidu-browser";
 import React, { Component } from "react";
-import StreamComponent from "./streaming/VideoComponent";
+import StreamComponent from "./stream/StreamComponent";
 import styles from "./VideoRoom.module.css";
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import Link from "@mui/material/Link";
 
 import OpenViduLayout from "./layout/Layout";
-import UserModel from "./model/user-model";
+import UserModel from "./models/user-model";
 import ToolbarComponent from "./toolbar/Toolbar";
 import axiosApi from "../../api/axiosApi";
 
