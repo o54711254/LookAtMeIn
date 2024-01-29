@@ -1,10 +1,7 @@
 package com.ssafy.lam.dto;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,41 +9,59 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Member implements UserDetails {
+@Getter
+@Setter
+
+//@AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
+
+public class User implements UserDetails {
 
     @Id
-    private String memberId;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long seq;
+    private String userId;
     private String password;
 
+
+    public User() {
+    }
+
     @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+
+    @Builder
+    public User(long seq, String userId, String password, List<String> roles){
+        this.seq = seq;
+        this.userId = userId;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User toEntity(long seq, String userId, String password, List<String> roles) {
+        return User.builder()
+                .seq(seq)
+                .userId(userId)
+                .password(password)
+                .roles(roles)
+                .build();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+                .collect(java.util.stream.Collectors.toList());
     }
-
 
     @Override
     public String getUsername() {
-        return this.memberId;
+        return this.userId;
     }
 
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
     @Override
     public boolean isAccountNonExpired() {
         return true;

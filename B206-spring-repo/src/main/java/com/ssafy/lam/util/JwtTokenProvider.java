@@ -68,6 +68,7 @@ public class JwtTokenProvider {
                         .collect(Collectors.toList());
 
         UserDetails prinipal = new User(claims.getSubject(), "", authorities);
+
         return new UsernamePasswordAuthenticationToken(prinipal, "", authorities);
 
     }
