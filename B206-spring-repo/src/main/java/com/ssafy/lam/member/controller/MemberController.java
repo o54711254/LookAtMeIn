@@ -5,6 +5,7 @@ import com.ssafy.lam.dto.TokenInfo;
 import com.ssafy.lam.member.model.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,11 +21,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login")
-    public TokenInfo login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
+    public ResponseEntity<TokenInfo> login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
         String memberId = memberLoginRequestDto.getMemberId();
         String password = memberLoginRequestDto.getPassword();
         System.out.println("password = " + password);
         TokenInfo tokenInfo = memberService.login(memberId, password);
-        return tokenInfo;
+        return ResponseEntity.ok(tokenInfo);
+
     }
 }

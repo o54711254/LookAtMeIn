@@ -1,6 +1,7 @@
-package com.ssafy.lam.member.model.service;
+package com.ssafy.lam.customer.model.service;
 
-import com.ssafy.lam.dto.Member;
+import com.ssafy.lam.customer.model.repository.CustomerRepository;
+import com.ssafy.lam.dto.Customer;
 import com.ssafy.lam.member.model.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -12,21 +13,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomUserDetailService{
-    private final MemberRepository memberRepository;
+public class CustomerDetailsService implements UserDetailsService {
+    private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-        return memberRepository.findByMemberId(memberId)
+    @Override
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        return customerRepository.findByUserId(userId)
                 .map(this::createUserDetails)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }
 
-    private UserDetails createUserDetails(Member member) {
+    private UserDetails createUserDetails(Customer customer) {
         return User.builder()
-                .username(member.getMemberId())
-                .password(passwordEncoder.encode(member.getPassword()))
-                .roles(member.getRoles().stream().toArray(String[]::new))
+                .username(customer.getUserId())
+                .password(passwordEncoder.encode(customer.getPassword()))
+                .roles(customer.getRoles().stream().toArray(String[]::new))
                 .build();
     }
 }
