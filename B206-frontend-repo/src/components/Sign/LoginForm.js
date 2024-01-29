@@ -28,8 +28,9 @@ function LoginForm() {
 
   //멤버 타입(고객,병원 ,,,)이 라디오 타입으로 바꾸면 어떤 멤번지 바꿔주는 함수
   const handleChange = (e) => {
-    console.log(`선택한 값 : ${e.target.value}`);
-    setMembertype(e.target.value);
+    const value = parseInt(e.target.value, 10);
+    console.log(`선택한 값 : ${value}`);
+    setMembertype(value);
   };
 
   const formik = useFormik({
@@ -68,22 +69,24 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.headers.get("authorization");
                 dispatch(setToken({ accessToken: accessToken }));
-                toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                  // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                  position: toast.POSITION.TOP_CENTER,
-                  // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                  autoClose: 2000,
-                });
+                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
+                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
+                //   position: toast.POSITION.TOP_CENTER,
+                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
+                //   autoClose: 2000,
+                // });
+                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
                 setTimeout(() => {
                   navigate("/");
                   dispatch(changeLoading());
                 }, 3000);
               } else {
-                toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                  position: toast.POSITION.TOP_CENTER,
-                  autoClose: 2000,
-                });
+                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
+                //   position: toast.POSITION.TOP_CENTER,
+                //   autoClose: 2000,
+                // });
+                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
         } catch {}
@@ -115,22 +118,24 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.headers.get("authorization");
                 dispatch(setToken({ accessToken: accessToken }));
-                toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                  // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                  position: toast.POSITION.TOP_CENTER,
-                  // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                  autoClose: 2000,
-                });
+                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
+                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
+                //   position: toast.POSITION.TOP_CENTER,
+                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
+                //   autoClose: 2000,
+                // });
+                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 특정 경로로 이동
                 setTimeout(() => {
                   navigate("/hospital/mypage"); //병원 로그인 성공하면 병원 마이페이지로 이동//홈? 마페?
                   dispatch(changeLoading());
                 }, 2000);
               } else {
-                toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                  position: toast.POSITION.TOP_CENTER,
-                  autoClose: 2000,
-                });
+                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
+                //   position: toast.POSITION.TOP_CENTER,
+                //   autoClose: 2000,
+                // });
+                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
         } catch {}
@@ -161,22 +166,24 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.headers.get("authorization");
                 dispatch(setToken({ accessToken: accessToken }));
-                toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                  // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                  position: toast.POSITION.TOP_CENTER,
-                  // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                  autoClose: 2000,
-                });
+                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
+                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
+                //   position: toast.POSITION.TOP_CENTER,
+                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
+                //   autoClose: 2000,
+                // });
+                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
                 setTimeout(() => {
                   navigate("/");
                   dispatch(changeLoading());
                 }, 2000);
               } else {
-                toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                  position: toast.POSITION.TOP_CENTER,
-                  autoClose: 2000,
-                });
+                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
+                //   position: toast.POSITION.TOP_CENTER,
+                //   autoClose: 2000,
+                // });
+                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
         } catch {}
@@ -207,31 +214,34 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.headers.get("authorization");
                 dispatch(setToken({ accessToken: accessToken }));
-                toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                  // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                  position: toast.POSITION.TOP_CENTER,
-                  // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                  autoClose: 2000,
-                });
+                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
+                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
+                //   position: toast.POSITION.TOP_CENTER,
+                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
+                //   autoClose: 2000,
+                // });
+                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
                 setTimeout(() => {
                   navigate("/");
                   dispatch(changeLoading());
                 }, 2000);
               } else {
-                toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                  position: toast.POSITION.TOP_CENTER,
-                  autoClose: 2000,
-                });
+                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
+                //   position: toast.POSITION.TOP_CENTER,
+                //   autoClose: 2000,
+                // });
+                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
         } catch {}
       } else {
-        toast.error(<h3>회원유형을 선택해주세요 !</h3>, {
-          position: toast.POSITION.TOP_CENTER,
-          autoClose: 1000,
-          hideProgressBar: true,
-        });
+        // toast.error(<h3>회원유형을 선택해주세요 !</h3>, {
+        //   position: toast.POSITION.TOP_CENTER,
+        //   autoClose: 1000,
+        //   hideProgressBar: true,
+        // });
+        window.alert("회원유형을 선택해주세요 !");
       }
     },
   });
@@ -313,7 +323,11 @@ function LoginForm() {
             value={formik.values.id}
             onChange={formik.handleChange}
             type="text"
-          ></input>
+            className={formik.touched.id && formik.errors.id ? "error" : ""}
+          />
+          {formik.touched.id && formik.errors.id && (
+            <div className="helperText">{formik.errors.id}</div>
+          )}
         </div>
         <div className="passwordInput">
           <h3>비밀번호</h3>
@@ -323,14 +337,20 @@ function LoginForm() {
             value={formik.values.password}
             onChange={formik.handleChange}
             type="password"
-          ></input>
+            className={
+              formik.touched.password && formik.errors.password ? "error" : ""
+            }
+          />
+          {formik.touched.password && formik.errors.password && (
+            <div className="helperText">{formik.errors.password}</div>
+          )}
         </div>
+        <button type="submit">로그인</button>
         <div>
           <Link to="/UserRegist">고객 회원가입 </Link> |
           <Link to="/HospitalRegist">병원 회원가입 </Link> |
-          <Link to="/FindPassword"> 비밀번호 찾기</Link>
+          {/* <Link to="/FindPassword"> 비밀번호 찾기</Link> */}
         </div>
-        <button type="submit">로그인</button>
       </form>
     </div>
   );

@@ -9,8 +9,8 @@ import UserRegistForm from "./UserRegistForm";
 function Regist() {
   return (
     <div>
-      <HospitalRegistForm />
-      <UserRegistForm />
+      {/* <Link to="/UserRegist">고객 회원가입 </Link> |
+      <Link to="/HospitalRegist">병원 회원가입 </Link> | */}
     </div>
   );
 }

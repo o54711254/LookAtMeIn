@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axiosApi from '../../api/axiosApi';
+import React, { useState, useEffect } from "react";
+import axiosApi from "../../api/axiosApi";
 
-function ReviewBoardList() {
+function ReviewList() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
 
   useEffect(() => {
-    axiosApi
-    .get(`/api/reviewBoard/list`)
-    .then((res) => {
+    axiosApi.get(`/api/reviewBoard/list`).then((res) => {
       setReviewBoardList(res.data.responseObj);
     });
-}, []);
+  }, []);
 
   return (
     <div>
@@ -30,4 +28,4 @@ function ReviewBoardList() {
   );
 }
 
-export default ReviewBoardList;
+export default ReviewList;
