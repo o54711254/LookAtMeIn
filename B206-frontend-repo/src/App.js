@@ -13,6 +13,7 @@ import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import SearchList from "./components/Search/SearchList";
 // import VideoRoom from "./components/OpenVidu/VideoRoom";
 import SearchInput from "./components/Search/SearchInput";
+import ChatApp from "./components/Chat/ChatApp";
 
 function App() {
   return (
