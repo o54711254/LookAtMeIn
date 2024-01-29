@@ -51,11 +51,7 @@
 <!--    </select>-->
 
     <select id="findMemberById" parameterType="string" resultMap="customer">
-<<<<<<< HEAD
-        select seq, id, password, token
-=======
         select id
->>>>>>> dev-spring-hayoon
         from customer
         where id = #{id}
     </select>
