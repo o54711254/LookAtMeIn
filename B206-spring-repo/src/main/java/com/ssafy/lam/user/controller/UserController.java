@@ -62,7 +62,7 @@ public class UserController {
     @PostMapping("/login")
     @Operation(summary = "고객 로그인을 수행한다.")
     public ResponseEntity<TokenInfo> login(@RequestBody User user) throws Exception {
-        TokenInfo tokenInfo = userService.login(user);
+        TokenInfo tokenInfo = userService.getLoginToken(user);
         return ResponseEntity.ok(tokenInfo);
     }
 
@@ -83,8 +83,8 @@ public class UserController {
 
     @PostMapping("/regist")
     @Operation(summary = "회원가입")
-    public ResponseEntity<Void> createCustomer(@RequestBody User user) {
-        log.debug("login userId : {}", user.getUserId());
+    public ResponseEntity<Void> createUser(@RequestBody User user) {
+        log.info("login userId : {}", user.getUserId());
         User createdUser = userService.createUser(user);
 
 //        return new ResponseEntity<>(createdCustomer, HttpStatus.OK);

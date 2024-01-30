@@ -16,14 +16,14 @@ import java.util.List;
 
 //@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.INTEGER)
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long seq;
-    private String userId;
-    private String password;
+    protected long seq;
+    protected String userId;
+    protected String password;
 
 
     public User() {

@@ -4,7 +4,9 @@ import com.ssafy.lam.user.model.repository.UserRepository;
 import com.ssafy.lam.dto.TokenInfo;
 import com.ssafy.lam.util.JwtTokenProvider;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -16,15 +18,17 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final JwtTokenProvider jwtTokenProvider;
+
+    protected final UserRepository userRepository;
+
+    protected final AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    protected final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(){
         return userRepository.findAll();
     }
 
@@ -35,8 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     /**
-     * 참고 블로그
-     * https://suddiyo.tistory.com/entry/Spring-Spring-Security-JWT-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-4
+     * 참고 블로그     * https://suddiyo.tistory.com/entry/Spring-Spring-Security-JWT-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0-4
      * 1편부터 보면 좋다.
      */
     public User createUser(User user) {
@@ -45,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 
         List<String> roles = new ArrayList<>();
-        roles.add("CUSTOMER");
+        roles.add("USER");
         user = user.toEntity(user.getSeq(), user.getUserId(), user.getPassword(), roles);
         return userRepository.save(user);
     }
@@ -63,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public TokenInfo login(User user) throws Exception {
+    public TokenInfo getLoginToken(User user) throws Exception {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
