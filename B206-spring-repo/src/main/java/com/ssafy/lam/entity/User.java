@@ -16,7 +16,7 @@ import java.util.List;
 
 //@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "user_type")
 public class User implements UserDetails {
 
     @Id
