@@ -52,7 +52,7 @@ function LoginForm() {
             })
             .then((res) => {
               //res는 서버에서 받은 응답 객체
-              if (res.data.status === 200) {
+              if (res.status === 201) {
                 console.log("222222");
                 //로그인 성공
                 console.log(res.data);
