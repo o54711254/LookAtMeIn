@@ -48,7 +48,8 @@ function LoginForm() {
           await axiosApi.post("/api/customer/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
             if (res.status === 201) {
-              alert("로그인 성공!");
+              console.log("userData", res.data.userSeq);
+              window.alert("로그인 성공!");
               //로그인 성공
               dispatch(
                 loginUser({
