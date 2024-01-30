@@ -44,26 +44,26 @@ public class CustomerController{
 
     @PostMapping("/login")
     @Operation(summary = "고객 로그인")
-    public ResponseEntity<CustomerTokenInfo> loginCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<TokenInfo> loginCustomer(@RequestBody Customer customer) {
         log.info("loginCustomer customer : {}", customer);
-        Customer customer1 = customerService.findByCustomerId(customer.getUserId());
-        if(customer1 == null){
-            return ResponseEntity.notFound().build();
-        }
-        if(!customer1.getPassword().equals(customer.getPassword())){
-            return ResponseEntity.notFound().build();
-        }
+//        Customer customer1 = customerService.findByCustomerId(customer.getUserId());
+        TokenInfo tokenInfo = customerService.getLoginToken(customer);
+//        if(customer1 == null){
+//            return ResponseEntity.notFound().build();
+//        }
+//        if(!customer1.getPassword().equals(customer.getPassword())){
+//            return ResponseEntity.notFound().build();
+//        }
+//
+////        String user_type = customerService.getUserType(customer1);
+//        log.info("tokenInfo : {}", tokenInfo);
+//        CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
+//                .tokenInfo(tokenInfo)
+////                .user_type(user_type)
+//                .userId(customer1.getUserId())
+//                .build();
 
-//        String user_type = customerService.getUserType(customer1);
-        TokenInfo tokenInfo = customerService.getLoginToken(customer1);
-        log.info("tokenInfo : {}", tokenInfo);
-        CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
-                .tokenInfo(tokenInfo)
-//                .user_type(user_type)
-                .userId(customer1.getUserId())
-                .build();
-
-        return ResponseEntity.ok().body(customerTokenInfo);
+        return ResponseEntity.ok(tokenInfo);
     }
 
 
