@@ -1,11 +1,12 @@
-package com.ssafy.lam.customer.controller;
+package com.ssafy.lam.user.controller;
 
-import com.ssafy.lam.customer.model.service.CustomerService;
-import com.ssafy.lam.customer.dto.Customer;
+import com.ssafy.lam.user.dto.User;
+import com.ssafy.lam.user.model.service.UserService;
 import com.ssafy.lam.util.JWTUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,84 +19,86 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/customer")
-public class CustomerController {
+@RequestMapping("/api/user")
+public class UserController {
 
-    private Logger log = LoggerFactory.getLogger(CustomerController.class);
+    private Logger log = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    private final CustomerService customerService;
+    private final UserService userService;
     @Autowired
     private JWTUtil jwtUtil;
 
     @Autowired
-    public CustomerController(CustomerService customerService, JWTUtil jwtUtil) {
-        this.customerService = customerService;
+    public UserController(UserService userService, JWTUtil jwtUtil) {
+        this.userService = userService;
         this.jwtUtil = jwtUtil;
     }
 
     // 유저 전체조회 - JPA
     @GetMapping("/all")
-    public ResponseEntity<?> getAllCustomers() {
-        List<Customer> customers = customerService.getAllCustomers();
-        return ResponseEntity.ok(customers);
+    public ResponseEntity<?> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
 //        return customerService.getAllCustomers(); - List<Customer>
     }
 
-    // 유저 상세조회 - JPA, id로 찾아오기
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerById(@PathVariable String id) {
-        Customer customer = customerService.getCustomer(id);
-        return ResponseEntity.ok(customer);
+    // 유저 상세조회 - JPA, userId로 찾기
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> getUserByUserId(@PathVariable String userId) {
+        User user = userService.getUser(userId);
+        return ResponseEntity.ok(user);
     }
 
     // 유저 추가 - JPA
     @PostMapping("/create")
-    public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
-        Customer createdCustomer = customerService.createCustomer(customer);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
 //        return ResponseEntity.ok(createdCustomer);
-        return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     }
 
-    // 유저 수정 - JPA
-    @PutMapping("/update/{seq}")
-    public ResponseEntity<?> updateCustomer(@PathVariable int seq, @RequestBody Customer updatedCustomer) {
-        Customer customer = customerService.updateCustomer(seq, updatedCustomer);
-        if (customer != null) {
-            return ResponseEntity.ok(customer);
+    // 유저 수정 - JPA => seq가 아닌 id로 찾기로 변경해야함
+    @Transactional
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody User updatedUser) {
+        User user = userService.updateUser(userId, updatedUser);
+        if (user != null) {
+            return ResponseEntity.ok(user);
         }
         return ResponseEntity.notFound().build();
-//        return ResponseEntity.ok(customer);
+//        return ResponseEntity.ok(user);
     }
 
-    // 유저 삭제 - JPA
-    @DeleteMapping("/delete/{seq}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable int seq) {
-        customerService.deleteCustomer(seq);
-        return ResponseEntity.ok("Customer deleted");
+    // 유저 삭제 - JPA, userId로 찾기
+    @Transactional
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.ok("User deleted");
 //        return ResponseEntity.noContent().build();
     }
 
     // 로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인
 
-    // 유저 로그인 - MyBatis
+    // 유저 로그인 - Access Token, Refresh Token 생성, Refresh Token을 DB에 저장 - MyBatis
     @ApiOperation(value = "로그인", notes = "아이디와 비밀번호를 이용하여 로그인 처리.")
-    @PostMapping("/login")
+    @PostMapping("/regist")
     public ResponseEntity<Map<String, Object>> login(
-            @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) Customer customer) {
-        log.debug("login user : {}", customer);
+            @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) User user) {
+        log.debug("login user : {}", user);
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            Customer loginUser = customerService.login(customer);
+            User loginUser = userService.login(user);
             if (loginUser != null) {
-                String accessToken = jwtUtil.createAccessToken(loginUser.getId());
-                String refreshToken = jwtUtil.createRefreshToken(loginUser.getId());
+                String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
+                String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
                 log.debug("access token : {}", accessToken);
                 log.debug("refresh token : {}", refreshToken);
 
 //				발급받은 refresh token을 DB에 저장.
-                customerService.saveRefreshToken(loginUser.getId(), refreshToken);
+                userService.saveRefreshToken(loginUser.getUserId(), refreshToken);
 
 //				JSON으로 token 전달.
                 resultMap.put("access-token", accessToken);
@@ -115,11 +118,11 @@ public class CustomerController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    // 유저 회원인증 - 아마 권한 확인용? - MyBatis
+    // 유저 회원인증 - MyBatis
     @ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
-    @GetMapping("/info/{id}")
+    @GetMapping("/info/{userId}")
     public ResponseEntity<Map<String, Object>> getInfo(
-            @PathVariable("id") @ApiParam(value = "인증할 회원의 아이디.", required = true) String id,
+            @PathVariable("userId") @ApiParam(value = "인증할 회원의 아이디.", required = true) String userId,
             HttpServletRequest request) {
 //		logger.debug("userId : {} ", userId);
         Map<String, Object> resultMap = new HashMap<>();
@@ -128,8 +131,8 @@ public class CustomerController {
             log.info("사용 가능한 토큰!!!");
             try {
 //				로그인 사용자 정보.
-                Customer customer = customerService.findMemberById(id);
-                resultMap.put("userInfo", customer);
+                User user = userService.findMemberByUserId(userId);
+                resultMap.put("userInfo", user);
                 status = HttpStatus.OK;
             } catch (Exception e) {
                 log.error("정보조회 실패 : {}", e);
@@ -143,15 +146,15 @@ public class CustomerController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
-    // 유저 로그아웃 - MyBatis
+    // 유저 로그아웃 - Refresh Token 삭제 - MyBatis
     @ApiOperation(value = "로그아웃", notes = "회원 정보를 담은 Token을 제거한다.", response = Map.class)
-    @GetMapping("/logout/{id}")
+    @GetMapping("/logout/{userId}")
     public ResponseEntity<?> removeToken(
-            @PathVariable("id") @ApiParam(value = "로그아웃할 회원의 아이디.", required = true) String id) {
+            @PathVariable("userId") @ApiParam(value = "로그아웃할 회원의 아이디.", required = true) String userId) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            customerService.deleRefreshToken(id);
+            userService.deleteRefreshToken(userId);
             status = HttpStatus.OK;
         } catch (Exception e) {
             log.error("로그아웃 실패 : {}", e);
@@ -162,18 +165,18 @@ public class CustomerController {
 
     }
 
-    // 유저 Refresh Token 재발급 - 딱히 필요 없을 듯? - MyBatis
+    // 유저 Token 재발급 - MyBatis
     @ApiOperation(value = "Access Token 재발급", notes = "만료된 access token을 재발급받는다.", response = Map.class)
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody Customer customer, HttpServletRequest request)
+    public ResponseEntity<?> refreshToken(@RequestBody User user, HttpServletRequest request)
             throws Exception {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         String token = request.getHeader("refreshToken");
-        log.debug("token : {}, customer : {}", token, customer);
+        log.debug("token : {}, user : {}", token, user);
         if (jwtUtil.checkToken(token)) {
-            if (token.equals(customerService.getRefreshToken(customer.getId()))) {
-                String accessToken = jwtUtil.createAccessToken(customer.getId());
+            if (token.equals(userService.getRefreshToken(user.getUserId()))) {
+                String accessToken = jwtUtil.createAccessToken(user.getUserId());
                 log.debug("token : {}", accessToken);
                 log.debug("정상적으로 액세스토큰 재발급!!!");
                 resultMap.put("access-token", accessToken);
@@ -188,16 +191,16 @@ public class CustomerController {
 
     // 유저 아이디 중복확인 - MyBatis
     @ApiOperation(value = "아이디 중복확인", notes = "아이디가 중복되는지 확인합니다.", response = Map.class)
-    @GetMapping("/join/idcheck/{id}")
+    @GetMapping("/join/idcheck/{userId}")
     public ResponseEntity<?> idDuplicateCheck(
-            @PathVariable("id") @ApiParam(value = "중복되는지 확인하기 위한 아이디", required = true) String id) {
-        log.debug("login userId : {}", id);
+            @PathVariable("userId") @ApiParam(value = "중복되는지 확인하기 위한 아이디", required = true) String userId) {
+        log.debug("login userId : {}", userId);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            Customer customer = customerService.findMemberById(id);
-            if (customer != null) {
-                resultMap.put("userInfo", customer);
+            User user = userService.findMemberByUserId(userId);
+            if (user != null) {
+                resultMap.put("userInfo", user);
                 status = HttpStatus.OK;
             }
 
@@ -214,12 +217,12 @@ public class CustomerController {
     // 유저 회원가입 = createCustomer + 조건, 예외처리 추가 - MyBatis
     @ApiOperation(value = "회원확인", notes = "유저를 DB에 저장", response = Map.class)
     @PostMapping("/join")
-    public ResponseEntity<?> saveMember(@RequestBody Customer customer) throws Exception {
-        log.debug("login user :{}" , customer);
+    public ResponseEntity<?> saveMember(@RequestBody User user) throws Exception {
+        log.debug("login user :{}" , user);
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            int cnt = customerService.saveMember(customer);
+            int cnt = userService.saveMember(user);
             if (cnt != 0) {
                 status = HttpStatus.CREATED;
             } else {
@@ -238,12 +241,12 @@ public class CustomerController {
     // 유저 수정 = updateCustomer + 조건, 예외처리 추가 - MyBatis
     @ApiOperation(value = "회원 정보 수정", notes = "DB에 저장되어있는 유저 정보를 수정", response = Map.class)
     @PutMapping("/modify")
-    public ResponseEntity<?> modifyMember(@RequestBody Customer customer) throws Exception {
-        log.debug("login user :{}" , customer);
+    public ResponseEntity<?> modifyMember(@RequestBody User user) throws Exception {
+        log.debug("login user :{}" , user);
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            int cnt = customerService.modifyMember(customer);
+            int cnt = userService.modifyMember(user);
             if (cnt != 0) {
                 status = HttpStatus.CREATED;
             } else {
@@ -261,13 +264,13 @@ public class CustomerController {
 
     // 유저 삭제 = deleteCustomer + 조건, 예외처리 추가 - MyBatis
     @ApiOperation(value = "회원 정보 삭제", notes = "DB에 저장되어있는 유저 정보를 삭제", response = Map.class)
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMember(@PathVariable("id") String id ) {
-        log.debug("user id :{}", id);
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteMember(@PathVariable("userId") String userId ) {
+        log.debug("user id :{}", userId);
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.ACCEPTED;
         try {
-            int cnt = customerService.deleteMember(id);
+            int cnt = userService.deleteMember(userId);
             if (cnt != 0)
                 status = HttpStatus.OK;
             else {
