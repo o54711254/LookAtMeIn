@@ -74,10 +74,10 @@ function HospitalRegistForm() {
       confirmPassword: "",
       name: "", // 병원명
       address: "",
-      url: "",
+      url: "", //병원 홈페이지 주소
       email: "",
-      phoneNumber: "",
-      hashtag: "",
+      phoneNumber: "", //병원 전화번호
+      hashtag: "", // 병원 전문 분야
       info: "", // 병원 소개 멘트
       open: "", // 오픈 시간
       close: "", // 닫는 시간

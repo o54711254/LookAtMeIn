@@ -28,7 +28,7 @@ function LoginForm() {
 
   //멤버 타입(고객,병원 ,,,)이 라디오 타입으로 바꾸면 어떤 멤번지 바꿔주는 함수
   const handleChange = (e) => {
-    const value = parseInt(e.target.value, 10);
+    const value = e.target.value;
     console.log(`선택한 값 : ${value}`);
     setMembertype(value);
   };
@@ -42,7 +42,7 @@ function LoginForm() {
 
     onSubmit: async (values) => {
       console.log(values);
-      if (membertype === 1) {
+      if (membertype === "customer") {
         //customer
         try {
           await axiosApi.post("/api/customer/login", values).then((res) => {
@@ -85,11 +85,11 @@ function LoginForm() {
             }
           });
         } catch {}
-      } else if (membertype === 2) {
+      } else if (membertype === "hospital") {
         //hospital
         try {
           await axiosApi
-            .post("/hospital/login", values, {
+            .post("/api/customer/login", values, {
               //values에는 이메일과 비밀번호가 담겨 있음
               withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
             })
@@ -134,11 +134,11 @@ function LoginForm() {
               }
             });
         } catch {}
-      } else if (membertype === 3) {
+      } else if (membertype === "coordinator") {
         //coordinator
         try {
           await axiosApi
-            .post("/codinator/login", values, {
+            .post("/api/customer/login", values, {
               //values에는 이메일과 비밀번호가 담겨 있음
               withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
             })
@@ -182,11 +182,11 @@ function LoginForm() {
               }
             });
         } catch {}
-      } else if (membertype === 0) {
+      } else if (membertype === "admin") {
         //admin
         try {
           await axiosApi
-            .post("/admin/login", values, {
+            .post("/api/customer/login", values, {
               //values에는 이메일과 비밀번호가 담겨 있음
               withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
             })
@@ -275,7 +275,8 @@ function LoginForm() {
           <div className="radioButton">
             <input
               id="admin"
-              value={0}
+              value="admin"
+              name="membertype"
               type="radio"
               onChange={handleChange}
             ></input>
@@ -284,8 +285,9 @@ function LoginForm() {
           <div className="radioButton">
             <input
               id="customer"
-              value={1}
+              value="customer"
               type="radio"
+              name="membertype"
               onChange={handleChange}
             ></input>
             <label htmlFor="customer">고객</label>
@@ -293,7 +295,8 @@ function LoginForm() {
           <div className="radioButton">
             <input
               id="hospital"
-              value={2}
+              value="hospital"
+              name="membertype"
               type="radio"
               onChange={handleChange}
             ></input>
@@ -302,7 +305,8 @@ function LoginForm() {
           <div className="radioButton">
             <input
               id="coordinator"
-              value={3}
+              value="coordinator"
+              name="membertype"
               type="radio"
               onChange={handleChange}
             ></input>
@@ -342,9 +346,8 @@ function LoginForm() {
         </div>
         <button type="submit">로그인</button>
         <div>
-          <Link to="/UserRegist">고객 회원가입 </Link> |
-          <Link to="/HospitalRegist">병원 회원가입 </Link> |
-          {/* <Link to="/FindPassword"> 비밀번호 찾기</Link> */}
+          <Link to="/regist">회원가입</Link>
+          <Link to="/findPassword"> 비밀번호 찾기</Link>
         </div>
       </form>
     </div>
