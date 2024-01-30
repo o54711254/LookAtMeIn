@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableAspectJAutoProxy
-@MapperScan(basePackages = {"com.ssafy.lam.user.model.mapper"})
+
 @ComponentScan(basePackages = { "com.ssafy.lam" })
 public class AppConfig implements WebMvcConfigurer {
 
