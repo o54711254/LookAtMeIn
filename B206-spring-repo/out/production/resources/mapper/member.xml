@@ -3,47 +3,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper
-        namespace="com.ssafy.lam.customer.model.mapper.CustomerMapper">
+        namespace="com.ssafy.lam.user.model.mapper.UserMapper">
 
-<!--    <resultMap type="MemberDto" id="member">-->
-<!--        <result column="user_id" property="userId" />-->
-<!--        <result column="username" property="userName" />-->
-<!--        <result column="user_password" property="userPwd" />-->
-<!--        <result column="join_date" property="joinDate" />-->
-<!--        <result column="address" property="address" />-->
-<!--        <result column="tel" property="tel" />-->
-<!--        <result column="token" property="refreshToken" />-->
-<!--        <result column="admin" property="admin" />-->
-<!--    </resultMap>-->
-<!--    <resultMap type="MemberDto" id="member">-->
-<!--        <result column="seq" property="seq" />-->
-<!--        <result column="id" property="id" />-->
-<!--        <result column="password" property="password" />-->
-<!--        <result column="token" property="token" />-->
-<!--    </resultMap>-->
-
-    <resultMap type="Customer" id="customer">
-        <result column="seq" property="seq" />
-        <result column="id" property="id" />
-        <result column="password" property="password" />
+    <resultMap type="User" id="user">
+        <result column="member_seq" property="seq" />
+        <result column="member_id" property="userId" />
+        <result column="member_pw" property="password" />
         <result column="token" property="token" />
     </resultMap>
 
-<!--    <select id="login" parameterType="MemberDto" resultMap="member">-->
-<!--        select user_id,-->
-<!--               username, token, admin-->
-<!--        from member-->
-<!--        where user_id=#{userId} and-->
-<!--            user_password=#{userPwd}-->
-<!--    </select>-->
-
-<!--    <select id="login" parameterType="MemberDto" resultMap="member">-->
-    <select id="login" parameterType="Customer" resultMap="customer">
-        select seq, id, password, token
-        from customer
-        where id=#{id} and password=#{password}
+    <select id="login" parameterType="User" resultMap="user">
+        select member_seq, member_id, member_pw, token
+        from user
+        where member_id=#{userId} and member_pw=#{password}
     </select>
 
+<<<<<<< HEAD:B206-spring-repo/out/production/resources/mapper/member.xml
 <!--    <select id="findMemberById" parameterType="string" resultMap="member">-->
 <!--        select username, user_id, join_date, address, tel, admin-->
 <!--        from member-->
@@ -58,75 +33,52 @@
 >>>>>>> dev-spring-hayoon
         from customer
         where id = #{id}
+=======
+    <select id="findMemberByUserId" parameterType="string" resultMap="user">
+        select member_seq, member_id
+        from user
+        where member_id = #{userId}
+>>>>>>> dev-spring-hayoon:B206-spring-repo/src/main/resources/mapper/member.xml
     </select>
-
-<!--    <update id="saveRefreshToken" parameterType="map">-->
-<!--        update member-->
-<!--        set token = #{token}-->
-<!--        where user_id = #{userId}-->
-<!--    </update>-->
 
     <update id="saveRefreshToken" parameterType="map">
-        update customer
+        update user
         set token = #{token}
-        where id = #{id}
+        where member_id = #{userId}
     </update>
 
+<<<<<<< HEAD:B206-spring-repo/out/production/resources/mapper/member.xml
 
 
+=======
+>>>>>>> dev-spring-hayoon:B206-spring-repo/src/main/resources/mapper/member.xml
     <select id="getRefreshToken" parameterType="string" resultType="string">
         select token
-        from customer
-        where id = #{id}
+        from user
+        where member_id = #{userId}
     </select>
 
-
-
-
-<!--    <update id="deleteRefreshToken" parameterType="map">-->
-<!--        update member-->
-<!--        set token = #{token, jdbcType=VARCHAR}-->
-<!--        where user_id = #{userId}-->
-<!--    </update>-->
-
     <update id="deleteRefreshToken" parameterType="map">
-        update customer
+        update user
         set token = #{token, jdbcType=VARCHAR}
-        where id = #{id}
+        where member_id = #{userId}
     </update>
 
-<!--    <insert id="saveMember" parameterType="MemberDto">-->
-<!--        insert member(user_id, username, user_password, address, tel)-->
-<!--		values (#{userId},#{userName},#{userPwd},#{address},#{tel})-->
-<!--    </insert>-->
-
-    <insert id="saveMember" parameterType="customer">
-        insert customer(seq, id, password, token)
-		values (#{seq},#{id},#{password},#{token})
+    <insert id="saveMember" parameterType="user">
+        insert user(seq, userId, password, token)
+		values (#{seq},#{userId},#{password},#{token})
     </insert>
 
-<!--    <update id="modifyMember" parameterType="MemberDto">-->
-<!--        update member-->
-<!--        SET user_password=#{userPwd},address=#{address}, tel=#{tel}-->
-<!--        where user_id= #{userId};-->
-<!--    </update>-->
-
-    <update id="modifyMember" parameterType="Customer">
-        update customer
-        SET password=#{password}
-        where id= #{id};
+    <update id="modifyMember" parameterType="User">
+        update user
+        SET member_pw=#{password}
+        where member_id= #{userId};
     </update>
 
-<!--    <delete id="deleteMember" parameterType="string">-->
-<!--        delete from member-->
-<!--        where user_id = #{userId};-->
-<!--    </delete>-->
-
     <delete id="deleteMember" parameterType="string">
-        delete from customer
-        where id = #{id};
+        delete from user
+        where member_id = #{userId};
     </delete>
-
 
 
 </mapper>

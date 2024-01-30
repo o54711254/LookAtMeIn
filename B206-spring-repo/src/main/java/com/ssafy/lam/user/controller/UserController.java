@@ -17,7 +17,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
-
 public class UserController {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);
