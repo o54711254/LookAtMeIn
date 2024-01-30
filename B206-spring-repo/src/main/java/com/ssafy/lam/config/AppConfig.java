@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableAspectJAutoProxy
-@MapperScan(basePackages = { "com.ssafy.lam.customer.model.mapper" })
+@MapperScan(basePackages = {"com.ssafy.lam.user.model.mapper"})
 public class AppConfig implements WebMvcConfigurer {
 
     private final Logger logger = LoggerFactory.getLogger(AppConfig.class);
