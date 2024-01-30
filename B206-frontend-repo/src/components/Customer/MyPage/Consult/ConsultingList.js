@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import axiosAPi from "../../../api/axiosApi";
+import axiosAPi from "../../../../api/axiosApi";
 
-function MyPostList() {
+function ConsultingList() {
   const [postList, setPostList] = useState([]);
   useEffect(() => {
     axiosAPi
@@ -25,9 +25,9 @@ function MyPostList() {
           })}
         </ul>
       ) : (
-        <div>작성한 글 목록이 비어있습니다.</div>
+        <div>상담내역이 없습니다.</div>
       )}
     </div>
   );
 }
-export default MyPostList;
+export default ConsultingList;
