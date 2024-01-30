@@ -1,6 +1,5 @@
 package com.ssafy.lam.config;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableAspectJAutoProxy
-@MapperScan(basePackages = {"com.ssafy.lam.user.model.mapper"})
 @ComponentScan(basePackages = { "com.ssafy.lam" })
 public class AppConfig implements WebMvcConfigurer {
 
