@@ -8,12 +8,12 @@
             <!-- 필수 속성 -->
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/lam"/>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/lam"/>
 
             <property name="jakarta.persistence.jdbc.user" value="ssafy"/>
             <property name="jakarta.persistence.jdbc.password" value="ssafy"/>
 
 <!--            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/member"/>-->
-
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
 
             <!-- 옵션 -->
