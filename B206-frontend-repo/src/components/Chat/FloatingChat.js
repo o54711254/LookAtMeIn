@@ -10,6 +10,12 @@ function FloatingChat() {
   const [chatRooms, setChatRooms] = useState([]); // 채팅방 목록 상태
   const user = useSelector((store) => store.user.userName);
 
+  const fakeChatRooms = [
+    { id: 1, name: "채팅방 1" },
+    { id: 2, name: "채팅방 2" },
+    // ... 기타 채팅방
+  ];
+
   const handleToggleChat = () => {
     setOpen(!open);
     if (!open) {
@@ -18,13 +24,17 @@ function FloatingChat() {
   };
 
   const fetchChatRooms = async () => {
-    try {
-      const res = await axiosApi.get(`/chat/rooms/${user}`);
-      setChatRooms(res.data);
-    } catch (error) {
-      console.log("채팅방 목록을 가져오는데 실패했습니다.", error);
-    }
+    setChatRooms(fakeChatRooms);
   };
+
+  // const fetchChatRooms = async () => {
+  //   try {
+  //     const res = await axiosApi.get(`/chat/rooms/${user}`);
+  //     setChatRooms(res.data);
+  //   } catch (error) {
+  //     console.log("채팅방 목록을 가져오는데 실패했습니다.", error);
+  //   }
+  // };
 
   return (
     <Draggable>

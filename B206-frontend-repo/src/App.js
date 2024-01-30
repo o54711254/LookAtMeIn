@@ -16,8 +16,7 @@ import SearchInput from "./components/Search/SearchInput";
 import ChatApp from "./components/Chat/ChatApp";
 // import Nav from "./components/Nav"
 
-import './styles/globals.css'
-
+import "./styles/globals.css";
 
 function App() {
   return (
