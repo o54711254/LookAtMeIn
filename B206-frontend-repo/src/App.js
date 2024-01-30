@@ -54,6 +54,7 @@ function App() {
           {/* meeting */}
           {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
           {/* <Route path="/search/:query" element={<SearchList />} /> */}
+          <Route path="/chat-app/*" element={<ChatApp />} />
         </Routes>
       </BrowserRouter>
       <FloatingChat />
