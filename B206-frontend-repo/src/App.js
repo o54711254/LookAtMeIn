@@ -2,9 +2,9 @@ import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import MyPage from "./components/Customer/MyPage/MyPage";
 import FloatingChat from "./components/Chat/FloatingChat";
 import LoginForm from "./components/Sign/LoginForm";
+import Regist from "./components/Sign/Regist";
 import UserRegistForm from "./components/Sign/UserRegistForm";
 import HospitalRegistForm from "./components/Sign/HospitalRegistForm";
-import Regist from "./components/Sign/Regist";
 import Coordinatormypage from "./components/Coordinator/MyPage/CoordinatorMyPage";
 import HospitalMyPage from "./components/Hospital/MyPage/HospitalMyPage";
 import AdminMyPage from "./components/Admin/MyPage/AdminMyPage";
@@ -19,6 +19,7 @@ import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry"
 
 import './styles/globals.css'
 
+import FindPassword from "./components/Sign/FindPassword";
 
 function App() {
   return (
@@ -34,9 +35,14 @@ function App() {
         <Routes>
           {/*Sign*/}
           <Route path="/login" element={<LoginForm />} />
-          {/* <Route path="/regist" element={<Regist />} /> */}
-          <Route path="/UserRegist" element={<UserRegistForm />} />
-          <Route path="/HospitalRegist" element={<HospitalRegistForm />} />
+          <Route path="/regist" element={<Regist />} />
+          <Route path="/regist/UserRegist" element={<UserRegistForm />} />
+          <Route
+            path="/regist/HospitalRegist"
+            element={<HospitalRegistForm />}
+          />
+          <Route path="/findPassword" element={<FindPassword />} />
+
           {/*Customer
           마이페이지 내부에서 라우트 하면 될듯
           */}
