@@ -68,8 +68,8 @@ public class SecurityConfig {
 
             .authorizeHttpRequests(authorize->
                 authorize
-                        .requestMatchers("/api/customer/regist").permitAll() // 회원가입 전에는 허용
-                        .requestMatchers("/api/customer/login").permitAll() // 로그인 전에는 허용
+                        .requestMatchers("/api/user/regist").permitAll() // 회원가입 전에는 허용
+                        .requestMatchers("/api/user/login").permitAll() // 로그인 전에는 허용
                         .requestMatchers("/**").permitAll()
                         .anyRequest()
                         .authenticated()
