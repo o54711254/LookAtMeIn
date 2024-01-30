@@ -2,20 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import axiosApi from '../../api/axiosApi';
 import { useSelector } from "react-redux";
-import StarInput from './StarRating/StarInput';
+import StarRating from './StarRating/StarRating';
 
 function ReviewBoardForm({ onReviewAdded, consultingSeq }) {
 
-    const userSeq = useSelector((store) => store.user.userSeq);
-    const [consulting, setConsulting] = useState([]);
+    // const userSeq = useSelector((store) => store.user.userSeq);
+    // const [consulting, setConsulting] = useState([]);
 
-    useEffect(() => {
-        axiosApi
-        .get(`/api/customer/${userSeq}/consulting/list/${consultingSeq}`)
-        .then((res) => {
-          setConsulting(res.data.responseObj);
-        });
-    }, []);
+    // useEffect(() => {
+    //     axiosApi
+    //     .get(`/api/customer/${userSeq}/consulting/list/${consultingSeq}`)
+    //     .then((res) => {
+    //       setConsulting(res.data.responseObj);
+    //     });
+    // }, []);
 
   // 지역, 의사, 병원 추가 필요 & reviewBoard 에서 가격 표시하려면 dto 추가 필요  
   const [reviewData, setReviewData] = useState({
@@ -25,7 +25,7 @@ function ReviewBoardForm({ onReviewAdded, consultingSeq }) {
     customer_id: '',
     reviewBoard_doctor: '',
     reviewBoard_region: '',
-    reviewBoard_surgery: consulting.part,
+    // reviewBoard_surgery: consulting.part,
     reviewBoard_hospital: '',
   });
   
@@ -65,7 +65,7 @@ function ReviewBoardForm({ onReviewAdded, consultingSeq }) {
         <div>
         <label htmlFor="reviewBoard_score">별점:</label>
           {/* 별점 입력 컴포넌트를 렌더링합니다. */}
-          <StarInput value={reviewData.reviewBoard_score} onChange={handleRatingChange} />
+          <StarRating value={reviewData.reviewBoard_score} onChange={handleRatingChange} />
         </div>
         <button type="submit">등록</button>
       </form>

@@ -16,6 +16,7 @@ import SearchInput from "./components/Search/SearchInput";
 import ChatApp from "./components/Chat/ChatApp";
 // import Nav from "./components/Nav"
 import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry"
+import ReviewRegist from "./components/ReviewBoard/ReviewList"
 
 import './styles/globals.css'
 
@@ -65,6 +66,7 @@ function App() {
           {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
           {/* <Route path="/search/:query" element={<SearchList />} /> */}
           <Route path="/face" element={<FacialAsy />} />
+          <Route path="/reviewregist" element={<ReviewRegist />} />
           </Routes>
       </BrowserRouter>
       <FloatingChat />
