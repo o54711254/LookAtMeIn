@@ -11,11 +11,14 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -59,11 +62,21 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public TokenInfo getLoginToken(Customer customer) {
-        return null;
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(customer.getUserId(), customer.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+
+        return tokenInfo;
     }
 
     @Override
     public Customer findByCustomerId(String customerId) {
-        return null;
+        return customerRepository.findByUserId(customerId).orElse(null);
     }
+
+//    @Override
+//    public String getUserType(Customer customer) {
+//        return customerRepository.findUserType(customer);
+//    }
 }

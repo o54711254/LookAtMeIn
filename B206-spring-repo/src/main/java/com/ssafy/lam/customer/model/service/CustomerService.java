@@ -4,6 +4,8 @@ import com.ssafy.lam.entity.Customer;
 import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.entity.User;
 
+import java.util.Optional;
+
 public interface CustomerService {
     Customer getCustomer(long seq);
     Customer createCustomer(Customer customer);
@@ -13,4 +15,6 @@ public interface CustomerService {
     TokenInfo getLoginToken(Customer customer);
 
     Customer findByCustomerId(String customerId);
+
+//    String getUserType(Customer customer);
 }

@@ -21,25 +21,17 @@ import java.util.List;
 public class CustomerLoginTest {
     @Autowired
     private CustomerController customerController;
-    private User customer;
 
-    @BeforeEach
-    void beforeEacrh(){
-        customer = User.builder()
-                .seq(2L)
-                .userId("test")
-                .password("test")
-                .build();
-
+//
+    @Test
+    @DisplayName("회원가입 테스트")
+    @Transactional
+    public void registTest(){
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_CUSTOMER");
+        Customer customer = new Customer(2L,"test", "test", roles);
+        ResponseEntity<Void> responseEntity = customerController.createCustomer(customer);
+        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
     }
-//
-//    @Test
-//    @DisplayName("회원가입 테스트")
-//    @Transactional
-//    public void registTest(){
-//        ResponseEntity<Void> responsEntity = customerController.createCustomer(customer);
-//        Assertions.assertThat(responsEntity.getStatusCodeValue()).isEqualTo(200);
-//
-//    }
 
 }

@@ -21,7 +21,7 @@ import java.util.List;
 public class CustomerServiceTest {
 
 
-//    private final CustomerRepository customerRepository;
+    //    private final CustomerRepository customerRepository;
 //    protected final AuthenticationManagerBuilder authenticationManagerBuilder;
 //    protected final JwtTokenProvider jwtTokenProvider;
     @Autowired
@@ -39,6 +39,7 @@ public class CustomerServiceTest {
         Customer customer1 = customerService.createCustomer(customer);
         Assertions.assertThat(customer1.getSeq()).isEqualTo(customer.getSeq());
 
+//        Assertions.assertThat(customer1).isEqualTo(customer);
     }
 
 
