@@ -57,7 +57,7 @@ public class UserLoginTest {
     public void loginTest() throws Exception{
         
         userService.createUser(user);
-        TokenInfo tokenInfo = userService.login(user);
+        TokenInfo tokenInfo = userService.getLoginToken(user);
         System.out.println("tokenInfo = " + tokenInfo);
 
         HttpHeaders headers = new HttpHeaders();
