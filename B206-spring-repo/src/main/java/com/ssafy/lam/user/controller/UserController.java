@@ -1,8 +1,8 @@
 package com.ssafy.lam.user.controller;
 
 import com.ssafy.lam.user.model.service.UserService;
-import com.ssafy.lam.dto.User;
-import com.ssafy.lam.dto.TokenInfo;
+import com.ssafy.lam.entity.User;
+import com.ssafy.lam.entity.TokenInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

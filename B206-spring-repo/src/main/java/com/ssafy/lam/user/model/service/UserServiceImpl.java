@@ -1,12 +1,10 @@
 package com.ssafy.lam.user.model.service;
-import com.ssafy.lam.dto.User;
+import com.ssafy.lam.entity.User;
 import com.ssafy.lam.user.model.repository.UserRepository;
-import com.ssafy.lam.dto.TokenInfo;
+import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.util.JwtTokenProvider;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
