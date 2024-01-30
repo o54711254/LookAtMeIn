@@ -89,6 +89,7 @@ public class CustomerController {
     @Operation(summary = "로그인", description = "아이디와 비밀번호를 이용하여 로그인 처리.")
     public ResponseEntity<Map<String, Object>> login(
             @RequestBody @ApiParam(value = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) Customer customer) {
+        System.out.println("controller");
         log.debug("login user : {}", customer);
         Map<String, Object> resultMap = new HashMap<String, Object>();
         HttpStatus status = HttpStatus.ACCEPTED;
@@ -109,15 +110,18 @@ public class CustomerController {
 
                 status = HttpStatus.CREATED;
             } else {
+                System.out.println("password");
                 resultMap.put("message", "아이디 또는 패스워드를 확인해주세요.");
                 status = HttpStatus.UNAUTHORIZED;
             }
 
         } catch (Exception e) {
+            System.out.println("error");
             log.debug("로그인 에러 발생 : {}", e);
             resultMap.put("message", e.getMessage());
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        System.out.println(status);
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 

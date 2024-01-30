@@ -98,6 +98,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer login(Customer customer) throws Exception {
+        System.out.println("service");
         return customerMapper.login(customer);
     }
 

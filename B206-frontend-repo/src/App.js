@@ -14,10 +14,15 @@ import SearchList from "./components/Search/SearchList";
 // import VideoRoom from "./components/OpenVidu/VideoRoom";
 import SearchInput from "./components/Search/SearchInput";
 import ChatApp from "./components/Chat/ChatApp";
+// import Nav from "./components/Nav"
+
+import './styles/globals.css'
+
 
 function App() {
   return (
     <div>
+      {/* <Nav/> */}
       <BrowserRouter>
         <Link to={"/mypage"}>마이페이지</Link>
 

@@ -1,132 +1,89 @@
-import React, { useRef, useState, useEffect } from "react";
+// ChatApp.js
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import * as StompJs from "@stomp/stompjs";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
+import { Stomp } from "@stomp/stompjs";
 
 function ChatApp() {
-  const [chatList, setChatList] = useState([]);
-  const [chat, setChat] = useState("");
-  const { apply_id } = useParams();
-  const [userId, setUserId] = useState("현재 사용자 ID"); // 사용자 ID 설정
-  const client = useSelector((store) => store.user.userName);
+  const { roomId } = useParams(); // URL에서 채팅방 ID 추출
+  const [messages, setMessages] = useState([]); // 채팅 메시지 상태
+  const [message, setMessage] = useState(""); // 메시지 입력 상태
+  const stompClient = useRef(null); // STOMP 클라이언트 참조
+  const currentUser = useSelector((state) => state.user); // 현재 로그인한 사용자 정보
 
-  // 채팅 내용을 서버에서 불러오는 함수
-  const fetchChat = async () => {
-    axiosApi
-      .get(`/rooms/chat`) // 실제 URL로 변경 필요
-      .then((res) => {
-        setChatList(res.data);
-      })
-      .catch((error) => {
-        console.error("채팅 내용을 불러오는 중 에러가 발생했습니다.", error);
-      });
-  };
+  useEffect(() => {
+    connect(); // 웹소켓 연결
+    fetchMessages(); // 기존 메시지 가져오기
 
-  // 메시지 입력 시 호출되는 함수
-  const handleChange = (event) => {
-    setChat(event.target.value);
-  };
+    return () => disconnect(); // 컴포넌트 언마운트 시 연결 해제
+  }, [roomId]);
 
-  // 메시지 전송 시 호출되는 함수
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    publish(chat);
-  };
-
-  // WebSocket 연결 설정 함수
   const connect = () => {
-    client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:80/ws", // 실제 WebSocket 서버 URL로 변경 필요
-      onConnect: () => {
-        console.log("WebSocket 연결 성공");
-        subscribe();
-      },
-      onStompError: (error) => {
-        console.error("WebSocket 연결 오류", error);
-      },
-    });
-    client.current.activate();
-  };
-
-  // 메시지 구독 설정 함수
-  const subscribe = () => {
-    client.current.subscribe("/sub/chat/" + apply_id, (message) => {
-      const json_message = JSON.parse(message.body);
-      setChatList((prevList) => [...prevList, json_message]);
+    const socket = new WebSocket("ws://localhost:80/ws");
+    stompClient.current = Stomp.over(socket);
+    stompClient.current.connect({}, () => {
+      stompClient.current.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+        const newMessage = JSON.parse(message.body);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
     });
   };
 
-  // 메시지 전송 함수
-  const publish = (chat) => {
-    if (!client.current.connected) return;
-
-    client.current.publish({
-      destination: "/pub/chat",
-      body: JSON.stringify({ applyId: apply_id, senderId: userId, text: chat }),
-    });
-
-    setChat("");
-  };
-
-  // 연결 해제 함수
   const disconnect = () => {
-    if (client.current.connected) {
-      client.current.deactivate();
+    if (stompClient.current) {
+      stompClient.current.disconnect();
     }
   };
 
-  // 채팅 메시지 UI 렌더링 함수
-  const renderChatMessages = () => {
-    return chatList.map((message, index) => (
-      <div
-        key={index}
-        style={{ textAlign: message.senderId === userId ? "right" : "left" }}
-      >
-        <div
-          style={{
-            display: "inline-block",
-            margin: "5px",
-            padding: "10px",
-            backgroundColor: "#f0f0f0",
-            borderRadius: "10px",
-          }}
-        >
-          {message.text}
-        </div>
-      </div>
-    ));
+  const fetchMessages = () => {
+    axiosApi
+      .get(`/chat/messages/${roomId}`)
+      .then((response) => setMessages(response.data))
+      .catch((error) =>
+        console.error("채팅 메시지를 가져오는데 실패했습니다.", error)
+      );
   };
 
-  useEffect(() => {
-    fetchChat();
-    connect();
-
-    return () => disconnect();
-  }, []);
+  const sendMessage = () => {
+    if (stompClient.current && message) {
+      const messageObj = {
+        roomId,
+        sender: currentUser.userName,
+        message: message,
+      };
+      stompClient.current.send(
+        `/pub/chat/message`,
+        {},
+        JSON.stringify(messageObj)
+      );
+      setMessage(""); // 상태를 이용한 입력 필드 초기화
+    }
+  };
 
   return (
     <div>
-      <div
-        style={{
-          overflow: "auto",
-          height: "400px",
-          border: "1px solid #ccc",
-          padding: "10px",
-          marginBottom: "10px",
-        }}
-      >
-        {renderChatMessages()}
+      <div>
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            style={{
+              textAlign: msg.sender === currentUser.userName ? "right" : "left",
+            }}
+          >
+            {msg.sender !== currentUser.userName && <p>{msg.sender}</p>}
+            <p>{msg.message}</p>
+          </div>
+        ))}
       </div>
-      <form onSubmit={handleSubmit}>
+      <div>
         <input
           type="text"
-          value={chat}
-          onChange={handleChange}
-          style={{ width: "80%", marginRight: "10px" }}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit">보내기</button>
-      </form>
+        <button onClick={sendMessage}>보내기</button>
+      </div>
     </div>
   );
 }
