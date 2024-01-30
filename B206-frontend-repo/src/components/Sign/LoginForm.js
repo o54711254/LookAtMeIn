@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
 import { toast, ToastContainer } from "react-toastify";
-import axiosApi from "axios";
+import axiosApi from "../../api/axiosApi.js";
 import loginUser from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -24,7 +24,7 @@ function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [membertype, setMembertype] = useState(-1);
+  const [membertype, setMembertype] = useState("");
 
   //멤버 타입(고객,병원 ,,,)이 라디오 타입으로 바꾸면 어떤 멤번지 바꿔주는 함수
   const handleChange = (e) => {
@@ -41,55 +41,49 @@ function LoginForm() {
     validationSchema: validationSchema,
 
     onSubmit: async (values) => {
-      //하나로 합칠거면 .post("./login")하고 navigate만 고치기
-      if (values.id === "ssafy") {
-        console.log("asdf asdf");
-        //cutomer
+      console.log(values);
+      if (membertype === "customer") {
+        //customer
         try {
-          await axiosApi
-            .post("/api/customer/login", values, {
-              //values에는 id와 비밀번호가 담겨 있음
-            })
-            .then((res) => {
-              //res는 서버에서 받은 응답 객체
-              if (res.status === 201) {
-                console.log("222222");
-                //로그인 성공
-                console.log(res.data);
-                dispatch(
-                  loginUser({
-                    userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
-                    userId: res.data.responseObj.userId, // 사용자 아이디
-                    userName: res.data.responseObj.userName, // 사용자 이름
-                    userPw: res.data.responseObj.userPw, // 사용자 비밀번호
-                    // role: res.data.responseObj.usertype, // 역할 업데이트
-                  })
-                );
+          await axiosApi.post("/api/customer/login", values).then((res) => {
+            //res는 서버에서 받은 응답 객체
+            if (res.status === 201) {
+              alert("로그인 성공!");
+              //로그인 성공
+              dispatch(
+                loginUser({
+                  userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
+                  userId: res.data.responseObj.userId, // 사용자 아이디
+                  userName: res.data.responseObj.userName, // 사용자 이름
+                  userPw: res.data.responseObj.userPw, // 사용자 비밀번호
+                  // role: res.data.responseObj.usertype, // 역할 업데이트
+                })
+              );
 
-                //토큰 받아오기
-                //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-                const accessToken = res.headers.get("authorization");
-                dispatch(setToken({ accessToken: accessToken }));
-                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                //   position: toast.POSITION.TOP_CENTER,
-                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                //   autoClose: 2000,
-                // });
-                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
-                // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
-                setTimeout(() => {
-                  navigate("/");
-                  dispatch(changeLoading());
-                }, 3000);
-              } else {
-                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                //   position: toast.POSITION.TOP_CENTER,
-                //   autoClose: 2000,
-                // });
-                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-              }
-            });
+              //토큰 받아오기
+              //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
+              const accessToken = res.headers.get("authorization");
+              dispatch(setToken({ accessToken: accessToken }));
+              // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
+              //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
+              //   position: toast.POSITION.TOP_CENTER,
+              //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
+              //   autoClose: 2000,
+              // });
+              window.alert("반갑습니다. 로그인이 완료되었습니다. ");
+              // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
+              setTimeout(() => {
+                navigate("/");
+                dispatch(changeLoading());
+              }, 3000);
+            } else {
+              // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
+              //   position: toast.POSITION.TOP_CENTER,
+              //   autoClose: 2000,
+              // });
+              window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+            }
+          });
         } catch {}
       } else if (membertype === "hospital") {
         //hospital
