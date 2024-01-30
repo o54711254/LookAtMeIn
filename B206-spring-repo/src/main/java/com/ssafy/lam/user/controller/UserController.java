@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +85,10 @@ public class UserController {
     @PostMapping("/regist")
     @Operation(summary = "회원가입")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
-        log.info("login userId : {}", user.getUserId());
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_USER");
+        user.setRoles(roles);
+        log.info("login userId : {}", user);
         User createdUser = userService.createUser(user);
 
 //        return new ResponseEntity<>(createdCustomer, HttpStatus.OK);

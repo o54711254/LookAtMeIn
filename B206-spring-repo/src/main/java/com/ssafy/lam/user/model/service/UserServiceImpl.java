@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsById(user.getSeq()))
             throw new RuntimeException("이미 존재하는 고객입니다.");
 
-        System.out.println("user.getRoles() = " + user.getRoles());
         user = user.toEntity(user.getSeq(), user.getUserId(), user.getPassword(), user.getRoles());
         return userRepository.save(user);
     }

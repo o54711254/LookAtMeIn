@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController{
@@ -27,9 +30,12 @@ public class CustomerController{
 
     @PostMapping("/regist")
     @Operation(summary = "고객 회원가입")
-    public ResponseEntity<Void> createCustomer(@RequestBody User customer) {
+    public ResponseEntity<Void> createCustomer(@RequestBody Customer customer) {
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_CUSTOMER");
+        customer.setRoles(roles);
+        log.info("createCustomer customer : {}", customer);
 
-        log.info("login userId : {}", customer.getUserId());
         customerService.createCustomer(customer);
         return ResponseEntity.ok().build();
     }
