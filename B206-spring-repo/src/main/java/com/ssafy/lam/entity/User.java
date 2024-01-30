@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-
+@ToString
 //@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "user_type")

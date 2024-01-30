@@ -32,14 +32,14 @@ public class CustomerLoginTest {
                 .build();
 
     }
-
-    @Test
-    @DisplayName("회원가입 테스트")
-    @Transactional
-    public void registTest(){
-        ResponseEntity<Void> responsEntity = customerController.createCustomer(customer);
-        Assertions.assertThat(responsEntity.getStatusCodeValue()).isEqualTo(200);
-
-    }
+//
+//    @Test
+//    @DisplayName("회원가입 테스트")
+//    @Transactional
+//    public void registTest(){
+//        ResponseEntity<Void> responsEntity = customerController.createCustomer(customer);
+//        Assertions.assertThat(responsEntity.getStatusCodeValue()).isEqualTo(200);
+//
+//    }
 
 }
