@@ -19,7 +19,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_seq")
-    protected long userSeq;
+    protected Long userSeq;
 
 
 
@@ -35,14 +35,13 @@ public class User implements UserDetails {
     private String userType;
 
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
 
     public User() {
 
     }
-
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
-
 
     @Builder
     public User(long userSeq, String userId, String name, String password, String userType, List<String> roles) {
@@ -53,6 +52,7 @@ public class User implements UserDetails {
         this.userType = userType;
         this.roles = roles;
     }
+
 
 
     @Override

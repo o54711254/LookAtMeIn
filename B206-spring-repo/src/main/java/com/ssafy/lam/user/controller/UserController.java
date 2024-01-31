@@ -1,8 +1,9 @@
 package com.ssafy.lam.user.controller;
 
-import com.ssafy.lam.user.model.service.UserService;
-import com.ssafy.lam.entity.User;
+
 import com.ssafy.lam.entity.TokenInfo;
+import com.ssafy.lam.entity.User;
+import com.ssafy.lam.user.model.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,13 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
+
 public class UserController {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);
@@ -84,11 +85,8 @@ public class UserController {
 
     @PostMapping("/regist")
     @Operation(summary = "회원가입")
-    public ResponseEntity<Void> createUser(@RequestBody User user) {
-        List<String> roles = new ArrayList<>();
-        roles.add("USER");
-        user.setRoles(roles);
-        log.info("login userId : {}", user);
+    public ResponseEntity<Void> createCustomer(@RequestBody User user) {
+        log.debug("login userId : {}", user.getUserId());
         User createdUser = userService.createUser(user);
 
 //        return new ResponseEntity<>(createdCustomer, HttpStatus.OK);

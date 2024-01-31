@@ -1,5 +1,5 @@
 package com.ssafy.lam.user.model.service;
-import com.ssafy.lam.customer.model.service.CustomerServiceImpl;
+
 import com.ssafy.lam.entity.User;
 import com.ssafy.lam.user.model.repository.UserRepository;
 import com.ssafy.lam.entity.TokenInfo;

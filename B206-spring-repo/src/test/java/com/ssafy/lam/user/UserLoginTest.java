@@ -1,18 +1,13 @@
 package com.ssafy.lam.user;
 
-import com.ssafy.lam.user.controller.UserController;
 import com.ssafy.lam.user.model.service.UserService;
 import com.ssafy.lam.entity.User;
 import com.ssafy.lam.entity.TokenInfo;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
