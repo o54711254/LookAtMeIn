@@ -17,10 +17,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
-<<<<<<< PATCH SET (663e11 fix : api 수정)
-
-=======
->>>>>>> BASE      (7df158 Merge changes I1214f956,I36587ab7,I1fd40830 into dev-spring)
 public class UserController {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);

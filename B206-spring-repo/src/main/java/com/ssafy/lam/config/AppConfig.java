@@ -11,10 +11,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableAspectJAutoProxy
-<<<<<<< PATCH SET (663e11 fix : api 수정)
-
-=======
->>>>>>> BASE      (7df158 Merge changes I1214f956,I36587ab7,I1fd40830 into dev-spring)
 @ComponentScan(basePackages = { "com.ssafy.lam" })
 public class AppConfig implements WebMvcConfigurer {
 

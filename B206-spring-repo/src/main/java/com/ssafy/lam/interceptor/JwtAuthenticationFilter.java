@@ -23,10 +23,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = resolveToken((HttpServletRequest) request);
-<<<<<<< PATCH SET (663e11 fix : api 수정)
-=======
-//        System.out.println("token = " + token);
->>>>>>> BASE      (7df158 Merge changes I1214f956,I36587ab7,I1fd40830 into dev-spring)
+
         if(token != null && jwtTokenProvider.validateToken(token)){
 
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
