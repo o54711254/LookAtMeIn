@@ -1,23 +1,25 @@
 package com.ssafy.lam.customer.model.repository;
 
-import com.ssafy.lam.entity.Customer;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
-@RequiredArgsConstructor
-public abstract class CustomerRepositoryImpl implements CustomerRepository {
+public abstract class CustomerRepositoryImpl implements CustomerRepository{
 
-    private final EntityManager em;
+    private EntityManager em;
 
-//
-//    @Override
-//    public Optional<Customer> findByUserId(String userId) {
-////        String query =
-////        Customer findCustomer = em.createQuery(query, Customer.class);
-//
-//    }
+    @Autowired
+    public CustomerRepositoryImpl(EntityManager em) {
+        this.em = em;
+    }
+
+    @Override
+    public boolean existsByUserUserId(String userId) {
+        String query ="select count(c) from Customer c join User u where u.userId = :userId";
+        int cnt = em.createQuery(query, Integer.class)
+                .setParameter("userId", userId)
+                .getSingleResult();
+        return cnt == 0;
+    }
 }

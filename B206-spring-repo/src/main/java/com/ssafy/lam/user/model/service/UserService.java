@@ -15,7 +15,7 @@ public interface UserService {
     void deleteUser(long seq);
 
 
-    TokenInfo getLoginToken(User user) throws Exception;
+    TokenInfo getLoginToken(User user);
 //    void logout();
     User findByUserId(String userId) throws Exception;
 

@@ -1,10 +1,13 @@
 package com.ssafy.lam.user.model.service;
+import com.ssafy.lam.customer.model.service.CustomerServiceImpl;
 import com.ssafy.lam.entity.User;
 import com.ssafy.lam.user.model.repository.UserRepository;
 import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.util.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -18,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     protected final UserRepository userRepository;
 
@@ -41,18 +45,23 @@ public class UserServiceImpl implements UserService {
      * 1편부터 보면 좋다.
      */
     public User createUser(User user) {
-        if(userRepository.existsById(user.getSeq()))
+        if(userRepository.existsById(user.getUserSeq()))
             throw new RuntimeException("이미 존재하는 고객입니다.");
-
-        user = user.toEntity(user.getSeq(), user.getUserId(), user.getName(), user.getPassword(), user.getRoles());
-//        user = user.toEntity(user.getSeq(), user.getUserId(), user.getPassword(), user.getRoles());
+        log.info("회원가입 User정보: {}", user);
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(long seq, User updatedUser) {
 //        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getPassword(), updatedUser.getRoles());
-        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getName(), updatedUser.getPassword(), updatedUser.getRoles());
+//        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getName(), updatedUser.getPassword(), updatedUser.getRoles());
+        User oldUser = User.builder()
+                .userSeq(updatedUser.getUserSeq())
+                .userId(updatedUser.getUserId())
+                .name(updatedUser.getName())
+                .roles(updatedUser.getRoles())
+                .password(updatedUser.getPassword())
+                .build();
         return userRepository.save(oldUser);
     }
 
@@ -63,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public TokenInfo getLoginToken(User user) throws Exception {
+    public TokenInfo getLoginToken(User user) {
         TokenInfo tokenInfo = null;
         try {
             UsernamePasswordAuthenticationToken authenticationToken =

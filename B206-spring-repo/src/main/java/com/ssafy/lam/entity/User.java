@@ -14,15 +14,12 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-//@AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_seq")
-    protected long seq;
+    protected long userSeq;
 
 
 
@@ -33,6 +30,9 @@ public class User implements UserDetails {
     protected String name;
     @Column(name = "user_pw")
     protected String password;
+
+    @Column(name="user_type")
+    private String userType;
 
 
 
@@ -45,23 +45,15 @@ public class User implements UserDetails {
 
 
     @Builder
-    public User(long seq, String userId, String name, String password, List<String> roles) {
-        this.seq = seq;
+    public User(long userSeq, String userId, String name, String password, String userType, List<String> roles) {
+        this.userSeq = userSeq;
         this.userId = userId;
         this.name = name;
         this.password = password;
+        this.userType = userType;
         this.roles = roles;
     }
 
-    public User toEntity(long seq, String userId, String username, String password, List<String> roles) {
-        return User.builder()
-                .name(username)
-                .seq(seq)
-                .userId(userId)
-                .password(password)
-                .roles(roles)
-                .build();
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

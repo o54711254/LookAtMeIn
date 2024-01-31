@@ -4,9 +4,11 @@ import com.ssafy.lam.entity.TokenInfo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class CustomerTokenInfo {
 
     private Long seq;

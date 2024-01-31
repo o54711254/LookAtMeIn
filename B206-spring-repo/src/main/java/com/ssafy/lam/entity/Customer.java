@@ -1,16 +1,28 @@
 package com.ssafy.lam.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-public class Customer extends User{
+@Getter
+@Setter
+@NoArgsConstructor
+
+@ToString
+public class Customer{
+
+
+    @Id
+    @GeneratedValue
+    private Long customerSeq;
+
+    @OneToOne
+    private User user;
 
     @Column(name = "customer_info_sex")
-    private String sex;
+    private String gender;
 
     @Column(name = "customer_info_birth")
     private String birth;
@@ -28,15 +40,15 @@ public class Customer extends User{
     private int reportCnt;
 
 
-    public Customer() {
-    }
-
-    public Customer(long seq, String userId, String username, String password, List<String> roles) {
-        super(seq, userId, username, password, roles);
-    }
-
-    @Override
-    public User toEntity(long seq, String userId, String username, String password, List<String> roles) {
-        return super.toEntity(seq, userId, username, password, roles);
+    @Builder
+    public Customer(Long customerSeq, User user, String gender, String birth, String tel, String email, String address, int reportCnt) {
+        this.customerSeq = customerSeq;
+        this.user = user;
+        this.gender = gender;
+        this.birth = birth;
+        this.tel = tel;
+        this.email = email;
+        this.address = address;
+        this.reportCnt = reportCnt;
     }
 }

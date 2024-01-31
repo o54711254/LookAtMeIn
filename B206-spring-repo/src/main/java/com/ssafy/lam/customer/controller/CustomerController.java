@@ -1,10 +1,12 @@
 package com.ssafy.lam.customer.controller;
 
 
+import com.ssafy.lam.customer.dto.CustomerDto;
 import com.ssafy.lam.customer.dto.CustomerTokenInfo;
 import com.ssafy.lam.customer.model.service.CustomerService;
 import com.ssafy.lam.entity.Customer;
 import com.ssafy.lam.entity.TokenInfo;
+import com.ssafy.lam.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,53 +30,51 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/test")
-    public String getTest() {
-        return "get Success";
-    }
-
-    @PostMapping("/postTest")
-    public String postTest() {
-        return "post Success";
-    }
-
     @PostMapping("/regist")
     @Operation(summary = "고객 회원가입")
-    public ResponseEntity<Void> createCustomer(@RequestBody Customer customer) {
-        log.info("createCustomer customer : {}", customer);
-        List<String> roles = new ArrayList<>();
-        roles.add("CUSTOMER");
-        customer.setRoles(roles);
-
-        customerService.createCustomer(customer);
+    public ResponseEntity<Void> regist(@RequestBody CustomerDto customerDto) {
+        log.info("회원가입 정보 : {}", customerDto);
+        customerService.createCustomer(customerDto);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
     @Operation(summary = "고객 로그인")
-    public ResponseEntity<CustomerTokenInfo> loginCustomer(@RequestBody Customer customer) {
+    public ResponseEntity<CustomerTokenInfo> login(@RequestBody CustomerDto customerDto) {
+        log.info("로그인 정보 : {}", customerDto);
+        User user = User.builder()
+                .userId(customerDto.getUserId())
+                .name(customerDto.getCustomerName())
+                .password(customerDto.getUserPassword())
+                .build();
 
-        TokenInfo tokenInfo = customerService.getLoginToken(customer);
+        log.info("로그인 User 정보: {}", user);
+        TokenInfo tokenInfo = customerService.getLoginToken(user);
 
-        Customer customer1 = customerService.findByUserId(customer.getUserId());
-        log.info("customer1: {}", customer1);
+        Customer customer1 = customerService.findByCustomerId(user.getUserId());
+
         if(customer1 == null){
-            return ResponseEntity.notFound().build();
+//            return ResponseEntity.notFound().build();
+            return null;
         }
 
-        if (!customer1.getPassword().equals(customer.getPassword())) {
-            return ResponseEntity.notFound().build();
+        if(!customer1.getUser().getPassword().equals(user.getPassword())){
+//            return ResponseEntity.notFound().build();
+            return null;
         }
 
         CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
-                .userId(customer1.getUserId())
-                .username(customer1.getName())
-                .seq(customer1.getSeq())
+                .userId(customer1.getUser().getUserId())
+                .username(customer1.getUser().getUsername())
                 .tokenInfo(tokenInfo)
                 .build();
 
-
         return ResponseEntity.ok(customerTokenInfo);
+
+
+
+
+
     }
 
 

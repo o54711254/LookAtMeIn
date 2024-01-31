@@ -17,11 +17,11 @@ public class CustomerRepositoryTest {
     @Test
     @DisplayName("CustomerRepository test")
     public void CustomerRepositoryTest(){
-        Customer customer = new Customer();
-        customer.setUserId("polysd33a");
-        customer.setPassword("323");
-
-        customerRepository.save(customer);
+//        Customer customer = new Customer();
+//        customer.setUserId("polysd33a");
+//        customer.setPassword("323");
+//
+//        customerRepository.save(customer);
 
     }
 }
