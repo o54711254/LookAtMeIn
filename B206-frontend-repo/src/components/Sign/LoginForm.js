@@ -11,6 +11,7 @@ import axiosApi from "../../api/axiosApi.js";
 import loginUser from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import styles from "./LoginForm.module.css";
 
 const validationSchema = yup.object({
   id: yup
@@ -59,7 +60,6 @@ function LoginForm() {
                   // role: res.data.responseObj.usertype, // 역할 업데이트
                 })
               );
-
               //토큰 받아오기
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
               const accessToken = res.headers.get("authorization");
@@ -74,6 +74,7 @@ function LoginForm() {
               // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
               setTimeout(() => {
                 navigate("/");
+                // console.log("111111");
                 dispatch(changeLoading());
               }, 3000);
             } else {
@@ -242,29 +243,7 @@ function LoginForm() {
   });
 
   return (
-    // <div className="loginForm">
-    //   <div>
-    //     <img src={logo} alt="로고사진" />
-    //     <h1>룩앳미인</h1>
-    //   </div>
-
-    //   <h3>아이디</h3>
-    //   <input type="text" placeholder="abcdef@ssafy.com" />
-    //   <h3>비밀번호</h3>
-    //   <input
-    //     type="password"
-    //     placeholder="영문, 숫자, 특수문자 조합 8~16자를 입력하세요"
-    //   />
-    //   <div className="loginButton">
-    //     <button type="submit">로그인</button>
-    //   </div>
-    //   <div>
-    //     <Link to="/Regist">회원가입 </Link> |
-    //     <Link to="/FindPassword"> 비밀번호 찾기</Link>
-    //   </div>
-    // </div>
-
-    <div>
+    <div className={styles.loginform}>
       <div className="로그인 창 시작">
         <img src={logo} alt="로고사진" />
         <h1>룩앳미인</h1>
