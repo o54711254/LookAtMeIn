@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-
 public class Customer extends User{
 
     @Column(name = "customer_info_sex")
