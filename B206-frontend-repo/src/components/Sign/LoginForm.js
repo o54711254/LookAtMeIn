@@ -11,6 +11,7 @@ import axiosApi from "../../api/axiosApi.js";
 import loginUser from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import styles from "./LoginForm.module.css";
 
 const validationSchema = yup.object({
   userId: yup
@@ -47,11 +48,7 @@ function LoginForm() {
         try {
           await axiosApi.post("/api/customer/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
-<<<<<<< HEAD
-            if (res.status === 201) {
-=======
             if (res.status === 200) {
->>>>>>> dev-FE-오건영
               console.log("userData", res.data.username);
               window.alert("로그인 성공!");
               //로그인 성공
@@ -137,7 +134,7 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {}  
       } else if (membertype === "coordinator") {
         //coordinator
         try {
