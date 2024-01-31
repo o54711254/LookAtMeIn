@@ -41,8 +41,8 @@ public class WebSocketController {
 
         // 메시지를 해당 채팅방 구독자들에게 전송
         messagingTemplate.convertAndSend("/sub/chatroom/" + message.getChatRoomId(), message);
-        System.out.println(message.getChatRoomId());
-        System.out.println(message.getMessage().toString());
+        System.out.println(message.toString());
+
     }
 
     // 특정 채팅방의 메시지 조회

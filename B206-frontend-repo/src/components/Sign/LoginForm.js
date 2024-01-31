@@ -47,7 +47,11 @@ function LoginForm() {
         try {
           await axiosApi.post("/api/customer/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
+<<<<<<< HEAD
             if (res.status === 201) {
+=======
+            if (res.status === 200) {
+>>>>>>> dev-FE-오건영
               console.log("userData", res.data.username);
               window.alert("로그인 성공!");
               //로그인 성공
@@ -317,9 +321,9 @@ function LoginForm() {
         <div className="idInput">
           <h3>아이디</h3>
           <input
-            name="id"
+            name="userId"
             placeholder="아이디를 입력해주세요"
-            value={formik.values.id}
+            value={formik.values.userId}
             onChange={formik.handleChange}
             type="text"
             className={formik.touched.id && formik.errors.id ? "error" : ""}
