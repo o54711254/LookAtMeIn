@@ -86,7 +86,7 @@ public class UserController {
     @Operation(summary = "회원가입")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
         List<String> roles = new ArrayList<>();
-        roles.add("ROLE_USER");
+        roles.add("USER");
         user.setRoles(roles);
         log.info("login userId : {}", user);
         User createdUser = userService.createUser(user);

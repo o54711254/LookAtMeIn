@@ -21,6 +21,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="USER_SEQ")
     protected long seq;
 
     @Column(unique = true)
@@ -38,15 +39,17 @@ public class User implements UserDetails {
 
 
     @Builder
-    public User(long seq, String userId, String password, List<String> roles){
+    public User(long seq, String userId, String username, String password, List<String> roles) {
         this.seq = seq;
         this.userId = userId;
+        this.username = username;
         this.password = password;
         this.roles = roles;
     }
 
-    public User toEntity(long seq, String userId, String password, List<String> roles) {
+    public User toEntity(long seq, String userId, String username, String password, List<String> roles) {
         return User.builder()
+                .username(username)
                 .seq(seq)
                 .userId(userId)
                 .password(password)

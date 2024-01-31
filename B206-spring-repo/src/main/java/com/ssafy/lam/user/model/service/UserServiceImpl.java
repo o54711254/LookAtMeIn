@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,13 +45,15 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsById(user.getSeq()))
             throw new RuntimeException("이미 존재하는 고객입니다.");
 
-        user = user.toEntity(user.getSeq(), user.getUserId(), user.getPassword(), user.getRoles());
+        user = user.toEntity(user.getSeq(), user.getUserId(), user.getUsername(), user.getPassword(), user.getRoles());
+//        user = user.toEntity(user.getSeq(), user.getUserId(), user.getPassword(), user.getRoles());
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(long seq, User updatedUser) {
-        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getPassword(), updatedUser.getRoles());
+//        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getPassword(), updatedUser.getRoles());
+        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getUsername(), updatedUser.getPassword(), updatedUser.getRoles());
         return userRepository.save(oldUser);
     }
 
@@ -62,10 +65,20 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public TokenInfo getLoginToken(User user) throws Exception {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+        TokenInfo tokenInfo = null;
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
+            System.out.println("authenticationToken = " + authenticationToken);
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            tokenInfo = jwtTokenProvider.generateToken(authentication);
+        } catch (AuthenticationException e) {
+            System.out.println("AuthenticationException");
+
+            System.out.println("e.getMessage() = " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
         return tokenInfo;
     }

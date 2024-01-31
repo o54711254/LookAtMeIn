@@ -14,7 +14,5 @@ public interface CustomerService {
 
     TokenInfo getLoginToken(Customer customer);
 
-    Customer findByCustomerId(String customerId);
-
-//    String getUserType(Customer customer);
+    Customer findByUserId(String customerId);
 }
