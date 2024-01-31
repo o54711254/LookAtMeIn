@@ -13,7 +13,7 @@ import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const validationSchema = yup.object({
-  id: yup
+  userId: yup
     .string()
     // .email("올바른 아이디를 입력해주세요.")
     .required("아이디 입력해주세요."),
@@ -35,7 +35,7 @@ function LoginForm() {
 
   const formik = useFormik({
     initialValues: {
-      id: "",
+      userId: "",
       password: "",
     },
     validationSchema: validationSchema,
@@ -47,8 +47,8 @@ function LoginForm() {
         try {
           await axiosApi.post("/api/customer/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
-            if (res.status === 201) {
-              console.log("userData", res.data.userSeq);
+            if (res.status === 200) {
+              console.log("userData", res.data.username);
               window.alert("로그인 성공!");
               //로그인 성공
               dispatch(
@@ -317,9 +317,9 @@ function LoginForm() {
         <div className="idInput">
           <h3>아이디</h3>
           <input
-            name="id"
+            name="userId"
             placeholder="아이디를 입력해주세요"
-            value={formik.values.id}
+            value={formik.values.userId}
             onChange={formik.handleChange}
             type="text"
             className={formik.touched.id && formik.errors.id ? "error" : ""}
