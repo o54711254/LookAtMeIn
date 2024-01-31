@@ -10,6 +10,7 @@ import Home from "./components/Home.js";
 import HospitalBoardList from "./components/HospitalBoard/HospitalList.js";
 import ReviewBoardList from "./components/ReviewBoard/ReviewList";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
+import RequestBoardList from "./components/RequestBoard/RequestBoardList.js";
 import Coordinatormypage from "./components/Coordinator/MyPage/CoordinatorMyPage";
 import HospitalMyPage from "./components/Hospital/MyPage/HospitalMyPage";
 import AdminMyPage from "./components/Admin/MyPage/AdminMyPage";
@@ -44,6 +45,7 @@ function App() {
             <Route path="/reviewList" element={<ReviewBoardList />} />
             <Route path="/freeboardList" element={<FreeBoardList />} />
             <Route path="/face" element={<FacialAsy />} />
+            <Route path="/requestboardlist" element={<RequestBoardList />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/regist" element={<Regist />} />
             <Route path="/regist/UserRegist" element={<UserRegistForm />} />

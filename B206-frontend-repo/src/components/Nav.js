@@ -66,7 +66,7 @@ function Nav() {
           ) : (
             <>
               <div>
-                <Link style={{ textDecoration: "none" }} to="/mypage">
+                <Link style={{ textDecoration: "none" }} to="/requestboardlist">
                   상담요청 게시판
                 </Link>
               </div>
