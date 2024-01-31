@@ -77,8 +77,5 @@ public class CustomerController {
         return ResponseEntity.ok(customerTokenInfo);
     }
 
-        return ResponseEntity.ok(tokenInfo);
-    }
-
 
 }
