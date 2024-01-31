@@ -1,8 +1,11 @@
 package com.ssafy.lam.customer;
 
+import com.ssafy.lam.customer.controller.CustomerController;
+import com.ssafy.lam.customer.dto.CustomerTokenInfo;
 import com.ssafy.lam.customer.model.repository.CustomerRepository;
 import com.ssafy.lam.customer.model.service.CustomerService;
 import com.ssafy.lam.entity.Customer;
+import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.Assertions;
@@ -27,19 +30,24 @@ public class CustomerServiceTest {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CustomerController customerController;
 
 
     @Test
     @DisplayName("createCustomer 테스트")
-    @Transactional
+//    @Transactional
     public void createCustomerTest(){
         List<String> roles = new ArrayList<>();
         roles.add("CUSTOMER");
-        Customer customer = new Customer(2L,"test", "test", roles);
+        Customer customer = new Customer(3L,"kim","test2", "test", roles);
         Customer customer1 = customerService.createCustomer(customer);
         Assertions.assertThat(customer1.getSeq()).isEqualTo(customer.getSeq());
 
-//        Assertions.assertThat(customer1).isEqualTo(customer);
+        TokenInfo tokenInfo = customerService.getLoginToken(customer);
+        System.out.println("tokenInfo = " + tokenInfo);
+
+//
     }
 
 

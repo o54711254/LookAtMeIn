@@ -5,17 +5,16 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-//@RequiredArgsConstructor
 @Entity
-@NoArgsConstructor
-public class Customer extends User{
 
-    public Customer(long seq, String userId, String password, List<String> roles) {
-        super(seq, userId, password, roles);
+public class Customer extends User{
+    public Customer() {
     }
 
-
-//    public Customer toEntity(long seq, String userId, String password, List<String> roles) {
+    public Customer(long seq, String userId, String username, String password, List<String> roles) {
+        super(seq, userId, username, password, roles);
+    }
+    //    public Customer toEntity(long seq, String userId, String password, List<String> roles) {
 //        return (Customer)super.builder()
 //                                .seq(seq)
 //                                .userId(userId)

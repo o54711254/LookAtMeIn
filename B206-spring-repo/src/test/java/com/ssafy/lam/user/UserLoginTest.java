@@ -40,7 +40,10 @@ public class UserLoginTest {
         User user = User.builder()
                 .userId("test")
                 .password("test")
+                .roles(roles)
                 .build();
+
+        userService.createUser(user);
 
         TokenInfo tokenInfo = userService.getLoginToken(user);
         System.out.println("tokenInfo = " + tokenInfo);

@@ -1,26 +1,24 @@
 package com.ssafy.lam.customer.dto;
 
-import com.ssafy.lam.entity.Customer;
 import com.ssafy.lam.entity.TokenInfo;
-import lombok.*;
-
-
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-
 public class CustomerTokenInfo {
-    private TokenInfo tokenInfo;
-    private String userId;
+
+    private Long customerSeq;
     private String username;
-    private String user_type;
+    private String userId;
+    private TokenInfo tokenInfo;
 
     @Builder
-    public CustomerTokenInfo(TokenInfo tokenInfo, String userId, String username, String user_type) {
-        this.tokenInfo = tokenInfo;
-        this.userId = userId;
+    public CustomerTokenInfo(Long customerSeq, String username, String userId, TokenInfo tokenInfo) {
+        this.customerSeq = customerSeq;
         this.username = username;
-        this.user_type = user_type;
+        this.userId = userId;
+        this.tokenInfo = tokenInfo;
     }
 }

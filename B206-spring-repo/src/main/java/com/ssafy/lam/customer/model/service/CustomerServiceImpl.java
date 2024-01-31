@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer createCustomer(Customer customer) {
+        log.info("createCustomer customer :{}" , customer);
         if(customerRepository.existsById(customer.getSeq()))
             throw new RuntimeException("이미 존재하는 고객입니다.");
 //        customer = (Customer) customer.toEntity(customer.getSeq(), customer.getUserId(), customer.getPassword(), customer.getRoles());
@@ -62,21 +65,29 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public TokenInfo getLoginToken(Customer customer) {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(customer.getUserId(), customer.getPassword());
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+        TokenInfo tokenInfo = null;
+        try{
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(customer.getUserId(), customer.getPassword());
+            System.out.println("customer instanceof UserDetails = " + (customer instanceof UserDetails));
+            System.out.println("authenticationToken = " + authenticationToken);
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            System.out.println("authentication = " + authentication);
+            tokenInfo = jwtTokenProvider.generateToken(authentication);
+            return tokenInfo;
+        }catch(AuthenticationException e){
+            System.out.println("AuthenticationException");
+            System.out.println("e.getMessage() = " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
-        return tokenInfo;
+
     }
 
     @Override
-    public Customer findByCustomerId(String customerId) {
+    public Customer findByUserId(String customerId) {
         return customerRepository.findByUserId(customerId).orElse(null);
     }
 
-//    @Override
-//    public String getUserType(Customer customer) {
-//        return customerRepository.findUserType(customer);
-//    }
 }
