@@ -11,7 +11,7 @@ function FloatingChat() {
   const [chatRooms, setChatRooms] = useState([]); // 채팅방 목록 상태
   // const user = useSelector((store) => store.user.userName);
 
-  const user = "string";
+  const user = "ssafy";
 
   const handleToggleChat = () => {
     setOpen(!open);
