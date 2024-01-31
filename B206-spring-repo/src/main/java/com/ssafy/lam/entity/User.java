@@ -29,8 +29,8 @@ public class User implements UserDetails {
     @Column(unique = true, name="user_id")
     protected String userId;
 
-    @Column(name = "user_name")
-    protected String username;
+    @Column(name = "username")
+    protected String name;
     @Column(name = "user_pw")
     protected String password;
 
@@ -45,17 +45,17 @@ public class User implements UserDetails {
 
 
     @Builder
-    public User(long seq, String userId, String username, String password, List<String> roles) {
+    public User(long seq, String userId, String name, String password, List<String> roles) {
         this.seq = seq;
         this.userId = userId;
-        this.username = username;
+        this.name = name;
         this.password = password;
         this.roles = roles;
     }
 
     public User toEntity(long seq, String userId, String username, String password, List<String> roles) {
         return User.builder()
-                .username(username)
+                .name(username)
                 .seq(seq)
                 .userId(userId)
                 .password(password)
@@ -70,7 +70,6 @@ public class User implements UserDetails {
                 .collect(java.util.stream.Collectors.toList());
     }
 
-    @Override
     public String getUsername() {
         return this.userId;
     }

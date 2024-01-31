@@ -13,13 +13,11 @@ public abstract class CustomerRepositoryImpl implements CustomerRepository {
 
     private final EntityManager em;
 
-
-
+//
 //    @Override
-//    public String findUserType(Customer customer) {
-//        return em.createQuery("select c.user_type from Customer c where c.userId = :userId and c.password = :password", String.class)
-//                .setParameter("userId", customer.getUserId())
-//                .setParameter("password", customer.getPassword())
-//                .getSingleResult();
+//    public Optional<Customer> findByUserId(String userId) {
+////        String query =
+////        Customer findCustomer = em.createQuery(query, Customer.class);
+//
 //    }
 }

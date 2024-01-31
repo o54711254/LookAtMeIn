@@ -5,7 +5,6 @@ import com.ssafy.lam.customer.dto.CustomerTokenInfo;
 import com.ssafy.lam.customer.model.service.CustomerService;
 import com.ssafy.lam.entity.Customer;
 import com.ssafy.lam.entity.TokenInfo;
-import com.ssafy.lam.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +68,7 @@ public class CustomerController {
 
         CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
                 .userId(customer.getUserId())
-                .username(customer.getUsername())
+                .username(customer.getName())
                 .tokenInfo(tokenInfo)
                 .build();
 

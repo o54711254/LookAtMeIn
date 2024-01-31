@@ -12,7 +12,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsById(user.getSeq()))
             throw new RuntimeException("이미 존재하는 고객입니다.");
 
-        user = user.toEntity(user.getSeq(), user.getUserId(), user.getUsername(), user.getPassword(), user.getRoles());
+        user = user.toEntity(user.getSeq(), user.getUserId(), user.getName(), user.getPassword(), user.getRoles());
 //        user = user.toEntity(user.getSeq(), user.getUserId(), user.getPassword(), user.getRoles());
         return userRepository.save(user);
     }
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(long seq, User updatedUser) {
 //        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getPassword(), updatedUser.getRoles());
-        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getUsername(), updatedUser.getPassword(), updatedUser.getRoles());
+        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getName(), updatedUser.getPassword(), updatedUser.getRoles());
         return userRepository.save(oldUser);
     }
 
