@@ -37,10 +37,8 @@ public class ReserveService {
 
     //=================== READ ===================
     public List<ReserveResponseDto> getReservesByUser(long userSeq) {
-        // 해당 userSeq를 가진 CustomerInfo 엔티티 목록을 찾습니다.
         List<CustomerInfo> customerInfos = customerInfoRepository.findByUserSeq(userSeq);
 
-        // 찾은 CustomerInfo 목록을 기반으로 예약 목록을 조회합니다.
         return customerInfos.stream()
                 .flatMap(customerInfo -> reserveRepository.findAllByCustomerInfo(customerInfo).stream())
                 .map(ReserveResponseDto::new)
