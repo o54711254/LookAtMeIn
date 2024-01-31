@@ -1,8 +1,8 @@
 package com.ssafy.lam.user.controller;
 
 import com.ssafy.lam.user.model.service.UserService;
-import com.ssafy.lam.dto.User;
-import com.ssafy.lam.dto.TokenInfo;
+import com.ssafy.lam.entity.User;
+import com.ssafy.lam.entity.TokenInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,6 @@ public class UserController {
         return ResponseEntity.ok(tokenInfo);
     }
 
-
     @GetMapping("/regist/idcheck/{userId}")
     @Operation(summary = "고객 아이디 중복 체크를 수행한다.")
     public ResponseEntity<Boolean> idCheck(@PathVariable String userId) throws Exception {
@@ -79,15 +78,14 @@ public class UserController {
         }
     }
 
-
-
     @PostMapping("/regist")
     @Operation(summary = "회원가입")
     public ResponseEntity<Void> createCustomer(@RequestBody User user) {
         log.debug("login userId : {}", user.getUserId());
         User createdUser = userService.createUser(user);
-
-//        return new ResponseEntity<>(createdCustomer, HttpStatus.OK);
         return ResponseEntity.ok().build();
     }
+
+
+
 }

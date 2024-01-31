@@ -1,4 +1,4 @@
-package com.ssafy.lam.dto;
+package com.ssafy.lam.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,7 +34,7 @@ public class User implements UserDetails {
 
 
     @Builder
-    public User(long seq, String userId, String password, List<String> roles){
+    public User(long seq, String userId, String password, List<String> roles) {
         this.seq = seq;
         this.userId = userId;
         this.password = password;
