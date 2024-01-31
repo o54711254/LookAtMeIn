@@ -22,7 +22,11 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long seq;
+
+    @Column(unique = true)
     protected String userId;
+
+    protected String username;
     protected String password;
 
 
