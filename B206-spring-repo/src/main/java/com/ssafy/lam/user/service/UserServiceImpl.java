@@ -1,7 +1,7 @@
-package com.ssafy.lam.user.model.service;
-import com.ssafy.lam.dto.User;
+package com.ssafy.lam.user.service;
+import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.model.repository.UserRepository;
-import com.ssafy.lam.dto.TokenInfo;
+import com.ssafy.lam.user.domain.TokenInfo;
 import com.ssafy.lam.util.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -46,13 +46,13 @@ public class UserServiceImpl implements UserService {
 
         List<String> roles = new ArrayList<>();
         roles.add("CUSTOMER");
-        user = user.toEntity(user.getSeq(), user.getUserId(), user.getPassword(), roles);
+        user = user.toEntity(user.getSeq(), user.getId(), user.getPassword(), roles);
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(long seq, User updatedUser) {
-        User oldUser = updatedUser.toEntity(seq, updatedUser.getUserId(), updatedUser.getPassword(), updatedUser.getRoles());
+        User oldUser = updatedUser.toEntity(seq, updatedUser.getId(), updatedUser.getPassword(), updatedUser.getRoles());
         return userRepository.save(oldUser);
     }
 
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public TokenInfo login(User user) throws Exception {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
+                new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 

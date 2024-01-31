@@ -4,44 +4,55 @@ import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.domain.ReserveRepository;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveSaveRequestDto;
-import com.ssafy.lam.reserve.dto.ReserveUpdateRequestDto;
+import com.ssafy.lam.user.domain.CoordInfo;
+import com.ssafy.lam.user.domain.CoordInfoRepository;
+import com.ssafy.lam.user.domain.CustomerInfo;
+import com.ssafy.lam.user.domain.CustomerInfoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class ReserveService {
 
     private final ReserveRepository reserveRepository;
+    private final CustomerInfoRepository customerInfoRepository;
+    private final CoordInfoRepository coordInfoRepository;
 
+    //=================== INSERT ===================
     @Transactional
-    public Long save(ReserveSaveRequestDto reserveDto) {
-        return reserveRepository.save(reserveDto.toEntity()).getReserveSeq();
+    public Reserve saveReserve(ReserveSaveRequestDto dto) {
+        CustomerInfo customerInfo = customerInfoRepository.findById(dto.getCustomerInfoSeq())
+                .orElseThrow(() -> new IllegalArgumentException("CustomerInfo not found. ID: " + dto.getCustomerInfoSeq()));
+        CoordInfo coordInfo = coordInfoRepository.findById(dto.getCoordInfoSeq())
+                .orElseThrow(() -> new IllegalArgumentException("CoordInfo not found. ID: " + dto.getCoordInfoSeq()));
+
+        Reserve reserve = dto.toEntity(customerInfo, coordInfo);
+        return reserveRepository.save(reserve);
     }
 
-    public ReserveResponseDto findById(long coordinatorSeq) {
-        Reserve entity = reserveRepository.findById(coordinatorSeq).orElseThrow();
-        return new ReserveResponseDto(entity);
+    //=================== READ ===================
+    public List<ReserveResponseDto> getReservesByUser(long userSeq) {
+        // 해당 userSeq를 가진 CustomerInfo 엔티티 목록을 찾습니다.
+        List<CustomerInfo> customerInfos = customerInfoRepository.findByUserSeq(userSeq);
+
+        // 찾은 CustomerInfo 목록을 기반으로 예약 목록을 조회합니다.
+        return customerInfos.stream()
+                .flatMap(customerInfo -> reserveRepository.findAllByCustomerInfo(customerInfo).stream())
+                .map(ReserveResponseDto::new)
+                .collect(Collectors.toList());
     }
 
+    //=================== DELETE ===================
     @Transactional
-    public List<Reserve> findAllById(long coordinatorSeq) {
-        List<Reserve> reserves = reserveRepository.findAllById(coordinatorSeq);
-        return reserves;
-    }
+    public void deleteReserve(Long reserveSeq) {
+        reserveRepository.findById(reserveSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
 
-
-
-    @Transactional
-    public void delete(Long reserveSeq) {
-        Reserve reserve = reserveRepository.findById(reserveSeq).orElseThrow();
-        reserveRepository.delete(reserve);
+        reserveRepository.deleteById(reserveSeq);
     }
 }

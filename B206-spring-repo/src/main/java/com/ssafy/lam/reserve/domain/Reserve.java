@@ -1,34 +1,35 @@
 package com.ssafy.lam.reserve.domain;
 
+import com.ssafy.lam.user.domain.CoordInfo;
+import com.ssafy.lam.user.domain.CustomerInfo;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@Table(name = "reserve")
 public class Reserve {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long reserveSeq;
+    private Long reserveSeq;
 
-    @Column
-    private long reserveTime;
+    private Long reserveTime;
 
-    @Column
-    private int reserveType;
+    @ManyToOne
+    @JoinColumn(name = "customer_info_seq")
+    private CustomerInfo customerInfo;
 
-    @Column
-    private long clientInfoSeq;
-
-    @Column
-    private long coordinatorSeq;
+    @ManyToOne
+    @JoinColumn(name = "coord_info_seq")
+    private CoordInfo coordInfo;
 
     @Builder
-    public Reserve(long reserveTime, int reserveType, long clientInfoSeq, long coordinatorSeq) {
+    public Reserve(Long reserveTime, CustomerInfo customerInfo, CoordInfo coordInfo) {
         this.reserveTime = reserveTime;
-        this.reserveType = reserveType;
-        this.clientInfoSeq = clientInfoSeq;
-        this.coordinatorSeq = coordinatorSeq;
+        this.customerInfo = customerInfo;
+        this.coordInfo = coordInfo;
     }
 }

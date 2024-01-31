@@ -1,6 +1,6 @@
 package com.ssafy.lam.util;
 
-import com.ssafy.lam.dto.TokenInfo;
+import com.ssafy.lam.user.domain.TokenInfo;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

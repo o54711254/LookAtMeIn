@@ -1,7 +1,7 @@
-package com.ssafy.lam.user.model.service;
+package com.ssafy.lam.user.service;
 
-import com.ssafy.lam.dto.User;
-import com.ssafy.lam.dto.TokenInfo;
+import com.ssafy.lam.user.domain.User;
+import com.ssafy.lam.user.domain.TokenInfo;
 
 import java.util.List;
 

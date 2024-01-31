@@ -1,6 +1,6 @@
 package com.ssafy.lam.util;
 
-import com.ssafy.lam.dto.User;
+import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserDetails createUserDetails(User user) {
         return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUserId())
+                .username(user.getId())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .roles(user.getRoles().stream().toArray(String[]::new))
                 .build();

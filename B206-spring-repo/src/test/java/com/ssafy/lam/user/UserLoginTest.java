@@ -1,9 +1,9 @@
 package com.ssafy.lam.user;
 
 import com.ssafy.lam.user.controller.UserController;
-import com.ssafy.lam.user.model.service.UserService;
-import com.ssafy.lam.dto.User;
-import com.ssafy.lam.dto.TokenInfo;
+import com.ssafy.lam.user.service.UserService;
+import com.ssafy.lam.user.domain.User;
+import com.ssafy.lam.user.domain.TokenInfo;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

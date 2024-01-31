@@ -5,17 +5,11 @@ import lombok.Getter;
 
 @Getter
 public class ReserveResponseDto {
-    private Long reserveSeq;
-    private Long reserveTime;
-    private int reserveType;
-    private long clientInfoSeq;
-    private long coordinatorSeq;
+    private long reserveSeq;
+    private long reserveTime;
 
-    public ReserveResponseDto(Reserve entity) {
-        this.reserveSeq = reserveSeq;
-        this.reserveTime = reserveTime;
-        this.reserveType = reserveType;
-        this.clientInfoSeq = clientInfoSeq;
-        this.coordinatorSeq = coordinatorSeq;
+    public ReserveResponseDto(Reserve reserve) {
+        this.reserveSeq = reserve.getReserveSeq();
+        this.reserveTime = reserve.getReserveTime();
     }
 }

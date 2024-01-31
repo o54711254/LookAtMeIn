@@ -1,4 +1,4 @@
-package com.ssafy.lam.dto;
+package com.ssafy.lam.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,30 +21,33 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_seq")
     private long seq;
-    private String userId;
+
+    @Column(name = "user_id")
+    private String id;
+
+    @Column(name = "user_pw")
     private String password;
-
-
-    public User() {
-    }
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
+    public User() {
+    }
 
     @Builder
-    public User(long seq, String userId, String password, List<String> roles){
+    public User(long seq, String id, String password, List<String> roles){
         this.seq = seq;
-        this.userId = userId;
+        this.id = id;
         this.password = password;
         this.roles = roles;
     }
 
-    public User toEntity(long seq, String userId, String password, List<String> roles) {
+    public User toEntity(long seq, String id, String password, List<String> roles) {
         return User.builder()
                 .seq(seq)
-                .userId(userId)
+                .id(id)
                 .password(password)
                 .roles(roles)
                 .build();
@@ -59,7 +62,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.userId;
+        return this.id;
     }
 
     @Override

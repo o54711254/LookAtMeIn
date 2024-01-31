@@ -13,61 +13,33 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/reserve")
 public class ReserveController {
 
     private final ReserveService reserveService;
 
-
     // ===================== 등 록 =====================
-    @PostMapping("/reserve")
-    public ResponseEntity<?> save(@RequestBody ReserveSaveRequestDto requestDto) {
-        try {
-            long result = reserveService.save(requestDto);
-            if (result != 0) {
-                return new ResponseEntity<>(result, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("실패", HttpStatus.BAD_REQUEST);
-        }
+    //클라이언트에서는 예약 시간을 Long 타입의 타임스탬프 형식으로 전송해야 함 예를 들어, 자바스크립트에서 현재 시간을 타임스탬프로 전송하는 예시
+    //const reserveTime = new Date().getTime();
+    @PostMapping
+    public ResponseEntity<?> createReserve(@RequestBody ReserveSaveRequestDto dto) {
+        reserveService.saveReserve(dto);
+        return ResponseEntity.ok().build();
     }
+
 
     // ===================== 조 회 =====================
-    // 코디가 자신에게 예약한 사람들(타임테이블) 조회
-    @GetMapping("/reserve/{coordinatorSeq}")
-    public ResponseEntity<?> findAllById(@PathVariable long coordinatorSeq) {
-        try {
-            List<Reserve> list = reserveService.findAllById(coordinatorSeq);
-            if (!list.isEmpty()) {
-                return new ResponseEntity<List<Reserve>>(list, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("실패", HttpStatus.BAD_REQUEST);
-        }
-    }
 
-    // 한명조회
-    @GetMapping("/reserve/{coordinatorSeq}")
-    public ResponseEntity<?> findById(@PathVariable long coordinatorSeq) {
-        try {
-            ReserveResponseDto reserve = reserveService.findById(coordinatorSeq);
-            if (reserve != null) {
-                return new ResponseEntity<>(reserve, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>("실패", HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/user/{userSeq}")
+    public ResponseEntity<List<ReserveResponseDto>> getReservesByUser(@PathVariable long userSeq) {
+        List<ReserveResponseDto> reserves = reserveService.getReservesByUser(userSeq);
+        return ResponseEntity.ok(reserves);
     }
 
     // ===================== 삭 제 =====================
-    @DeleteMapping("/api/v1/reserve/{reserveSeq}")
-    public Long delete(@PathVariable Long reserveSeq) {
-        reserveService.delete(reserveSeq);
-        return reserveSeq;
+    @DeleteMapping("/{reserveSeq}")
+    public ResponseEntity<?> deleteReserve(@PathVariable Long reserveSeq) {
+        reserveService.deleteReserve(reserveSeq);
+        return ResponseEntity.ok().build();
     }
 }
