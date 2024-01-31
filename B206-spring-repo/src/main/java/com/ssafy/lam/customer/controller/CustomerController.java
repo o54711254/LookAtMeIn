@@ -42,11 +42,10 @@ public class CustomerController {
     @PostMapping("/regist")
     @Operation(summary = "고객 회원가입")
     public ResponseEntity<Void> createCustomer(@RequestBody Customer customer) {
-
+        log.info("createCustomer customer : {}", customer);
         List<String> roles = new ArrayList<>();
         roles.add("CUSTOMER");
         customer.setRoles(roles);
-        log.info("createCustomer customer : {}", customer);
 
         customerService.createCustomer(customer);
         return ResponseEntity.ok().build();

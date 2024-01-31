@@ -21,17 +21,23 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="USER_SEQ")
+    @Column(name="user_seq")
     protected long seq;
 
-    @Column(unique = true)
+
+
+    @Column(unique = true, name="user_id")
     protected String userId;
 
+    @Column(name = "user_name")
     protected String username;
+    @Column(name = "user_pw")
     protected String password;
 
 
+
     public User() {
+
     }
 
     @ElementCollection(fetch = FetchType.EAGER)

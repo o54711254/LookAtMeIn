@@ -2,6 +2,7 @@ package com.ssafy.lam.customer;
 
 
 import com.ssafy.lam.customer.controller.CustomerController;
+import com.ssafy.lam.customer.model.service.CustomerService;
 import com.ssafy.lam.entity.Customer;
 import com.ssafy.lam.entity.User;
 import org.assertj.core.api.Assertions;
@@ -22,16 +23,20 @@ public class CustomerLoginTest {
     @Autowired
     private CustomerController customerController;
 
-//
+    @Autowired
+    private CustomerService customerService;
+
+
     @Test
     @DisplayName("회원가입 테스트")
     @Transactional
-    public void registTest(){
-        List<String> roles = new ArrayList<>();
-        roles.add("ROLE_CUSTOMER");
-        Customer customer = new Customer(2L,"test", "test", roles);
-        ResponseEntity<Void> responseEntity = customerController.createCustomer(customer);
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
+    public void registTest(){//
+        Customer customer = new Customer(2L, "test", "kimheesu", "passwd", null);
+        System.out.println("customer = " + customer);
+        Customer createCustomer = customerService.createCustomer(customer);
+        System.out.println("createCustomer = " + createCustomer);
+
+        Assertions.assertThat(createCustomer.getUsername()).isEqualTo(customer.getUsername());
     }
 
 }
