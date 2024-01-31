@@ -52,15 +52,15 @@ public class SecurityConfig {
 
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .authorizeHttpRequests(authorize ->
+                .authorizeHttpRequests(
+                        authorize ->
                         authorize
-                                .requestMatchers("/api/user/regist").permitAll() // 회원가입 전에는 허용
-                                .requestMatchers("/api/user/login").permitAll() // 로그인 전에는 허용
-                                .requestMatchers("/api/customer/**").permitAll() // customer로 로그인 한 경우에만 허용
-
-
-                                .anyRequest()
-                                .authenticated()
+                                .requestMatchers("/**").permitAll()
+//                                .requestMatchers("/api/user/regist").permitAll() // 회원가입 전에는 허용
+//                                .requestMatchers("/api/user/login").permitAll() // 로그인 전에는 허용
+//                                .requestMatchers("/api/customer/**").permitAll() // customer로 로그인 한 경우에만 허용
+                                .anyRequest().permitAll()
+//                                .authenticated()
 
                 )
                 .logout(logout ->

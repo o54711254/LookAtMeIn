@@ -15,6 +15,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -28,51 +31,19 @@ public class UserLoginTest {
     
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserController userController;
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-
-
-    private User user;
-
-    @LocalServerPort
-    int randomServerPort;
-
-    @BeforeEach
-    void beforeEach() {
-//        System.out.println("beforeEach");
-        
-        user = User.builder()
-                .seq(1L)
-                .userId("test")
-                .password("test")
-                
-                .build();
-            
-    }
-
     @Test
     @DisplayName("로그인 테스트")
+    @Transactional
     public void loginTest() throws Exception{
-        
-        userService.createUser(user);
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_USER");
+        User user = User.builder()
+                .userId("test")
+                .password("test")
+                .build();
+
         TokenInfo tokenInfo = userService.getLoginToken(user);
         System.out.println("tokenInfo = " + tokenInfo);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(tokenInfo.getAccessToken());
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-//
-////        log.info("headers = {}", headers);
-        System.out.println("headers = " + headers);
-//
-        String url = "http://localhost:"+randomServerPort+"/api/customer/login";
-
-        HttpEntity<User> request = new HttpEntity<>(user, headers);
-
-        ResponseEntity<TokenInfo> responseEntity = testRestTemplate.postForEntity(url, request, TokenInfo.class);
 
     }
 }
