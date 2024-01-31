@@ -23,7 +23,7 @@ function ChatApp() {
     const socket = new WebSocket("ws://localhost:80/ws");
     stompClient.current = Stomp.over(socket);
     stompClient.current.connect({}, () => {
-      stompClient.current.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+      stompClient.current.subscribe(`/sub/chatroom/${roomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
@@ -52,11 +52,7 @@ function ChatApp() {
         sender: currentUser.userName,
         message: message,
       };
-      stompClient.current.send(
-        `/pub/chat/message`,
-        {},
-        JSON.stringify(messageObj)
-      );
+      stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
       setMessage(""); // 상태를 이용한 입력 필드 초기화
     }
   };

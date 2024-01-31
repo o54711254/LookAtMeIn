@@ -5,7 +5,7 @@ function ChatRoom({ chatRooms }) {
   return (
     <div>
       {chatRooms.map((room) => (
-        <Link key={room.id} to={"/chat-app/" + room.id}>
+        <Link key={room.id} to={"chat-app/" + room.id}>
           {room.name}
         </Link>
       ))}

@@ -3,12 +3,14 @@ import { Box, Button, Paper } from "@mui/material";
 import Draggable from "react-draggable";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom"; // Link 컴포넌트 추가
+import { Link, Routes, Route } from "react-router-dom"; // Link 컴포넌트 추가
+import ChatApp from "./ChatApp";
 
 function FloatingChat() {
   const [open, setOpen] = useState(false);
   const [chatRooms, setChatRooms] = useState([]); // 채팅방 목록 상태
-  const user = useSelector((store) => store.user.userName);
+  // const user = useSelector((store) => store.user.userName);
+  const user = "ssafy";
 
   const handleToggleChat = () => {
     setOpen(!open);
@@ -19,7 +21,7 @@ function FloatingChat() {
 
   const fetchChatRooms = async () => {
     try {
-      const res = await axiosApi.get(`/chat/rooms/${user}`);
+      const res = await axiosApi.get(`/chatrooms/${user}`);
       setChatRooms(res.data);
     } catch (error) {
       console.log("채팅방 목록을 가져오는데 실패했습니다.", error);
