@@ -40,7 +40,7 @@ function FloatingChat() {
             <Box sx={{ p: 10, maxWidth: 300 }}>
               <div>
                 {chatRooms.map((room) => (
-                  <Link key={room} to={"/chat-app/" + room}>
+                  <Link key={room} to={`/chat-app/${room}`}>
                     {" "}
                     {/* Use Link here */}
                     {room}

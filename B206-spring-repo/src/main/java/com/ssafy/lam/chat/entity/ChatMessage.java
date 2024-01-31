@@ -18,4 +18,14 @@ public class ChatMessage {
     private String sender;
     // private Long senderId;
     private String message;
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "id=" + id +
+                ", chatRoomId=" + chatRoomId +
+                ", sender='" + sender + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

@@ -51,6 +51,7 @@ function ChatApp() {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
       });
     });
+    console.log("방 번호", roomId);
   };
 
   // 웹소켓 연결 해제
@@ -72,7 +73,7 @@ function ChatApp() {
   const sendMessage = () => {
     if (stompClient.current && message) {
       const messageObj = {
-        roomId,
+        chatRoomId: roomId,
         sender: currentUser.userName,
         message: message,
       };

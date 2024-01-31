@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
             System.out.println("authenticationToken = " + authenticationToken);
             Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            System.out.println("authentication = " + authentication);
             tokenInfo = jwtTokenProvider.generateToken(authentication);
         } catch (AuthenticationException e) {
             System.out.println("AuthenticationException");
