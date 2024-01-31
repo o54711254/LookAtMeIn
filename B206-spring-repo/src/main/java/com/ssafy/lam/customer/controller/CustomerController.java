@@ -67,10 +67,12 @@ public class CustomerController {
         }
 
         CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
-                .userId(customer.getUserId())
-                .username(customer.getName())
+                .userId(customer1.getUserId())
+                .username(customer1.getName())
+                .seq(customer1.getSeq())
                 .tokenInfo(tokenInfo)
                 .build();
+
 
         return ResponseEntity.ok(customerTokenInfo);
     }
