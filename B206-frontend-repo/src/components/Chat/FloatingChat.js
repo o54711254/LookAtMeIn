@@ -3,13 +3,14 @@ import { Box, Button, Paper } from "@mui/material";
 import Draggable from "react-draggable";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
-import { Link, Routes, Route } from "react-router-dom"; // Link 컴포넌트 추가
+import { Link, Routes, Route, BrowserRouter } from "react-router-dom"; // Link 컴포넌트 추가
 import ChatApp from "./ChatApp";
 
 function FloatingChat() {
   const [open, setOpen] = useState(false);
   const [chatRooms, setChatRooms] = useState([]); // 채팅방 목록 상태
   // const user = useSelector((store) => store.user.userName);
+
   const user = "ssafy";
 
   const handleToggleChat = () => {
@@ -29,23 +30,33 @@ function FloatingChat() {
   };
 
   return (
-    <Draggable>
-      <Paper style={{ position: "fixed", bottom: 10, right: 10, zIndex: 1000 }}>
-        <Button onClick={handleToggleChat}>{open ? "숨기기" : "채팅"}</Button>
-        {open && (
-          <Box sx={{ p: 10, maxWidth: 300 }}>
-            {/* ChatRoom 컴포넌트의 기능을 여기에 직접 포함시킴 */}
-            <div>
-              {chatRooms.map((room) => (
-                <Link key={room.id} to={"/chat-app/" + room.id}>
-                  {room.name}
-                </Link>
-              ))}
-            </div>
-          </Box>
-        )}
-      </Paper>
-    </Draggable>
+    <BrowserRouter>
+      <Draggable>
+        <Paper
+          style={{ position: "fixed", bottom: 10, right: 10, zIndex: 1000 }}
+        >
+          <Button onClick={handleToggleChat}>{open ? "숨기기" : "채팅"}</Button>
+          {open && (
+            <Box sx={{ p: 10, maxWidth: 300 }}>
+              <div>
+                {chatRooms.map((room) => (
+                  <Link key={room} to={"/chat-app/" + room}>
+                    {" "}
+                    {/* Use Link here */}
+                    {room}
+                  </Link>
+                ))}
+              </div>
+              <Routes>
+                <Route>
+                  <Route path="chat-app/:roomId" element={<ChatApp />} />
+                </Route>
+              </Routes>
+            </Box>
+          )}
+        </Paper>
+      </Draggable>
+    </BrowserRouter>
   );
 }
 

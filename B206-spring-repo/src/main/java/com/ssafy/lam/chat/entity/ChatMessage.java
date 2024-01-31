@@ -16,5 +16,6 @@ public class ChatMessage {
     private Long id;
     private Long chatRoomId;
     private String sender;
+    // private Long senderId;
     private String message;
 }

@@ -92,7 +92,6 @@ function LoginForm() {
           await axiosApi
             .post("/api/customer/login", values, {
               //values에는 이메일과 비밀번호가 담겨 있음
-              withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
             })
             .then((res) => {
               //res는 서버에서 받은 응답 객체
