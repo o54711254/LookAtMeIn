@@ -51,6 +51,8 @@ function LoginForm() {
               //res는 서버에서 받은 응답 객체
               if (res.status === 201) {
                 alert("로그인 성공!");
+                console.log(res.data.responseObj);
+                console.log(res.data)
                 //로그인 성공
                 dispatch(
                   loginUser({
@@ -60,7 +62,7 @@ function LoginForm() {
                     userPw: res.data.responseObj.userPw, // 사용자 비밀번호
                     // role: res.data.responseObj.usertype, // 역할 업데이트
                   })
-                );
+                );  
 
                 //토큰 받아오기
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
@@ -98,9 +100,9 @@ function LoginForm() {
             .then((res) => {
               //res는 서버에서 받은 응답 객체
               if (res.data.status === 200) {
-                console.log(res.data);
                 //로그인 성공
                 console.log(res.data);
+                console.log(res.data.responseObj);
                 dispatch(
                   loginUser({
                     userSeq: res.data.responseObj.userSeq, // 사용자 일련번호

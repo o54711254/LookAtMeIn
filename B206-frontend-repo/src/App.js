@@ -16,7 +16,9 @@ import SearchInput from "./components/Search/SearchInput";
 import ChatApp from "./components/Chat/ChatApp";
 // import Nav from "./components/Nav"
 import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry"
-import ReviewRegist from "./components/ReviewBoard/ReviewList"
+import ReviewRegist from "./components/ReviewBoard/ReviewRegist"
+import Footer from "./components/Footer"
+import Navbar from "./components/Nav"
 
 import './styles/globals.css'
 
@@ -25,12 +27,12 @@ import FindPassword from "./components/Sign/FindPassword";
 function App() {
   return (
     <div>
-      {/* <Nav/> */}
+      <Navbar/>
+      <div className="app-container">
+      <div className="content">
       <BrowserRouter>
         <Link to={"/mypage"}>마이페이지</Link>
         <Link to={"/face"}>  얼굴</Link>
-
-
         <Link to={"/login"}>로그인</Link>
         {/* <SearchInput /> */}
         <Routes>
@@ -70,6 +72,9 @@ function App() {
           </Routes>
       </BrowserRouter>
       <FloatingChat />
+      </div>
+      <Footer />
+    </div>
     </div>
   );
 }
