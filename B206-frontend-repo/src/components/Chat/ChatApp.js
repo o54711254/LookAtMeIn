@@ -1,132 +1,113 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
-import * as StompJs from "@stomp/stompjs";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
+import { Stomp } from "@stomp/stompjs";
 
 function ChatApp() {
-  const [chatList, setChatList] = useState([]);
-  const [chat, setChat] = useState("");
-  const { apply_id } = useParams();
-  const [userId, setUserId] = useState("현재 사용자 ID"); // 사용자 ID 설정
-  const client = useSelector((store) => store.user.userName);
+  // URL에서 채팅방 ID를 가져옴
+  const { roomId } = useParams();
 
-  // 채팅 내용을 서버에서 불러오는 함수
-  const fetchChat = async () => {
-    axiosApi
-      .get(`/rooms/chat`) // 실제 URL로 변경 필요
-      .then((res) => {
-        setChatList(res.data);
-      })
-      .catch((error) => {
-        console.error("채팅 내용을 불러오는 중 에러가 발생했습니다.", error);
-      });
+  // 채팅 메시지 상태
+  const [messages, setMessages] = useState([]);
+
+  // 메시지 입력 상태
+  const [message, setMessage] = useState("");
+
+  // STOMP 클라이언트를 위한 ref. 웹소켓 연결을 유지하기 위해 사용
+  const stompClient = useRef(null);
+
+  // Redux store에서 현재 사용자 정보 가져오기
+  const currentUser = useSelector((state) => state.user);
+
+  // 채팅 메시지 목록의 끝을 참조하는 ref. 이를 이용해 새 메시지가 추가될 때 스크롤을 이동
+  const messagesEndRef = useRef(null);
+
+  // 컴포넌트 마운트 시 실행. 웹소켓 연결 및 초기 메시지 로딩
+  useEffect(() => {
+    connect();
+    fetchMessages();
+
+    // 컴포넌트 언마운트 시 웹소켓 연결 해제
+    return () => disconnect();
+  }, [roomId]);
+
+  // 메시지 목록이 업데이트될 때마다 스크롤을 최하단으로 이동시키는 함수
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // 메시지 입력 시 호출되는 함수
-  const handleChange = (event) => {
-    setChat(event.target.value);
-  };
-
-  // 메시지 전송 시 호출되는 함수
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    publish(chat);
-  };
-
-  // WebSocket 연결 설정 함수
+  // 웹소켓 연결 설정
   const connect = () => {
-    client.current = new StompJs.Client({
-      brokerURL: "ws://localhost:80/ws", // 실제 WebSocket 서버 URL로 변경 필요
-      onConnect: () => {
-        console.log("WebSocket 연결 성공");
-        subscribe();
-      },
-      onStompError: (error) => {
-        console.error("WebSocket 연결 오류", error);
-      },
-    });
-    client.current.activate();
-  };
-
-  // 메시지 구독 설정 함수
-  const subscribe = () => {
-    client.current.subscribe("/sub/chat/" + apply_id, (message) => {
-      const json_message = JSON.parse(message.body);
-      setChatList((prevList) => [...prevList, json_message]);
+    const socket = new WebSocket("ws://localhost:80/ws");
+    stompClient.current = Stomp.over(socket);
+    stompClient.current.connect({}, () => {
+      stompClient.current.subscribe(`/sub/chatroom/${roomId}`, (message) => {
+        const newMessage = JSON.parse(message.body);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+      });
     });
   };
 
-  // 메시지 전송 함수
-  const publish = (chat) => {
-    if (!client.current.connected) return;
-
-    client.current.publish({
-      destination: "/pub/chat",
-      body: JSON.stringify({ applyId: apply_id, senderId: userId, text: chat }),
-    });
-
-    setChat("");
-  };
-
-  // 연결 해제 함수
+  // 웹소켓 연결 해제
   const disconnect = () => {
-    if (client.current.connected) {
-      client.current.deactivate();
+    if (stompClient.current) {
+      stompClient.current.disconnect();
     }
   };
 
-  // 채팅 메시지 UI 렌더링 함수
-  const renderChatMessages = () => {
-    return chatList.map((message, index) => (
-      <div
-        key={index}
-        style={{ textAlign: message.senderId === userId ? "right" : "left" }}
-      >
-        <div
-          style={{
-            display: "inline-block",
-            margin: "5px",
-            padding: "10px",
-            backgroundColor: "#f0f0f0",
-            borderRadius: "10px",
-          }}
-        >
-          {message.text}
-        </div>
-      </div>
-    ));
+  // 기존 채팅 메시지를 서버로부터 가져오는 함수
+  const fetchMessages = () => {
+    axiosApi
+      .get(`/chatroom/${roomId}/messages`)
+      .then((response) => setMessages(response.data))
+      .catch((error) => console.error("Failed to fetch chat messages.", error));
   };
 
-  useEffect(() => {
-    fetchChat();
-    connect();
-
-    return () => disconnect();
-  }, []);
+  // 새 메시지를 보내는 함수
+  const sendMessage = () => {
+    if (stompClient.current && message) {
+      const messageObj = {
+        roomId,
+        sender: currentUser.userName,
+        message: message,
+      };
+      stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
+      setMessage(""); // 입력 필드 초기화
+    }
+  };
 
   return (
     <div>
-      <div
-        style={{
-          overflow: "auto",
-          height: "400px",
-          border: "1px solid #ccc",
-          padding: "10px",
-          marginBottom: "10px",
-        }}
-      >
-        {renderChatMessages()}
+      {/* 메시지 목록을 표시하는 부분 */}
+      <div>
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            style={{
+              textAlign: msg.sender === currentUser.userName ? "right" : "left",
+            }}
+          >
+            {msg.sender !== currentUser.userName && <p>{msg.sender}</p>}
+            <p>{msg.message}</p>
+          </div>
+        ))}
+        {/* 새 메시지가 추가될 때 스크롤을 이동시키는 요소 */}
+        <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={handleSubmit}>
+      {/* 메시지 입력 및 전송 부분 */}
+      <div>
         <input
           type="text"
-          value={chat}
-          onChange={handleChange}
-          style={{ width: "80%", marginRight: "10px" }}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
-        <button type="submit">보내기</button>
-      </form>
+        <button onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 }

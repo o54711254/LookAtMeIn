@@ -1,150 +1,93 @@
 package com.ssafy.lam.customer.model.service;
 
-import com.ssafy.lam.customer.model.mapper.CustomerMapper;
+import com.ssafy.lam.customer.controller.CustomerController;
 import com.ssafy.lam.customer.model.repository.CustomerRepository;
-import com.ssafy.lam.dto.Customer;
+import com.ssafy.lam.entity.Customer;
+import com.ssafy.lam.entity.TokenInfo;
+import com.ssafy.lam.entity.User;
+import com.ssafy.lam.user.model.service.UserService;
+import com.ssafy.lam.util.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Service
-public class CustomerServiceImpl implements CustomerService {
 
-    private CustomerRepository customerRepository;
-    private CustomerMapper customerMapper;
-//    private final PasswordEncoder passwordEncoder;
+public class CustomerServiceImpl implements CustomerService{
 
+    private final CustomerRepository customerRepository;
+    protected final AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    protected final JwtTokenProvider jwtTokenProvider;
+    private Logger log = LoggerFactory.getLogger(CustomerServiceImpl.class);
     @Autowired
-//    public CustomerServiceImpl(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
-//        this.customerRepository = customerRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
-
-//    public CustomerServiceImpl(CustomerRepository customerRepository) {
-//        this.customerRepository = customerRepository;
-//    }
-    public CustomerServiceImpl(CustomerRepository customerRepository, CustomerMapper customerMapper) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, AuthenticationManagerBuilder authenticationManagerBuilder, JwtTokenProvider jwtTokenProvider) {
+        log.info("CustomerServiceImpl init");
         this.customerRepository = customerRepository;
-        this.customerMapper = customerMapper;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
-    }
-
-    @Override
-    public Customer getCustomer(String id) {
-        return customerRepository.findById(id).orElse(null);
+    public Customer getCustomer(long seq) {
+        return customerRepository.findById(seq).orElse(null);
     }
 
     @Override
     public Customer createCustomer(Customer customer) {
-        Customer newCustomer = customer.toEntity(customer.getSeq(), customer.getId(), customer.getPassword(), customer.getToken());
-//        Customer newCustomer = Customer.builder().seq(customer.getSeq()).id(customer.getId())
-//                .password(customer.getPassword()).token(customer.getToken()).build();
-        System.out.println("newCustomer = " + newCustomer);
+        log.info("createCustomer customer :{}" , customer);
+        if(customerRepository.existsById(customer.getSeq()))
+            throw new RuntimeException("이미 존재하는 고객입니다.");
+//        customer = (Customer) customer.toEntity(customer.getSeq(), customer.getUserId(), customer.getPassword(), customer.getRoles());
         return customerRepository.save(customer);
     }
 
     @Override
-    public Customer updateCustomer(int seq, Customer updatedCustomer) {
-//        if (customerRepository.existsById(seq)) {
-//            updatedCustomer.toEntity();
-//            return customerRepository.save(updatedCustomer);
-//        }
-//        return null; // Handle error, customer not found
-        Customer oldCustomer = updatedCustomer.toEntity(seq, updatedCustomer.getId(), updatedCustomer.getPassword(), updatedCustomer.getToken());
-//        Customer newCustomer = Customer.builder().seq(seq).id(updatedCustomer.getId())
-//                .password(updatedCustomer.getPassword()).token(customer.getToken()).build();
-        return customerRepository.save(oldCustomer);
+    public Customer updateCustomer(long seq, Customer updatedCustomer) {
+        return null;
     }
 
     @Override
-    public void deleteCustomer(int seq) {
-        customerRepository.deleteById(seq);
-    }
+    public void deleteCustomer(long seq) {
 
-//    public UserDetails loadByName(String name) {
-//        Customer customer = customerRepository.findCustomerByName(name);
-//        if (customer == null) {
-//            throw new UsernameNotFoundException("User not found with username: " + name);
-//        }
-//        return org.springframework.security.core.userdetails.User.builder()
-//                .username(customer.getId())
-//                .password(customer.getPassword())
-//                .roles("USER")
-//                .build();
-//    }
-//
-//    @Override
-//    public Customer save(Customer customer) {
-//        customer.toEntity(customer.getId(), passwordEncoder.encode(customer.getPassword()));
-////                .setPassword(passwordEncoder.encode(customer.getPassword()));
-//        return customerRepository.save(customer);
-//    }
-
-    // 로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인로그인
-//    private CustomerMapper customerMapper;
-//
-//    public CustomerServiceImpl(CustomerMapper customerMapper) {
-//        super();
-//        this.customerMapper = customerMapper;
-//    }
-
-    @Override
-    public Customer login(Customer customer) throws Exception {
-        return customerMapper.login(customer);
     }
 
     @Override
-    public Customer findMemberById(String userId) throws Exception {
-        return customerMapper.findMemberById(userId);
+    public TokenInfo getLoginToken(Customer customer) {
+        TokenInfo tokenInfo = null;
+        try{
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(customer.getUserId(), customer.getPassword());
+            System.out.println("customer instanceof UserDetails = " + (customer instanceof UserDetails));
+            System.out.println("authenticationToken = " + authenticationToken);
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            System.out.println("authentication = " + authentication);
+            tokenInfo = jwtTokenProvider.generateToken(authentication);
+            return tokenInfo;
+        }catch(AuthenticationException e){
+            System.out.println("AuthenticationException");
+            System.out.println("e.getMessage() = " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+
     }
 
     @Override
-    public void saveRefreshToken(String id, String refreshToken) throws Exception {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("id", id);
-        map.put("token", refreshToken);
-        customerMapper.saveRefreshToken(map);
+    public Customer findByUserId(String customerId) {
+        return customerRepository.findByUserId(customerId).orElse(null);
     }
-
-    @Override
-    public Object getRefreshToken(String userId) throws Exception {
-        return customerMapper.getRefreshToken(userId);
-    }
-
-    @Override
-    public void deleRefreshToken(String id) throws Exception {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("id", id);
-        map.put("token", null);
-        customerMapper.deleteRefreshToken(map);
-    }
-
-
-    @Override
-    public int saveMember(Customer customer) throws SQLException {
-        // TODO Auto-generated method stub
-        return customerMapper.saveMember(customer);
-    }
-
-    @Override
-    public int modifyMember(Customer customer) throws SQLException {
-        // TODO Auto-generated method stub
-        return customerMapper.modifyMember(customer);
-    }
-
-    @Override
-    public int deleteMember(String userId) throws SQLException {
-        // TODO Auto-generated method stub
-        return customerMapper.deleteMember(userId);
-    }
-
 
 }
