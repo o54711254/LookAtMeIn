@@ -13,7 +13,7 @@ import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const validationSchema = yup.object({
-  id: yup
+  userId: yup
     .string()
     // .email("올바른 아이디를 입력해주세요.")
     .required("아이디 입력해주세요."),
@@ -35,7 +35,7 @@ function LoginForm() {
 
   const formik = useFormik({
     initialValues: {
-      id: "",
+      userId: "",
       password: "",
     },
     validationSchema: validationSchema,
@@ -48,14 +48,14 @@ function LoginForm() {
           await axiosApi.post("/api/customer/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
             if (res.status === 201) {
-              console.log("userData", res.data.userSeq);
+              console.log("userData", res.data.username);
               window.alert("로그인 성공!");
               //로그인 성공
               dispatch(
                 loginUser({
                   userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
                   userId: res.data.responseObj.userId, // 사용자 아이디
-                  userName: res.data.responseObj.userName, // 사용자 이름
+                  userName: res.data.name, // 사용자 이름
                   userPw: res.data.responseObj.userPw, // 사용자 비밀번호
                   // role: res.data.responseObj.usertype, // 역할 업데이트
                 })

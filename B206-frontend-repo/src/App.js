@@ -18,16 +18,15 @@ import ChatApp from "./components/Chat/ChatApp";
 import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry"
 import ReviewRegist from "./components/ReviewBoard/ReviewRegist"
 import Footer from "./components/Footer"
-import Navbar from "./components/Nav"
 
 import "./styles/globals.css";
 
 import FindPassword from "./components/Sign/FindPassword";
+import ReserveModal from "./components/Modal/DateTimePickerModal"
 
 function App() {
   return (
     <div>
-      <Navbar/>
       <div className="app-container">
       <div className="content">
       <BrowserRouter>
@@ -71,6 +70,9 @@ function App() {
           <Route path="/reviewregist" element={<ReviewRegist />} />
           </Routes>
       </BrowserRouter>
+      <div>
+        <ReserveModal/>
+      </div>
       <FloatingChat />
       </div>
       <Footer />
