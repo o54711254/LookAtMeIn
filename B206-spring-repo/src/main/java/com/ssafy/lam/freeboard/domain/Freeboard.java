@@ -27,7 +27,7 @@ public class Freeboard {
     private int cnt;
 
     @Column(name="free_board_regdate")
-    private LocalDateTime regdate;;
+    private LocalDateTime registerDate;;
 
     @Column(name="free_board_complain")
     private boolean complain;
@@ -36,18 +36,17 @@ public class Freeboard {
     private boolean isDeleted;
 
     @OneToOne
-    @JoinColumn(name="user_seq")
-    @Column(name="free_board_customer_seq")
+    @JoinColumn(name="free_board_customer_seq")
     private User user;
 
 
     @Builder
-    public Freeboard(Long freeboardSeq, String title, String content, int cnt, LocalDateTime regdate, boolean complain, boolean isDeleted, User user) {
+    public Freeboard(Long freeboardSeq, String title, String content, int cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, User user) {
         this.freeboardSeq = freeboardSeq;
         this.title = title;
         this.content = content;
         this.cnt = cnt;
-        this.regdate = regdate;
+        this.registerDate = registerDate;
         this.complain = complain;
         this.isDeleted = isDeleted;
         this.user = user;
