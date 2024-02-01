@@ -2,23 +2,25 @@ import React from 'react';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 
-const DeleteButton = ({ freeBoard_seq, onDeleted }) => {
-  const handleDelete = () => {
-    axios.put(`/freeBoard/delete/${freeBoard_seq}`)
-      .then(response => {
-        console.log('Item deleted:', response.data);
-        onDeleted(); // 상위 컴포넌트의 삭제 처리 콜백
-      })
-      .catch(error => {
-        console.error('There was an error!', error);
-      });
+const FreeBoardDelete = ({ freeBoard_seq, onUpdated }) => {
+  const handleUpdate = () => {
+    axios.put(`/freeBoard/update/${freeBoard_seq}`, {
+      freeBoard_complain: true
+    })
+    .then(response => {
+      console.log('Complain flag updated:', response.data);
+      onUpdated(); // 상위 컴포넌트의 업데이트 처리 콜백
+    })
+    .catch(error => {
+      console.error('There was an error!', error);
+    });
   };
 
   return (
-    <Button variant="contained" color="error" onClick={handleDelete}>
-      삭제
+    <Button variant="contained" color="error" onClick={handleUpdate}>
+      신고하기
     </Button>
   );
 };
 
-export default DeleteButton;
+export default FreeBoardDelete;

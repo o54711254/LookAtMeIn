@@ -29,6 +29,7 @@ import ReserveModal from "./components/Modal/DateTimePickerModal";
 import Report from "./components/Modal/ReviewReport.js"
 import reviewDelete from "./components/ReviewBoard/ReviewDelete.js"
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
+import Favorite from "./components/HospitalBoard/HospitalWish.js"
 
 function App() {
   return (
@@ -92,6 +93,7 @@ function App() {
             <Report/>
             <ReserveModal />
             <ReviewDelete/>
+            <Favorite/>
           </div>
           <FloatingChat />
         </div>
