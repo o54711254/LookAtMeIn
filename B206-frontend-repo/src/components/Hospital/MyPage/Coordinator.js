@@ -12,7 +12,7 @@ function Coordinator() {
         setPostList(res.data);
       })
       .catch((error) => {
-        console.log("의사 정보를 가져오는데 실패했습니다.", error);
+        console.log("코디네이터 정보를 가져오는데 실패했습니다.", error);
       });
   });
   return (
