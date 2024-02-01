@@ -31,6 +31,9 @@ import reviewDelete from "./components/ReviewBoard/ReviewDelete.js"
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import Favorite from "./components/HospitalBoard/HospitalWish.js"
 
+import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
+import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
+
 function App() {
   return (
     <div>
@@ -86,6 +89,8 @@ function App() {
                 {/* meeting */}
                 {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
                 {/* <Route path="/search/:query" element={<SearchList />} /> */}
+                <Route path="/worldcup/man" element={<WorldcupMan />} />
+                <Route path="/worldcup/woman" element={<WorldcupWoman />} />
               </Routes>
             </div>
           </BrowserRouter>
