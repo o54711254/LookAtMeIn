@@ -67,20 +67,7 @@ public class CustomerServiceImpl implements CustomerService{
 //
 //    }
 
-    @Override
-    public TokenInfo getLoginToken(User user){
-        try{
-            return userService.getLoginToken(user);
-        }catch (AuthenticationException e){
-            log.info(e.getMessage());
-            e.printStackTrace();
-        }catch(RuntimeException e){
-            log.info(e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
-//
+
     @Override
     public Customer findByCustomerId(String customerId) {
         return customerRepository.findByUserUserId(customerId).orElse(null);

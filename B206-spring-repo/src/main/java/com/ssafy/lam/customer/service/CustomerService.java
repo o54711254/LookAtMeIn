@@ -11,8 +11,6 @@ public interface CustomerService {
 //    Customer updateCustomer(long seq, CustomerDto updatedCustomer);
 //    void deleteCustomer(long seq);
 //
-    TokenInfo getLoginToken(User user);
-
 //
     Customer findByCustomerId(String customerId);
 //}

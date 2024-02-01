@@ -106,14 +106,5 @@ public class UserController {
     }
 
 
-
-    @PostMapping("/regist")
-    @Operation(summary = "회원가입")
-    public ResponseEntity<Void> createCustomer(@RequestBody User user) {
-        log.debug("login userId : {}", user.getUserId());
-        User createdUser = userService.createUser(user);
-
-//        return new ResponseEntity<>(createdCustomer, HttpStatus.OK);
-        return ResponseEntity.ok().build();
-    }
+    
 }
