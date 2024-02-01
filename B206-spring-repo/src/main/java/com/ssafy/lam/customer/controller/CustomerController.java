@@ -3,19 +3,16 @@ package com.ssafy.lam.customer.controller;
 
 import com.ssafy.lam.customer.dto.CustomerDto;
 import com.ssafy.lam.customer.dto.CustomerTokenInfo;
-import com.ssafy.lam.customer.model.service.CustomerService;
-import com.ssafy.lam.entity.Customer;
+import com.ssafy.lam.customer.service.CustomerService;
+import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.entity.TokenInfo;
-import com.ssafy.lam.entity.User;
+import com.ssafy.lam.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -49,7 +46,6 @@ public class CustomerController {
                 .build();
 
         log.info("로그인 User 정보: {}", user);
-        TokenInfo tokenInfo = customerService.getLoginToken(user);
 
         Customer customer1 = customerService.findByCustomerId(user.getUserId());
 
@@ -62,6 +58,7 @@ public class CustomerController {
 //            return ResponseEntity.notFound().build();
             return null;
         }
+        TokenInfo tokenInfo = customerService.getLoginToken(user);
 
         CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
                 .userId(customer1.getUser().getUserId())

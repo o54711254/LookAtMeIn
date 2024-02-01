@@ -1,14 +1,13 @@
 package com.ssafy.lam.reserve.service;
 
-import com.ssafy.lam.customer.model.repository.CustomerRepository;
-import com.ssafy.lam.entity.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
+import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.domain.ReserveRepository;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveSaveRequestDto;
-import com.ssafy.lam.user.domain.CoordInfo;
-import com.ssafy.lam.user.domain.CoordInfoRepository;
-import com.ssafy.lam.user.domain.CustomerInfo;
+import com.ssafy.lam.coordinator.domain.Coordinator;
+import com.ssafy.lam.coordinator.domain.CoordInfoRepository;
 //import com.ssafy.lam.user.domain.CustomerInfoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -34,16 +33,15 @@ public class ReserveService {
         Customer customerInfo = customerRepository.findById(dto.getCustomerInfoSeq())
                 .orElseThrow(() -> new IllegalArgumentException("CustomerInfo not found. ID: " + dto.getCustomerInfoSeq()));
 
-        CoordInfo coordInfo = coordInfoRepository.findById(dto.getCoordInfoSeq())
+        Coordinator coordinator = coordInfoRepository.findById(dto.getCoordInfoSeq())
                 .orElseThrow(() -> new IllegalArgumentException("CoordInfo not found. ID: " + dto.getCoordInfoSeq()));
 
-        Reserve reserve = dto.toEntity(customerInfo, coordInfo);
+        Reserve reserve = dto.toEntity(customerInfo, coordinator);
         return reserveRepository.save(reserve);
     }
 
     //=================== READ ===================
     public List<ReserveResponseDto> getReservesByUser(long userSeq) {
-//        List<CustomerInfo> customerInfos = customerInfoRepository.findByUserSeq(userSeq);
         List<Customer> customerInfos = customerRepository.findAllByUserUserSeq(userSeq);
 
         return customerInfos.stream()

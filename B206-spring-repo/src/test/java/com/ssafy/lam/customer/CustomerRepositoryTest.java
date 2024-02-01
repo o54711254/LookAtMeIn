@@ -1,8 +1,6 @@
 package com.ssafy.lam.customer;
 
-import com.ssafy.lam.customer.model.repository.CustomerRepository;
-import com.ssafy.lam.entity.Customer;
-import org.assertj.core.api.Assertions;
+import com.ssafy.lam.customer.domain.CustomerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
