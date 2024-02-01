@@ -26,10 +26,10 @@ import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
 
 import FindPassword from "./components/Sign/FindPassword";
 import ReserveModal from "./components/Modal/DateTimePickerModal";
-import Report from "./components/Modal/ReviewReport.js"
-import reviewDelete from "./components/ReviewBoard/ReviewDelete.js"
+import Report from "./components/Modal/ReviewReport.js";
+import reviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
-import Favorite from "./components/HospitalBoard/HospitalWish.js"
+import Favorite from "./components/HospitalBoard/HospitalWish.js";
 
 import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
 import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
@@ -79,7 +79,7 @@ function App() {
                 {/* Hospital */}
                 <Route path="/hospital-mypage/*" element={<HospitalMyPage />} />
                 {/* Admin */}
-                {/* <Route path="/admin-mypage/*" element={<AdminMyPage />} /> */}
+                <Route path="/admin-mypage/*" element={<AdminMyPage />} />
                 {/* ReviewBoard */}
                 {/* <Route path="/reviewboard/*" element={<ReviewBoardList />} /> */}
                 {/* FreeBoard */}
@@ -95,10 +95,10 @@ function App() {
             </div>
           </BrowserRouter>
           <div>
-            <Report/>
+            <Report />
             <ReserveModal />
-            <ReviewDelete/>
-            <Favorite/>
+            <ReviewDelete />
+            <Favorite />
           </div>
           <FloatingChat />
         </div>

@@ -85,7 +85,7 @@ function ChatApp() {
   return (
     <div>
       {/* 메시지 목록을 표시하는 부분 */}
-      <div style={{ height: "400px", overflowY: "auto" }}>
+      <div style={{ height: "300px", overflowY: "auto" }}>
         {messages.map((msg, index) => (
           <div
             key={index}
