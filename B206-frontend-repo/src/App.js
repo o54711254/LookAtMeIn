@@ -54,7 +54,10 @@ function App() {
                   element={<HospitalRegistForm />}
                 />
                 <Route path="/findPassword" element={<FindPassword />} />
-
+                <Route
+                  path="/RequestBoardList"
+                  element={<RequestBoardList />}
+                />
                 {/*Customer
           마이페이지 내부에서 라우트 하면 될듯
           */}

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axiosApi from '../../api/axiosApi';
+import React, { useState, useEffect } from "react";
+import axiosApi from "../../api/axiosApi";
 
 function ReviewBoardList() {
   const [reviewDetail, setReviewDetail] = useState([]);
 
   useEffect(() => {
     axiosApi
-    .get(`/api/reviewBoard/${reviewDetail.reviewBoard_seq}`)
-    .then((res) => {
-      setReviewDetail(res.data.responseObj);
-    });
-}, []);
+      .get(`/api/reviewBoard/${reviewDetail.reviewBoard_seq}`)
+      .then((res) => {
+        setReviewDetail(res.data.responseObj);
+      });
+  }, []);
 
   return (
     <div>
