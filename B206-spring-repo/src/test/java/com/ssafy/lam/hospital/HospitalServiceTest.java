@@ -36,7 +36,7 @@ public class HospitalServiceTest {
                 .hospitalInfo_phoneNumber("010-1234-1234")
                 .hospitalInfo_email("wasda@gmail.com")
                 .hospitalInfo_address("서울시 강남구")
-                .hospiaalInfo_open("09:00")
+                .hospitalInfo_open("09:00")
                 .hospitalInfo_close("18:00")
                 .hospitalInfo_url("www.naver.com")
                 .build();

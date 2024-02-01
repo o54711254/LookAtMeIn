@@ -31,6 +31,7 @@ public class HosptialController {
 
         hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
         return ResponseEntity.ok().build();
-
     }
+
+
 }

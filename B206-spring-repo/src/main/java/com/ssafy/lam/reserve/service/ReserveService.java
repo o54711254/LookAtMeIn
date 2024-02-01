@@ -7,7 +7,7 @@ import com.ssafy.lam.reserve.domain.ReserveRepository;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveSaveRequestDto;
 import com.ssafy.lam.coordinator.domain.Coordinator;
-import com.ssafy.lam.coordinator.domain.CoordInfoRepository;
+import com.ssafy.lam.coordinator.domain.CoordinatorRepository;
 //import com.ssafy.lam.user.domain.CustomerInfoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ReserveService {
     private final ReserveRepository reserveRepository;
 //    private final CustomerInfoRepository customerInfoRepository;
     private final CustomerRepository customerRepository;
-    private final CoordInfoRepository coordInfoRepository;
+    private final CoordinatorRepository coordinatorRepository;
 
     //=================== INSERT ===================
     @Transactional
@@ -33,7 +33,7 @@ public class ReserveService {
         Customer customerInfo = customerRepository.findById(dto.getCustomerInfoSeq())
                 .orElseThrow(() -> new IllegalArgumentException("CustomerInfo not found. ID: " + dto.getCustomerInfoSeq()));
 
-        Coordinator coordinator = coordInfoRepository.findById(dto.getCoordInfoSeq())
+        Coordinator coordinator = coordinatorRepository.findById(dto.getCoordInfoSeq())
                 .orElseThrow(() -> new IllegalArgumentException("CoordInfo not found. ID: " + dto.getCoordInfoSeq()));
 
         Reserve reserve = dto.toEntity(customerInfo, coordinator);
