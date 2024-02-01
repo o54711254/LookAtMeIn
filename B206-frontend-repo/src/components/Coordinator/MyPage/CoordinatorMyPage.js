@@ -1,6 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
+import Consulting from "./Consulting";
+import Reservation from "./Reservation";
 
 function CoordinatorMyPage() {
-  return <div>코디네이터 마이페이지</div>;
+  return (
+    <div>
+      <Link to={"consult"}>상담내역</Link>
+      <Link to={"reserve"}>상담예약내역</Link>
+      <Routes>
+        <Route path="consult" element={<Consulting />} />
+        <Route path="reserve" element={<Reservation />} />
+      </Routes>
+    </div>
+  );
 }
 export default CoordinatorMyPage;

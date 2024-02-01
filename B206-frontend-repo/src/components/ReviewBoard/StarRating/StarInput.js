@@ -45,7 +45,7 @@ const StarInput = ({ onClickRating, value, isHalf }) => {
     <>
       <Input type="radio" name="rating" id={`star${value}`} value={value} />
       <Label
-        onClick={handleClickRatingInput}
+        onClick={() => handleClickRatingInput(value)}
         isHalf={isHalf}
         htmlFor={`star${value}`}
       >

@@ -5,20 +5,19 @@ import axiosApi from "axios";
 import logo from "../../assets/lab_logo.png";
 
 function FindPassword() {
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = e.target.emil.value;
+    const email = e.target.emil.value; //input에서 입력받은 이메일 값
 
     try {
+      //이메일 존재 여부 확인
       const response = await axiosApi.post("/customer/resetpw", { email });
 
-      if (response.data.status === 200) {
+      if (response.status === 200) {
         //꼭 status 아니어도 ㄱㅊ 백이랑 담에 얘기해봐서 해당 emil유저 있으면 뭐라고 답할지 얘기해봐야징
         window.alert("임시 비밀번호가 입력하신 이메일로 발송되었습니다.");
       } else {
-        window.alert("해당 회원은 존재하지 않습니다.");
+        window.alert("임시 비밀번호가 입력하신 이메일로 발송되었습니다.");
       }
     } catch (error) {
       console.error("에러남!! : ", error);

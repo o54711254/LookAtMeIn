@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user", // 리듀서의 이름
   initialState: {
-    userSeq: "", // 사용자 일련번호
+    userSeq: "asdfasdf", // 사용자 역할
     userId: "", // 사용자 아이디
     userName: "", // 사용자 이름
     userPw: "", // 사용자 비밀번호
