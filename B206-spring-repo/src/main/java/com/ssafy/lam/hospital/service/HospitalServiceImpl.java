@@ -41,13 +41,14 @@ public class HospitalServiceImpl implements HospitalService{
         Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
-                .address(hospitalDto.getHospitalInfo_address())
+                .address(hospitalDto.getHospitalInfo_addresss())
                 .intro(hospitalDto.getHospitalInfo_introduce())
-                .openTime(hospitalDto.getHospiaalInfo_open())
+                .address(hospitalDto.getHospitalInfo_addresss())
+                .email(hospitalDto.getHospitalInfo_email())
+                .openTime(hospitalDto.getHospitalInfo_open())
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
-
         return hospitalRepostiory.save(hospital);
 
 
