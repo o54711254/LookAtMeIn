@@ -26,6 +26,7 @@ import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
 
 import FindPassword from "./components/Sign/FindPassword";
 import ReserveModal from "./components/Modal/DateTimePickerModal";
+import Report from "./components/Modal/ReviewReport.js"
 
 function App() {
   return (
@@ -86,6 +87,7 @@ function App() {
             </div>
           </BrowserRouter>
           <div>
+            <Report/>
             <ReserveModal />
           </div>
           <FloatingChat />

@@ -74,7 +74,7 @@ function FaceSymmetry() {
                     <canvas ref={canvasRef} />
                 </>
             )}
-            {asymmetryScore !== null && <p>좌우 비대칭률: {asymmetryScore.toFixed(2)} % 입니다.</p>}
+            {asymmetryScore !== null && <p>좌우 비대칭률: {asymmetryScore.toFixed(2)/2} % 입니다.</p>}
         </div>
     );
 }
