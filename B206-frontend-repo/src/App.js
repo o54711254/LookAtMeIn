@@ -41,7 +41,7 @@ function App() {
         <div className="content">
           <BrowserRouter>
             <Nav />
-            <div style={{ marginTop: "10vh", height: "88vh" }}>
+            <div>
               <Routes>
                 {/*Sign*/}
                 <Route path="/" element={<Home />} />

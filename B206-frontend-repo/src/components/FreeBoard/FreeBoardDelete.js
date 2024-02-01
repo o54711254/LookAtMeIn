@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 
 const FreeBoardDelete = ({ freeBoard_seq, onUpdated }) => {
   const handleUpdate = () => {
-    axios.put(`/freeBoard/update/${freeBoard_seq}`, {
+    axios.put(`/freeBoard/delete/${freeBoard_seq}`, {
       freeBoard_complain: true
     })
     .then(response => {

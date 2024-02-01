@@ -166,7 +166,6 @@ function HospitalRegistForm() {
     <>
       <div className="hospitalRegistForm">
         <div>
-          <img src={logo} alt="로고사진" />
           <h1>룩앳미인</h1>
         </div>
         <form onSubmit={formik.handleSubmit}>
