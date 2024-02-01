@@ -2,6 +2,7 @@ package com.ssafy.lam.reserve.domain;
 
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.coordinator.domain.Coordinator;
+import com.ssafy.lam.hospital.domain.Hospital;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,13 +25,13 @@ public class Reserve {
 //    private CustomerInfo customerInfo;
 
     @ManyToOne
-    @JoinColumn(name = "coord_info_seq")
-    private Coordinator coordinator;
+    @JoinColumn(name = "hos_info_seq")
+    private Hospital hospital;
 
     @Builder
-    public Reserve(Long reserveTime, Customer customerInfo, Coordinator coordinator) {
+    public Reserve(Long reserveTime, Customer customerInfo, Hospital hospital) {
         this.reserveTime = reserveTime;
         this.customerInfo = customerInfo;
-        this.coordinator = coordinator;
+        this.hospital = hospital;
     }
 }

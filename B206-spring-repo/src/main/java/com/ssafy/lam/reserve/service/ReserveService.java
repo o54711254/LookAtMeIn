@@ -1,9 +1,9 @@
 package com.ssafy.lam.reserve.service;
 
-import com.ssafy.lam.coordinator.domain.CoordInfoRepository;
-import com.ssafy.lam.coordinator.domain.Coordinator;
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.domain.CustomerRepository;
+import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.domain.ReserveRepository;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
@@ -23,7 +23,7 @@ public class ReserveService {
     private final ReserveRepository reserveRepository;
     //    private final CustomerInfoRepository customerInfoRepository;
     private final CustomerRepository customerRepository;
-    private final CoordInfoRepository coordInfoRepository;
+    private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
 
     //=================== INSERT ===================
@@ -31,17 +31,21 @@ public class ReserveService {
     public Reserve saveReserve(ReserveSaveRequestDto dto) {
 //        CustomerInfo customerInfo = customerInfoRepository.findById(dto.getCustomerInfoSeq())
 //                .orElseThrow(() -> new IllegalArgumentException("CustomerInfo not found. ID: " + dto.getCustomerInfoSeq()));
-        Customer customerInfo = customerRepository.findById(dto.getCustomerInfoSeq())
+        Customer customerInfo = customerRepository.findByUserUserSeq(dto.getCustomerInfoSeq())
                 .orElseThrow(() -> new IllegalArgumentException("CustomerInfo not found. ID: " + dto.getCustomerInfoSeq()));
 
-        Coordinator coordinator = coordInfoRepository.findById(dto.getCoordInfoSeq())
-                .orElseThrow(() -> new IllegalArgumentException("CoordInfo not found. ID: " + dto.getCoordInfoSeq()));
+//        System.out.println("dto.getHospitalInfoSeq()) ");
 
-        boolean isCustomer = userRepository.findById(customerInfo.getCustomerSeq()).equals("CUSTOMER");
-        boolean isCoordi = userRepository.findById(coordinator.getCoordInfoSeq()).equals("HOSPITAL");
+        Hospital hospital = hospitalRepository.findByUserUserSeq(dto.getHospitalInfoSeq())
+                .orElseThrow(() -> new IllegalArgumentException("HosInfo not found. ID: " + dto.getHospitalInfoSeq()));
 
-        if (isCustomer && isCoordi) {
-            Reserve reserve = dto.toEntity(customerInfo, coordinator);
+
+//        boolean isCustomer = userRepository.findById(customerInfo.getCustomerSeq());
+        boolean isCustomer = customerInfo.getUser().getUserType().equals("CUSTOMER");
+        boolean isHospital = hospital.getUser().getUserType().equals("HOSPITAL");
+
+        if (isCustomer && isHospital) {
+            Reserve reserve = dto.toEntity(customerInfo, hospital);
             return reserveRepository.save(reserve);
         } else {
             throw new IllegalArgumentException("User roles do not match the expected roles.");

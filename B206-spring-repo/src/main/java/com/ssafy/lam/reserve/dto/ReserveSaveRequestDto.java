@@ -2,6 +2,7 @@ package com.ssafy.lam.reserve.dto;
 
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.coordinator.domain.Coordinator;
+import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.reserve.domain.Reserve;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,13 +16,13 @@ public class ReserveSaveRequestDto {
 
     private long reserveTime;
     private long customerInfoSeq;
-    private long coordInfoSeq;
+    private long hospitalInfoSeq;
 
-    public Reserve toEntity(Customer customerInfo, Coordinator coordinator) {
+    public Reserve toEntity(Customer customerInfo, Hospital hospital) {
         return Reserve.builder()
                 .reserveTime(this.reserveTime)
                 .customerInfo(customerInfo)
-                .coordinator(coordinator)
+                .hospital(hospital)
                 .build();
     }
 }
