@@ -1,8 +1,11 @@
 package com.ssafy.lam.reviewBoard.controller;
 
-import com.ssafy.lam.entity.ReviewBoard;
-import com.ssafy.lam.reviewBoard.model.service.ReviewBoardService;
+import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
+import com.ssafy.lam.reviewBoard.dto.ReviewBoardDto;
+import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +17,18 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reviewBoard")
+//@SpringBootTest
 public class ReviewBoardController {
 
-//    private Logger log = LoggerFactory.getLogger(UserController.class);
+    private Logger log = LoggerFactory.getLogger(ReviewBoardController.class);
 
     @Autowired
     private final ReviewBoardService reviewBoardService;
 
-    public ReviewBoardController(ReviewBoardService reviewBoardService) { this.reviewBoardService = reviewBoardService; }
+    public ReviewBoardController(ReviewBoardService reviewBoardService) {
+        log.info("ReviewBoardController init");
+        this.reviewBoardService = reviewBoardService;
+    }
 
     @GetMapping("/list")
     @Operation(summary = "모든 후기 정보를 반환한다.")
@@ -72,26 +79,30 @@ public class ReviewBoardController {
         return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
 
+    @GetMapping("/customerSeq/{customerSeq}")
+    @Operation(summary = "후기 게시글 작성자 번호에 해당하는 후기 정보를 반환한다.")
+    public ResponseEntity<List<ReviewBoard>> findByCustomerSeq(@PathVariable long customerSeq) {
+        List<ReviewBoard> reviewList = reviewBoardService.getReviewByCustomerSeq(customerSeq);
+        return new ResponseEntity<>(reviewList, HttpStatus.OK);
+    }
+
     @PostMapping("/regist")
     @Operation(summary = "새로운 후기 정보를 생성한다.")
-    public ResponseEntity<Void> createReview(@RequestBody ReviewBoard reviewBoard) {
-        ReviewBoard review = reviewBoardService.createReview(reviewBoard);
-        return ResponseEntity.ok().build(); // Ok만 반환? or 게시글 반환 후 상세게시판 이동?
+    public ResponseEntity<Void> createReview(@RequestBody ReviewBoardDto reviewBoardDto) {
+        ReviewBoard review = reviewBoardService.createReview(reviewBoardDto);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/update/{seq}")
     @Operation(summary = "후기 번호에 해당하는 후기 정보를 수정한다.")
-    public ResponseEntity<ReviewBoard> updateReview(@PathVariable long seq, @RequestBody ReviewBoard newReview) {
-        ReviewBoard reviewBoard = reviewBoardService.updateReview(seq, newReview);
-        return new ResponseEntity<>(reviewBoard, HttpStatus.OK);
+    public ResponseEntity<ReviewBoard> updateReview(@PathVariable long seq, @RequestBody ReviewBoardDto reviewBoardDto) {
+        ReviewBoard newReview = reviewBoardService.updateReview(seq, reviewBoardDto);
+        return new ResponseEntity<>(newReview, HttpStatus.OK);
     }
 
     @PutMapping("/delete/{seq}")
-    @Operation(summary = "후기 게시글 번호에 해당하는 후기 정보를 비활성화한다.")
+    @Operation(summary = "후기 게시글 번호에 해당하는 후기 정보를 삭제(비활성화)한다.")
     public ResponseEntity<Map<String, Boolean>> deactivateReview(@PathVariable long seq) {
-//        ReviewBoard selectedReview = reviewBoardService.getReview(seq);
-//        selectedReview.setIsdeleted(false);
-//        reviewBoardService.updateReview(seq, selectedReview);
         reviewBoardService.deactivateReview(seq);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);

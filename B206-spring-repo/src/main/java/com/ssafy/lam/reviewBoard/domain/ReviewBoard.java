@@ -1,5 +1,6 @@
-package com.ssafy.lam.entity;
+package com.ssafy.lam.reviewBoard.domain;
 
+import com.ssafy.lam.customer.domain.Customer;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,24 +13,39 @@ public class ReviewBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "review_board_seq")
     private long seq;
+    @Column(name = "review_board_title")
     private String title; // 제목
+    @Column(name = "review_board_content")
     private String content; // 내용
+    @Column(name = "review_board_hospital")
     private String hospital; // 병원
+    @Column(name = "review_board_doctor")
     private String doctor; // 의사
+    @Column(name = "review_board_surgery")
     private String surgery; // 시술부위 -> 추후 별도 클래스 생성 예정
+    @Column(name = "review_board_region")
     private String region; // 지역
+    @Column(name = "review_board_score")
     private double score; // 별점
+    @Column(name = "review_board_price")
     private int price; // 가격
+    @Column(name = "review_board_regdate")
     private long regdate; // 작성시간
+    @Column(name = "review_board_complain")
     private boolean complain; // 신고여부
+    @Column(name = "review_board_isdeleted")
     private boolean isdeleted; // 삭제여부
-//    @JoinColumn(name = "seq")
-//    private Customer customer; // 고객 번호 - 고객 클래스 변경 후 업데이트 예정
+
+    @ManyToOne
+    @JoinColumn(name = "customer_seq")
+    private Customer customer; // 고객 번호 - 고객 클래스 변경 후 업데이트 예정
 
     @Builder
     public ReviewBoard(long seq, String title, String content, String hospital, String doctor, String surgery,
-                       String region, double score, int price, long regdate, boolean complain, boolean isdeleted) {
+                       String region, double score, int price, long regdate, boolean complain, boolean isdeleted,
+                       Customer customer) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -42,11 +58,12 @@ public class ReviewBoard {
         this.regdate = regdate;
         this.complain = complain;
         this.isdeleted = isdeleted;
+        this.customer = customer;
     }
 
     public ReviewBoard toEntity(long seq, String title, String content, String hospital, String doctor, String surgery,
                                 String region, double score, int price, long regdate, boolean complain,
-                                boolean isdeleted) {
+                                boolean isdeleted, Customer customer) {
         return ReviewBoard.builder()
                 .seq(seq)
                 .title(title)
@@ -60,6 +77,7 @@ public class ReviewBoard {
                 .regdate(regdate)
                 .complain(complain)
                 .isdeleted(isdeleted)
+                .customer(customer)
                 .build();
 
     }

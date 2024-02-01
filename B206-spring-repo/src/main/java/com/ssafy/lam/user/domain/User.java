@@ -1,4 +1,4 @@
-package com.ssafy.lam.entity;
+package com.ssafy.lam.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,42 +13,47 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-
-//@AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-
+@ToString
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long seq;
-    private String userId;
-    private String password;
+    @Column(name="user_seq")
+    protected Long userSeq;
 
 
-    public User() {
-    }
+
+    @Column(unique = true, name="user_id")
+    protected String userId;
+
+    @Column(name = "username")
+    protected String name;
+    @Column(name = "user_pw")
+    protected String password;
+
+    @Column(name="user_type")
+    private String userType;
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
 
+    public User() {
+
+    }
+
     @Builder
-    public User(long seq, String userId, String password, List<String> roles) {
-        this.seq = seq;
+    public User(long userSeq, String userId, String name, String password, String userType, List<String> roles) {
+        this.userSeq = userSeq;
         this.userId = userId;
+        this.name = name;
         this.password = password;
+        this.userType = userType;
         this.roles = roles;
     }
 
-    public User toEntity(long seq, String userId, String password, List<String> roles) {
-        return User.builder()
-                .seq(seq)
-                .userId(userId)
-                .password(password)
-                .roles(roles)
-                .build();
-    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -57,7 +62,6 @@ public class User implements UserDetails {
                 .collect(java.util.stream.Collectors.toList());
     }
 
-    @Override
     public String getUsername() {
         return this.userId;
     }

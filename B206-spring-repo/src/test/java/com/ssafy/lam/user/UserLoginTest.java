@@ -2,7 +2,6 @@ package com.ssafy.lam.user;
 
 import com.ssafy.lam.user.controller.UserController;
 import com.ssafy.lam.user.model.service.UserService;
-import com.ssafy.lam.entity.User;
 import com.ssafy.lam.entity.TokenInfo;
 
 import org.junit.jupiter.api.BeforeEach;

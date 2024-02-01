@@ -1,9 +1,13 @@
 package com.ssafy.lam.user.controller;
 
-import com.ssafy.lam.user.model.service.UserService;
-import com.ssafy.lam.entity.User;
+
 import com.ssafy.lam.entity.TokenInfo;
+import com.ssafy.lam.user.domain.User;
+import com.ssafy.lam.user.dto.UserDto;
+import com.ssafy.lam.user.dto.UserTokenInfo;
+import com.ssafy.lam.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.antlr.v4.runtime.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
+
 public class UserController {
 
     private Logger log = LoggerFactory.getLogger(UserController.class);
@@ -61,10 +66,32 @@ public class UserController {
 
     @PostMapping("/login")
     @Operation(summary = "고객 로그인을 수행한다.")
-    public ResponseEntity<TokenInfo> login(@RequestBody User user) throws Exception {
-        TokenInfo tokenInfo = userService.login(user);
-        return ResponseEntity.ok(tokenInfo);
+    public ResponseEntity<UserTokenInfo> login(@RequestBody UserDto userDto) throws Exception {
+        log.info("login userId : {}", userDto.getUserId());
+        User user = userService.findByUserId(userDto.getUserId());
+        if (user == null) {
+            throw new Exception("아이디가 존재하지 않습니다.");
+        }
+        if (!user.getPassword().equals(userDto.getUserPassword())) {
+            throw new Exception("비밀번호가 일치하지 않습니다.");
+        }
+
+        TokenInfo tokenInfo = userService.getLoginToken(user);
+        UserTokenInfo userTokenInfo = UserTokenInfo.builder()
+                .userName(user.getName())
+                .userSeq(user.getUserSeq())
+                .userType(user.getUserType())
+                .userId(user.getUserId())
+                .tokenInfo(tokenInfo)
+                .build();
+
+        return ResponseEntity.ok(userTokenInfo);
+
+
+
+
     }
+
 
     @GetMapping("/regist/idcheck/{userId}")
     @Operation(summary = "고객 아이디 중복 체크를 수행한다.")
@@ -78,14 +105,15 @@ public class UserController {
         }
     }
 
+
+
     @PostMapping("/regist")
     @Operation(summary = "회원가입")
     public ResponseEntity<Void> createCustomer(@RequestBody User user) {
         log.debug("login userId : {}", user.getUserId());
         User createdUser = userService.createUser(user);
+
+//        return new ResponseEntity<>(createdCustomer, HttpStatus.OK);
         return ResponseEntity.ok().build();
     }
-
-
-
 }

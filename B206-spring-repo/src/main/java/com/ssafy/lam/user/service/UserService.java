@@ -1,6 +1,6 @@
-package com.ssafy.lam.user.model.service;
+package com.ssafy.lam.user.service;
 
-import com.ssafy.lam.entity.User;
+import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.entity.TokenInfo;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public interface UserService {
     void deleteUser(long seq);
 
 
-    TokenInfo login(User user) throws Exception;
+    TokenInfo getLoginToken(User user);
 //    void logout();
     User findByUserId(String userId) throws Exception;
 

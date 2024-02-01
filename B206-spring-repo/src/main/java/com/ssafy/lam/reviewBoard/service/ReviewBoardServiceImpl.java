@@ -1,7 +1,9 @@
-package com.ssafy.lam.reviewBoard.model.service;
+package com.ssafy.lam.reviewBoard.service;
 
-import com.ssafy.lam.entity.ReviewBoard;
-import com.ssafy.lam.reviewBoard.model.repository.ReviewBoardRepository;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
+import com.ssafy.lam.reviewBoard.dto.ReviewBoardDto;
+import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -69,17 +71,50 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
     }
 
     @Override
-    public ReviewBoard createReview(ReviewBoard reviewBoard) {
+    public  List<ReviewBoard> getReviewByCustomerSeq(long customerSeq) {
+        return reviewBoardRepository.findAllByCustomerCustomerSeq(customerSeq);
+    }
+
+    @Override
+    public ReviewBoard createReview(ReviewBoardDto reviewBoardDto) {
+        Customer customer = Customer.builder().customerSeq(reviewBoardDto.getCustomerSeq()).build();
+        ReviewBoard reviewBoard = ReviewBoard.builder()
+                .seq(reviewBoardDto.getReviewSeq())
+                .title(reviewBoardDto.getReviewTitle())
+                .content(reviewBoardDto.getReviewContent())
+                .hospital(reviewBoardDto.getReviewHospital())
+                .doctor(reviewBoardDto.getReviewDoctor())
+                .surgery(reviewBoardDto.getReviewSurgery())
+                .region(reviewBoardDto.getReviewRegion())
+                .score(reviewBoardDto.getReviewScore())
+                .price(reviewBoardDto.getReviewPrice())
+                .regdate(reviewBoardDto.getReviewRegdate())
+                .complain(reviewBoardDto.isReviewComplain())
+                .isdeleted(reviewBoardDto.isReviewIsdeleted())
+                .customer(customer)
+                .build();
         return reviewBoardRepository.save(reviewBoard);
     }
 
     @Override
-    public ReviewBoard updateReview(long seq, ReviewBoard newReview) {
-        ReviewBoard selectedReview = newReview.toEntity(seq, newReview.getTitle(), newReview.getContent(),
-                newReview.getHospital(), newReview.getDoctor(), newReview.getSurgery(), newReview.getRegion(),
-                newReview.getScore(), newReview.getPrice(), newReview.getRegdate(), newReview.isComplain(),
-                newReview.isIsdeleted());
-        return reviewBoardRepository.save(selectedReview);
+    public ReviewBoard updateReview(long seq, ReviewBoardDto reviewBoardDto) {
+        Customer customer = Customer.builder().customerSeq(reviewBoardDto.getCustomerSeq()).build();
+        ReviewBoard reviewBoard = ReviewBoard.builder()
+                .seq(seq)
+                .title(reviewBoardDto.getReviewTitle())
+                .content(reviewBoardDto.getReviewContent())
+                .hospital(reviewBoardDto.getReviewHospital())
+                .doctor(reviewBoardDto.getReviewDoctor())
+                .surgery(reviewBoardDto.getReviewSurgery())
+                .region(reviewBoardDto.getReviewRegion())
+                .score(reviewBoardDto.getReviewScore())
+                .price(reviewBoardDto.getReviewPrice())
+                .regdate(reviewBoardDto.getReviewRegdate())
+                .complain(reviewBoardDto.isReviewComplain())
+                .isdeleted(reviewBoardDto.isReviewIsdeleted())
+                .customer(customer)
+                .build();
+        return reviewBoardRepository.save(reviewBoard);
     }
 
     @Override
@@ -88,6 +123,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
         if(removeReview.isPresent()) {
             ReviewBoard selectedReview = removeReview.get();
             selectedReview.setIsdeleted(true);
+            reviewBoardRepository.save(selectedReview);
         }
     }
 }
