@@ -25,11 +25,11 @@ const validationSchema = yup.object({
     .string()
     .oneOf([yup.ref("password"), null], "비밀번호가 일치하지 않습니다.")
     .required("비밀번호를 다시 입력하세요."),
-  email: yup
+  hospitalInfo_email: yup
     .string()
     .email("올바른 이메일 형식을 입력하세요.")
     .required("이메일을 입력하세요."),
-  phoneNumber: yup
+  hospitalInfo_phoneNumber: yup
     .string()
     .matches(/^[0-9]+$/, "숫자만 입력하세요.")
     .required("전화번호를 입력하세요."),
@@ -72,40 +72,40 @@ function HospitalRegistForm() {
       id: "",
       password: "",
       confirmPassword: "",
-      name: "", // 병원명
-      address: "",
-      url: "", //병원 홈페이지 주소
-      email: "",
-      phoneNumber: "", //병원 전화번호
-      hashtag: "", // 병원 전문 분야
-      info: "", // 병원 소개 멘트
-      open: "", // 오픈 시간
-      close: "", // 닫는 시간
+      hospitalInfo_name: "", // 병원명->밑에 이름 다 바꿔!!
+      hospitalInfo_addresss: "",
+      hospitalInfo_url: "", //병원 홈페이지 주소
+      hospitalInfo_email: "",
+      hospitalInfo_phoneNumber: "", //병원 전화번호
+      part: "", // 병원 전문 분야
+      hospitalInfo_introduce: "", // 병원 소개 멘트
+      hospitalInfo_open: "", // 오픈 시간
+      hospitalInfo_close: "", // 닫는 시간
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append("id", values.id);
       formData.append("password", values.password);
-      formData.append("name", values.name);
-      formData.append("address", values.address);
-      formData.append("url", values.url);
-      formData.append("email", values.email);
-      formData.append("phoneNumber", values.phoneNumber);
-      formData.append("hashtag", values.hashtag);
+      formData.append("name", values.hospitalInfo_name);
+      formData.append("address", values.hospitalInfo_addresss);
+      formData.append("url", values.hospitalInfo_url);
+      formData.append("email", values.hospitalInfo_email);
+      formData.append("phoneNumber", values.hospitalInfo_phoneNumber);
+      formData.append("hashtag", values.part);
       formData.append(
         "businessRegistrationCertificate",
         businessRegistrationCertificate
       ); //여기까지는 필수 입력 사항
       //여기부터는 선택적으로 입력하는 사항
       if (values.info) {
-        formData.append("info", values.info);
+        formData.append("info", values.hospitalInfo_introduce);
       }
       if (values.open) {
-        formData.append("open", values.open);
+        formData.append("open", values.hospitalInfo_open);
       }
       if (values.close) {
-        formData.append("close", values.close);
+        formData.append("close", values.hospitalInfo_close);
       }
 
       try {
@@ -229,15 +229,21 @@ function HospitalRegistForm() {
               type="text"
               placeholder="병원 이름"
               name="name"
-              value={formik.values.name}
+              value={formik.values.hospitalInfo_name}
               onChange={formik.handleChange}
               className={
-                formik.touched.name && formik.errors.name ? "error" : ""
+                formik.touched.hospitalInfo_name &&
+                formik.errors.hospitalInfo_name
+                  ? "error"
+                  : ""
               }
             />
-            {formik.touched.name && formik.errors.name && (
-              <div className="helperText">{formik.errors.name}</div>
-            )}
+            {formik.touched.hospitalInfo_name &&
+              formik.errors.hospitalInfo_name && (
+                <div className="helperText">
+                  {formik.errors.hospitalInfo_name}
+                </div>
+              )}
           </div>
           <div className="inputText">
             <h3>주소</h3>
