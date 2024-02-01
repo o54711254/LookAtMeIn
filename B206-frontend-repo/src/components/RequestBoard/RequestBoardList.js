@@ -23,7 +23,7 @@ function RequestBoardList() {
   const [requestBordList, setRequestBoardList] = useState([]);
   useEffect(() => {
     axiosApi
-      .get("http://localhost:80/requestBoardList")
+      .get(`api/requestBoardList`)
       .then((response) => {
         // regDate를 사용하여 데이터를 최신순으로 정렬
         const sortedData = response.data.sort(
