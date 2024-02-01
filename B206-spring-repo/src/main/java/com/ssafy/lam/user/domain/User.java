@@ -12,7 +12,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @ToString
 public class User implements UserDetails {
 
@@ -20,8 +19,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_seq")
     protected Long userSeq;
-
-
 
     @Column(unique = true, name="user_id")
     protected String userId;

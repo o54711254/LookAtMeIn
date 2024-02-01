@@ -13,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/reserve")
+@RequestMapping("/api/reserve")
 public class ReserveController {
 
     private final ReserveService reserveService;
