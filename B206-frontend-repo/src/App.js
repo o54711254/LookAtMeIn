@@ -30,6 +30,7 @@ import Report from "./components/Modal/ReviewReport.js"
 import reviewDelete from "./components/ReviewBoard/ReviewDelete.js"
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import Favorite from "./components/HospitalBoard/HospitalWish.js"
+import Questionnaire from "./components/Modal/Questionnaire.js"
 
 import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
 import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
@@ -100,6 +101,7 @@ function App() {
             <ReviewDelete/>
             <Favorite/>
           </div>
+          <Questionnaire/>
           <FloatingChat />
         </div>
         <Footer />

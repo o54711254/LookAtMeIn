@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
 import { toast, ToastContainer } from "react-toastify";
 import axiosApi from "../../api/axiosApi.js";
-import loginUser from "../../redux/user.js";
+import { loginUser } from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styles from "./LoginForm.module.css";
@@ -66,7 +66,7 @@ function LoginForm() {
 
               //토큰 받아오기
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-              const accessToken = res.headers.get("authorization");
+              const accessToken = res.data.tokenInfo.token;
               dispatch(setToken({ accessToken: accessToken }));
               // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
               //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션

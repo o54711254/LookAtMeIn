@@ -5,7 +5,7 @@ export const TOKEN_TIME_OUT = 600 * 1000;
 
 // 액세스 토큰과 관련된 Redux slice를 생성합니다.
 export const tokenSlice = createSlice({
-  name: "authToken", // slice의 이름을 지정합니다.
+  name: "auth", // slice의 이름을 지정합니다.
   initialState: {
     authenticated: false, // 인증 여부를 나타내는 상태값입니다. 초기값은 false입니다.
     accessToken: null, // 액세스 토큰을 저장하는 상태값입니다. 초기값은 null입니다.
