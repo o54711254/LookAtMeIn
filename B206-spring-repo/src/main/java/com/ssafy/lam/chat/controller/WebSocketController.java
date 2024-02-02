@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/chat")
 public class WebSocketController {
 
     @Autowired
@@ -27,10 +29,11 @@ public class WebSocketController {
     private SimpMessagingTemplate messagingTemplate;
 
     // 사용자 ID를 통해 속한 채팅방 번호 목록 반환
-    @GetMapping("/chatrooms/{userId}")
-    @RequestBody
-    public List<Long> getUserChatRooms(@PathVariable String userId) {
-        return chatService.getUserChatRoomIds(userId);
+//    @GetMapping("/chatrooms/{userId}")
+    @GetMapping("/{userSeq}")
+    public List<Long> getUserChatRooms(@PathVariable Long userSeq) {
+
+        return chatService.getUserChatRoomIds(userSeq);
     }
 
     // 채팅 메시지 수신 및 저장
@@ -40,7 +43,7 @@ public class WebSocketController {
         chatMessageRepository.save(message);
 
         // 메시지를 해당 채팅방 구독자들에게 전송
-        messagingTemplate.convertAndSend("/sub/chatroom/" + message.getChatRoomId(), message);
+        messagingTemplate.convertAndSend("/sub/chatroom/" + message.getChatroomSeq(), message);
         System.out.println(message.toString());
 
     }

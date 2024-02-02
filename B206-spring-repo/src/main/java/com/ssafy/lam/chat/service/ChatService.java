@@ -18,16 +18,17 @@ public class ChatService {
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
-    public List<Long> getUserChatRoomIds(String userId) {
-        List<ChatParticipant> participants = chatParticipantRepository.findByUserId(userId);
+    public List<Long> getUserChatRoomIds(Long userSeq) {
+//        List<ChatParticipant> participants = chatParticipantRepository.findByUserId(userId);
+        List<ChatParticipant> participants = chatParticipantRepository.findByUserUserSeq(userSeq);
         return participants.stream()
-                .map(ChatParticipant::getChatRoomId)
+                .map(ChatParticipant::getChatroomSeq)
                 .distinct()
                 .collect(Collectors.toList());
     }
 
     // 특정 채팅방의 모든 메시지 조회
-    public List<ChatMessage> getMessagesByChatRoomId(Long chatRoomId) {
-        return chatMessageRepository.findByChatRoomId(chatRoomId);
+    public List<ChatMessage> getMessagesByChatRoomId(Long chatroomSeq) {
+        return chatMessageRepository.findByChatroomSeq(chatroomSeq);
     }
 }

@@ -1,9 +1,6 @@
 package com.ssafy.lam.chat.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +10,13 @@ import lombok.Setter;
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long chatRoomId;
+    @Column(name = "message_seq")
+    private Long messageSeq;
+
+    @Column(name = "chatroom_seq")
+    private Long chatroomSeq;
+
+
     private String sender;
     // private Long senderId;
     private String message;
@@ -22,8 +24,8 @@ public class ChatMessage {
     @Override
     public String toString() {
         return "ChatMessage{" +
-                "id=" + id +
-                ", chatRoomId=" + chatRoomId +
+                "id=" + messageSeq +
+                ", chatRoomId=" + chatroomSeq +
                 ", sender='" + sender + '\'' +
                 ", message='" + message + '\'' +
                 '}';

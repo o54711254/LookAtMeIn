@@ -11,7 +11,7 @@ function FloatingChat() {
   const [chatRooms, setChatRooms] = useState([]); // 채팅방 목록 상태
   // const user = useSelector((store) => store.user.userName);
 
-  const user = "ssafy";
+  const user = 1;
 
   const handleToggleChat = () => {
     setOpen(!open);
@@ -22,7 +22,7 @@ function FloatingChat() {
 
   const fetchChatRooms = async () => {
     try {
-      const res = await axiosApi.get(`/chatrooms/${user}`);
+      const res = await axiosApi.get(`/api/chat/${user}`);
       setChatRooms(res.data);
     } catch (error) {
       console.log("채팅방 목록을 가져오는데 실패했습니다.", error);
