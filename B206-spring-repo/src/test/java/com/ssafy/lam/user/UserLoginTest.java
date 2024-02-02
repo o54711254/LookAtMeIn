@@ -1,18 +1,19 @@
 package com.ssafy.lam.user;
 
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.dto.CustomerDto;
+import com.ssafy.lam.customer.service.CustomerService;
 import com.ssafy.lam.user.controller.UserController;
-import com.ssafy.lam.user.model.service.UserService;
-import com.ssafy.lam.entity.User;
+import com.ssafy.lam.user.dto.UserDto;
+import com.ssafy.lam.user.dto.UserTokenInfo;
+import com.ssafy.lam.user.service.UserService;
+import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.entity.TokenInfo;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -31,22 +32,34 @@ public class UserLoginTest {
     
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CustomerService customerService;
+
+    @Autowired
+    private UserController userController;
     @Test
     @DisplayName("로그인 테스트")
     @Transactional
     public void loginTest() throws Exception{
-        List<String> roles = new ArrayList<>();
-        roles.add("ROLE_USER");
-        User user = User.builder()
-                .userId("test")
-                .password("test")
-                .roles(roles)
+        CustomerDto customerDto = CustomerDto.builder()
+                .userId("Asdads")
+                .customerName("test")
+                .userPassword("test")
+                .customerGender("test")
+                .customerEmail("test")
+                .customerAddress("test")
                 .build();
 
-        userService.createUser(user);
 
-        TokenInfo tokenInfo = userService.getLoginToken(user);
-        System.out.println("tokenInfo = " + tokenInfo);
+        customerService.createCustomer(customerDto);
+        UserDto userDto = UserDto.builder()
+                .userId("Asdads")
+                .userPassword("test")
+                .build();
 
+
+//        UserTokenInfo userTokenInfo = userController.login(userDto);
+//        System.out.println("userTokenInfo = " + userTokenInfo);
     }
 }

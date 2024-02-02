@@ -1,7 +1,8 @@
 package com.ssafy.lam.util;
 
-import com.ssafy.lam.entity.User;
-import com.ssafy.lam.user.model.repository.UserRepository;
+import com.ssafy.lam.user.domain.User;
+
+import com.ssafy.lam.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

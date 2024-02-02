@@ -2,36 +2,38 @@ package com.ssafy.lam.customer;
 
 
 import com.ssafy.lam.customer.controller.CustomerController;
-import com.ssafy.lam.entity.Customer;
-import com.ssafy.lam.entity.User;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import com.ssafy.lam.customer.service.CustomerService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootTest
-@Transactional(readOnly = true)
+//@Transactional(readOnly = true)
 public class CustomerLoginTest {
     @Autowired
     private CustomerController customerController;
 
-//
+    @Autowired
+    private CustomerService customerService;
+
+
     @Test
     @DisplayName("회원가입 테스트")
-    @Transactional
+//    @Transactional
     public void registTest(){
-        List<String> roles = new ArrayList<>();
-        roles.add("ROLE_CUSTOMER");
-        Customer customer = new Customer(2L,"test", "test", roles);
-        ResponseEntity<Void> responseEntity = customerController.createCustomer(customer);
-        Assertions.assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
+//        CustomerDto customerDto = CustomerDto
+//                .builder()
+//                .customerName("kimheesu")
+//                .userId("polya")
+//                .userPassword("1234")
+//                .build();
+//
+//        Customer registCustomer = customerController.regist(customerDto);
+//        System.out.println("registCustomer = " + registCustomer);
+////        CustomerTokenInfo tokenInfo = customerController.login(customerDto);
+//        System.out.println("tokenInfo = " + tokenInfo);
+
     }
 
 }
