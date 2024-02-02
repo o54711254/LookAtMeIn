@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import axiosApi from '../../api/axiosApi';
+import React, { useState, useEffect } from "react";
+import axiosApi from "../../api/axiosApi";
+import StarRating from './StarRating/StarResult';
 
-function ReviewBoardList() {
-  const [reviewBoardList, setReviewBoardList] = useState([]);
+function ReviewList() {
+  // const [reviewBoardList, setReviewBoardList] = useState([]);
 
-  useEffect(() => {
-    axiosApi
-    .get(`/api/reviewBoard/list`)
-    .then((res) => {
-      setReviewBoardList(res.data.responseObj);
-    });
-}, []);
+  // useEffect(() => {
+  //   axiosApi.get(`/api/reviewBoard/list`).then((res) => {
+  //     setReviewBoardList(res.data.responseObj);
+  //   });
+  // }, []);
+
+  // 더미 데이터
+  const reviewBoardList = [{
+    customer_id: 'user123',
+    reviewBoard_title: '테스트 리뷰',
+    reviewBoard_cnt: 100,
+    reviewBoard_regDate: '2024-01-28',
+    reviewBoard_score: 4,
+  }]
 
   return (
     <div>
@@ -22,7 +30,7 @@ function ReviewBoardList() {
             <div>제목: {board.reviewBoard_title}</div>
             <div>조회수: {board.reviewBoard_cnt}</div>
             <div>작성날짜: {board.reviewBoard_regDate}</div>
-            <div>별점: {board.reviewBoard_score}</div>
+            <div><StarRating score={board.reviewBoard_score}/></div>
           </li>
         ))}
       </ul>
@@ -30,4 +38,4 @@ function ReviewBoardList() {
   );
 }
 
-export default ReviewBoardList;
+export default ReviewList;
