@@ -1,7 +1,8 @@
 package com.ssafy.lam.reviewBoard.service;
 
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
-import com.ssafy.lam.reviewBoard.dto.ReviewBoardDto;
+import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
+import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
 
 import java.util.List;
 
@@ -13,26 +14,11 @@ public interface ReviewBoardService {
     // 게시판 상세조회
     ReviewBoard getReview(long seq);
 
-    // 게시판 조건조회 - 조건 별 검색
-//    List<ReviewBoard> searchReview(String type, String keyword);
-    // 게시판 수술 부위로 조회
-    List<ReviewBoard> getReviewBySurgery(String surgery);
-    // 게시판 지역으로 조회
-    List<ReviewBoard> getReviewByRegion(String region);
-    // 게시판 병원으로 조회
-    List<ReviewBoard> getReviewByHospital(String hospital);
-    // 게시판 의사로 조회
-    List<ReviewBoard> getReviewByDoctor(String doctor);
-
-
-    // 게시판 작성자로 조회 - 마이페이지에서 내가 작성한 글 목록 조회
-    List<ReviewBoard> getReviewByCustomerSeq(long customerSeq);
-
     // 게시판 작성
-    ReviewBoard createReview(ReviewBoardDto reviewBoardDto);
+    ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister);
 
     // 게시판 수정
-    ReviewBoard updateReview(long seq, ReviewBoardDto reviewBoardDto);
+    void updateReview(ReviewBoardUpdate reviewBoardUpdate);
 
     // 게시판 삭제(해당 글 비활성화)
     void deactivateReview(long seq);

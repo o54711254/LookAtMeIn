@@ -1,6 +1,7 @@
 package com.ssafy.lam.reviewBoard.domain;
 
 import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,7 @@ public class ReviewBoard {
     @Column(name = "review_board_doctor")
     private String doctor; // 의사
     @Column(name = "review_board_surgery")
-    private String surgery; // 시술부위 -> 추후 별도 클래스 생성 예정
+    private String surgery; // 시술부위
     @Column(name = "review_board_region")
     private String region; // 지역
     @Column(name = "review_board_score")
@@ -37,15 +38,16 @@ public class ReviewBoard {
     private boolean complain; // 신고여부
     @Column(name = "review_board_isdeleted")
     private boolean isdeleted; // 삭제여부
+    @Column(name = "review_board_cnt")
+    private int cnt = 0; // 조회수
 
-    @ManyToOne
-    @JoinColumn(name = "customer_seq")
-    private Customer customer; // 고객 번호 - 고객 클래스 변경 후 업데이트 예정
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user; // 고객 이름
 
     @Builder
     public ReviewBoard(long seq, String title, String content, String hospital, String doctor, String surgery,
                        String region, double score, int price, long regdate, boolean complain, boolean isdeleted,
-                       Customer customer) {
+                       int cnt, User user) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -58,12 +60,13 @@ public class ReviewBoard {
         this.regdate = regdate;
         this.complain = complain;
         this.isdeleted = isdeleted;
-        this.customer = customer;
+        this.cnt = cnt;
+        this.user = user;
     }
 
     public ReviewBoard toEntity(long seq, String title, String content, String hospital, String doctor, String surgery,
                                 String region, double score, int price, long regdate, boolean complain,
-                                boolean isdeleted, Customer customer) {
+                                boolean isdeleted, int cnt, User user) {
         return ReviewBoard.builder()
                 .seq(seq)
                 .title(title)
@@ -77,7 +80,8 @@ public class ReviewBoard {
                 .regdate(regdate)
                 .complain(complain)
                 .isdeleted(isdeleted)
-                .customer(customer)
+                .cnt(cnt)
+                .user(user)
                 .build();
 
     }
