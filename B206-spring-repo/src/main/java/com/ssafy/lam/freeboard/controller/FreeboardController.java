@@ -85,7 +85,7 @@ public class FreeboardController {
         }
     }
 
-    @PutMapping("/delete/{user_seq}")
+    @PutMapping("/delete/{freeBoard_seq}")
     @Operation(summary = "자유게시판 글 삭제")
     public ResponseEntity<Void> delete(@PathVariable Long freeBoard_seq){
         try{

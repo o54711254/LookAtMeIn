@@ -41,7 +41,7 @@ public class Freeboard {
         isDeleted = deleted;
     }
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="free_board_customer_seq")
     private User user;
 

@@ -26,6 +26,7 @@ public class FreeboardServiceImpl implements FreeboardService {
     public Freeboard createFreeboard(FreeboardRequestDto freeboardRequestDto) {
 
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+        System.out.println("user = " + user);
         log.info("글 등록 유저 정보: {}", user);
         Freeboard freeboard = Freeboard.builder()
                 .user(user)
@@ -38,14 +39,14 @@ public class FreeboardServiceImpl implements FreeboardService {
 
     @Override
     public List<Freeboard> getAllFreeboards() {
-        List<Freeboard> freeboardList = freeboardRepository.findAll();
+        List<Freeboard> freeboardList = freeboardRepository.findByIsDeletedFalse();
     
         return freeboardList;
     }
 
     @Override
     public Freeboard getFreeboard(Long freeBoardSeq) {
-        Freeboard freeboard = freeboardRepository.findById(freeBoardSeq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        Freeboard freeboard = freeboardRepository.findByfreeboardSeqAndIsDeletedFalse(freeBoardSeq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
         return freeboard;
     }
 
@@ -70,12 +71,14 @@ public class FreeboardServiceImpl implements FreeboardService {
 
 
     @Override
-    public void deleteFreeboard(Long freeBoardSeq) throws NoArticleExeption {
+    public Freeboard deleteFreeboard(Long freeBoardSeq) throws NoArticleExeption {
 
         Freeboard freeboard = freeboardRepository.findById(freeBoardSeq).orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
+        log.info("게시글 삭제 전 정보: {}", freeboard);
         freeboard.setDeleted(true);
         freeboardRepository.save(freeboard);
-
+        log.info("게시글 삭제 후 정보: {}", freeboard);
+        return freeboard;
 
     }
 }

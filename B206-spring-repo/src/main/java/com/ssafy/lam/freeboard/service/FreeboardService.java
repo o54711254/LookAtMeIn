@@ -16,6 +16,6 @@ public interface FreeboardService {
     Freeboard updateFreeboard(Long user_seq, FreeboardRequestDto updatedFreeboard);
 
 
-    void deleteFreeboard(Long freeBoardSeq) throws NoArticleExeption;
+    Freeboard deleteFreeboard(Long freeBoardSeq) throws NoArticleExeption;
 
 }
