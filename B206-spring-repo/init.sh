@@ -4,4 +4,4 @@ sudo docker build --no-cache -t spring-image .
 
 # sudo docker network create -d bridge test-bridge
 
-sudo docker run -p 8080:8080 -d --name spring-container spring-image
+sudo docker run -p 8080:80 -d --name spring-container spring-image
