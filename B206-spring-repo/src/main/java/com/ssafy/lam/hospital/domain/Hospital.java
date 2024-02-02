@@ -1,5 +1,5 @@
 package com.ssafy.lam.hospital.domain;
-
+import com.ssafy.lam.coordinator.domain.Coordinator;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +26,11 @@ public class Hospital {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @Column(name = "hos_info_tel")
+    @OneToMany(mappedBy = "hospital")
+    private List<Coordinator> coordinators = new ArrayList<>();
+
+
+    @Column(name="hos_info_tel")
     private String tel;
 
     @Column(name = "hos_info_email")

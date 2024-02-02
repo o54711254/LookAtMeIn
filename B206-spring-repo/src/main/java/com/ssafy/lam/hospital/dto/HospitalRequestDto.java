@@ -12,12 +12,13 @@ import java.util.List;
 @Setter
 @ToString
 public class HospitalRequestDto {
-    private HospitalDto hospitalDto;
+    private HospitalDto hospital;
+
     private List<CategoryDto> categoryList;
 
     @Builder
     public HospitalRequestDto(HospitalDto hospitalDto, List<CategoryDto> categoryList) {
-        this.hospitalDto = hospitalDto;
+        this.hospital = hospitalDto;
         this.categoryList = categoryList;
     }
 }

@@ -11,8 +11,6 @@ public interface CustomerService {
 //    Customer updateCustomer(long seq, CustomerDto updatedCustomer);
 //    void deleteCustomer(long seq);
 //
-    TokenInfo getLoginToken(User user);
-
 //
     com.ssafy.lam.customer.domain.Customer findByCustomerId(String customerId);
 

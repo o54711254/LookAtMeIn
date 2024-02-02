@@ -1,10 +1,8 @@
 package com.ssafy.lam.exception;
 
-public class UnAuthorizedException extends RuntimeException {
+public class NoArticleExeption extends IllegalArgumentException{
     private static final long serialVersionUID = 1L;
-    public UnAuthorizedException(String errorMessage) {
-
+    public NoArticleExeption(String errorMessage) {
         super(errorMessage);
     }
 }
-

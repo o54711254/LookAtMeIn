@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/customer")
+
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -35,44 +36,7 @@ public class CustomerController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/login")
-    @Operation(summary = "고객 로그인")
-    public ResponseEntity<CustomerTokenInfo> login(@RequestBody CustomerDto customerDto) {
-        log.info("로그인 정보 : {}", customerDto);
-        User user = User.builder()
-                .userId(customerDto.getUserId())
-                .name(customerDto.getCustomerName())
-                .password(customerDto.getUserPassword())
-                .build();
 
-        log.info("로그인 User 정보: {}", user);
-
-        Customer customer1 = customerService.findByCustomerId(user.getUserId());
-
-        if(customer1 == null){
-//            return ResponseEntity.notFound().build();
-            return null;
-        }
-
-        if(!customer1.getUser().getPassword().equals(user.getPassword())){
-//            return ResponseEntity.notFound().build();
-            return null;
-        }
-        TokenInfo tokenInfo = customerService.getLoginToken(user);
-
-        CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
-                .userId(customer1.getUser().getUserId())
-                .username(customer1.getUser().getUsername())
-                .tokenInfo(tokenInfo)
-                .build();
-
-        return ResponseEntity.ok(customerTokenInfo);
-
-
-
-
-
-    }
 
 
 }

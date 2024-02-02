@@ -71,29 +71,14 @@ public class CustomerServiceImpl implements CustomerService {
 //    }
 
     @Override
-    public TokenInfo getLoginToken(User user) {
-        try {
-            return userService.getLoginToken(user);
-        } catch (AuthenticationException e) {
-            log.info(e.getMessage());
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            log.info(e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    //
-    @Override
-    public com.ssafy.lam.customer.domain.Customer findByCustomerId(String customerId) {
+    public Customer findByCustomerId(String customerId) {
         return customerRepository.findByUserUserId(customerId).orElse(null);
     }
 
     public CustomerDto getCustomer(long userId) {
-        Optional<com.ssafy.lam.customer.domain.Customer> customerOptional = customerRepository.findByUserUserSeq(userId);
+        Optional<Customer> customerOptional = customerRepository.findByUserUserSeq(userId);
         if (customerOptional.isPresent()) {
-            com.ssafy.lam.customer.domain.Customer customer = customerOptional.get();
+            Customer customer = customerOptional.get();
 
             CustomerDto dto = CustomerDto.builder()
                     .userId(customer.getUser().getUserId())

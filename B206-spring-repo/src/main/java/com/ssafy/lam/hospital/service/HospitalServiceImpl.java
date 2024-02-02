@@ -46,7 +46,8 @@ public class HospitalServiceImpl implements HospitalService {
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
                 .address(hospitalDto.getHospitalInfo_address())
                 .intro(hospitalDto.getHospitalInfo_introduce())
-                .openTime(hospitalDto.getHospiaalInfo_open())
+                .email(hospitalDto.getHospitalInfo_email())
+                .openTime(hospitalDto.getHospitalInfo_open())
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
@@ -67,7 +68,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_phoneNumber(hospital.getTel())
                     .hospitalInfo_introduce(hospital.getIntro())
                     .hospitalInfo_address(hospital.getAddress())
-                    .hospiaalInfo_open(hospital.getOpenTime())
+                    .hospitalInfo_open(hospital.getOpenTime())
                     .hospitalInfo_close(hospital.getCloseTime())
                     .hospitalInfo_url(hospital.getUrl())
                     .build();
@@ -86,7 +87,7 @@ public class HospitalServiceImpl implements HospitalService {
         user.setName(hospitalDto.getHospitalInfo_name());
         hospital.setTel(hospitalDto.getHospitalInfo_phoneNumber());
         hospital.setEmail(hospitalDto.getHospitalInfo_email());
-        hospital.setOpenTime(hospitalDto.getHospiaalInfo_open());
+        hospital.setOpenTime(hospitalDto.getHospitalInfo_open());
         hospital.setCloseTime(hospitalDto.getHospitalInfo_close());
         hospital.setAddress(hospitalDto.getHospitalInfo_address());
         hospital.setUrl(hospitalDto.getHospitalInfo_url());
