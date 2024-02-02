@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axiosAPi from "../../api/axiosApi";
+import axiosApi from "../../api/axiosApi";
 import logo from "../../assets/lab_logo.png";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
@@ -50,12 +50,12 @@ function UserRegistForm() {
   //아이디 중복체크
   const checkDuplicateId = (e) => {
     e.preventDefault();
-    axiosAPi.get(`/user/${formik.values.id}`).then((response) => {
+    axiosApi.get(`/api/user/regist/idcheck/${formik.values.userId}`).then((response) => {
       console.log(response.data);
-      if (response.status === 200) {
+      if (response.data === true) {
         //alert("사용 불가한 아이디입니다."); //이미 사용중인 아이디
         setUseable(false);
-      } else if (response.status === 204) {
+      } else if (response.data === false) {
         //alert("사용 가능한 아이디입니다.");
         setUseable(true);
       } else {
@@ -66,43 +66,35 @@ function UserRegistForm() {
 
   const formik = useFormik({
     initialValues: {
-      id: "",
-      password: "",
+      userId: "",
+      userPassword: "",
       confirmPassword: "",
-      name: "",
-      gender: "",
-      birth: "",
-      phoneNumber: "",
-      email: "",
-      address: "",
+      customerName: "",
+      customerGender: "",
+      customerBirth: "",
+      customerPhoneNumber: "",
+      customerEmail: "",
+      customerAddress: "",
     },
     validationSchema,
     onSubmit: async (values) => {
       const {
-        id,
-        password,
-        confirmPassword,
-        name,
-        gender,
-        birth,
-        phoneNumber,
-        email,
-        address,
+        userId,
+        userPassword,
+        // confirmPassword,
+        customerName,
+        customerGender,
+        // customerBirth,
+        customerPhoneNumber,
+        customerEmail,
+        customerAddress,
       } = values;
+      console.log(values);
       if (!useable) {
         window.alert("아이디가 중복됩니다. 다시 시도해주세요.");
       } else {
         try {
-          await axiosAPi.post("/customer/regist", {
-            id,
-            password,
-            confirmPassword,
-            name,
-            gender,
-            birth,
-            phoneNumber,
-            email,
-            address,
+          await axiosApi.post("/api/customer/regist", {
           });
           window.alert("회원가입이 완료되었습니다.");
           setTimeout(() => {
@@ -115,8 +107,8 @@ function UserRegistForm() {
 
   // 비밀번호 일치 체크
   const isPasswordMatch =
-    formik.values.password === formik.values.confirmPassword &&
-    formik.values.password !== "";
+    formik.values.userPassword === formik.values.confirmPassword &&
+    formik.values.userPassword !== "";
 
   //우편주소 api 사용한 부분
 
@@ -138,7 +130,7 @@ function UserRegistForm() {
       fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
     }
 
-    formik.setFieldValue("address", fullAddress);
+    formik.setFieldValue("customerAddress", fullAddress);
     setModalVisible(false); // 모달 닫기
   };
   //주소 입력 버튼을 클릭했을 때 모달을 보여주기
@@ -162,13 +154,13 @@ function UserRegistForm() {
             <input
               type="text"
               placeholder="abcd1234"
-              name="id"
-              value={formik.values.id}
+              name="userId"
+              value={formik.values.userId}
               onChange={formik.handleChange}
-              className={formik.touched.id && formik.errors.id ? "error" : ""}
+              className={formik.touched.userId && formik.errors.userId ? "error" : ""}
             />
-            {formik.touched.id && formik.errors.id && (
-              <div className="helperText">{formik.errors.id}</div>
+            {formik.touched.userId && formik.errors.userId && (
+              <div className="helperText">{formik.errors.userId}</div>
             )}
 
             <button onClick={checkDuplicateId}>중복확인</button>
@@ -183,17 +175,17 @@ function UserRegistForm() {
           <div className="inputText">
             <h3>비밀번호</h3>
             <input
-              name="password"
+              name="userPassword"
               type="password"
               onChange={formik.handleChange}
               placeholder="영문, 숫자, 특수문자 조합 8~16자를 입력하세요"
-              value={formik.values.password}
+              value={formik.values.userPassword}
               className={
-                formik.touched.password && formik.errors.password ? "error" : ""
+                formik.touched.userPassword && formik.errors.userPassword ? "error" : ""
               }
             />
-            {formik.touched.password && formik.errors.password && (
-              <div className="helperText">{formik.errors.password}</div>
+            {formik.touched.userPassword && formik.errors.userPassword && (
+              <div className="helperText">{formik.errors.userPassword}</div>
             )}
           </div>
           <div className="inputText">
@@ -215,15 +207,15 @@ function UserRegistForm() {
             <input
               type="text"
               placeholder="한글 이름"
-              name="name"
-              value={formik.values.name}
+              name="customerName"
+              value={formik.values.customerName}
               onChange={formik.handleChange}
               className={
-                formik.touched.name && formik.errors.name ? "error" : ""
+                formik.touched.customerName && formik.errors.customerName ? "error" : ""
               }
             />
-            {formik.touched.name && formik.errors.name && (
-              <div className="helperText">{formik.errors.name}</div>
+            {formik.touched.customerName && formik.errors.customerName && (
+              <div className="helperText">{formik.errors.customerName}</div>
             )}
           </div>
           <div className="inputText">
@@ -232,9 +224,9 @@ function UserRegistForm() {
               <label>
                 <input
                   type="radio"
-                  name="gender"
+                  name="customerGender"
                   value="남"
-                  checked={formik.values.gender === "남"}
+                  checked={formik.values.customerGender === "남"}
                   onChange={formik.handleChange}
                 />
                 남
@@ -244,16 +236,16 @@ function UserRegistForm() {
               <label>
                 <input
                   type="radio"
-                  name="gender"
+                  name="customerGender"
                   value="여"
-                  checked={formik.values.gender === "여"}
+                  checked={formik.values.customerGender === "여"}
                   onChange={formik.handleChange}
                 />
                 여
               </label>
             </div>
-            {formik.touched.gender && formik.errors.gender && (
-              <div className="helperText">{formik.errors.gender}</div>
+            {formik.touched.customerGender && formik.errors.customerGender && (
+              <div className="helperText">{formik.errors.customerGender}</div>
             )}
           </div>
           <div className="inputText">
@@ -261,15 +253,15 @@ function UserRegistForm() {
             <input
               type="text"
               placeholder="YYYY.MM.DD"
-              name="birth"
-              value={formik.values.birth}
+              name="customerBirth"
+              value={formik.values.customerBirth}
               onChange={formik.handleChange}
               className={
-                formik.touched.birth && formik.errors.birth ? "error" : ""
+                formik.touched.customerBirth && formik.errors.customerBirth ? "error" : ""
               }
             />
-            {formik.touched.birth && formik.errors.birth && (
-              <div className="helperText">{formik.errors.birth}</div>
+            {formik.touched.customerBirth && formik.errors.customerBirth && (
+              <div className="helperText">{formik.errors.customerBirth}</div>
             )}
           </div>
           <div className="inputText">
@@ -277,25 +269,25 @@ function UserRegistForm() {
             <input
               type="text"
               placeholder="01000000000"
-              name="phoneNumber"
-              value={formik.values.phoneNumber}
+              name="customerPhoneNumber"
+              value={formik.values.customerPhoneNumber}
               onChange={formik.handleChange}
               className={
-                formik.touched.phoneNumber && formik.errors.phoneNumber
+                formik.touched.customerPhoneNumber && formik.errors.customerPhoneNumber
                   ? "error"
                   : ""
               }
             />
-            {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-              <div className="helperText">{formik.errors.phoneNumber}</div>
+            {formik.touched.customerPhoneNumber && formik.errors.customerPhoneNumber && (
+              <div className="helperText">{formik.errors.customerPhoneNumber}</div>
             )}
           </div>
           <div className="inputText">
             <h3>주소</h3>
             <input
               type="text"
-              name="address"
-              value={formik.values.address}
+              name="customerAddress"
+              value={formik.values.customerAddress}
               onChange={formik.handleChange}
               readOnly
             />
@@ -317,15 +309,15 @@ function UserRegistForm() {
             <input
               type="text"
               placeholder="abcdef@ssafy.com"
-              name="email"
-              value={formik.values.email}
+              name="customerEmail"
+              value={formik.values.customerEmail}
               onChange={formik.handleChange}
               className={
-                formik.touched.email && formik.errors.email ? "error" : ""
+                formik.touched.customerEmail && formik.errors.customerEmail ? "error" : ""
               }
             />
-            {formik.touched.email && formik.errors.email && (
-              <div className="helperText">{formik.errors.email}</div>
+            {formik.touched.customerEmail && formik.errors.customerEmail && (
+              <div className="helperText">{formik.errors.customerEmail}</div>
             )}
           </div>
           <div className="RegistButton">
