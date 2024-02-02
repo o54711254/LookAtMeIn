@@ -18,7 +18,7 @@ const validationSchema = yup.object({
     .string()
     // .email("올바른 아이디를 입력해주세요.")
     .required("아이디 입력해주세요."),
-  password: yup.string().required("패스워드를 입력해주세요."),
+  userPassword: yup.string().required("패스워드를 입력해주세요."),
 });
 
 function LoginForm() {
@@ -37,7 +37,9 @@ function LoginForm() {
   const formik = useFormik({
     initialValues: {
       userId: "",
-      password: "",
+      // userPassword: "",
+      userName: "",
+      usertype: "",
     },
     validationSchema: validationSchema,
 
@@ -46,19 +48,19 @@ function LoginForm() {
       if (membertype === "customer") {
         //customer
         try {
-          await axiosApi.post("/api/customer/login", values).then((res) => {
+          await axiosApi.post("/api/user/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
-              console.log("userData", res.data.username);
+              console.log("유저 아이디 : ", res.data.userId);
               window.alert("로그인 성공!");
               //로그인 성공
               dispatch(
                 loginUser({
-                  userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
-                  userId: res.data.responseObj.userId, // 사용자 아이디
-                  userName: res.data.name, // 사용자 이름
-                  userPw: res.data.responseObj.userPw, // 사용자 비밀번호
-                  // role: res.data.responseObj.usertype, // 역할 업데이트
+                  userSeq: res.data.userSeq, // 사용자 일련번호
+                  userId: res.data.userId, // 사용자 아이디
+                  userName: res.data.userName, // 사용자 이름
+                  // userPassw: res.data.userPassword, // 사용자 비밀번호
+                  usertype: res.data.usertype, // 역할 업데이트
                 })
               );
 
@@ -99,13 +101,12 @@ function LoginForm() {
               if (res.data.status === 200) {
                 //로그인 성공
                 console.log(res.data);
-                console.log(res.data.responseObj);
                 dispatch(
                   loginUser({
-                    userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
-                    userId: res.data.responseObj.userId, // 사용자 아이디
-                    userName: res.data.responseObj.userName, // 사용자 이름
-                    userPw: res.data.responseObj.userPw, // 사용자 비밀번호
+                    userSeq: res.data.userSeq, // 사용자 일련번호
+                    userId: res.data.userId, // 사용자 아이디
+                    userName: res.data.userName, // 사용자 이름
+                    userPassword: res.data.userPassword, // 사용자 비밀번호
                     // role: res.data.responseObj.usertype, // 역할 업데이트
                   })
                 );
@@ -134,7 +135,7 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}  
+        } catch {}
       } else if (membertype === "coordinator") {
         //coordinator
         try {
@@ -196,6 +197,7 @@ function LoginForm() {
               if (res.data.status === 200) {
                 //로그인 성공
                 console.log(res.data);
+
                 dispatch(
                   loginUser({
                     userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
@@ -217,6 +219,8 @@ function LoginForm() {
                 //   autoClose: 2000,
                 // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
+                navigate("/");
+                console.log(res.userSeq);
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
                 setTimeout(() => {
                   navigate("/");
@@ -332,19 +336,22 @@ function LoginForm() {
         <div className="passwordInput">
           <h3>비밀번호</h3>
           <input
-            name="password"
+            name="userPassword"
             placeholder="비밀번호를 입력해주세요"
-            value={formik.values.password}
+            value={formik.values.userPassword}
             onChange={formik.handleChange}
             type="password"
             className={
-              formik.touched.password && formik.errors.password ? "error" : ""
+              formik.touched.userPassword && formik.errors.userPassword
+                ? "error"
+                : ""
             }
           />
-          {formik.touched.password && formik.errors.password && (
-            <div className="helperText">{formik.errors.password}</div>
+          {formik.touched.userPassword && formik.errors.userPassword && (
+            <div className="helperText">{formik.errors.userPassword}</div>
           )}
         </div>
+
         <button type="submit">로그인</button>
         <div>
           <Link to="/regist">회원가입</Link>

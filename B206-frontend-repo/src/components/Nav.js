@@ -44,6 +44,22 @@ function Nav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  //PLAY 토글 기능
+  // 토글 상태를 위한 상태 변수
+  const [showDropdown, setShowDropdown] = useState(false);
+  // 드롭다운 메뉴를 토글하는 함수들
+  // const toggleDropdownMenu = () => setShowDropdown((prevState) => !prevState);
+
+  // 드롭다운을 보여주는 함수
+  const showDropdownMenu = () => {
+    setShowDropdown(true);
+  };
+
+  // 드롭다운을 숨기는 함수
+  const hideDropdownMenu = () => {
+    setShowDropdown(false);
+  };
+
   return (
     <nav
       className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ""}`}
@@ -53,7 +69,7 @@ function Nav() {
       </Link>
       {/* 모바일 뷰에서 보일 메뉴 버튼 */}
       <button onClick={toggleMenu} className={styles.menuButton}>
-        메뉴
+        Menu
       </button>
       {/* 메뉴 내용 */}
       <div className={`${styles.navContainer} ${showMenu ? styles.show : ""}`}>
@@ -61,7 +77,22 @@ function Nav() {
           <Link to="/hospitaldivst">병원 정보</Link>
           <Link to="/reviewdivst">시술 후기</Link>
           <Link to="/freeboarddivst">자유게시판</Link>
-          <Link to="/face">얼굴(부가서비스 토글)</Link>
+          <div
+            className={styles.dropdown}
+            onMouseEnter={showDropdownMenu}
+            onMouseLeave={hideDropdownMenu}
+          >
+            PLAY
+            {showDropdown && (
+              <div
+                className={`${styles.dropdownContent} ${
+                  showDropdown ? styles.show : ""
+                }`}
+              >
+                <Link to="/face">얼굴(부가서비스 토글)</Link>
+              </div>
+            )}
+          </div>
         </div>
         <div className={styles.nav2}>
           {!isLogin ? (
