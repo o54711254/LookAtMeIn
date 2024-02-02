@@ -66,6 +66,7 @@ public class FreeboardController {
                 .freeboardSeq(freeboard.getFreeboardSeq())
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
+                .freeboardContent(freeboard.getContent())
                 .freeboardRegisterdate(freeboard.getRegisterDate())
                 .build();
 

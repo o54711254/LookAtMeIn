@@ -1,5 +1,6 @@
 package com.ssafy.lam.user.domain;
 
+import com.ssafy.lam.freeboard.domain.Freeboard;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +35,10 @@ public class User implements UserDetails {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+//    @JoinColumn(name = "free_board_seq")
+    private List<Freeboard> freeboards = new ArrayList<>();
 
 
     public User() {
