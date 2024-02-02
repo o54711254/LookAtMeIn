@@ -22,7 +22,7 @@ const reducers = combineReducers({
 const persistConfig = {
   key: "root", // Redux 상태를 저장할 때 사용되는 키입니다.
   storage, // Redux 상태를 저장하는 데 사용할 스토리지입니다. 여기서는 로컬 스토리지를 사용합니다.
-  whitelist: ["user", "hospital", "auth", "requestBoard"], // 지속성할 상태 목록입니다. 여기서는 "user", "hospital", "auth" 상태를 지속성합니다.
+  whitelist: ["user", "auth", "requestBoard"], // 지속성할 상태 목록입니다. 여기서는 "user", "hospital", "auth" 상태를 지속성합니다.
 };
 
 // persistReducer를 사용하여 지속성이 적용된 root reducer를 생성합니다.
