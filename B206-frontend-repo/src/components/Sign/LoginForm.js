@@ -4,11 +4,11 @@ import { useState } from "react";
 import * as yup from "yup";
 import logo from "../../assets/lab_logo.png";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
 import { toast, ToastContainer } from "react-toastify";
 import axiosApi from "../../api/axiosApi.js";
-import loginUser from "../../redux/user.js";
+import { loginUser } from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styles from "./LoginForm.module.css";
@@ -24,7 +24,6 @@ const validationSchema = yup.object({
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userName);
 
   const [membertype, setMembertype] = useState("");
 
@@ -50,24 +49,21 @@ function LoginForm() {
           await axiosApi.post("/api/user/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
-              console.log("userData", res.data.userName);
+              console.log("userData", res.data);
               window.alert("로그인 성공!");
               //로그인 성공
               dispatch(
                 loginUser({
                   userSeq: res.data.userSeq,
                   userId: res.data.userId,
-                  userName: res.data.name,
-                  userPassword: res.data.userPassword,
+                  userName: res.data.userName,
                 })
               );
 
-              console.log(user);
-
               //토큰 받아오기
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-              const accessToken = res.data.token.get("authorization");
-              dispatch(setToken({ accessToken: accessToken }));
+              const accessToken = res.data.tokenInfo.accessToken;
+              dispatch(setToken({ accessToken }));
               // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
               //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
               //   position: toast.POSITION.TOP_CENTER,
