@@ -46,7 +46,7 @@ public class FreeboardServiceImpl implements FreeboardService {
 
     @Override
     public Freeboard getFreeboard(Long freeBoardSeq) {
-        Freeboard freeboard = freeboardRepository.findByfreeboardSeqAndIsDeletedFalse(freeBoardSeq).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다."));
+        Freeboard freeboard = freeboardRepository.findByfreeboardSeqAndIsDeletedFalse(freeBoardSeq).orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
         return freeboard;
     }
 

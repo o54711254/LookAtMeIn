@@ -59,18 +59,25 @@ public class FreeboardController {
 
     @GetMapping("/freeBoardList/{freeBoard_seq}")
     @Operation(summary = "자유게시판 글 상세보기")
-    public ResponseEntity<FreeboardResponseDto> detail(@PathVariable Long freeBoard_seq){
-        Freeboard freeboard = freeboardService.getFreeboard(freeBoard_seq);
+    public ResponseEntity<?> detail(@PathVariable Long freeBoard_seq){
+        Freeboard freeboard =  null ;
+        try{
+            freeboard = freeboardService.getFreeboard(freeBoard_seq);
+            FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
+                    .freeboardSeq(freeboard.getFreeboardSeq())
+                    .userId(freeboard.getUser().getUserId())
+                    .freeboardTitle(freeboard.getTitle())
+                    .freeboardContent(freeboard.getContent())
+                    .freeboardRegisterdate(freeboard.getRegisterDate())
+                    .build();
 
-        FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
-                .freeboardSeq(freeboard.getFreeboardSeq())
-                .userId(freeboard.getUser().getUserId())
-                .freeboardTitle(freeboard.getTitle())
-                .freeboardContent(freeboard.getContent())
-                .freeboardRegisterdate(freeboard.getRegisterDate())
-                .build();
+            return ResponseEntity.ok().body(freeboardResponseDto);
+        }catch(NoArticleExeption e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        return ResponseEntity.ok().body(freeboardResponseDto);
+
+
 
     }
     @PutMapping("/update/{user_seq}")

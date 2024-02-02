@@ -12,7 +12,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByUserUserSeq(Long userSeq);
 //
     List<Customer> findAllByUserUserSeq(Long userSeq);
-
     Optional<Customer> findByUserUserId(String userId);
 
     //

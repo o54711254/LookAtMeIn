@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/customer")
-
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -35,7 +34,6 @@ public class CustomerController {
         customerService.createCustomer(customerDto);
         return ResponseEntity.ok().build();
     }
-
 
 
 
