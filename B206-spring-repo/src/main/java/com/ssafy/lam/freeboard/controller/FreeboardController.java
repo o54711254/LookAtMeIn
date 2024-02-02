@@ -1,7 +1,9 @@
 package com.ssafy.lam.freeboard.controller;
 
+import com.ssafy.lam.exception.NoArticleExeption;
+import com.ssafy.lam.exception.UnAuthorizedException;
 import com.ssafy.lam.freeboard.domain.Freeboard;
-import com.ssafy.lam.freeboard.dto.FreeboardDto;
+import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.freeboard.service.FreeboardService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,9 +31,9 @@ public class FreeboardController {
 
     @PostMapping("/regist")
     @Operation(summary = "자유게시판 글 등록")
-    public ResponseEntity<Void> regist(@RequestBody FreeboardDto freeBoardDto) {
-        log.info("글 등록 정보 : {}", freeBoardDto);
-        freeboardService.createFreeboard(freeBoardDto);
+    public ResponseEntity<Void> regist(@RequestBody FreeboardRequestDto freeBoardRequestDto) {
+        log.info("글 등록 정보 : {}", freeBoardRequestDto);
+        freeboardService.createFreeboard(freeBoardRequestDto);
         return ResponseEntity.ok().build();
     }
 
@@ -58,7 +60,7 @@ public class FreeboardController {
     @GetMapping("/freeBoardList/{freeBoard_seq}")
     @Operation(summary = "자유게시판 글 상세보기")
     public ResponseEntity<FreeboardResponseDto> detail(@PathVariable Long freeBoard_seq){
-        Freeboard freeboard = freeboardService.getFreeboardDetail(freeBoard_seq);
+        Freeboard freeboard = freeboardService.getFreeboard(freeBoard_seq);
 
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
@@ -69,5 +71,28 @@ public class FreeboardController {
 
         return ResponseEntity.ok().body(freeboardResponseDto);
 
+    }
+    @PutMapping("/update/{user_seq}")
+    @Operation(summary = "자유게시판 글 수정")
+    public ResponseEntity<Void> update(@PathVariable Long user_seq, @RequestBody FreeboardRequestDto freeboardRequestDto){
+        try{
+            freeboardService.updateFreeboard(user_seq, freeboardRequestDto);
+            return ResponseEntity.ok().build();
+        }catch (NoArticleExeption e){
+            return ResponseEntity.badRequest().body(e.getMessage()).ok().build();
+        }catch(UnAuthorizedException e){
+            return ResponseEntity.badRequest().body(e.getMessage()).ok().build();
+        }
+    }
+
+    @PutMapping("/delete/{user_seq}")
+    @Operation(summary = "자유게시판 글 삭제")
+    public ResponseEntity<Void> delete(@PathVariable Long freeBoard_seq){
+        try{
+            freeboardService.deleteFreeboard(freeBoard_seq);
+            return ResponseEntity.ok().build();
+        }catch (NoArticleExeption e){
+            return ResponseEntity.badRequest().body(e.getMessage()).ok().build();
+        }
     }
 }

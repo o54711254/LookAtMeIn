@@ -5,15 +5,17 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Freeboard {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "free_board_seq")
     private Long freeboardSeq;
 
@@ -34,6 +36,10 @@ public class Freeboard {
 
     @Column(name="free_board_isDeleted")
     private boolean isDeleted;
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 
     @OneToOne
     @JoinColumn(name="free_board_customer_seq")

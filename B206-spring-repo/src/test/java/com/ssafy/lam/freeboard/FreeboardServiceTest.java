@@ -1,7 +1,7 @@
 package com.ssafy.lam.freeboard;
 
 import com.ssafy.lam.freeboard.domain.Freeboard;
-import com.ssafy.lam.freeboard.dto.FreeboardDto;
+import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.freeboard.service.FreeboardService;
 import org.assertj.core.api.Assertions;
@@ -22,17 +22,19 @@ public class FreeboardServiceTest {
 
     @Test
     @DisplayName("자유게시판 글 등록 테스트")
-    @Transactional
+//    @Transactional
     public void registTest() {
-        FreeboardDto freeboardDto = FreeboardDto.builder()
-                .userSeq(1L)
+        FreeboardRequestDto freeboardRequestDto = FreeboardRequestDto.builder()
+                .freeBoard_seq(1L)
+                .user_seq(1L)
                 .freeBoard_title("자유게시판 테스트")
+                .username("kimheesu")
                 .userId("polya")
                 .freeBoard_content("자유게시판 테스트 내용")
                 .build();
 
-//        Freeboard freeboard = freeboardService.createFreeboard(freeboardDto);
-//        Assertions.assertThat(freeboard.getTitle()).isEqualTo(freeboardDto.getFreeBoard_title());
+        Freeboard freeboard = freeboardService.createFreeboard(freeboardRequestDto);
+        Assertions.assertThat(freeboard.getTitle()).isEqualTo(freeboardRequestDto.getFreeBoard_title());
 
     }
 
@@ -40,14 +42,14 @@ public class FreeboardServiceTest {
     @DisplayName("자유게시판 글 목록 조회 테스트")
     @Transactional
     public void getFreeboardListTest() {
-        FreeboardDto freeboardDto = FreeboardDto.builder()
-                .userSeq(1L)
+        FreeboardRequestDto freeboardRequestDto = FreeboardRequestDto.builder()
+                .user_seq(1L)
                 .freeBoard_title("자유게시판 테스트")
                 .userId("polya")
                 .freeBoard_content("자유게시판 테스트 내용")
                 .build();
 //
-        Freeboard freeboard = freeboardService.createFreeboard(freeboardDto);
+//        Freeboard freeboard = freeboardService.createFreeboard(freeboardRequestDto);
 
 
         // 여기서 왜 insert를 하려고함?
@@ -71,10 +73,25 @@ public class FreeboardServiceTest {
 
     @Test
     @DisplayName("자유게시판 글 상세보기 테스트")
+    @Transactional
     public void detailTest(){
         Long freeBoardSeq = 1L;
-        Freeboard freeboard = freeboardService.getFreeboardDetail(freeBoardSeq);
+        Freeboard freeboard = freeboardService.getFreeboard(freeBoardSeq);
         Assertions.assertThat(freeboard.getFreeboardSeq()).isEqualTo(freeBoardSeq);
 
+    }
+
+    @Test
+    @DisplayName("자유게시판 글 수정 테스트")
+    public void updateTest(){
+        Long user_eq = 1L;
+        FreeboardRequestDto freeboardRequestDto = FreeboardRequestDto.builder()
+                .freeBoard_seq(2L)
+                .freeBoard_title("자유게시판 수정 테스트")
+                .freeBoard_content("자유게시판 테스트 수정 내용")
+                .build();
+
+        Freeboard freeboard = freeboardService.updateFreeboard(user_eq, freeboardRequestDto);
+        Assertions.assertThat(freeboard.getTitle()).isEqualTo(freeboardRequestDto.getFreeBoard_title());
     }
 }
