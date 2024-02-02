@@ -75,25 +75,25 @@ public class FreeboardController {
     }
     @PutMapping("/update/{user_seq}")
     @Operation(summary = "자유게시판 글 수정")
-    public ResponseEntity<Void> update(@PathVariable Long user_seq, @RequestBody FreeboardRequestDto freeboardRequestDto){
+    public ResponseEntity<?> update(@PathVariable Long user_seq, @RequestBody FreeboardRequestDto freeboardRequestDto){
         try{
             freeboardService.updateFreeboard(user_seq, freeboardRequestDto);
             return ResponseEntity.ok().build();
         }catch (NoArticleExeption e){
-            return ResponseEntity.badRequest().body(e.getMessage()).ok().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }catch(UnAuthorizedException e){
-            return ResponseEntity.badRequest().body(e.getMessage()).ok().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("/delete/{freeBoard_seq}")
     @Operation(summary = "자유게시판 글 삭제")
-    public ResponseEntity<Void> delete(@PathVariable Long freeBoard_seq){
+    public ResponseEntity<?> delete(@PathVariable Long freeBoard_seq){
         try{
             freeboardService.deleteFreeboard(freeBoard_seq);
             return ResponseEntity.ok().build();
         }catch (NoArticleExeption e){
-            return ResponseEntity.badRequest().body(e.getMessage()).ok().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
