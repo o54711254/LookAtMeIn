@@ -1,6 +1,5 @@
-package com.ssafy.lam.chat.repository;
+package com.ssafy.lam.chat.domain;
 
-import com.ssafy.lam.chat.entity.ChatParticipant;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +10,5 @@ public interface ChatParticipantRepository extends JpaRepository<ChatParticipant
     List<ChatParticipant> findByUserUserSeq(Long userSeq);
 
     // 특정 채팅방 ID로 모든 참여 정보를 조회
-    List<ChatParticipant> findByChatroomSeq(Long chatRoomId);
+    List<ChatParticipant> findByChatRoomChatroomSeq(Long chatRoomReq);
 }

@@ -1,4 +1,4 @@
-package com.ssafy.lam.chat.entity;
+package com.ssafy.lam.chat.domain;
 
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
@@ -8,6 +8,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@Table(name = "chat_participant")
 public class ChatParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +20,9 @@ public class ChatParticipant {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @Column(name = "chatroom_seq")
-    private Long chatroomSeq;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatRoom_seq")
+    private ChatRoom chatRoom;
 }
