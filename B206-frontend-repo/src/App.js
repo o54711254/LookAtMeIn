@@ -26,13 +26,12 @@ import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
 
 import FindPassword from "./components/Sign/FindPassword";
 import ReserveModal from "./components/Modal/DateTimePickerModal";
-import Report from "./components/Modal/ReviewReport.js"
-import reviewDelete from "./components/ReviewBoard/ReviewDelete.js"
+import Report from "./components/Modal/ReviewReport.js";
+import reviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
-import Favorite from "./components/HospitalBoard/HospitalWish.js"
+import Favorite from "./components/HospitalBoard/HospitalWish.js";
 
-import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
-import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
+import Worldcup from "./components/WorldCup/Worldcup.js";
 
 function App() {
   return (
@@ -40,7 +39,7 @@ function App() {
       <div className="app-container">
         <div className="content">
           <BrowserRouter>
-            <Nav />
+            {/* <Nav /> */}
             <div>
               <Routes>
                 {/*Sign*/}
@@ -89,16 +88,15 @@ function App() {
                 {/* meeting */}
                 {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
                 {/* <Route path="/search/:query" element={<SearchList />} /> */}
-                <Route path="/worldcup/man" element={<WorldcupMan />} />
-                <Route path="/worldcup/woman" element={<WorldcupWoman />} />
+                <Route path="/worldcup/*" element={<Worldcup />} />
               </Routes>
             </div>
           </BrowserRouter>
           <div>
-            <Report/>
+            <Report />
             <ReserveModal />
-            <ReviewDelete/>
-            <Favorite/>
+            <ReviewDelete />
+            <Favorite />
           </div>
           <FloatingChat />
         </div>
