@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import axiosAPi from "../../../../api/axiosApi";
 import StarRating from "../../../ReviewBoard/StarRating/StarResult";
+import { useSelector } from "react-redux";
 
 function ReviewList() {
   const [reviewList, setReviewList] = useState([]);
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
   useEffect(() => {
+    console.log(user);
+    console.log(auth);
     axiosAPi
-      .get(`/reviewBoard/list/{user_seq}`)
+      .get(`/reviewBoard/list/${user.userSeq}`)
       .then((res) => {
         setReviewList(res.data);
       })

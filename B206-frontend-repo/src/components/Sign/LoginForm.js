@@ -38,7 +38,6 @@ function LoginForm() {
     initialValues: {
       userId: "",
       userPassword: "",
-      userPassword: "",
     },
     validationSchema: validationSchema,
 
@@ -51,15 +50,19 @@ function LoginForm() {
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
               //로그인 성공
-              dispatch(
-                loginUser({
-                  userSeq: res.data.userSeq, // 사용자 일련번호
-                  userId: values.userId, // 사용자 아이디
-                  userName: res.data.userName, // 사용자 이름
-                  userPassword: values.userPassword, // 사용자 비밀번호
-                  role: res.data.userType, // 역할 업데이트
-                })
-              );
+              try {
+                dispatch(
+                  loginUser({
+                    userSeq: res.data.userSeq, // 사용자 일련번호
+                    userId: values.userId, // 사용자 아이디
+                    userName: res.data.userName, // 사용자 이름
+                    userPassword: values.userPassword, // 사용자 비밀번호
+                    role: res.data.userType, // 역할 업데이트
+                  })
+                );
+              } catch (e) {
+                console.log(e);
+              }
 
               //토큰 받아오기
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장

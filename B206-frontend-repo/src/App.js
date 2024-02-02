@@ -41,6 +41,7 @@ function App() {
         <div className="content">
           <BrowserRouter>
             {/* <Nav /> */}
+            <Link to="mypage">마이페이지</Link>
             <div>
               <Routes>
                 {/*Sign*/}
