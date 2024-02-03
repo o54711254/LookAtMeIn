@@ -20,7 +20,7 @@ function FloatingChat() {
   };
   const fetchChatRooms = async () => {
     try {
-      const res = await axiosApi.get(`/chatrooms/${user.userId}`);
+      const res = await axiosApi.get(`/chatrooms/${user.userSeq}`);
       setChatRooms(res.data);
     } catch (error) {
       console.log("채팅방 목록을 가져오는데 실패했습니다.", error);
