@@ -5,6 +5,7 @@
   background-color: #fffaf4;
   padding: 0 20px;
   padding-left: 40px; /* 로고 쫌 더 오른쪽으로 옮기는 부분 */
+  margin-bottom: 100px;
   position: fixed;
   width: 100%;
   top: 0;
@@ -46,7 +47,6 @@
   color: rgb(52, 52, 52);
   font-weight: bold;
   padding: 10px;
-  border-radius: 5px;
   gap: 10px;
   transition: background-color 0.3s, color 0.3s;
 }
@@ -55,9 +55,15 @@
 .nav1 a:hover,
 .nav2 a:hover,
 .nav2 div:hover {
-  color: #ff9a84;
-  font-size: 1.1em; /* 커서 올라가면 글자 쫌 키움 */
+  /* color: #ff9a84;
+   
   /* background-color: #ff9a84; */
+  /* background-color: white; */
+  color: #f15170; /* 원하는 글자색으로 변경 */
+  padding: 23px 10px; /* 상하 패딩을 네비게이션 바의 높이에 맞게 조정 */
+  font-size: 1.05em;
+  /* border-radius: 0; 모서리를 둥글지 않게 설정 */
+  /* height: 100%; 부모 요소의 높이에 맞게 설정 */
 }
 
 /* 메뉴 버튼과 navContainer : 화면 크기 줄면 반응형으로 container대신 menu버튼나오게 했는데 왜 안되냐고 */
@@ -110,4 +116,38 @@
 /* 스크롤 시 로고 크기 조정 */
 .navbarScrolled img {
   max-width: 50px; /* 스크롤 시 로고 최대 너비 줄임 */
+}
+/* 드롭다운 스타일링 */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  cursor: pointer; /* 클릭 가능한 요소임을 나타내는 커서 스타일 */
+}
+
+/* 드롭다운 컨텐츠 기본 스타일 */
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #fffaf4; /* 드롭다운 배경색 */
+  min-width: 260px;
+  /* box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); */
+  z-index: 1;
+}
+
+/* 드롭다운 */
+.show {
+  /* display: block; */
+}
+
+/* 드롭다운 아이템 스타일링 */
+.dropdownContent a {
+  color: rgb(52, 52, 52);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* 드롭다운 아이템 호버 스타일링 */
+.dropdownContent a:hover {
+  background-color: #fffaf4; /* 호버 시 아이템 배경색 */
 }

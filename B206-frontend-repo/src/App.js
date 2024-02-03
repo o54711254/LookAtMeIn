@@ -26,14 +26,15 @@ import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
 
 import FindPassword from "./components/Sign/FindPassword";
 import ReserveModal from "./components/Modal/DateTimePickerModal";
-import Report from "./components/Modal/ReviewReport.js"
-import reviewDelete from "./components/ReviewBoard/ReviewDelete.js"
+import Report from "./components/Modal/ReviewReport.js";
+import reviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
-import Favorite from "./components/HospitalBoard/HospitalWish.js"
-import Questionnaire from "./components/Modal/Questionnaire.js"
+import Favorite from "./components/HospitalBoard/HospitalWish.js";
+import Questionnaire from "./components/Modal/Questionnaire.js";
 
 import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
 import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
+import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 
 function App() {
   return (
@@ -42,13 +43,20 @@ function App() {
         <div className="content">
           <BrowserRouter>
             <Nav />
-            <div>
+            <div style={{ paddingTop: "70px" }}>
               <Routes>
                 {/*Sign*/}
                 <Route path="/" element={<Home />} />
                 <Route path="/hospitalList" element={<HospitalBoardList />} />
                 <Route path="/reviewList" element={<ReviewBoardList />} />
-                <Route path="/freeboardList" element={<FreeBoardList />} />
+                <Route
+                  path="/freeBoard/freeBoardList"
+                  element={<FreeBoardList />}
+                />
+                <Route
+                  path="/freeBoard/freeBoardList/{freeBoard_Seq}"
+                  element={<FreeBoardDetail />}
+                />
                 <Route path="/face" element={<FacialAsy />} />
                 <Route
                   path="/requestboardlist"
@@ -96,12 +104,12 @@ function App() {
             </div>
           </BrowserRouter>
           <div>
-            <Report/>
+            <Report />
             <ReserveModal />
-            <ReviewDelete/>
-            <Favorite/>
+            <ReviewDelete />
+            <Favorite />
           </div>
-          <Questionnaire/>
+          <Questionnaire />
           <FloatingChat />
         </div>
         <Footer />

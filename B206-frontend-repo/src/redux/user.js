@@ -8,7 +8,7 @@ export const userSlice = createSlice({
     userId: "", // 사용자 아이디
     userName: "", // 사용자 이름
     userPassword: "",
-    role: "" // 역할 업데이트(customer/admin/cordinator/hospital)
+    role: "", // 역할 업데이트(customer/admin/cordinator/hospital)
   }, // 초기 상태 값
   reducers: {
     // 액션과 함께 호출될 리듀서 함수들
