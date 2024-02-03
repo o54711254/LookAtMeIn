@@ -82,7 +82,7 @@ function App() {
                 {/* Admin */}
                 {/* <Route path="/admin-mypage/*" element={<AdminMyPage />} /> */}
                 {/* ReviewBoard */}
-                {/* <Route path="/reviewboard/*" element={<ReviewBoardList />} /> */}
+                <Route path="/reviewboard/*" element={<ReviewBoardList />} />
                 {/* FreeBoard */}
                 {/* <Route path="/freeboard/*" element={<FreeBoardList />} /> */}
                 {/* Search */}

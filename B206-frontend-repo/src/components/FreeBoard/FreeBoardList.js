@@ -6,9 +6,9 @@ import s from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
-// axios 완료, 근데 이게 받아오는게 좀 적네
+
 function FreeBoardList() {
-  const nevigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [freeboardList, setFreeBoardList] = useState([]);
@@ -27,22 +27,25 @@ function FreeBoardList() {
       });
   }, []);
 
+  const handleChange = () => {
+    navigate("/api/freeBoard/freeBoardList/{freeBoard_Seq}");
+  };
   return (
     <>
       <div>
         <h3>자유 게시판</h3>
         <p>다양한 정보를 자유롭게 공유하세요</p>
-        <ul>
+        <ul onClick={handleChange}>
           {freeboardList.map((board, index) => (
             <li key={index}>
               {/* //아니면 그냥 인덱스로? */}
-              <div>No. {board.free_board_seq}</div>
-              <div>프로필 사진 : {board.customer_img}</div>
+              <div>No. {board.freeboardSeq}</div>
+              {/* <div>프로필 사진 : {board.customer_img}</div> */}
               <div>작성자 : {board.userId}</div>
               <div>제목: {board.freeboardTitle}</div>
-              <div>댓글 수: {board.comment_cnt}</div>
-              <div>조회수: {board.free_board_cnt}</div>
-              <div>작성날짜: {board.free_board_regdate}</div>
+              {/* <div>댓글 수: {board.comment_cnt}</div> */}
+              <div>조회수: {board.freeboardCnt}</div>
+              <div>작성날짜: {board.freeboardRegisterdate}</div>
             </li>
           ))}
         </ul>
@@ -52,3 +55,4 @@ function FreeBoardList() {
   );
 }
 export default FreeBoardList;
+//리스트 잘 뜸!

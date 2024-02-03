@@ -7,6 +7,7 @@ function ReviewList() {
 
   useEffect(() => {
     axiosApi.get(`/api/reviewBoard/list`).then((res) => {
+      console.log(res.data);
       setReviewBoardList(res.data);
     });
   }, []);
