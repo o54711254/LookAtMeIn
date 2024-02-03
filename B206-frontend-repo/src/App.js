@@ -35,6 +35,7 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
 import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
+import Worldcup from "./components/WorldCup/worldcup.js";
 
 function App() {
   return (
@@ -44,6 +45,9 @@ function App() {
           <BrowserRouter>
             <Nav />
             <div style={{ paddingTop: "70px" }}>
+            {/* <Nav /> */}
+            <Link to="mypage">마이페이지</Link>
+            <div>
               <Routes>
                 {/*Sign*/}
                 <Route path="/" element={<Home />} />
@@ -98,9 +102,9 @@ function App() {
                 {/* meeting */}
                 {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
                 {/* <Route path="/search/:query" element={<SearchList />} /> */}
-                <Route path="/worldcup/man" element={<WorldcupMan />} />
-                <Route path="/worldcup/woman" element={<WorldcupWoman />} />
+                <Route path="/worldcup/*" element={<Worldcup />} />
               </Routes>
+            </div>
             </div>
           </BrowserRouter>
           <div>

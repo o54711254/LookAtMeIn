@@ -13,6 +13,8 @@ import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styles from "./LoginForm.module.css";
 
+// axios test 완료
+
 const validationSchema = yup.object({
   userId: yup
     .string()
@@ -37,9 +39,7 @@ function LoginForm() {
   const formik = useFormik({
     initialValues: {
       userId: "",
-      // userPassword: "",
-      userName: "",
-      usertype: "",
+      userPassword: "",
     },
     validationSchema: validationSchema,
 
@@ -48,25 +48,24 @@ function LoginForm() {
       if (membertype === "customer") {
         //customer
         try {
-          await axiosApi.post("/api/user/login", values).then((res) => {
+          await axiosApi.post("/api/user/login", values)
+          .then((res) => {
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
-              console.log("유저 아이디 : ", res.data.userId);
-              window.alert("로그인 성공!");
               //로그인 성공
               dispatch(
                 loginUser({
                   userSeq: res.data.userSeq, // 사용자 일련번호
-                  userId: res.data.userId, // 사용자 아이디
+                  userId: values.userId, // 사용자 아이디
                   userName: res.data.userName, // 사용자 이름
-                  // userPassw: res.data.userPassword, // 사용자 비밀번호
-                  usertype: res.data.usertype, // 역할 업데이트
+                  userPassword: values.userPassword, // 사용자 비밀번호
+                  role: res.data.userType // 역할 업데이트
                 })
               );
 
               //토큰 받아오기
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-              const accessToken = res.data.tokenInfo.token;
+              const accessToken = res.data.tokenInfo.accessToken;
               dispatch(setToken({ accessToken: accessToken }));
               // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
               //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
@@ -93,7 +92,7 @@ function LoginForm() {
         //hospital
         try {
           await axiosApi
-            .post("/api/customer/login", values, {
+            .post("/api/user/login", values, {
               //values에는 이메일과 비밀번호가 담겨 있음
             })
             .then((res) => {
@@ -104,16 +103,16 @@ function LoginForm() {
                 dispatch(
                   loginUser({
                     userSeq: res.data.userSeq, // 사용자 일련번호
-                    userId: res.data.userId, // 사용자 아이디
+                    userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
-                    userPassword: res.data.userPassword, // 사용자 비밀번호
-                    // role: res.data.responseObj.usertype, // 역할 업데이트
+                    userPassword: values.userPassword, // 사용자 비밀번호
+                    role: res.data.userType // 역할 업데이트
                   })
                 );
 
                 //토큰 받아오기
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-                const accessToken = res.headers.get("authorization");
+                const accessToken = res.data.tokenInfo.accessToken;
                 dispatch(setToken({ accessToken: accessToken }));
                 // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
                 //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
@@ -140,7 +139,7 @@ function LoginForm() {
         //coordinator
         try {
           await axiosApi
-            .post("/api/customer/login", values, {
+            .post("/api/user/login", values, {
               //values에는 이메일과 비밀번호가 담겨 있음
               withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
             })
@@ -151,17 +150,17 @@ function LoginForm() {
                 console.log(res.data);
                 dispatch(
                   loginUser({
-                    userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
-                    userId: res.data.responseObj.userId, // 사용자 아이디
-                    userName: res.data.responseObj.userName, // 사용자 이름
-                    userPw: res.data.responseObj.userPw, // 사용자 비밀번호
-                    // role: res.data.responseObj.usertype, // 역할 업데이트
+                    userSeq: res.data.userSeq, // 사용자 일련번호
+                    userId: values.userId, // 사용자 아이디
+                    userName: res.data.userName, // 사용자 이름
+                    userPassword: values.userPassword, // 사용자 비밀번호
+                    role: res.data.userType // 역할 업데이트
                   })
                 );
 
                 //토큰 받아오기
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-                const accessToken = res.headers.get("authorization");
+                const accessToken = res.data.tokenInfo.accessToken;
                 dispatch(setToken({ accessToken: accessToken }));
                 // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
                 //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
@@ -188,7 +187,7 @@ function LoginForm() {
         //admin
         try {
           await axiosApi
-            .post("/api/customer/login", values, {
+            .post("/api/user/login", values, {
               //values에는 이메일과 비밀번호가 담겨 있음
               withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
             })
@@ -197,14 +196,13 @@ function LoginForm() {
               if (res.data.status === 200) {
                 //로그인 성공
                 console.log(res.data);
-
                 dispatch(
                   loginUser({
-                    userSeq: res.data.responseObj.userSeq, // 사용자 일련번호
-                    userId: res.data.responseObj.userId, // 사용자 아이디
-                    userName: res.data.responseObj.userName, // 사용자 이름
-                    userPw: res.data.responseObj.userPw, // 사용자 비밀번호
-                    // role: res.data.responseObj.usertype, // 역할 업데이트
+                    userSeq: res.data.userSeq, // 사용자 일련번호
+                    userId: values.userId, // 사용자 아이디
+                    userName: res.data.userName, // 사용자 이름
+                    userPassword: values.userPassword, // 사용자 비밀번호
+                    role: res.data.userType // 역할 업데이트
                   })
                 );
 
@@ -219,8 +217,7 @@ function LoginForm() {
                 //   autoClose: 2000,
                 // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
-                navigate("/");
-                console.log(res.userSeq);
+                console.log(res.data);
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
                 setTimeout(() => {
                   navigate("/");
