@@ -54,7 +54,7 @@ function App() {
                   element={<FreeBoardList />}
                 />
                 <Route
-                  path="/freeBoard/freeBoardList/{freeBoard_Seq}"
+                  path="/freeBoard/freeBoardList/:freeboardSeq"
                   element={<FreeBoardDetail />}
                 />
                 <Route path="/face" element={<FacialAsy />} />
