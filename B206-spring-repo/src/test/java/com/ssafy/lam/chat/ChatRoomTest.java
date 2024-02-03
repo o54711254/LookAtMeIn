@@ -4,9 +4,9 @@ import com.ssafy.lam.chat.domain.ChatMessage;
 import com.ssafy.lam.chat.domain.ChatMessageRepository;
 import com.ssafy.lam.chat.domain.ChatRoom;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
+import com.ssafy.lam.chat.dto.ChatRoomDto;
 import com.ssafy.lam.chat.service.ChatService;
 import com.ssafy.lam.user.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-public class ChatMessageTest {
+public class ChatRoomTest {
 
     @Autowired
     private ChatService chatService;
@@ -61,5 +61,18 @@ public class ChatMessageTest {
         for(ChatMessage chatMessage : chatMessages){
             System.out.println("chatMessage = " + chatMessage.getMessage());
         }
+    }
+
+    @Test
+    @DisplayName("채팅방 생성 테스트")
+    @Transactional
+    public void createChatRoomTest(){
+        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                .customerSeq(8L)
+                .hospitalSeq(6L)
+                .build();
+
+        ChatRoom chatRoom = chatService.createChatRoom(chatRoomDto);
+        System.out.println("chatRoom = " + chatRoom);
     }
 }

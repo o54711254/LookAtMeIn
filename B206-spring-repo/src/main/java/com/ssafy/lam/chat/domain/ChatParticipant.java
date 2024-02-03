@@ -2,6 +2,7 @@ package com.ssafy.lam.chat.domain;
 
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,4 +26,11 @@ public class ChatParticipant {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatRoom_seq")
     private ChatRoom chatRoom;
+
+    @Builder
+    public ChatParticipant(Long participantSeq, User user, ChatRoom chatRoom) {
+        this.participantSeq = participantSeq;
+        this.user = user;
+        this.chatRoom = chatRoom;
+    }
 }

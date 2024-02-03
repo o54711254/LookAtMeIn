@@ -1,15 +1,13 @@
 package com.ssafy.lam.chat.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +15,18 @@ public class ChatRoom {
     private Long chatroomSeq;
 
 
-    @Column(name="chatRoom_name")
-    private String chatroomName;
+    @Column(name = "customer_name")
+    private String customerName;
+
+    @Column(name = "hospital_name")
+    private String hospitalName;
+
 
     @Builder
-    public ChatRoom(Long chatroomSeq, String chatroomName) {
+
+    public ChatRoom(Long chatroomSeq, String customerName, String hospitalName) {
         this.chatroomSeq = chatroomSeq;
-        this.chatroomName = chatroomName;
+        this.customerName = customerName;
+        this.hospitalName = hospitalName;
     }
 }
