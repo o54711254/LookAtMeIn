@@ -12,13 +12,13 @@ function RequestBoardList() {
   const dispatch = useDispatch();
 
   //더미데이터
-  const RequestBoardList = {
-    customer_id: "user123",
-    requestBoard_title: "테스트 리뷰",
-    requestBoard_cnt: 100,
-    requestBoard_regDate: "2024-01-28",
-    requestBoard_score: 4,
-  };
+  // const RequestBoardList = {
+  //   customer_id: "user123",
+  //   requestBoard_title: "테스트 리뷰",
+  //   requestBoard_cnt: 100,
+  //   requestBoard_regDate: "2024-01-28",
+  //   requestBoard_score: 4,
+  // };
 
   const [requestBordList, setRequestBoardList] = useState([]);
   useEffect(() => {

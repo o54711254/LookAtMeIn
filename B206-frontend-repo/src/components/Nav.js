@@ -74,9 +74,9 @@ function Nav() {
       {/* 메뉴 내용 */}
       <div className={`${styles.navContainer} ${showMenu ? styles.show : ""}`}>
         <div className={styles.nav1}>
-          <Link to="/hospitaldivst">병원 정보</Link>
-          <Link to="/reviewdivst">시술 후기</Link>
-          <Link to="/freeboarddivst">자유게시판</Link>
+          <Link to="/hospitaldList">병원 정보</Link>
+          <Link to="/reviewdList">시술 후기</Link>
+          <Link to="/freeBoard/freeBoardList">자유게시판</Link>
           <div
             className={styles.dropdown}
             onMouseEnter={showDropdownMenu}
