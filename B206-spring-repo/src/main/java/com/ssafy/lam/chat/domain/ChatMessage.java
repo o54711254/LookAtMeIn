@@ -40,9 +40,10 @@ public class ChatMessage {
     @Override
     public String toString() {
         return "ChatMessage{" +
-                "id=" + messageSeq +
-                ", chatRoomId=" + chatroom.getChatroomSeq() +
+                "messageSeq=" + messageSeq +
+                ", chatRoomSeq=" + chatroom.getChatroomSeq() +
                 ", sender='" + user.getName() + '\'' +
+                ", sender_seq='" + user.getUserSeq() + '\'' +
                 ", message='" + message + '\'' +
                 '}';
     }

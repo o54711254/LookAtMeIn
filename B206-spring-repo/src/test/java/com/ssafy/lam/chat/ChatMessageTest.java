@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @SpringBootTest
 @Transactional
 public class ChatMessageTest {
@@ -30,10 +32,12 @@ public class ChatMessageTest {
         User user = User.builder().userSeq(1L).build();
         ChatRoom chatroom = ChatRoom.builder().chatroomSeq(1L).build();
         ChatMessageDto chatMessageDto = ChatMessageDto.builder()
-                .userSeq(1L)
+                .senderSeq(1L)
                 .chatroomSeq(1L)
                 .message("안녕하세요")
+                .sender("김희수")
                 .build();
+
         ChatMessage chatMessage = chatService.saveMessage(chatMessageDto);
         System.out.println("chatMessage = " + chatMessage);
 //
@@ -47,5 +51,15 @@ public class ChatMessageTest {
 ////        Assertions.assertThat(saveMessage.getChatroom().getChatroomSeq()).isEqualTo(chatMessage.getMessageSeq());
 //        System.out.println("saveMessage.getChatroom().getChatroomSeq() = " + saveMessage.getChatroom().getChatroomSeq());
 //        System.out.println("chatMessage = " + chatMessage.getMessageSeq());
+    }
+
+    @Test
+    @DisplayName("메시지 조회 테스트")
+    @Transactional
+    public void getMessagesByChatRoomIdTest(){
+        List<ChatMessage> chatMessages = chatMessageRepository.findByChatroomChatroomSeq(1L);
+        for(ChatMessage chatMessage : chatMessages){
+            System.out.println("chatMessage = " + chatMessage.getMessage());
+        }
     }
 }

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class ChatService {
@@ -41,12 +40,13 @@ public class ChatService {
 
     // 특정 채팅방의 모든 메시지 조회
     public List<ChatMessage> getMessagesByChatRoomId(Long chatroomSeq) {
+        log.info("chatroomSeq : {}", chatroomSeq);
         return chatMessageRepository.findByChatroomChatroomSeq(chatroomSeq);
     }
 
     public ChatMessage saveMessage(ChatMessageDto messageDto){
-        log.info("messageDto = " + messageDto);
-        User user = User.builder().userSeq(messageDto.getUserSeq()).build();
+        System.out.println("messageDto = " + messageDto);
+        User user = User.builder().userSeq(messageDto.getSenderSeq()).build();
         ChatRoom chatroom = ChatRoom.builder().chatroomSeq(messageDto.getChatroomSeq()).build();
 
         ChatMessage chatMessage = ChatMessage.builder()

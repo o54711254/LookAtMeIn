@@ -16,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/chat")
+
 public class WebSocketController {
 
     @Autowired
@@ -32,8 +33,7 @@ public class WebSocketController {
 
     private Logger log = LoggerFactory.getLogger(WebSocketController.class);
     // 사용자 ID를 통해 속한 채팅방 번호 목록 반환
-//    @GetMapping("/chatrooms/{userId}")
-    @GetMapping("/{userSeq}")
+    @GetMapping("/chatrooms/{userSeq}")
     public List<Long> getUserChatRooms(@PathVariable Long userSeq) {
 
         return chatService.getUserChatRoomIds(userSeq);
@@ -44,7 +44,7 @@ public class WebSocketController {
     public ResponseEntity<String> receiveMessage(@RequestBody ChatMessageDto messageDto) {
         // 메시지 저장
 //        chatMessageRepository.save(message);
-        log.info("messageDto : {}", );
+        log.info("messageDto : {}", messageDto);
 
         ChatMessage chatMessage = chatService.saveMessage(messageDto);
 
@@ -57,7 +57,22 @@ public class WebSocketController {
 
     // 특정 채팅방의 메시지 조회
     @GetMapping("/chatroom/{chatRoomId}/messages")
-    public List<ChatMessage> getChatRoomMessages(@PathVariable Long chatRoomId) {
-        return chatService.getMessagesByChatRoomId(chatRoomId);
+    public ResponseEntity<List<ChatMessageDto>> getChatRoomMessages(@PathVariable Long chatRoomId) {
+        List<ChatMessage> chatMessages= chatService.getMessagesByChatRoomId(chatRoomId);
+        List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
+        for (ChatMessage chatMessage : chatMessages) {
+            System.out.println("chatMessage = " + chatMessage);
+            ChatMessageDto chatMessageDto = ChatMessageDto.builder()
+                    .chatroomSeq(chatMessage.getChatroom().getChatroomSeq())
+                    .sender(chatMessage.getUser().getUserId())
+                    .senderSeq(chatMessage.getUser().getUserSeq())
+                    .message(chatMessage.getMessage())
+                    .messageSeq(chatMessage.getMessageSeq())
+                    .build();
+            chatMessageDtos.add(chatMessageDto);
+        }
+
+//        return chatMessages;
+        return ResponseEntity.ok(chatMessageDtos);
     }
 }

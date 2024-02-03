@@ -1,24 +1,29 @@
 package com.ssafy.lam.chat.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ChatMessageDto {
     private Long chatroomSeq;
-    private Long userSeq;
+
+    private String sender;
+    private Long senderSeq;
+
     private String message;
+    private Long messageSeq;
+
 
 
     @Builder
-    public ChatMessageDto(Long chatroomSeq, Long userSeq, String message) {
-        this.chatroomSeq = chatroomSeq;
-        this.userSeq = userSeq;
-        this.message = message;
-    }
 
+    public ChatMessageDto(Long chatroomSeq, String sender, Long senderSeq, String message, Long messageSeq) {
+        this.chatroomSeq = chatroomSeq;
+        this.sender = sender;
+        this.senderSeq = senderSeq;
+        this.message = message;
+        this.messageSeq = messageSeq;
+    }
 }
