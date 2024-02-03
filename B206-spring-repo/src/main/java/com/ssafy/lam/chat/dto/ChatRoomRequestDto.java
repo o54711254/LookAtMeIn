@@ -8,12 +8,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ChatRoomDto {
+public class ChatRoomRequestDto {
     private Long hospitalSeq;
     private Long customerSeq;
 
     @Builder
-    public ChatRoomDto(Long hospitalSeq, Long customerSeq) {
+    public ChatRoomRequestDto(Long hospitalSeq, Long customerSeq) {
         this.hospitalSeq = hospitalSeq;
         this.customerSeq = customerSeq;
     }

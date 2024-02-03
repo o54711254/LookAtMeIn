@@ -2,7 +2,8 @@ package com.ssafy.lam.chat.service;
 
 import com.ssafy.lam.chat.domain.*;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
-import com.ssafy.lam.chat.dto.ChatRoomDto;
+import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
+import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import org.slf4j.Logger;
@@ -65,19 +66,17 @@ public class ChatService {
     }
 
     // 채팅방 생성
-    public ChatRoom createChatRoom(ChatRoomDto chatRoomDto) {
+    public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto chatRoomRequestDto) {
 
-        User hospital = userRepository.findById(chatRoomDto.getHospitalSeq()).get();
+        User hospital = userRepository.findById(chatRoomRequestDto.getHospitalSeq()).get();
         if(!hospital.getUserType().equals("HOSPITAL")){
             throw new IllegalArgumentException("병원이 아닌 사용자는 채팅방을 생성할 수 없습니다.");
         }
 
-        User customer = userRepository.findById(chatRoomDto.getCustomerSeq()).get();
+        User customer = userRepository.findById(chatRoomRequestDto.getCustomerSeq()).get();
 
         // 채팅방 entity 생성
         ChatRoom chatroom = ChatRoom.builder()
-                .customerName(customer.getName())
-                .hospitalName(hospital.getName())
                 .build();
 
 
@@ -93,11 +92,21 @@ public class ChatService {
                 .chatRoom(chatroom)
                 .build();
 
-        chatRoomRepository.save(chatroom);
-        chatParticipantRepository.save(chatParticipant1);
-        chatParticipantRepository.save(chatParticipant2);
+        ChatRoom chatRoom = chatRoomRepository.save(chatroom);
+        chatParticipant1 = chatParticipantRepository.save(chatParticipant1);
+        chatParticipant2 = chatParticipantRepository.save(chatParticipant2);
 
-        return chatroom;
+        ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder()
+                .chatroomSeq(chatRoom.getChatroomSeq())
+                .customerSeq(chatRoomRequestDto.getCustomerSeq())
+                .customerId(customer.getUserId())
+                .customerName(customer.getName())
+                .hospitalSeq(chatRoomRequestDto.getHospitalSeq())
+                .hospitalId(hospital.getUserId())
+                .hospitalName(hospital.getName())
+                .build();
+
+        return chatRoomResponseDto;
 
     }
 }

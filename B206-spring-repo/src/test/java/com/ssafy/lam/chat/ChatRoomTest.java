@@ -4,7 +4,8 @@ import com.ssafy.lam.chat.domain.ChatMessage;
 import com.ssafy.lam.chat.domain.ChatMessageRepository;
 import com.ssafy.lam.chat.domain.ChatRoom;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
-import com.ssafy.lam.chat.dto.ChatRoomDto;
+import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
+import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
 import com.ssafy.lam.chat.service.ChatService;
 import com.ssafy.lam.user.domain.User;
 import org.junit.jupiter.api.DisplayName;
@@ -67,12 +68,12 @@ public class ChatRoomTest {
     @DisplayName("채팅방 생성 테스트")
     @Transactional
     public void createChatRoomTest(){
-        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+        ChatRoomRequestDto chatRoomRequestDto = ChatRoomRequestDto.builder()
                 .customerSeq(8L)
                 .hospitalSeq(6L)
                 .build();
 
-        ChatRoom chatRoom = chatService.createChatRoom(chatRoomDto);
-        System.out.println("chatRoom = " + chatRoom);
+        ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
+        System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
     }
 }

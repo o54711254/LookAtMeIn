@@ -3,7 +3,8 @@ package com.ssafy.lam.chat.controller;
 
 import com.ssafy.lam.chat.domain.ChatMessage;
 import com.ssafy.lam.chat.domain.ChatRoom;
-import com.ssafy.lam.chat.dto.ChatRoomDto;
+import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
+import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
@@ -37,12 +38,11 @@ public class WebSocketController {
     // 채팅방 생성
     @PostMapping("/chatroom/create")
     @Operation(summary = "채팅방 생성", description = "userSeq를 통해 채팅방을 생성합니다.")
-    public ResponseEntity<Long> create(@RequestBody ChatRoomDto chatRoomDto) {
-        log.info("chatRoomDto : {}", chatRoomDto);
+    public ResponseEntity<ChatRoomResponseDto> create(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+        log.info("chatRoomDto : {}", chatRoomRequestDto);
 
-        ChatRoom chatroom= chatService.createChatRoom(chatRoomDto);
-
-        return ResponseEntity.ok(chatroom.getChatroomSeq());
+        ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
+        return ResponseEntity.ok(chatRoomResponseDto);
     }
 
 

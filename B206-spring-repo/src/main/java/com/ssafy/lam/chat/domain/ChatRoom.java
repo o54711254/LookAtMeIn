@@ -15,18 +15,10 @@ public class ChatRoom {
     private Long chatroomSeq;
 
 
-    @Column(name = "customer_name")
-    private String customerName;
-
-    @Column(name = "hospital_name")
-    private String hospitalName;
 
 
     @Builder
-
-    public ChatRoom(Long chatroomSeq, String customerName, String hospitalName) {
+    public ChatRoom(Long chatroomSeq) {
         this.chatroomSeq = chatroomSeq;
-        this.customerName = customerName;
-        this.hospitalName = hospitalName;
     }
 }
