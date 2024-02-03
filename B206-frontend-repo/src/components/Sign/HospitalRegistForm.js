@@ -72,26 +72,26 @@ function HospitalRegistForm() {
       id: "",
       password: "",
       confirmPassword: "",
-      hospitalInfo_name: "", // 병원명->밑에 이름 다 바꿔!!
-      hospitalInfo_addresss: "",
-      hospitalInfo_url: "", //병원 홈페이지 주소
-      hospitalInfo_email: "",
-      hospitalInfo_phoneNumber: "", //병원 전화번호
+      name: "", // 병원명->밑에 이름 다 바꿔!!
+      addresss: "",
+      url: "", //병원 홈페이지 주소
+      email: "",
+      phoneNumber: "", //병원 전화번호
       part: "", // 병원 전문 분야
-      hospitalInfo_introduce: "", // 병원 소개 멘트
-      hospitalInfo_open: "", // 오픈 시간
-      hospitalInfo_close: "", // 닫는 시간
+      info: "", // 병원 소개 멘트
+      open: "", // 오픈 시간
+      close: "", // 닫는 시간
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
       formData.append("hospitalInfo_id", values.id);
       formData.append("hospitalInfo_password", values.password);
-      formData.append("hospitalInfo_name", values.hospitalInfo_name);
-      formData.append("hospitalInfo_address", values.hospitalInfo_addresss);
-      formData.append("hospitalInfo_url", values.hospitalInfo_url);
-      formData.append("hospitalInfo_email", values.hospitalInfo_email);
-      formData.append("hospitalInfo_phoneNumber", values.hospitalInfo_phoneNumber);
+      formData.append("hospitalInfo_name", values.name);
+      formData.append("hospitalInfo_address", values.addresss);
+      formData.append("hospitalInfo_url", values.url);
+      formData.append("hospitalInfo_email", values.email);
+      formData.append("hospitalInfo_phoneNumber", values.phoneNumber);
       formData.append("category", values.part);
       formData.append(
         "businessRegistrationCertificate",
@@ -99,13 +99,13 @@ function HospitalRegistForm() {
       ); //여기까지는 필수 입력 사항
       //여기부터는 선택적으로 입력하는 사항
       if (values.info) {
-        formData.append("hospitalInfo_introduce", values.hospitalInfo_introduce);
+        formData.append("hospitalInfo_introduce", values.info);
       }
       if (values.open) {
-        formData.append("hospitalInfo_open", values.hospitalInfo_open);
+        formData.append("hospitalInfo_open", values.open);
       }
       if (values.close) {
-        formData.append("hospitalInfo_close", values.hospitalInfo_close);
+        formData.append("hospitalInfo_close", values.close);
       }
 
       try {
