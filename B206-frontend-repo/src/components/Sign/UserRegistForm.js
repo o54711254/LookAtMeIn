@@ -10,6 +10,8 @@ import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// axios test 완료
+
 //회원가입 시 입력하는 정보 유효성 검사
 const validationSchema = yup.object({
   id: yup.string().required("아이디를 입력하세요."),
