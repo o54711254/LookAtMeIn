@@ -81,4 +81,10 @@ public class FreeboardServiceImpl implements FreeboardService {
         return freeboard;
 
     }
+
+    @Override
+    public List<Freeboard> getFreeboardByUserSeq(Long userSeq) {
+        List<Freeboard> freeboards = freeboardRepository.findByUserUserSeqAndIsDeletedFalse(userSeq);
+        return freeboards;
+    }
 }

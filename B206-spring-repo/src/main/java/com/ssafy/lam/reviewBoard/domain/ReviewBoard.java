@@ -42,7 +42,8 @@ public class ReviewBoard {
     private int cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user; // 고객 이름
+    @JoinColumn(name = "client_info_seq")
+    private User user; // 고객 seq
 
     @Builder
     public ReviewBoard(long seq, String title, String content, String hospital, String doctor, String surgery,
