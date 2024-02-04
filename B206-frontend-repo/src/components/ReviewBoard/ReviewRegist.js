@@ -4,7 +4,7 @@ import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import StarRating from "./StarRating/StarRating";
 
-function ReviewBoardForm({ onReviewAdded, consultingSeq }) {
+function ReviewRegist({ onReviewAdded, consultingSeq }) {
   const userSeq = useSelector((store) => store.user.userSeq);
   const [consulting, setConsulting] = useState([]);
 
@@ -12,20 +12,25 @@ function ReviewBoardForm({ onReviewAdded, consultingSeq }) {
     axiosApi
       .get(`/api/customer/${userSeq}/consulting/list/${consultingSeq}`)
       .then((res) => {
-        setConsulting(res.data.responseObj);
+        setConsulting(res.data);
+      })
+      .catch((error) => {
+        console.log("데이터를 불러오는데 실패했습니다.", error);
       });
   }, []);
 
   // 지역, 의사, 병원 추가 필요 & reviewBoard 에서 가격 표시하려면 dto 추가 필요
   const [reviewData, setReviewData] = useState({
-    reviewBoard_title: "",
-    reviewBoard_content: "",
-    reviewBoard_score: "",
-    customer_id: "",
-    reviewBoard_doctor: "",
-    reviewBoard_region: "",
-    // reviewBoard_surgery: consulting.part,
-    reviewBoard_hospital: "",
+    user_seq: userSeq,
+    reviewBoard_title: "string",
+    reviewBoard_content: "string",
+    reviewBoard_score: 0,
+    username: "string",
+    reviewBoard_doctor: "string",
+    reviewBoard_region: "string",
+    reviewBoard_surgery: "string",
+    reviewBoard_hospital: "string",
+    reviewBoard_price: 0,
   });
 
   const handleInputChange = (e) => {
@@ -36,7 +41,7 @@ function ReviewBoardForm({ onReviewAdded, consultingSeq }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     axiosApi
-      .post("/api/reviewBoard", reviewData)
+      .post("/api/reviewBoard/regist", reviewData)
       .then((res) => {
         onReviewAdded(res.data); // 새로운 리뷰가 등록되면 부모 컴포넌트에서 처리할 수 있도록 콜백 호출
       })
@@ -86,4 +91,4 @@ function ReviewBoardForm({ onReviewAdded, consultingSeq }) {
   );
 }
 
-export default ReviewBoardForm;
+export default ReviewRegist;

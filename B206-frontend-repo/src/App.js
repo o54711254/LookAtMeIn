@@ -10,6 +10,7 @@ import Home from "./components/Home.js";
 import HospitalBoardList from "./components/HospitalBoard/HospitalList.js";
 import ReviewBoardList from "./components/ReviewBoard/ReviewList";
 import ReviewDetail from "./components/ReviewBoard/ReviewDetail";
+import ReviewRegist from "./components/ReviewBoard/ReviewRegist";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import RequestBoardList from "./components/RequestBoard/RequestBoardList.js";
 import Coordinatormypage from "./components/Coordinator/MyPage/CoordinatorMyPage";
@@ -28,13 +29,10 @@ import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
 import FindPassword from "./components/Sign/FindPassword";
 import ReserveModal from "./components/Modal/DateTimePickerModal";
 import Report from "./components/Modal/ReviewReport.js";
-import reviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import Favorite from "./components/HospitalBoard/HospitalWish.js";
 import Questionnaire from "./components/Modal/Questionnaire.js";
 
-import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
-import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/worldcup.js";
 
@@ -77,13 +75,14 @@ function App() {
                   />
                   <Route path="/admin-mypage/*" element={<AdminMyPage />} />
 
-                  {/*리뷰 게시판*/}
+                  {/* 리뷰 게시판 */}
                   <Route path="/reviewList" element={<ReviewBoardList />} />
                   <Route path="/reviewboard/*" element={<ReviewBoardList />} />
                   <Route
                     path="/reviewdetail/:reviewBoard_seq"
                     element={<ReviewDetail />}
                   />
+                  <Route path="/reviewregist" element={<ReviewRegist />} />
 
                   {/*자유 게시판*/}
                   <Route path="/freeboard/*" element={<FreeBoardList />} />
