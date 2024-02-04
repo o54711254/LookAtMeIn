@@ -4,12 +4,14 @@ import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "chat_participant")
+@NoArgsConstructor
 public class ChatParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
