@@ -13,6 +13,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { addDays, startOfDay, format } from 'date-fns';
 import { ko } from 'date-fns/locale'; // 한국어 요일 표시를 위해
 
+// 백엔드 수정 후에 axiso test 필요
+
 export default function ResponsiveModal() {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(startOfDay(addDays(new Date(), 1)));
@@ -55,7 +57,7 @@ export default function ResponsiveModal() {
 
     try {
       // 백엔드 API로 예약 데이터 전송
-      await axiosApi.post('/api/reservation', reservationData);
+      await axiosApi.post('/api/reserve', reservationData);
       window.alert('예약이 완료되었습니다.');
       setOpen(false);
     } catch (error) {
