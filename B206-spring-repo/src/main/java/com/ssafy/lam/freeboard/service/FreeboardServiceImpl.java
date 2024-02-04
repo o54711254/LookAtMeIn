@@ -1,9 +1,13 @@
 package com.ssafy.lam.freeboard.service;
 
+import com.ssafy.lam.comment.domain.Comment;
+import com.ssafy.lam.comment.dto.CommentDto;
+import com.ssafy.lam.comment.service.CommentService;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
+import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -18,6 +23,7 @@ import java.util.List;
 public class FreeboardServiceImpl implements FreeboardService {
     private final FreeboardRepository freeboardRepository;
     private final UserRepository userRepository;
+    private final CommentService commentService;
 
     private Logger log = LoggerFactory.getLogger(FreeboardServiceImpl.class);
 
@@ -45,9 +51,35 @@ public class FreeboardServiceImpl implements FreeboardService {
     }
 
     @Override
-    public Freeboard getFreeboard(Long freeBoardSeq) {
+    public FreeboardResponseDto getFreeboard(Long freeBoardSeq) {
         Freeboard freeboard = freeboardRepository.findByfreeboardSeqAndIsDeletedFalse(freeBoardSeq).orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
-        return freeboard;
+        FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
+                .freeboardSeq(freeboard.getFreeboardSeq())
+                .userId(freeboard.getUser().getUserId())
+                .freeboardTitle(freeboard.getTitle())
+                .freeboardContent(freeboard.getContent())
+                .freeboardRegisterdate(freeboard.getRegisterDate())
+                .build();
+
+
+        List<Comment> commentList = commentService.getAllComments(freeBoardSeq);
+        List<CommentDto> commentDtoList = new ArrayList<>();
+        for (Comment comment : commentList) {
+//            System.out.println("comment = " + comment.getContent());
+            CommentDto commentDto = CommentDto.builder()
+                    .comment_seq(comment.getSeq())
+                    .comment_content(comment.getContent())
+                    .customer_name(comment.getUserId())
+                    .customerId(comment.getUserId())
+                    .freeboard_seq(comment.getFreeboard().getFreeboardSeq())
+                    .regdate(comment.getRegdate())
+                    .build();
+            commentDtoList.add(commentDto);
+        }
+
+        freeboardResponseDto.setComments(commentDtoList);
+
+        return freeboardResponseDto;
     }
 
     @Override
@@ -74,10 +106,20 @@ public class FreeboardServiceImpl implements FreeboardService {
     public Freeboard deleteFreeboard(Long freeBoardSeq) throws NoArticleExeption {
 
         Freeboard freeboard = freeboardRepository.findById(freeBoardSeq).orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
+        List<Comment> commentList = commentService.getAllComments(freeBoardSeq);
+
+
         log.info("게시글 삭제 전 정보: {}", freeboard);
         freeboard.setDeleted(true);
         freeboardRepository.save(freeboard);
+        for(Comment comment : commentList){
+            commentService.deleteComment(comment.getSeq());
+        }
+
         log.info("게시글 삭제 후 정보: {}", freeboard);
+
+
+
         return freeboard;
 
     }

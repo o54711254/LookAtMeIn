@@ -1,7 +1,7 @@
 package com.ssafy.lam.comment.controller;
 
 import com.ssafy.lam.comment.domain.Comment;
-import com.ssafy.lam.comment.dto.CommentRequestDto;
+import com.ssafy.lam.comment.dto.CommentDto;
 import com.ssafy.lam.comment.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/api/comment")
 public class CommentController {
     private final CommentService commentService;
 
@@ -27,18 +27,18 @@ public class CommentController {
     @PostMapping("/regist")
     @Operation(summary = "댓글 등록", description = "댓글을 등록합니다.")
     @Parameter(name = "commentRequestDto", description = "comment_seq와 comment_content만 사용", required = true)
-    public ResponseEntity<Comment> registComment(@RequestBody CommentRequestDto commentRequestDto) {
+    public ResponseEntity<Comment> registComment(@RequestBody CommentDto commentDto) {
         log.info("댓글 등록");
-        Comment comment = commentService.createComment(commentRequestDto);
+        Comment comment = commentService.createComment(commentDto);
         return ResponseEntity.ok(comment);
     }
 
     @PutMapping("/update")
     @Operation(summary = "댓글 수정", description = "댓글을 수정합니다.")
     @Parameter(name = "commentRequestDto", description = "freeboard_seq, user_seq, customer_name, comment_content만 사용", required = true)
-    public ResponseEntity<Comment> updateComment(@RequestBody CommentRequestDto commentRequestDto) {
+    public ResponseEntity<Comment> updateComment(@RequestBody CommentDto commentDto) {
         log.info("댓글 수정");
-        Comment comment = commentService.updateComment(commentRequestDto);
+        Comment comment = commentService.updateComment(commentDto);
         return ResponseEntity.ok(comment);
     }
 

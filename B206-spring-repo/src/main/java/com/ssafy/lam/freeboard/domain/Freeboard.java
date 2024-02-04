@@ -47,9 +47,8 @@ public class Freeboard {
     private User user;
 
 
-    @OneToMany(mappedBy = "freeboard", fetch = FetchType.LAZY)
-
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "freeboard", fetch = FetchType.LAZY)
+//    private List<Comment> comments;
 
     @Builder
     public Freeboard(Long freeboardSeq, String title, String content, int cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, User user) {

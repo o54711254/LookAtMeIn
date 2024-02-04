@@ -1,7 +1,7 @@
 package com.ssafy.lam.comment;
 
 import com.ssafy.lam.comment.domain.Comment;
-import com.ssafy.lam.comment.dto.CommentRequestDto;
+import com.ssafy.lam.comment.dto.CommentDto;
 import com.ssafy.lam.comment.service.CommentService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +21,7 @@ public class CommentServiceTest {
     @Transactional
     public void createCommentTest() {
         // given
-        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
+        CommentDto commentDto = CommentDto.builder()
                 .user_seq(1L)
                 .freeboard_seq(1L)
                 .customer_name("customer")
@@ -29,7 +29,7 @@ public class CommentServiceTest {
                 .build();
         // when
 
-        Comment comment = commentService.createComment(commentRequestDto);
+        Comment comment = commentService.createComment(commentDto);
         // then
         System.out.println("comment = " + comment);
         Assertions.assertThat(comment.getContent()).isEqualTo("content" );
@@ -39,11 +39,11 @@ public class CommentServiceTest {
     @DisplayName("댓글 수정 테스트")
     @Transactional
     public void updateCommentTest(){
-        CommentRequestDto commentRequestDto = CommentRequestDto.builder()
+        CommentDto commentDto = CommentDto.builder()
                 .comment_seq(1L)
                 .comment_content("update content")
                 .build();
-        Comment comment = commentService.updateComment(commentRequestDto);
+        Comment comment = commentService.updateComment(commentDto);
         Assertions.assertThat(comment.getContent()).isEqualTo("update content");
     }
 
