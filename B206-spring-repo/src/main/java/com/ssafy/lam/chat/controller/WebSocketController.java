@@ -9,11 +9,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
 import com.ssafy.lam.chat.service.ChatService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
@@ -38,8 +39,12 @@ public class WebSocketController {
     // 채팅방 생성
     @PostMapping("/chatroom/create")
     @Operation(summary = "채팅방 생성", description = "userSeq를 통해 채팅방을 생성합니다.")
-    public ChatRoomResponseDto create(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+    public ChatRoomResponseDto createChatroom(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
         log.info("chatRoomDto : {}", chatRoomRequestDto);
+
+        if(chatRoomRequestDto.getHospitalSeq() == null || chatRoomRequestDto.getCustomerSeq() == null) {
+            throw new IllegalArgumentException("병원과 사용자의 정보가 필요합니다.");
+        }
 
         ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
         return chatRoomResponseDto;
