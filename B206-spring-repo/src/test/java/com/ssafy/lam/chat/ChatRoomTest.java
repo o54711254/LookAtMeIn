@@ -1,5 +1,6 @@
 package com.ssafy.lam.chat;
 
+import com.ssafy.lam.chat.controller.WebSocketController;
 import com.ssafy.lam.chat.domain.ChatMessage;
 import com.ssafy.lam.chat.domain.ChatMessageRepository;
 import com.ssafy.lam.chat.domain.ChatRoom;
@@ -25,6 +26,9 @@ public class ChatRoomTest {
 
     @Autowired
     private ChatMessageRepository chatMessageRepository;
+
+    @Autowired
+    private WebSocketController webSocketController;
 
     @Test
     @DisplayName("메시지 저장 테스트")
@@ -69,11 +73,12 @@ public class ChatRoomTest {
     @Transactional
     public void createChatRoomTest(){
         ChatRoomRequestDto chatRoomRequestDto = ChatRoomRequestDto.builder()
-                .customerSeq(8L)
-                .hospitalSeq(6L)
+                .customerSeq(1L)
+                .hospitalSeq(2L)
                 .build();
-
-        ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
+        ChatRoomResponseDto chatRoomResponseDto = webSocketController.create(chatRoomRequestDto);
         System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
+//        ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
+//        System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
     }
 }

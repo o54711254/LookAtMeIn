@@ -1,7 +1,7 @@
 package com.ssafy.lam.freeboard.service;
 
 import com.ssafy.lam.comment.domain.Comment;
-import com.ssafy.lam.comment.dto.CommentDto;
+import com.ssafy.lam.comment.dto.CommentRequestDto;
 import com.ssafy.lam.comment.service.CommentService;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.freeboard.domain.Freeboard;
@@ -63,10 +63,10 @@ public class FreeboardServiceImpl implements FreeboardService {
 
 
         List<Comment> commentList = commentService.getAllComments(freeBoardSeq);
-        List<CommentDto> commentDtoList = new ArrayList<>();
+        List<CommentRequestDto> commentRequestDtoList = new ArrayList<>();
         for (Comment comment : commentList) {
 //            System.out.println("comment = " + comment.getContent());
-            CommentDto commentDto = CommentDto.builder()
+            CommentRequestDto commentRequestDto = CommentRequestDto.builder()
                     .comment_seq(comment.getSeq())
                     .comment_content(comment.getContent())
                     .customer_name(comment.getUserId())
@@ -74,10 +74,10 @@ public class FreeboardServiceImpl implements FreeboardService {
                     .freeboard_seq(comment.getFreeboard().getFreeboardSeq())
                     .regdate(comment.getRegdate())
                     .build();
-            commentDtoList.add(commentDto);
+            commentRequestDtoList.add(commentRequestDto);
         }
 
-        freeboardResponseDto.setComments(commentDtoList);
+        freeboardResponseDto.setComments(commentRequestDtoList);
 
         return freeboardResponseDto;
     }

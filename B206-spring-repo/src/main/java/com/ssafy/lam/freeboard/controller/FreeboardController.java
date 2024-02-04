@@ -43,6 +43,7 @@ public class FreeboardController {
         List<Freeboard> freeboardList = freeboardService.getAllFreeboards();
         List<FreeboardResponseDto> freeboardResponseDtoList = new ArrayList<>();
 
+
         for(Freeboard freeboard : freeboardList){
             FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                     .freeboardSeq(freeboard.getFreeboardSeq())

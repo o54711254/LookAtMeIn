@@ -38,11 +38,12 @@ public class WebSocketController {
     // 채팅방 생성
     @PostMapping("/chatroom/create")
     @Operation(summary = "채팅방 생성", description = "userSeq를 통해 채팅방을 생성합니다.")
-    public ResponseEntity<ChatRoomResponseDto> create(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+    public ChatRoomResponseDto create(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
         log.info("chatRoomDto : {}", chatRoomRequestDto);
 
         ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
-        return ResponseEntity.ok(chatRoomResponseDto);
+        return chatRoomResponseDto;
+//        return ResponseEntity.ok(chatRoomResponseDto);
     }
 
 

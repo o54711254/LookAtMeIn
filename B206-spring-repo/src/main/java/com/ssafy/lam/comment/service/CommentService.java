@@ -2,7 +2,7 @@ package com.ssafy.lam.comment.service;
 
 import com.ssafy.lam.comment.domain.Comment;
 import com.ssafy.lam.comment.domain.CommentRepository;
-import com.ssafy.lam.comment.dto.CommentDto;
+import com.ssafy.lam.comment.dto.CommentRequestDto;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +17,12 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    public Comment createComment(CommentDto commentDto) {
-        String userId = userRepository.findById(commentDto.getUser_seq()).get().getUserId();
+    public Comment createComment(CommentRequestDto commentRequestDto) {
+        String userId = userRepository.findById(commentRequestDto.getUser_seq()).get().getUserId();
 
-        Freeboard freeboard = Freeboard.builder().freeboardSeq(commentDto.getFreeboard_seq()).build();
+        Freeboard freeboard = Freeboard.builder().freeboardSeq(commentRequestDto.getFreeboard_seq()).build();
         Comment comment = Comment.builder()
-                .content(commentDto.getComment_content())
+                .content(commentRequestDto.getComment_content())
                 .userId(userId)
                 .freeboard(freeboard)
                 .isDeleted(false)
@@ -40,9 +40,9 @@ public class CommentService {
 
     }
 
-    public Comment updateComment(CommentDto commentDto) {
-        Comment comment = commentRepository.findById(commentDto.getComment_seq()).get();
-        comment.setContent(commentDto.getComment_content());
+    public Comment updateComment(CommentRequestDto commentRequestDto) {
+        Comment comment = commentRepository.findById(commentRequestDto.getComment_seq()).get();
+        comment.setContent(commentRequestDto.getComment_content());
         return commentRepository.save(comment);
     }
 
