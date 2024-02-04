@@ -17,7 +17,7 @@ import HospitalMyPage from "./components/Hospital/MyPage/HospitalMyPage";
 import AdminMyPage from "./components/Admin/MyPage/AdminMyPage";
 
 import SearchList from "./components/Search/SearchList";
-// import VideoRoom from "./components/OpenVidu/VideoRoom";
+import VideoRoom from "./components/OpenVidu/streaming/OvVideo.js";
 import SearchInput from "./components/Search/SearchInput";
 import ChatApp from "./components/Chat/ChatApp";
 import Footer from "./components/Footer";
@@ -28,7 +28,6 @@ import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
 import FindPassword from "./components/Sign/FindPassword";
 import ReserveModal from "./components/Modal/DateTimePickerModal";
 import Report from "./components/Modal/ReviewReport.js";
-import reviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import Favorite from "./components/HospitalBoard/HospitalWish.js";
 import Questionnaire from "./components/Modal/Questionnaire.js";
@@ -101,11 +100,15 @@ function App() {
                   element={<ReviewDetail />}
                 />
                 {/* FreeBoard */}
-                {/* <Route path="/freeboard/*" element={<FreeBoardList />} /> */}
+                <Route path="/freeboard/*" element={<FreeBoardList />} />
+                <Route
+                  path="/freeBoard/freeBoardList/:freeBoard_seq"
+                  element={<freeBoardDetail />}
+                />
                 {/* Search */}
                 {/* <Route path="/search/*" element={<SearchList />} /> */}
                 {/* meeting */}
-                {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
+                <Route path="/meeting/*" element={<VideoRoom />} />
                 {/* <Route path="/search/:query" element={<SearchList />} /> */}
                 <Route path="/worldcup/*" element={<Worldcup />} />
               </Routes>
