@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 import StarResult from "./StarRating/StarResult";
+ 
+// axios 완료 (reviewBoard_seq 넘어오는 것만 확인하면 될 듯)
 
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);

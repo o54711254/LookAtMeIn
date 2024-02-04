@@ -3,6 +3,8 @@ import axiosApi from "../../api/axiosApi";
 import StarResult from "./StarRating/StarResult";
 import { useNavigate } from "react-router-dom";
 
+// axios 완료
+
 function ReviewList() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
   const navigate = useNavigate();
