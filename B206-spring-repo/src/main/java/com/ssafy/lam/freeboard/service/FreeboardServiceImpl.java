@@ -88,11 +88,11 @@ public class FreeboardServiceImpl implements FreeboardService {
     }
 
     @Override
-    public Freeboard updateFreeboard(Long user_seq, FreeboardRequestDto updateFreeboardRequestDto) {
-        Freeboard freeboard = freeboardRepository.findById(updateFreeboardRequestDto.getFreeBoard_seq())
+    public Freeboard updateFreeboard(Long freeboardSeq, FreeboardRequestDto updateFreeboardRequestDto) {
+        Freeboard freeboard = freeboardRepository.findById(freeboardSeq)
                 .orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
 
-        if(freeboard.getUser().getUserSeq() != user_seq){
+        if(!freeboard.getUser().getUserSeq().equals(updateFreeboardRequestDto.getUser_seq())){
             throw new IllegalArgumentException("해당 게시글을 수정할 권한이 없습니다.");
         }
 
