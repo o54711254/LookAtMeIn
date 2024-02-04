@@ -18,7 +18,7 @@ import HospitalMyPage from "./components/Hospital/MyPage/HospitalMyPage";
 import AdminMyPage from "./components/Admin/MyPage/AdminMyPage";
 
 import SearchList from "./components/Search/SearchList";
-// import VideoRoom from "./components/OpenVidu/VideoRoom";
+import VideoRoom from "./components/OpenVidu/streaming/OvVideo.js";
 import SearchInput from "./components/Search/SearchInput";
 import ChatApp from "./components/Chat/ChatApp";
 import Footer from "./components/Footer";
