@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
+// axios 완료
 
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);

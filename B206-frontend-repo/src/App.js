@@ -46,70 +46,75 @@ function App() {
           <BrowserRouter>
             <Nav />
             <div style={{ paddingTop: "70px" }}>
-            {/* <Nav /> */}
-            <Link to="mypage">마이페이지</Link>
-            <div>
-              <Routes>
-                {/*Sign*/}
-                <Route path="/" element={<Home />} />
-                <Route path="/hospitalList" element={<HospitalBoardList />} />
-                <Route path="/reviewList" element={<ReviewBoardList />} />
-                <Route
-                  path="/freeBoard/freeBoardList"
-                  element={<FreeBoardList />}
-                />
-                <Route
-                  path="/freeBoard/freeBoardList/:freeboardSeq"
-                  element={<FreeBoardDetail />}
-                />
-                <Route path="/face" element={<FacialAsy />} />
-                <Route
-                  path="/requestboardlist"
-                  element={<RequestBoardList />}
-                />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/regist" element={<Regist />} />
-                <Route path="/regist/UserRegist" element={<UserRegistForm />} />
-                <Route
-                  path="/regist/HospitalRegist"
-                  element={<HospitalRegistForm />}
-                />
-                <Route path="/findPassword" element={<FindPassword />} />
-                <Route
-                  path="/RequestBoardList"
-                  element={<RequestBoardList />}
-                />
-                {/*Customer
-          마이페이지 내부에서 라우트 하면 될듯
-          */}
-                <Route path="/mypage/*" element={<MyPage />} />
-                {/* Coordinator
-          이하동문
-          */}
-                <Route
-                  path="/coordinator-mypage/*"
-                  element={<Coordinatormypage />}
-                />
-                {/* Hospital */}
-                <Route path="/hospital-mypage/*" element={<HospitalMyPage />} />
-                {/* Admin */}
-                {/* <Route path="/admin-mypage/*" element={<AdminMyPage />} /> */}
-                {/* ReviewBoard */}
-                <Route path="/reviewboard/*" element={<ReviewBoardList />} />
-                <Route
-                  path="/reviewdetail/:reviewBoard_seq"
-                  element={<ReviewDetail />}
-                />
-                {/* FreeBoard */}
-                {/* <Route path="/freeboard/*" element={<FreeBoardList />} /> */}
-                {/* Search */}
-                {/* <Route path="/search/*" element={<SearchList />} /> */}
-                {/* meeting */}
-                {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
-                {/* <Route path="/search/:query" element={<SearchList />} /> */}
-                <Route path="/worldcup/*" element={<Worldcup />} />
-              </Routes>
-            </div>
+              {/* <Nav /> */}
+              <Link to="mypage">마이페이지</Link>
+              <div>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+
+                  {/* 회원가입 관련 */}
+                  <Route path="/login" element={<LoginForm />} />
+                  <Route path="/findPassword" element={<FindPassword />} />
+                  <Route
+                    path="/regist/UserRegist"
+                    element={<UserRegistForm />}
+                  />
+                  <Route path="/regist" element={<Regist />} />
+                  <Route
+                    path="/regist/HospitalRegist"
+                    element={<HospitalRegistForm />}
+                  />
+
+                  {/* 마이페이지 */}
+                  <Route path="/mypage/*" element={<MyPage />} />
+                  <Route
+                    path="/hospital-mypage/*"
+                    element={<HospitalMyPage />}
+                  />
+                  <Route
+                    path="/coordinator-mypage/*"
+                    element={<Coordinatormypage />}
+                  />
+                  <Route path="/admin-mypage/*" element={<AdminMyPage />} />
+
+                  {/*리뷰 게시판*/}
+                  <Route path="/reviewList" element={<ReviewBoardList />} />
+                  <Route path="/reviewboard/*" element={<ReviewBoardList />} />
+                  <Route
+                    path="/reviewdetail/:reviewBoard_seq"
+                    element={<ReviewDetail />}
+                  />
+
+                  {/*자유 게시판*/}
+                  <Route path="/freeboard/*" element={<FreeBoardList />} />
+                  <Route
+                    path="/freeBoard/freeBoardList"
+                    element={<FreeBoardList />}
+                  />
+                  <Route
+                    path="/freeBoard/freeBoardList/:freeboardSeq"
+                    element={<FreeBoardDetail />}
+                  />
+
+                  {/*상담요청 게시판*/}
+                  <Route
+                    path="/requestboardlist"
+                    element={<RequestBoardList />}
+                  />
+
+                  {/*병원 게시판*/}
+                  <Route path="/hospitalList" element={<HospitalBoardList />} />
+
+                  {/*이상향 월드컵*/}
+                  <Route path="/worldcup/*" element={<Worldcup />} />
+
+                  <Route path="/face" element={<FacialAsy />} />
+
+                  {/* <Route path="/search/*" element={<SearchList />} /> */}
+                  {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
+                  {/* <Route path="/search/:query" element={<SearchList />} /> */}
+                </Routes>
+              </div>
             </div>
           </BrowserRouter>
           <div>
