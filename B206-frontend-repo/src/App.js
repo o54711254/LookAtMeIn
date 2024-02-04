@@ -97,7 +97,7 @@ function App() {
                 {/* ReviewBoard */}
                 <Route path="/reviewboard/*" element={<ReviewBoardList />} />
                 <Route
-                  path="/reviewdetail/:reviewBoard_seq"
+                  path="/reviewDetail/:reviewBoard_seq"
                   element={<ReviewDetail />}
                 />
                 {/* FreeBoard */}

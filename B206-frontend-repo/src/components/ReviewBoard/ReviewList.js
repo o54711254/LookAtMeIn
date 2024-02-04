@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
-import StarRating from "./StarRating/StarResult";
+import StarResult from "./StarRating/StarResult";
 import { useNavigate } from "react-router-dom";
 
 function ReviewList() {
@@ -10,6 +10,7 @@ function ReviewList() {
   useEffect(() => {
     axiosApi.get(`/api/reviewBoard/list`).then((res) => {
       setReviewBoardList(res.data);
+      console.log(reviewBoardList);
     });
   }, []);
 
@@ -28,10 +29,9 @@ function ReviewList() {
           >
             <div>작성자: {board.customer_name}</div>
             <div>제목: {board.reviewBoard_title}</div>
-            <div>조회수: {board.reviewBoard_cnt}</div>
             <div>작성날짜: {board.reviewBoard_regDate}</div>
             <div>
-              <StarRating score={board.reviewBoard_score} />
+              <StarResult score={board.reviewBoard_score} />
             </div>
           </li>
         ))}
