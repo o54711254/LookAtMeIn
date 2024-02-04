@@ -1,5 +1,6 @@
 package com.ssafy.lam.freeboard.domain;
 
+import com.ssafy.lam.comment.domain.Comment;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -8,11 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@ToString
 public class Freeboard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +39,16 @@ public class Freeboard {
     private boolean isDeleted;
 
     public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+        this.isDeleted = deleted;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="free_board_customer_seq")
     private User user;
 
+
+//    @OneToMany(mappedBy = "freeboard", fetch = FetchType.LAZY)
+//    private List<Comment> comments;
 
     @Builder
     public Freeboard(Long freeboardSeq, String title, String content, int cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, User user) {

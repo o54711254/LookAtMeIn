@@ -2,16 +2,16 @@ package com.ssafy.lam.chat.service;
 
 import com.ssafy.lam.chat.domain.*;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
+import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
+import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
 import com.ssafy.lam.user.domain.User;
+import com.ssafy.lam.user.domain.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ChatService {
@@ -21,6 +21,12 @@ public class ChatService {
 
     @Autowired
     private ChatMessageRepository chatMessageRepository;
+
+    @Autowired
+    private ChatRoomRepository chatRoomRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private Logger log = LoggerFactory.getLogger(ChatService.class);
 
@@ -56,6 +62,51 @@ public class ChatService {
                 .build();
 
         return chatMessageRepository.save(chatMessage);
+
+    }
+
+    // 채팅방 생성
+    public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto chatRoomRequestDto) {
+
+        User hospital = userRepository.findById(chatRoomRequestDto.getHospitalSeq()).get();
+        if(!hospital.getUserType().equals("HOSPITAL")){
+            throw new IllegalArgumentException("병원이 아닌 사용자는 채팅방을 생성할 수 없습니다.");
+        }
+
+        User customer = userRepository.findById(chatRoomRequestDto.getCustomerSeq()).get();
+
+        // 채팅방 entity 생성
+        ChatRoom chatroom = ChatRoom.builder()
+                .build();
+
+
+        // 채팅방 참여자인 Hospital entity 생성
+        ChatParticipant chatParticipant1 = ChatParticipant.builder()
+                .user(hospital)
+                .chatRoom(chatroom)
+                .build();
+
+        // 채팅방 참여자인 Customer entity 생성
+        ChatParticipant chatParticipant2 = ChatParticipant.builder()
+                .user(customer)
+                .chatRoom(chatroom)
+                .build();
+
+        ChatRoom chatRoom = chatRoomRepository.save(chatroom);
+        chatParticipant1 = chatParticipantRepository.save(chatParticipant1);
+        chatParticipant2 = chatParticipantRepository.save(chatParticipant2);
+
+        ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder()
+                .chatroomSeq(chatRoom.getChatroomSeq())
+                .customerSeq(chatRoomRequestDto.getCustomerSeq())
+                .customerId(customer.getUserId())
+                .customerName(customer.getName())
+                .hospitalSeq(chatRoomRequestDto.getHospitalSeq())
+                .hospitalId(hospital.getUserId())
+                .hospitalName(hospital.getName())
+                .build();
+
+        return chatRoomResponseDto;
 
     }
 }

@@ -60,16 +60,9 @@ public class FreeboardController {
     @GetMapping("/freeBoardList/{freeBoard_seq}")
     @Operation(summary = "자유게시판 글 상세보기")
     public ResponseEntity<?> detail(@PathVariable Long freeBoard_seq){
-        Freeboard freeboard =  null ;
+        FreeboardResponseDto freeboardResponseDto =  null ;
         try{
-            freeboard = freeboardService.getFreeboard(freeBoard_seq);
-            FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
-                    .freeboardSeq(freeboard.getFreeboardSeq())
-                    .userId(freeboard.getUser().getUserId())
-                    .freeboardTitle(freeboard.getTitle())
-                    .freeboardContent(freeboard.getContent())
-                    .freeboardRegisterdate(freeboard.getRegisterDate())
-                    .build();
+            freeboardResponseDto = freeboardService.getFreeboard(freeBoard_seq);
 
             return ResponseEntity.ok().body(freeboardResponseDto);
         }catch(NoArticleExeption e){

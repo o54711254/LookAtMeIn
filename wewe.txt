@@ -16,8 +16,3 @@
         push = +refs/tags/*:refs/tags/*
         mirror = true
         projects = B206-spring-repo
-<<<<<<< HEAD
-=======
-
-asdfd
->>>>>>> dev-FE-jinry0034
