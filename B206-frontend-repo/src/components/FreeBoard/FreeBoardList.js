@@ -6,6 +6,7 @@ import s from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
+import FreeBoardRegist from "./FreeBoardRegist.js";
 
 function FreeBoardList() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function FreeBoardList() {
       .then((response) => {
         console.log(freeboardList);
         const sortedData = response.data.sort(
-          (a, b) => new Date(b.time) - new Date(a.time)
+          (a, b) => new Date(b.freeboardSeq) - new Date(a.freeboardSeq)
         );
         setFreeBoardList(sortedData);
       })
@@ -27,9 +28,9 @@ function FreeBoardList() {
       });
   }, []);
 
-  useEffect(() => {
-    console.log(freeboardList); // 상태가 업데이트되고 나서 로그를 출력
-  }, [freeboardList]);
+  // useEffect(() => {
+  //   console.log(freeboardList); // 상태가 업데이트되고 나서 로그를 출력
+  // }, [freeboardList]);
 
   const goDetailPage = (freeboardSeq) => {
     if (freeboardSeq) {
@@ -47,8 +48,7 @@ function FreeBoardList() {
           {freeboardList.map((board, index) => (
             <li key={index} onClick={() => goDetailPage(board.freeboardSeq)}>
               {/* //아니면 그냥 인덱스로? */}
-              <div>No. {board.freeboardSeq}</div>
-              console.log(board);
+              <div>No. {index + 1}</div>
               {/* <div>프로필 사진 : {board.customer_img}</div> */}
               <div>작성자 : {board.userId}</div>
               <div>제목: {board.freeboardTitle}</div>
@@ -59,6 +59,7 @@ function FreeBoardList() {
           ))}
         </ul>
         {/* 글작성 모달달기 */}
+        <FreeBoardRegist />
       </div>
     </>
   );

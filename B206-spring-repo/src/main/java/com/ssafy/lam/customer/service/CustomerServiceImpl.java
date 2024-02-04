@@ -38,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService{
 
         List<String> roles = new ArrayList<>();
         roles.add("CUSTOMER");
+
         User user = User.builder()
                 .userId(customerDto.getUserId())
                 .name(customerDto.getCustomerName())

@@ -31,8 +31,9 @@ public class FreeboardController {
 
     @PostMapping("/regist")
     @Operation(summary = "자유게시판 글 등록")
-    public ResponseEntity<Void> regist(@RequestBody FreeboardRequestDto freeBoardRequestDto) {
+    public ResponseEntity<Void> regist(@ModelAttribute FreeboardRequestDto freeBoardRequestDto) {
         log.info("글 등록 정보 : {}", freeBoardRequestDto);
+        System.out.println(freeBoardRequestDto);
         freeboardService.createFreeboard(freeBoardRequestDto);
         return ResponseEntity.ok().build();
     }
@@ -42,6 +43,7 @@ public class FreeboardController {
     public ResponseEntity<List<FreeboardResponseDto>> getFreeboardList() {
         List<Freeboard> freeboardList = freeboardService.getAllFreeboards();
         List<FreeboardResponseDto> freeboardResponseDtoList = new ArrayList<>();
+
 
         for(Freeboard freeboard : freeboardList){
             FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
@@ -60,16 +62,9 @@ public class FreeboardController {
     @GetMapping("/freeBoardList/{freeBoard_seq}")
     @Operation(summary = "자유게시판 글 상세보기")
     public ResponseEntity<?> detail(@PathVariable Long freeBoard_seq){
-        Freeboard freeboard =  null ;
+        FreeboardResponseDto freeboardResponseDto =  null ;
         try{
-            freeboard = freeboardService.getFreeboard(freeBoard_seq);
-            FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
-                    .freeboardSeq(freeboard.getFreeboardSeq())
-                    .userId(freeboard.getUser().getUserId())
-                    .freeboardTitle(freeboard.getTitle())
-                    .freeboardContent(freeboard.getContent())
-                    .freeboardRegisterdate(freeboard.getRegisterDate())
-                    .build();
+            freeboardResponseDto = freeboardService.getFreeboard(freeBoard_seq);
 
             return ResponseEntity.ok().body(freeboardResponseDto);
         }catch(NoArticleExeption e){
@@ -82,7 +77,7 @@ public class FreeboardController {
     }
     @PutMapping("/update/{user_seq}")
     @Operation(summary = "자유게시판 글 수정")
-    public ResponseEntity<?> update(@PathVariable Long user_seq, @RequestBody FreeboardRequestDto freeboardRequestDto){
+    public ResponseEntity<?> update(@PathVariable Long user_seq, @ModelAttribute FreeboardRequestDto freeboardRequestDto){
         try{
             freeboardService.updateFreeboard(user_seq, freeboardRequestDto);
             return ResponseEntity.ok().build();

@@ -82,4 +82,10 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
             reviewBoardRepository.save(selectedReview);
         }
     }
+
+    @Override
+    public List<ReviewBoard> getReviewByUserSeq(Long userSeq) {
+        List<ReviewBoard> reviewBoards = reviewBoardRepository.findByUserUserSeqAndIsdeletedFalse(userSeq);
+        return reviewBoards;
+    }
 }

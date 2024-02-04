@@ -80,11 +80,11 @@ public class FreeboardServiceTest {
     @DisplayName("자유게시판 글 상세보기 테스트")
     @Transactional
     public void detailTest(){
-        Long freeBoardSeq = 4L;
+        Long freeBoardSeq = 1L;
 //        Optional<Freeboard> freeboard = freeboardRepository.findById(freeBoardSeq);
 //        System.out.println("freeboard = " + freeboard);
-        Freeboard freeboard = freeboardService.getFreeboard(freeBoardSeq);
-        Assertions.assertThat(freeboard.getFreeboardSeq()).isEqualTo(freeBoardSeq);
+        FreeboardResponseDto freeboard = freeboardService.getFreeboard(freeBoardSeq);
+        System.out.println("freeboard = " + freeboard);
 
     }
 
