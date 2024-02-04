@@ -27,19 +27,28 @@ function FreeBoardList() {
       });
   }, []);
 
-  const handleChange = () => {
-    navigate("/api/freeBoard/freeBoardList/{freeBoard_Seq}");
+  useEffect(() => {
+    console.log(freeboardList); // 상태가 업데이트되고 나서 로그를 출력
+  }, [freeboardList]);
+
+  const goDetailPage = (freeboardSeq) => {
+    if (freeboardSeq) {
+      navigate(`/freeBoard/freeBoardList/${freeboardSeq}`);
+    } else {
+      console.log("freeBoardSeq is undefined");
+    }
   };
   return (
     <>
       <div>
         <h3>자유 게시판</h3>
         <p>다양한 정보를 자유롭게 공유하세요</p>
-        <ul onClick={handleChange}>
+        <ul>
           {freeboardList.map((board, index) => (
-            <li key={index}>
+            <li key={index} onClick={() => goDetailPage(board.freeboardSeq)}>
               {/* //아니면 그냥 인덱스로? */}
               <div>No. {board.freeboardSeq}</div>
+              console.log(board);
               {/* <div>프로필 사진 : {board.customer_img}</div> */}
               <div>작성자 : {board.userId}</div>
               <div>제목: {board.freeboardTitle}</div>
