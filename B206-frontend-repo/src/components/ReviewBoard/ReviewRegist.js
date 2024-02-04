@@ -3,8 +3,11 @@ import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import StarRating from "./StarRating/StarRating";
+import { useNavigate } from "react-router-dom";
+// axios 완료
 
-function ReviewRegist({ onReviewAdded, consultingSeq }) {
+function ReviewRegist({ consultingSeq }) {
+  const navigate = useNavigate();
   const userSeq = useSelector((store) => store.user.userSeq);
   const [consulting, setConsulting] = useState([]);
 
@@ -43,7 +46,8 @@ function ReviewRegist({ onReviewAdded, consultingSeq }) {
     axiosApi
       .post("/api/reviewBoard/regist", reviewData)
       .then((res) => {
-        onReviewAdded(res.data); // 새로운 리뷰가 등록되면 부모 컴포넌트에서 처리할 수 있도록 콜백 호출
+        console.log(res);
+        navigate(`/reviewList`);
       })
       .catch((error) => {
         console.error("Error adding review:", error);
