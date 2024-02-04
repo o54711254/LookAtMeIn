@@ -62,7 +62,7 @@ public class ChatRoomTest {
     @DisplayName("메시지 조회 테스트")
     @Transactional
     public void getMessagesByChatRoomIdTest(){
-        List<ChatMessage> chatMessages = chatMessageRepository.findByChatroomChatroomSeq(1L);
+        List<ChatMessage> chatMessages = chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(1L);
         for(ChatMessage chatMessage : chatMessages){
             System.out.println("chatMessage = " + chatMessage.getMessage());
         }

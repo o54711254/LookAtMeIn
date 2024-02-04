@@ -12,18 +12,19 @@ import lombok.Setter;
 @Setter
 @Table(name = "chat_participant")
 @NoArgsConstructor
+
 public class ChatParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "participant_seq")
     private Long participantSeq;
-//    private String userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq")
     private User user;
 
-
+    boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatRoom_seq")

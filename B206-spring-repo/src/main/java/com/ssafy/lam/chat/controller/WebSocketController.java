@@ -2,7 +2,6 @@ package com.ssafy.lam.chat.controller;
 
 
 import com.ssafy.lam.chat.domain.ChatMessage;
-import com.ssafy.lam.chat.domain.ChatRoom;
 import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
 import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,13 +50,25 @@ public class WebSocketController {
 //        return ResponseEntity.ok(chatRoomResponseDto);
     }
 
+    @PutMapping("/chatroom/{chatRoomSeq}/close")
+    @Operation(summary = "채팅방 닫기", description = "chatRoomId를 통해 채팅방을 닫습니다.")
+    public ResponseEntity<String> closeChatroom(@RequestBody ChatRoomRequestDto chatRoomRequestDto, @PathVariable Long chatRoomSeq) {
+        log.info("chatRoomId : {}, 닫으려는 고객 : {}", chatRoomSeq, chatRoomRequestDto.getCustomerSeq());
+        try{
+            chatService.closeChatRoom(chatRoomSeq, chatRoomRequestDto.getCustomerSeq());
+            return ResponseEntity.ok("채팅방 닫기 완료");
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     // 사용자 ID를 통해 속한 채팅방 번호 목록 반환
     @GetMapping("/chatrooms/{userSeq}")
     @Operation(summary = "사용자의 채팅방 목록 조회", description = "userSeq를 통해 사용자가 속한 채팅방 번호 목록을 반환합니다.")
     public List<Long> getUserChatRooms(@PathVariable Long userSeq) {
         log.info("userSeq : {}", userSeq);
-        return chatService.getUserChatRoomIds(userSeq);
+        return chatService.getChatRoomIdsByUserSeq(userSeq);
     }
 
 
