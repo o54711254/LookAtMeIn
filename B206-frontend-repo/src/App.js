@@ -33,7 +33,10 @@ import ReviewDelete from "./components/ReviewBoard/ReviewDelete.js";
 import Favorite from "./components/HospitalBoard/HospitalWish.js";
 import Questionnaire from "./components/Modal/Questionnaire.js";
 
-import Worldcup from "./components/WorldCup/Worldcup.js";
+import WorldcupMan from "./components/WorldCup/WorldcupMan.js";
+import WorldcupWoman from "./components/WorldCup/WorldcupWoman.js";
+import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
+import Worldcup from "./components/WorldCup/worldcup.js";
 
 function App() {
   return (
@@ -41,6 +44,8 @@ function App() {
       <div className="app-container">
         <div className="content">
           <BrowserRouter>
+            <Nav />
+            <div style={{ paddingTop: "70px" }}>
             {/* <Nav /> */}
             <Link to="mypage">마이페이지</Link>
             <div>
@@ -49,7 +54,14 @@ function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/hospitalList" element={<HospitalBoardList />} />
                 <Route path="/reviewList" element={<ReviewBoardList />} />
-                <Route path="/freeboardList" element={<FreeBoardList />} />
+                <Route
+                  path="/freeBoard/freeBoardList"
+                  element={<FreeBoardList />}
+                />
+                <Route
+                  path="/freeBoard/freeBoardList/{freeBoard_Seq}"
+                  element={<FreeBoardDetail />}
+                />
                 <Route path="/face" element={<FacialAsy />} />
                 <Route
                   path="/requestboardlist"
@@ -97,6 +109,7 @@ function App() {
                 {/* <Route path="/search/:query" element={<SearchList />} /> */}
                 <Route path="/worldcup/*" element={<Worldcup />} />
               </Routes>
+            </div>
             </div>
           </BrowserRouter>
           <div>

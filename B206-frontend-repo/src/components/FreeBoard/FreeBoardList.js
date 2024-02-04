@@ -27,6 +27,10 @@ function FreeBoardList() {
       });
   }, []);
 
+  useEffect(() => {
+    console.log(freeboardList); // 상태가 업데이트되고 나서 로그를 출력
+  }, [freeboardList]);
+
   const handleChange = () => {
     navigate("/api/freeBoard/freeBoardList/{freeBoard_Seq}");
   };

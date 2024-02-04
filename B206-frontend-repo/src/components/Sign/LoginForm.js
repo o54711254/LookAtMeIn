@@ -12,7 +12,8 @@ import { loginUser } from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styles from "./LoginForm.module.css";
-// axios 완료
+
+// axios test 완료
 
 const validationSchema = yup.object({
   userId: yup
@@ -47,23 +48,20 @@ function LoginForm() {
       if (membertype === "customer") {
         //customer
         try {
-          await axiosApi.post("/api/user/login", values).then((res) => {
+          await axiosApi.post("/api/user/login", values)
+          .then((res) => {
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
               //로그인 성공
-              try {
-                dispatch(
-                  loginUser({
-                    userSeq: res.data.userSeq, // 사용자 일련번호
-                    userId: values.userId, // 사용자 아이디
-                    userName: res.data.userName, // 사용자 이름
-                    userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType, // 역할 업데이트
-                  })
-                );
-              } catch (e) {
-                console.log(e);
-              }
+              dispatch(
+                loginUser({
+                  userSeq: res.data.userSeq, // 사용자 일련번호
+                  userId: values.userId, // 사용자 아이디
+                  userName: res.data.userName, // 사용자 이름
+                  userPassword: values.userPassword, // 사용자 비밀번호
+                  role: res.data.userType // 역할 업데이트
+                })
+              );
 
               //토큰 받아오기
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
@@ -108,7 +106,7 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType, // 역할 업데이트
+                    role: res.data.userType // 역할 업데이트
                   })
                 );
 
@@ -156,7 +154,7 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType, // 역할 업데이트
+                    role: res.data.userType // 역할 업데이트
                   })
                 );
 
@@ -204,13 +202,13 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType, // 역할 업데이트
+                    role: res.data.userType // 역할 업데이트
                   })
                 );
 
                 //토큰 받아오기
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-                const accessToken = res.data.tokenInfo.accessToken;
+                const accessToken = res.headers.get("authorization");
                 dispatch(setToken({ accessToken: accessToken }));
                 // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
                 //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
