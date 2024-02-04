@@ -78,6 +78,17 @@ function ReviewRegist({ onReviewAdded, consultingSeq }) {
           />
         </div>
         <div>
+          <label htmlFor="reviewBoard_price">가격:</label>
+          <input
+            type="number"
+            id="reviewBoard_price"
+            name="reviewBoard_price"
+            value={reviewData.reviewBoard_price}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        <div>
           <label htmlFor="reviewBoard_score">별점:</label>
           {/* 별점 입력 컴포넌트를 렌더링합니다. */}
           <StarRating

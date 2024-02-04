@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
-// axios 완료
+import StarResult from "./StarRating/StarResult";
+
+// axios 완료 (reviewBoard_seq 넘어오는 것만 확인하면 될 듯)
 
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);
@@ -26,7 +28,7 @@ function ReviewDetail() {
       <div>
         <div>제목: {reviewDetail.reviewBoard_title}</div>
         <div>내용: {reviewDetail.reviewBoard_content}</div>
-        <div>별점: {reviewDetail.reviewBoard_score}</div>
+        <StarResult score={reviewDetail.reviewBoard_score} />
         <div>작성자: {reviewDetail.customer_id}</div>
         <div>의사: {reviewDetail.reviewBoard_doctor}</div>
         <div>지역: {reviewDetail.reviewBoard_region}</div>
