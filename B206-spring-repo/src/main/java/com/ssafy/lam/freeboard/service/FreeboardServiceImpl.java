@@ -3,6 +3,8 @@ package com.ssafy.lam.freeboard.service;
 import com.ssafy.lam.comment.domain.Comment;
 import com.ssafy.lam.comment.dto.CommentRequestDto;
 import com.ssafy.lam.comment.service.CommentService;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
@@ -23,6 +25,7 @@ import java.util.List;
 public class FreeboardServiceImpl implements FreeboardService {
     private final FreeboardRepository freeboardRepository;
     private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
     private final CommentService commentService;
 
     private Logger log = LoggerFactory.getLogger(FreeboardServiceImpl.class);
@@ -53,12 +56,14 @@ public class FreeboardServiceImpl implements FreeboardService {
     @Override
     public FreeboardResponseDto getFreeboard(Long freeBoardSeq) {
         Freeboard freeboard = freeboardRepository.findByfreeboardSeqAndIsDeletedFalse(freeBoardSeq).orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
+        Customer customer = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())
                 .freeboardRegisterdate(freeboard.getRegisterDate())
+                .userEmail(customer.getEmail())
                 .build();
 
 
