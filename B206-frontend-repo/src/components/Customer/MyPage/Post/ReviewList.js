@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axiosAPi from "../../../../api/axiosApi";
 import StarRating from "../../../ReviewBoard/StarRating/StarResult";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function ReviewList() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
   const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosAPi
@@ -13,11 +15,16 @@ function ReviewList() {
       .then((res) => {
         console.log(res.data);
         setReviewBoardList(res.data);
+        console(reviewBoardList);
       })
       .catch((error) => {
         console.log("데이터를 가져오는데 실패했습니다.", error);
       });
   }, []);
+
+  const handleChange = () => {
+    navigate("/api/reviewBoard/{");
+  };
 
   return (
     <div>

@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 
-function ReviewBoardList() {
+function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);
+  const { reviewBoard_seq } = useParams(); // URL 파라미터에서 reviewBoard_seq를 가져옴
 
   useEffect(() => {
+    console.log(reviewBoard_seq);
     axiosApi
-      .get(`/api/reviewBoard/${reviewDetail.reviewBoard_seq}`)
+      .get(`/api/reviewBoard/${reviewBoard_seq}`)
       .then((res) => {
-        setReviewDetail(res.data.responseObj);
+        console.log(res.data);
+        setReviewDetail(res.data);
+      })
+      .catch((error) => {
+        console.log("데이터를 불러오는데 실패했습니다.", error);
       });
   }, []);
 
@@ -29,4 +36,4 @@ function ReviewBoardList() {
   );
 }
 
-export default ReviewBoardList;
+export default ReviewDetail;

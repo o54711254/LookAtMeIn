@@ -9,6 +9,7 @@ import Nav from "./components/Nav.js";
 import Home from "./components/Home.js";
 import HospitalBoardList from "./components/HospitalBoard/HospitalList.js";
 import ReviewBoardList from "./components/ReviewBoard/ReviewList";
+import ReviewDetail from "./components/ReviewBoard/ReviewDetail";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import RequestBoardList from "./components/RequestBoard/RequestBoardList.js";
 import Coordinatormypage from "./components/Coordinator/MyPage/CoordinatorMyPage";
@@ -94,7 +95,11 @@ function App() {
                 {/* Admin */}
                 {/* <Route path="/admin-mypage/*" element={<AdminMyPage />} /> */}
                 {/* ReviewBoard */}
-                {/* <Route path="/reviewboard/*" element={<ReviewBoardList />} /> */}
+                <Route path="/reviewboard/*" element={<ReviewBoardList />} />
+                <Route
+                  path="/reviewdetail/:reviewBoard_seq"
+                  element={<ReviewDetail />}
+                />
                 {/* FreeBoard */}
                 {/* <Route path="/freeboard/*" element={<FreeBoardList />} /> */}
                 {/* Search */}
