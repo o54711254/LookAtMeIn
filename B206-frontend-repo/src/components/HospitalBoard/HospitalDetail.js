@@ -19,6 +19,7 @@ const HospitalDetail = () => {
     hospitalInfo_open: '',
     hospitalInfo_close:'',
     hospitalInfo_url: '',
+    userSeq:'',
     avgScore: '',
     cntReviews: ''
   });
@@ -29,11 +30,11 @@ const HospitalDetail = () => {
         const response = await axiosApi
         .get(`/api/hospital-info/detail/${hospital_seq}`);
         setHospitalData(response.data);
-        console.log(response.data);
+        console.log(response.data.userSeq);
 
         dispatch(
           setHospital({
-            hospitalSeq: parseInt(hospital_seq, 10),
+            hospitalSeq: response.data.userSeq,
             hospitalName: response.data.hospitalInfo_name
           })
         );
