@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,6 +38,8 @@ public class Freeboard {
 
     @Column(name="free_board_isDeleted")
     private boolean isDeleted;
+
+
 
     public void setDeleted(boolean deleted) {
         this.isDeleted = deleted;
