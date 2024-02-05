@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 import StarInput from "./StarRating/StarRating";
-import axios from "axios";
+import axiosApi from "../../api/axiosApi";
 
 function ReviewUpdate() {
   const location = useLocation();
@@ -13,7 +13,7 @@ function ReviewUpdate() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(initialReviewDetail);
+    console.log("초기데이터", initialReviewDetail);
     setUpdateData(initialReviewDetail);
   }, [initialReviewDetail]);
 
@@ -26,7 +26,7 @@ function ReviewUpdate() {
   };
 
   const handleSubmit = () => {
-    axios
+    axiosApi
       .put(`/api/reviewBoard/update`, updateData)
       .then((res) => {
         console.log(res.data);
