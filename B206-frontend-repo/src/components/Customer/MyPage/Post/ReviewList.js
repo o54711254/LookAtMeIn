@@ -11,7 +11,7 @@ function ReviewList() {
 
   useEffect(() => {
     axiosAPi
-      .get(`/reviewBoard/list/${user.userSeq}`)
+      .get(`/api/mypage/reserve/${user.userSeq}`)
       .then((res) => {
         console.log(res.data);
         setReviewBoardList(res.data);

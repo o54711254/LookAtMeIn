@@ -37,6 +37,8 @@ import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 
+import Registu from "./pages/login.js"
+
 function App() {
   return (
     <div>
@@ -110,6 +112,8 @@ function App() {
                   <Route path="/worldcup/*" element={<Worldcup />} />
 
                   <Route path="/face" element={<FacialAsy />} />
+
+                  <Route path="/registtest" element={<Registu/>}/>
 
                   {/* <Route path="/search/*" element={<SearchList />} /> */}
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}

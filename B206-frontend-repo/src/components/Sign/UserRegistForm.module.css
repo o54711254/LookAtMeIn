@@ -8,12 +8,57 @@
   height: 1344px;
   left: calc(50% - 900px/2);
   top: 152px;
-  background: #FFFFFF;
+  background: #fff34f;
   border-radius: 15px;
+  margin-top : 40px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.inputText {
+#radiobox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
+#input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #CCC;
+    color: #555;
+    box-sizing: border-box;
+    font-family: 'Arvo';
+    font-size: 18px;
+    height: 50px;
+    padding: 10px 0px;
+    position: relative;
+    top: 50%;
+    width: 730px;
+  
+    &:focus {
+      outline: none;
+    }
+}
+
+#inputB {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #CCC;
+    color: #555;
+    box-sizing: border-box;
+    font-family: 'Arvo';
+    font-size: 18px;
+    height: 50px;
+    padding: 10px 0px;
+    position: relative;
+    top: 50%;
+    width: 330px;
+  
+    &:focus {
+      outline: none;
+    }
 }
 
 .button {
@@ -27,3 +72,41 @@ background: rgba(254, 202, 171, 0.38);
 border-radius: 15px;
 
 }
+
+.button:hover {
+cursor: pointer;
+}
+
+#gender {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+#gender input[type="radio"] {
+    display: none; /* 기본 라디오 버튼 숨김 */
+  }
+  
+ #gender label {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+#gender input[type="radio"]:checked + label {
+    background-color: #007bff; /* 선택된 항목의 배경색 */
+    color: white; /* 선택된 항목의 텍스트 색상 */
+    border-color: #007bff; /* 선택된 항목의 테두리 색상 */
+  }
+
+.RegistButton {
+width: 731px;
+height: 45px;
+margin-top: 40px;
+background: rgba(254, 202, 171, 0.38);
+border-radius: 15px;
+
+}
+  
