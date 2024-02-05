@@ -9,9 +9,10 @@ function InfoUpdate() {
   const initialData = location.state || user;
 
   const [updateData, setUpdateData] = useState({
-    userId: initialData.userId,
-    userName: initialData.userName,
+    customerName: initialData.customerName,
     password: "", // 보안을 위해 비밀번호는 초기화
+    customerEmail: initialData.customerEmail,
+    customerPhoneNumber: initialData.customerPhoneNumber,
   });
 
   const handleInputChange = (e) => {
@@ -23,7 +24,6 @@ function InfoUpdate() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(user.userSeq);
     axiosApi
       .put(`/api/user/update/${user.userSeq}`, updateData)
       .then((res) => {
@@ -38,22 +38,32 @@ function InfoUpdate() {
     <div>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="userId">아이디:</label>
+          <label htmlFor="customerEmail">이름:</label>
           <input
-            id="userId"
-            name="userId"
-            type="text"
-            value={updateData.userId}
+            id="customerName"
+            name="customerName"
+            type="name"
+            value={updateData.customerName}
             onChange={handleInputChange}
           />
         </div>
         <div>
-          <label htmlFor="userName">이름:</label>
+          <label htmlFor="customerEmail">이메일:</label>
           <input
-            id="userName"
-            name="userName"
+            id="customerEmail"
+            name="customerEmail"
+            type="email"
+            value={updateData.customerEmail}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customerPhoneNumber">전화번호:</label>
+          <input
+            id="customerPhoneNumber"
+            name="customerPhoneNumber"
             type="text"
-            value={updateData.userName}
+            value={updateData.customerPhoneNumber}
             onChange={handleInputChange}
           />
         </div>
