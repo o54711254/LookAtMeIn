@@ -36,6 +36,7 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
+import HospitalDetail from "./components/HospitalBoard/HospitalDetail.js";
 
 import Registu from "./pages/login.js"
 
@@ -107,6 +108,7 @@ function App() {
 
                   {/*병원 게시판*/}
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
+                  <Route path="/hospital-info/detail/:hospital_seq" element={<HospitalDetail/>}/>
 
                   {/*이상향 월드컵*/}
                   <Route path="/worldcup/*" element={<Worldcup />} />
