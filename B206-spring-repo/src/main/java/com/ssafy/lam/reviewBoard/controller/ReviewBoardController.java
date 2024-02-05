@@ -39,8 +39,9 @@ public class ReviewBoardController {
         List<ReviewBoard> reviews = reviewBoardService.getAllReviews();
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
         for(ReviewBoard r : reviews) {
-            reviewDisplay.add(new ReviewListDisplay(r.getUser().getName(), r.getTitle(), r.getCnt(), r.getRegdate(),
-                    r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(), r.getPrice()));
+            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
+                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
+                    r.getPrice()));
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
