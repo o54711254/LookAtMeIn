@@ -42,7 +42,6 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
         ReviewBoard reviewBoard = ReviewBoard.builder()
-                .seq(reviewBoardRegister.getUser_seq())
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
                 .hospital(reviewBoardRegister.getReviewBoard_hospital())

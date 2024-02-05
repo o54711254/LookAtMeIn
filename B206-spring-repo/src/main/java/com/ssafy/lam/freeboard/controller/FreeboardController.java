@@ -2,7 +2,7 @@ package com.ssafy.lam.freeboard.controller;
 
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.exception.UnAuthorizedException;
-import com.ssafy.lam.file.service.FileStorageService;
+
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;

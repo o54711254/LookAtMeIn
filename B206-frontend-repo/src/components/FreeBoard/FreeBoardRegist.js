@@ -40,7 +40,7 @@ function FreeBoardRegist() {
   const handleRegist = async () => {
     const formData = new FormData();
     if (image) {
-      formData.append("image", image); //이미지파일 있으면 FormData에 추가
+      formData.append("uploadFile", image); //이미지파일 있으면 FormData에 추가
     }
     Object.keys(post).forEach((key) => {
       formData.append(key, post[key]);
