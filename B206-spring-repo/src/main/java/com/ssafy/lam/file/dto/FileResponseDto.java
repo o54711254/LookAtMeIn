@@ -1,5 +1,6 @@
 package com.ssafy.lam.file.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.core.io.Resource;
 @NoArgsConstructor
 public class FileResponseDto {
     private Long fileSeq;
+    @JsonProperty("originalPath")
     private Resource originalPath;
 
     @Builder

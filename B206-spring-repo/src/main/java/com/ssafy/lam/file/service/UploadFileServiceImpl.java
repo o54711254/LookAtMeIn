@@ -98,8 +98,25 @@ public class UploadFileServiceImpl implements UploadFileService {
         return fileRequestDto;
     }
 
-//    @Override
-//    public ImageDownloadDto downloadImage(ImageRequestDto imageRequestDto) {
-//        return null;
-//    }
+
+    @Override
+    public Resource loadFile(Long fileSeq) {
+        UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
+        if(uploadFile == null){
+            return null;
+        }
+
+        try{
+            Path filePath = Paths.get(uploadFile.getOriginalPath());
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if(resource.exists() || resource.isReadable()){
+                return resource;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
