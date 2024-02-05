@@ -24,19 +24,19 @@ import java.util.List;
 public class HospitalInfoController {
 
     private final HospitalService hospitalService;
-//    private final ReviewBoardService reviewBoardService;
+    private final ReviewBoardService reviewBoardService;
     private Logger log = LoggerFactory.getLogger(HosptialController.class);
 
-//    @Autowired
-//    public HospitalInfoController(HospitalService hospitalService, ReviewBoardService reviewBoardService) {
-//        this.hospitalService = hospitalService;
-//        this.reviewBoardService = reviewBoardService;
-//    }
-
     @Autowired
-    public HospitalInfoController(HospitalService hospitalService) {
+    public HospitalInfoController(HospitalService hospitalService, ReviewBoardService reviewBoardService) {
         this.hospitalService = hospitalService;
+        this.reviewBoardService = reviewBoardService;
     }
+
+//    @Autowired
+//    public HospitalInfoController(HospitalService hospitalService) {
+//        this.hospitalService = hospitalService;
+//    }
 
     @GetMapping("/detail/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 병원 상세 정보")
