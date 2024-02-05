@@ -2,18 +2,18 @@ package com.ssafy.lam.chat.controller;
 
 
 import com.ssafy.lam.chat.domain.ChatMessage;
-import com.ssafy.lam.chat.domain.ChatRoom;
 import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
 import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
 import com.ssafy.lam.chat.service.ChatService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
@@ -38,12 +38,28 @@ public class WebSocketController {
     // 채팅방 생성
     @PostMapping("/chatroom/create")
     @Operation(summary = "채팅방 생성", description = "userSeq를 통해 채팅방을 생성합니다.")
-    public ChatRoomResponseDto create(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
+    public ChatRoomResponseDto createChatroom(@RequestBody ChatRoomRequestDto chatRoomRequestDto) {
         log.info("chatRoomDto : {}", chatRoomRequestDto);
+
+        if(chatRoomRequestDto.getHospitalSeq() == null || chatRoomRequestDto.getCustomerSeq() == null) {
+            throw new IllegalArgumentException("병원과 사용자의 정보가 필요합니다.");
+        }
 
         ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
         return chatRoomResponseDto;
 //        return ResponseEntity.ok(chatRoomResponseDto);
+    }
+
+    @PutMapping("/chatroom/{chatRoomSeq}/close")
+    @Operation(summary = "채팅방 닫기", description = "chatRoomId를 통해 채팅방을 닫습니다.")
+    public ResponseEntity<String> closeChatroom(@RequestBody ChatRoomRequestDto chatRoomRequestDto, @PathVariable Long chatRoomSeq) {
+        log.info("chatRoomId : {}, 닫으려는 고객 : {}", chatRoomSeq, chatRoomRequestDto.getCustomerSeq());
+        try{
+            chatService.closeChatRoom(chatRoomSeq, chatRoomRequestDto.getCustomerSeq());
+            return ResponseEntity.ok("채팅방 닫기 완료");
+        }catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
@@ -51,8 +67,8 @@ public class WebSocketController {
     @GetMapping("/chatrooms/{userSeq}")
     @Operation(summary = "사용자의 채팅방 목록 조회", description = "userSeq를 통해 사용자가 속한 채팅방 번호 목록을 반환합니다.")
     public List<Long> getUserChatRooms(@PathVariable Long userSeq) {
-
-        return chatService.getUserChatRoomIds(userSeq);
+        log.info("userSeq : {}", userSeq);
+        return chatService.getChatRoomIdsByUserSeq(userSeq);
     }
 
 

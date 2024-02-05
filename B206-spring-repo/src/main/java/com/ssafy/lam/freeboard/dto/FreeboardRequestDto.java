@@ -14,6 +14,7 @@ public class FreeboardRequestDto {
     private String freeBoard_content;
     private Long freeBoard_seq;
 
+
     @Builder
     public FreeboardRequestDto(Long user_seq, String freeBoard_title, String username, String userId, String freeBoard_content, Long freeBoard_seq) {
         this.user_seq = user_seq;

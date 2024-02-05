@@ -62,7 +62,7 @@ public class ChatRoomTest {
     @DisplayName("메시지 조회 테스트")
     @Transactional
     public void getMessagesByChatRoomIdTest(){
-        List<ChatMessage> chatMessages = chatMessageRepository.findByChatroomChatroomSeq(1L);
+        List<ChatMessage> chatMessages = chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(1L);
         for(ChatMessage chatMessage : chatMessages){
             System.out.println("chatMessage = " + chatMessage.getMessage());
         }
@@ -80,5 +80,15 @@ public class ChatRoomTest {
         System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
 //        ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
 //        System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
+    }
+
+    @Test
+    @DisplayName("사용자의 채팅방 목록 조회 테스트")
+    @Transactional
+    public void getUserChatRoomsTest(){
+        List<Long> chatRoomSeqs = webSocketController.getUserChatRooms(1L);
+        for(Long chatRoomSeq : chatRoomSeqs){
+            System.out.println("chatRoomSeq = " + chatRoomSeq);
+        }
     }
 }
