@@ -31,8 +31,9 @@ public class FreeboardController {
 
     @PostMapping("/regist")
     @Operation(summary = "자유게시판 글 등록")
-    public ResponseEntity<Void> regist(@RequestBody FreeboardRequestDto freeBoardRequestDto) {
+    public ResponseEntity<Void> regist(@ModelAttribute FreeboardRequestDto freeBoardRequestDto) {
         log.info("글 등록 정보 : {}", freeBoardRequestDto);
+        System.out.println(freeBoardRequestDto);
         freeboardService.createFreeboard(freeBoardRequestDto);
         return ResponseEntity.ok().build();
     }

@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 
 const ReviewBoardDelete = ({ reviewBoard_seq, onUpdated }) => {
   const handleUpdate = () => {
-    axios.put(`/reviewBoard/update/${reviewBoard_seq}`, {
+    axios.put(`/reviewBoard/delete/${reviewBoard_seq}`, {
       requestBoard_complain: true
     })
     .then(response => {
@@ -18,7 +18,7 @@ const ReviewBoardDelete = ({ reviewBoard_seq, onUpdated }) => {
 
   return (
     <Button variant="contained" color="error" onClick={handleUpdate}>
-      신고하기
+      삭제하기
     </Button>
   );
 };

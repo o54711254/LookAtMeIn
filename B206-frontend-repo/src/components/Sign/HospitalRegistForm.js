@@ -44,16 +44,16 @@ function HospitalRegistForm() {
   //아이디 중복체크
   const checkDuplicateId = (e) => {
     e.preventDefault();
-    axiosAPi.get(`/user/${formik.values.id}`).then((response) => {
+    axiosAPi.get(`/api/user/regist/idcheck/${formik.values.id}`).then((response) => {
       console.log(response.data);
-      if (response.status === 200) {
+      if (response.data === true) {
         //alert("사용 불가한 아이디입니다."); //이미 사용중인 아이디
         setUseable(false);
-      } else if (response.status === 204) {
+      } else if (response.data === false) {
         //alert("사용 가능한 아이디입니다.");
         setUseable(true);
       } else {
-        alert("사용 불가한 아이디입니다.");
+        // alert("사용 불가한 아이디입니다.");
       }
     });
   };
@@ -72,44 +72,44 @@ function HospitalRegistForm() {
       id: "",
       password: "",
       confirmPassword: "",
-      hospitalInfo_name: "", // 병원명->밑에 이름 다 바꿔!!
-      hospitalInfo_addresss: "",
-      hospitalInfo_url: "", //병원 홈페이지 주소
-      hospitalInfo_email: "",
-      hospitalInfo_phoneNumber: "", //병원 전화번호
+      name: "", // 병원명->밑에 이름 다 바꿔!!
+      addresss: "",
+      url: "", //병원 홈페이지 주소
+      email: "",
+      phoneNumber: "", //병원 전화번호
       part: "", // 병원 전문 분야
-      hospitalInfo_introduce: "", // 병원 소개 멘트
-      hospitalInfo_open: "", // 오픈 시간
-      hospitalInfo_close: "", // 닫는 시간
+      info: "", // 병원 소개 멘트
+      open: "", // 오픈 시간
+      close: "", // 닫는 시간
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
-      formData.append("id", values.id);
-      formData.append("password", values.password);
-      formData.append("name", values.hospitalInfo_name);
-      formData.append("address", values.hospitalInfo_addresss);
-      formData.append("url", values.hospitalInfo_url);
-      formData.append("email", values.hospitalInfo_email);
-      formData.append("phoneNumber", values.hospitalInfo_phoneNumber);
-      formData.append("hashtag", values.part);
+      formData.append("hospitalInfo_id", values.id);
+      formData.append("hospitalInfo_password", values.password);
+      formData.append("hospitalInfo_name", values.name);
+      formData.append("hospitalInfo_address", values.addresss);
+      formData.append("hospitalInfo_url", values.url);
+      formData.append("hospitalInfo_email", values.email);
+      formData.append("hospitalInfo_phoneNumber", values.phoneNumber);
+      formData.append("category", values.part);
       formData.append(
         "businessRegistrationCertificate",
         businessRegistrationCertificate
       ); //여기까지는 필수 입력 사항
       //여기부터는 선택적으로 입력하는 사항
       if (values.info) {
-        formData.append("info", values.hospitalInfo_introduce);
+        formData.append("hospitalInfo_introduce", values.info);
       }
       if (values.open) {
-        formData.append("open", values.hospitalInfo_open);
+        formData.append("hospitalInfo_open", values.open);
       }
       if (values.close) {
-        formData.append("close", values.hospitalInfo_close);
+        formData.append("hospitalInfo_close", values.close);
       }
 
       try {
-        await axiosApi.post("/HospitalRegistForm", formData, {
+        await axiosApi.post("/api/hospital/regist", formData, {
           //서버에게 클라이언트가 보내는 데이터의 유형을 알려주는 것.
           headers: {
             "Content-Type": "multipart/form-data", //multipart/form-data는 폼 데이터가 파일이나 이미지와 같은 바이너리 데이터를 포함할 수 있음을 나타냄
@@ -166,7 +166,6 @@ function HospitalRegistForm() {
     <>
       <div className="hospitalRegistForm">
         <div>
-          <img src={logo} alt="로고사진" />
           <h1>룩앳미인</h1>
         </div>
         <form onSubmit={formik.handleSubmit}>
