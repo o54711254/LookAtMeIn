@@ -6,6 +6,8 @@ import com.ssafy.lam.comment.service.CommentService;
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.exception.NoArticleExeption;
+import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class FreeboardServiceImpl implements FreeboardService {
     private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
     private final CommentService commentService;
+    private final UploadFileService uploadFileService;
 
     private Logger log = LoggerFactory.getLogger(FreeboardServiceImpl.class);
 
@@ -36,9 +40,14 @@ public class FreeboardServiceImpl implements FreeboardService {
 
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         System.out.println("user = " + user);
+        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile(),null, null);
+
         log.info("글 등록 유저 정보: {}", user);
+
+
         Freeboard freeboard = Freeboard.builder()
                 .user(user)
+                .uploadFile(uploadFile)
                 .title(freeboardRequestDto.getFreeBoard_title())
                 .content(freeboardRequestDto.getFreeBoard_content())
                 .build();

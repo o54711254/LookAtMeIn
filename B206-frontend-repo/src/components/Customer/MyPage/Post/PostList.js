@@ -5,7 +5,7 @@ function PostList() {
   const [postList, setPostList] = useState([]);
   useEffect(() => {
     axiosAPi
-      .get(`/api/post/list`)
+      .get(`/customer/freeBoardList/{user_seq}`)
       .then((res) => {
         setPostList(res.data);
       })
@@ -19,8 +19,12 @@ function PostList() {
         <ul>
           {postList.map((post, index) => {
             <li key={index}>
-              <div>작성자 : {post.id}</div>
-              <div>내용 : {post.contents}</div>
+              <div>{post.freeboardSeq}</div>
+              <div>작성자 : {post.userId}</div>
+              <div>제목 : {post.freeboardTitle}</div>
+              <div>내용 : {post.freeboardContent}</div>
+              <div>조회수 : {post.freeboardCnt}</div>
+              <div>작성날짜 : {post.freeboardRegisterdate}</div>
             </li>;
           })}
         </ul>
