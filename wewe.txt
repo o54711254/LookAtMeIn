@@ -1,0 +1,18 @@
+        username = token
+        password = zDzzANG94h8KV4hshpJ3
+
+
+[remote "B206-frontend-repo"]
+        url = https://lab.ssafy.com/kimheesu/b206-frontend-repo.git 
+        push = +refs/heads/*:refs/heads/*
+        push = +refs/tags/*:refs/tags/*
+        mirror = true
+        projects = B206-frontend-repo
+
+
+[remote "b206-spring-repo"]
+        url = https://lab.ssafy.com/kimheesu/b206-spring-repo.git 
+        push = +refs/heads/*:refs/heads/*
+        push = +refs/tags/*:refs/tags/*
+        mirror = true
+        projects = B206-spring-repo
