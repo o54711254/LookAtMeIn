@@ -18,11 +18,15 @@ public class ReviewDisplay {
     private String reviewBoard_surgery; // 시술 부위
     private String reviewBoard_hospital; // 병원 이름
     private int reviewBoard_price; // 시술 가격
+    private int reviewBoard_cnt; // 조회수
 
     @Builder
-    public ReviewDisplay(String reviewBoard_title, String reviewBoard_content, double reviewBoard_score,
-                         String customer_name, String reviewBoard_doctor, String reviewBoard_region,
-                         String reviewBoard_surgery, String reviewBoard_hospital, int reviewBoard_price) {
+
+    public ReviewDisplay(long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content,
+                         double reviewBoard_score, String customer_name, String reviewBoard_doctor,
+                         String reviewBoard_region, String reviewBoard_surgery, String reviewBoard_hospital,
+                         int reviewBoard_price, int reviewBoard_cnt) {
+        this.reviewBoard_seq = reviewBoard_seq;
         this.reviewBoard_title = reviewBoard_title;
         this.reviewBoard_content = reviewBoard_content;
         this.reviewBoard_score = reviewBoard_score;
@@ -32,5 +36,6 @@ public class ReviewDisplay {
         this.reviewBoard_surgery = reviewBoard_surgery;
         this.reviewBoard_hospital = reviewBoard_hospital;
         this.reviewBoard_price = reviewBoard_price;
+        this.reviewBoard_cnt = reviewBoard_cnt;
     }
 }
