@@ -45,7 +45,7 @@ function App() {
             <Nav />
             <div style={{ paddingTop: "70px" }}>
               {/* <Nav /> */}
-              <Link to="mypage">마이페이지</Link>
+              {/* <Link to="mypage">마이페이지</Link> */}
               <div>
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -117,12 +117,12 @@ function App() {
             </div>
           </BrowserRouter>
           <div>
-            <Report />
-            <ReserveModal />
-            <ReviewDelete />
-            <Favorite />
+            {/* <Report /> */}
+            {/* <ReserveModal /> */}
+            {/* <ReviewDelete /> */}
+            {/* <Favorite /> */}
           </div>
-          <Questionnaire />
+          {/* <Questionnaire /> */}
           <FloatingChat />
         </div>
         <Footer />

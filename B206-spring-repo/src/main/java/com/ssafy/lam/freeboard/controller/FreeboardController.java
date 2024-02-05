@@ -75,11 +75,11 @@ public class FreeboardController {
 
 
     }
-    @PutMapping("/update/{user_seq}")
+    @PutMapping("/update/{freeboard_seq}")
     @Operation(summary = "자유게시판 글 수정")
-    public ResponseEntity<?> update(@PathVariable Long user_seq, @ModelAttribute FreeboardRequestDto freeboardRequestDto){
+    public ResponseEntity<?> update(@PathVariable Long freeboard_seq, @ModelAttribute FreeboardRequestDto freeboardRequestDto){
         try{
-            freeboardService.updateFreeboard(user_seq, freeboardRequestDto);
+            freeboardService.updateFreeboard(freeboard_seq, freeboardRequestDto);
             return ResponseEntity.ok().build();
         }catch (NoArticleExeption e){
             return ResponseEntity.badRequest().body(e.getMessage());
