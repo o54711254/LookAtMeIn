@@ -30,12 +30,12 @@ public abstract class HospitalRepositoryImpl implements HospitalRepository{
 
     }
 
-    @Override
-    public Optional<List<Doctor>> findDoctorByHospitalSeq(Long hospitalSeq) {
-        String query = "select d from Doctor d where d.hospital.hospitalSeq = :hospitalSeq";
-        List<Doctor> doctorList = em.createQuery(query, Doctor.class)
-                .setParameter("hospitalSeq", hospitalSeq)
-                .getResultList();
-        return Optional.of(doctorList);
-    }
+//    @Override
+//    public Optional<List<Doctor>> findDoctorByHospitalSeq(Long hospitalSeq) {
+//        String query = "select d from Doctor d where d.hospital.hospitalSeq = :hospitalSeq";
+//        List<Doctor> doctorList = em.createQuery(query, Doctor.class)
+//                .setParameter("hospitalSeq", hospitalSeq)
+//                .getResultList();
+//        return Optional.of(doctorList);
+//    }
 }
