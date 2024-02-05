@@ -34,7 +34,8 @@ import Favorite from "./components/HospitalBoard/HospitalWish.js";
 import Questionnaire from "./components/Modal/Questionnaire.js";
 
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
-import Worldcup from "./components/WorldCup/worldcup.js";
+import Worldcup from "./components/WorldCup/Worldcup.js";
+import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 
 function App() {
   return (
@@ -45,7 +46,7 @@ function App() {
             <Nav />
             <div style={{ paddingTop: "70px" }}>
               {/* <Nav /> */}
-              <Link to="mypage">마이페이지</Link>
+              {/* <Link to="mypage">마이페이지</Link> */}
               <div>
                 <Routes>
                   <Route path="/" element={<Home />} />
@@ -83,6 +84,7 @@ function App() {
                     element={<ReviewDetail />}
                   />
                   <Route path="/reviewregist" element={<ReviewRegist />} />
+                  <Route path="/reviewupdate" element={<ReviewUpdate />} />
 
                   {/*자유 게시판*/}
                   <Route path="/freeboard/*" element={<FreeBoardList />} />
@@ -117,12 +119,12 @@ function App() {
             </div>
           </BrowserRouter>
           <div>
-            <Report />
-            <ReserveModal />
-            <ReviewDelete />
-            <Favorite />
+            {/* <Report /> */}
+            {/* <ReserveModal /> */}
+            {/* <ReviewDelete /> */}
+            {/* <Favorite /> */}
           </div>
-          <Questionnaire />
+          {/* <Questionnaire /> */}
           <FloatingChat />
         </div>
         <Footer />

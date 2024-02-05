@@ -8,6 +8,9 @@ import logo from "../../assets/lab_logo.png";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
+
+import styles from "./UserRegistForm.module.css"
+
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // axios test 완료
@@ -150,9 +153,9 @@ function UserRegistForm() {
 
   return (
     <>
-      <div className="UserRegistForm">
+      <div className={styles.UserRegistForm}>
         <div>
-          <img src={logo} alt="로고사진" />
+          <img src={logo} alt="로고사진" className={styles.logoimage}/>
           <h1>룩앳미인</h1>
         </div>
         <form onSubmit={formik.handleSubmit}>
@@ -170,7 +173,7 @@ function UserRegistForm() {
               <div className="helperText">{formik.errors.id}</div>
             )}
 
-            <button onClick={checkDuplicateId}>중복확인</button>
+            <button onClick={checkDuplicateId} className={styles.button}>중복확인</button>
             {useable === null ? (
               ""
             ) : useable ? (
@@ -179,7 +182,7 @@ function UserRegistForm() {
               <span>이미 사용중인 아이디 입니다.</span>
             )}
           </div>
-          <div className="inputText">
+          <div className={styles.inputText}>
             <h3>비밀번호</h3>
             <input
               name="password"
@@ -298,7 +301,7 @@ function UserRegistForm() {
               onChange={formik.handleChange}
               readOnly
             />
-            <button type="button" onClick={showModal}>
+            <button type="button" onClick={showModal} className={styles.button}>
               주소 입력
             </button>
 

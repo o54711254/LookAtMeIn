@@ -1,0 +1,29 @@
+.logoimage{
+    width: 40px;
+    height: 40px;
+}
+
+.UserRegistForm {
+  width: 900px;
+  height: 1344px;
+  left: calc(50% - 900px/2);
+  top: 152px;
+  background: #FFFFFF;
+  border-radius: 15px;
+}
+
+.inputText {
+
+}
+
+.button {
+
+width: 103px;
+height: 36px;
+left: calc(50% - 103px/2 - 27.5px);
+top: 1030px;
+
+background: rgba(254, 202, 171, 0.38);
+border-radius: 15px;
+
+}

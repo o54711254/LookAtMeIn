@@ -2,11 +2,13 @@ package com.ssafy.lam.freeboard.controller;
 
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.exception.UnAuthorizedException;
+
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.freeboard.service.FreeboardService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +20,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/freeBoard")
+@RequiredArgsConstructor
 public class FreeboardController {
     private final FreeboardService freeboardService;
 
+
     private Logger log = LoggerFactory.getLogger(FreeboardController.class);
 
-    @Autowired
-    public FreeboardController(FreeboardService freeboardService) {
-        log.info("FreeBoardController init");
-        this.freeboardService = freeboardService;
-    }
 
     @PostMapping("/regist")
     @Operation(summary = "자유게시판 글 등록")
-    public ResponseEntity<Void> regist(@RequestBody FreeboardRequestDto freeBoardRequestDto) {
+    public ResponseEntity<Void> regist(@ModelAttribute FreeboardRequestDto freeBoardRequestDto) {
         log.info("글 등록 정보 : {}", freeBoardRequestDto);
+        System.out.println(freeBoardRequestDto);
         freeboardService.createFreeboard(freeBoardRequestDto);
         return ResponseEntity.ok().build();
     }
@@ -42,6 +42,7 @@ public class FreeboardController {
     public ResponseEntity<List<FreeboardResponseDto>> getFreeboardList() {
         List<Freeboard> freeboardList = freeboardService.getAllFreeboards();
         List<FreeboardResponseDto> freeboardResponseDtoList = new ArrayList<>();
+
 
         for(Freeboard freeboard : freeboardList){
             FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
@@ -73,11 +74,11 @@ public class FreeboardController {
 
 
     }
-    @PutMapping("/update/{user_seq}")
+    @PutMapping("/update/{freeboardSeq}")
     @Operation(summary = "자유게시판 글 수정")
-    public ResponseEntity<?> update(@PathVariable Long user_seq, @RequestBody FreeboardRequestDto freeboardRequestDto){
+    public ResponseEntity<?> update(@PathVariable Long freeboardSeq, @RequestBody FreeboardRequestDto freeboardRequestDto){
         try{
-            freeboardService.updateFreeboard(user_seq, freeboardRequestDto);
+            freeboardService.updateFreeboard(freeboardSeq, freeboardRequestDto);
             return ResponseEntity.ok().build();
         }catch (NoArticleExeption e){
             return ResponseEntity.badRequest().body(e.getMessage());

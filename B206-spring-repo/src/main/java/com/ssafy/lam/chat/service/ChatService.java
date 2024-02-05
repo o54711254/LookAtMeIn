@@ -30,9 +30,9 @@ public class ChatService {
 
     private Logger log = LoggerFactory.getLogger(ChatService.class);
 
-    public List<Long> getUserChatRoomIds(Long userSeq) {
+    public List<Long> getChatRoomIdsByUserSeq(Long userSeq) {
 //        List<ChatParticipant> participants = chatParticipantRepository.findByUserId(userId);
-        List<ChatParticipant> participants = chatParticipantRepository.findByUserUserSeq(userSeq);
+        List<ChatParticipant> participants = chatParticipantRepository.findByUserUserSeqAndDeletedFalse(userSeq);
         Set<Long> uniqueIds = new HashSet<>();
         List<Long> chatRoomSeqs = new ArrayList<>();
         for(ChatParticipant participant : participants) {
@@ -47,7 +47,7 @@ public class ChatService {
     // 특정 채팅방의 모든 메시지 조회
     public List<ChatMessage> getMessagesByChatRoomId(Long chatroomSeq) {
         log.info("chatroomSeq : {}", chatroomSeq);
-        return chatMessageRepository.findByChatroomChatroomSeq(chatroomSeq);
+        return chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(chatroomSeq);
     }
 
     public ChatMessage saveMessage(ChatMessageDto messageDto){
@@ -107,6 +107,38 @@ public class ChatService {
                 .build();
 
         return chatRoomResponseDto;
-
     }
+
+
+    public void closeChatRoom(Long chatRoomSeq, Long userSeq) {
+        
+        User user = userRepository.findById(userSeq).get();
+        if(!user.getUserType().equals("CUSTOMER")){
+            throw new IllegalArgumentException("사용자가 아닌 병원은 채팅방을 닫을 수 없습니다.");
+        }
+        
+        
+        // 채팅방 삭제
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomSeq).get();
+        chatRoom.setDeleted(true);
+        chatRoomRepository.save(chatRoom);
+
+
+        // 채팅방에서 채팅하던 참가자 삭제
+        List<ChatParticipant> chatParticipants = chatParticipantRepository.findByChatRoomChatroomSeqAndDeletedFalse(chatRoomSeq);
+        for (ChatParticipant chatParticipant : chatParticipants) {
+            chatParticipant.setDeleted(true);
+            chatParticipantRepository.save(chatParticipant);
+        }
+
+        
+        // 채팅방에 있던 메시지 삭제
+        chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(chatRoomSeq).forEach(chatMessage -> {
+            chatMessage.setDeleted(true);
+            chatMessageRepository.save(chatMessage);
+        });
+        
+        
+    }
+
 }

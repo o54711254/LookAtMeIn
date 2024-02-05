@@ -1,10 +1,9 @@
 package com.ssafy.lam.user.service;
 
+import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
-import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.util.JwtTokenProvider;
-
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
     protected final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService {
      * 1편부터 보면 좋다.
      */
     public User createUser(User user) {
-        if(userRepository.existsById(user.getUserSeq()))
+        if (userRepository.existsById(user.getUserSeq()))
             throw new RuntimeException("이미 존재하는 고객입니다.");
         log.info("회원가입 User정보: {}", user);
         return userRepository.save(user);
