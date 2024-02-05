@@ -15,17 +15,17 @@ public class FreeboardRequestDto {
     private String freeBoard_content;
     private Long freeBoard_seq;
 
-    private MultipartFile image;
+    private MultipartFile uploadFile;
 
 
     @Builder
-    public FreeboardRequestDto(Long user_seq, String freeBoard_title, String username, String userId, String freeBoard_content, Long freeBoard_seq, MultipartFile image) {
+    public FreeboardRequestDto(Long user_seq, String freeBoard_title, String username, String userId, String freeBoard_content, Long freeBoard_seq, MultipartFile uploadFile) {
         this.user_seq = user_seq;
         this.freeBoard_title = freeBoard_title;
         this.username = username;
         this.userId = userId;
         this.freeBoard_content = freeBoard_content;
         this.freeBoard_seq = freeBoard_seq;
-        this.image = image;
+        this.uploadFile = uploadFile;
     }
 }
