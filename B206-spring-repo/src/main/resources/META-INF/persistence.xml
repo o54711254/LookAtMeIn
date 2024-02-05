@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+
+    <persistence-unit name="jpabook">
+
+        <properties>
+
+            <!-- 필수 속성 -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+
+<!--            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://158.180.88.174:3306/lam"/>-->
+<!--            <property name="jakarta.persistence.jdbc.user" value="root"/>-->
+<!--            <property name="jakarta.persistence.jdbc.password" value="10027760"/>-->
+
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/lam"/>
+            <property name="jakarta.persistence.jdbc.user" value="ssafy"/>
+            <property name="jakarta.persistence.jdbc.password" value="ssafy"/>
+
+
+
+            <property name="spring.jpa.properties.hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+
+            <!-- 옵션 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>
