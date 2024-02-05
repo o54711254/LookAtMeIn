@@ -10,6 +10,8 @@ import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+// axios test 완료
+
 //회원가입 시 입력하는 정보 유효성 검사
 const validationSchema = yup.object({
   id: yup.string().required("아이디를 입력하세요."),
@@ -50,12 +52,12 @@ function UserRegistForm() {
   //아이디 중복체크
   const checkDuplicateId = (e) => {
     e.preventDefault();
-    axiosAPi.get(`/user/${formik.values.id}`).then((response) => {
+    axiosAPi.get(`/api/user/regist/idcheck/${formik.values.id}`).then((response) => {
       console.log(response.data);
-      if (response.status === 200) {
+      if (response.data === true) {
         //alert("사용 불가한 아이디입니다."); //이미 사용중인 아이디
         setUseable(false);
-      } else if (response.status === 204) {
+      } else if (response.data === false) {
         //alert("사용 가능한 아이디입니다.");
         setUseable(true);
       } else {
@@ -79,30 +81,26 @@ function UserRegistForm() {
     validationSchema,
     onSubmit: async (values) => {
       const {
-        id,
-        password,
-        confirmPassword,
-        name,
-        gender,
-        birth,
-        phoneNumber,
-        email,
-        address,
-      } = values;
+        userId  = values.id,
+        userPassword = values.password,
+        customerName = values.name,
+        customerGender = values.gender,
+        customerPhoneNumber = values.phoneNumber,
+        customerEmail = values.email,
+        customerAddress = values.address,
+      } = values
       if (!useable) {
         window.alert("아이디가 중복됩니다. 다시 시도해주세요.");
       } else {
         try {
-          await axiosAPi.post("/customer/regist", {
-            id,
-            password,
-            confirmPassword,
-            name,
-            gender,
-            birth,
-            phoneNumber,
-            email,
-            address,
+          await axiosAPi.post("/api/customer/regist", {
+            userId,
+            userPassword,
+            customerName,
+            customerGender,
+            customerPhoneNumber,
+            customerEmail,
+            customerAddress,
           });
           window.alert("회원가입이 완료되었습니다.");
           setTimeout(() => {
@@ -154,6 +152,7 @@ function UserRegistForm() {
     <>
       <div className="UserRegistForm">
         <div>
+          <img src={logo} alt="로고사진" />
           <h1>룩앳미인</h1>
         </div>
         <form onSubmit={formik.handleSubmit}>

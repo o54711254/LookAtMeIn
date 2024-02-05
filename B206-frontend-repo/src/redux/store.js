@@ -7,36 +7,29 @@ import userReducer from "./user";
 import tokenReducer from "./auth";
 import requestBoardReducer from "./requestBoard";
 
-// persist-reducer 관련
+// persist-reducer 및 persistStore 관련
 import storage from "redux-persist/lib/storage";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 
-// 여러 개의 reducer를 합치는 combineReducers 함수를 사용하여 root reducer를 생성합니다.
 const reducers = combineReducers({
-  user: userReducer, // userReducer는 "user" 상태를 처리하는 reducer입니다.
+  user: userReducer,
   auth: tokenReducer,
   requestBoard: requestBoardReducer,
 });
 
-// Redux Persist를 사용하여 상태 지속성을 설정합니다.
 const persistConfig = {
-  key: "root", // Redux 상태를 저장할 때 사용되는 키입니다.
-  storage: storage, // Redux 상태를 저장하는 데 사용할 스토리지입니다. 여기서는 로컬 스토리지를 사용합니다.
-  whitelist: ["user", "auth", "requestBoard"], // 지속성할 상태 목록입니다. 여기서는 "user", "hospital", "auth" 상태를 지속성합니다.
+  key: "root",
+  storage,
+  whitelist: ["user", "auth", "requestBoard"],
 };
 
-// persistReducer를 사용하여 지속성이 적용된 root reducer를 생성합니다.
 const persistedReducer = persistReducer(persistConfig, reducers);
 
-// configureStore를 사용하여 Redux 스토어를 생성합니다.
-export const store = configureStore({
-  reducer: persistedReducer, // persistReducer로 생성된 reducer를 사용합니다.
-  // middleware: getDefaultMiddleware({
-  //   serializableCheck: false, // Redux Persist를 사용할 때 serializableCheck를 비활성화합니다.
+const store = configureStore({
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Redux Persist를 사용할 때 serializableCheck를 비활성화하거나 필요에 따라 구성합니다.
         ignoredActions: [
           "persist/PERSIST",
           "persist/REHYDRATE",
@@ -47,6 +40,9 @@ export const store = configureStore({
       },
     }),
 });
-export const persistor = persistStore(store);
 
-// export default store; // 생성된 Redux 스토어를 내보냅니다.
+// persistStore 함수를 사용하여 persistor 객체를 생성합니다.
+const persistor = persistStore(store);
+
+// store와 persistor를 내보냅니다.
+export { store, persistor };

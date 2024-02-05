@@ -17,7 +17,7 @@ function FreeBoardList() {
     axiosApi
       .get(`api/freeBoard/freeBoardList`)
       .then((response) => {
-        console.log(freeboardList);
+        console.log(response.data);
         const sortedData = response.data.sort(
           (a, b) => new Date(b.freeboardSeq) - new Date(a.freeboardSeq)
         );
