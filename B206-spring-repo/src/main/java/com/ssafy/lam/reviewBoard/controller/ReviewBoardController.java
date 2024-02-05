@@ -52,9 +52,9 @@ public class ReviewBoardController {
         ReviewBoard review = reviewBoardService.getReview(seq);
         ReviewDisplay detailReview = null;
         if(review!=null) {
-            detailReview = new ReviewDisplay(review.getTitle(), review.getContent(), review.getScore(),
+            detailReview = new ReviewDisplay(seq, review.getTitle(), review.getContent(), review.getScore(),
                     review.getUser().getName(), review.getDoctor(), review.getRegion(), review.getSurgery(),
-                    review.getHospital(), review.getPrice());
+                    review.getHospital(), review.getPrice(), review.getCnt());
         }
         return new ResponseEntity<>(detailReview, HttpStatus.OK);
     }
