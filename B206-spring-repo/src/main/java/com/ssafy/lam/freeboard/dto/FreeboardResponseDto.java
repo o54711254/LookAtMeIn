@@ -14,6 +14,7 @@ public class FreeboardResponseDto {
 
     private Long freeboardSeq;
     private String userId;
+    private String userEmail;
     private String freeboardTitle;
     private int freeboardCnt;
     private LocalDateTime freeboardRegisterdate;
@@ -21,9 +22,10 @@ public class FreeboardResponseDto {
     private List<CommentRequestDto> comments;
 
     @Builder
-    public FreeboardResponseDto(Long freeboardSeq, String userId, String freeboardTitle, int freeboardCnt, LocalDateTime freeboardRegisterdate, String freeboardContent, List<CommentRequestDto> comments) {
+    public FreeboardResponseDto(Long freeboardSeq, String userId, String userEmail, String freeboardTitle, int freeboardCnt, LocalDateTime freeboardRegisterdate, String freeboardContent, List<CommentRequestDto> comments) {
         this.freeboardSeq = freeboardSeq;
         this.userId = userId;
+        this.userEmail = userEmail;
         this.freeboardTitle = freeboardTitle;
         this.freeboardCnt = freeboardCnt;
         this.freeboardRegisterdate = freeboardRegisterdate;

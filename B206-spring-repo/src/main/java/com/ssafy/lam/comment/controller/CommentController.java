@@ -26,7 +26,7 @@ public class CommentController {
 
     @PostMapping("/regist")
     @Operation(summary = "댓글 등록", description = "댓글을 등록합니다.")
-    @Parameter(name = "commentRequestDto", description = "comment_seq와 comment_content만 사용", required = true)
+    @Parameter(name = "commentRequestDto", description = "comment_seq와 comment_content만 사용", required = false)
     public ResponseEntity<Comment> registComment(@RequestBody CommentRequestDto commentRequestDto) {
         log.info("댓글 등록");
         try{

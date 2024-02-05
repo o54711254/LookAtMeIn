@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
-    // 특정 채팅방의 모든 메시지를 조회
-    List<ChatMessage> findByChatroomChatroomSeq(Long chatRoomSeq);
+    // chatRoomSeq로 삭제하지 않은 모든 메시지 조회
+    List<ChatMessage> findByChatroomChatroomSeqAndDeletedFalse(Long chatRoomSeq);
 
 
 }

@@ -14,11 +14,13 @@ public class ChatRoom {
     @Column(name = "chatRoom_seq")
     private Long chatroomSeq;
 
-
-
+    private boolean deleted;
 
     @Builder
     public ChatRoom(Long chatroomSeq) {
         this.chatroomSeq = chatroomSeq;
     }
+
+
+
 }
