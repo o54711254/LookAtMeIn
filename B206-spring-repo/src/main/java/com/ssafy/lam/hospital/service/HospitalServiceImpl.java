@@ -104,7 +104,6 @@ public class HospitalServiceImpl implements HospitalService {
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
         if (hospitalOptional.isPresent()) {
             Hospital hospital = hospitalOptional.get();
-
             HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
                     .hospitalInfo_seq(hospitalSeq)
                     .hospitalInfo_name(hospital.getUser().getName())
@@ -114,6 +113,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_open(hospital.getOpenTime())
                     .hospitalInfo_close(hospital.getCloseTime())
                     .hospitalInfo_url(hospital.getUrl())
+                    .userSeq(hospital.getUser().getUserSeq())
                     .build();
             return hospitalDetailDto;
         } else {
