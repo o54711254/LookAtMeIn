@@ -5,18 +5,20 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "hos_info")
 public class Hospital {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="hos_info_seq")
+    @Column(name = "hos_info_seq")
     private Long hospitalSeq;
 
     //    @ManyToOne
@@ -27,7 +29,6 @@ public class Hospital {
     @OneToMany(mappedBy = "hospital")
     private List<Coordinator> coordinators = new ArrayList<>();
 
-
     @Column(name="hos_info_tel")
     private String tel;
 
@@ -35,29 +36,29 @@ public class Hospital {
     private String email;
 
     @OneToMany
-    @Column(name="category_seq")
-    @JoinColumn(name="category_seq")
+    @Column(name = "category_seq")
+    @JoinColumn(name = "category_seq")
     List<Category> category;
 
-    @Column(name="hos_info_address")
+    @Column(name = "hos_info_address")
     private String address;
 
-    @Column(name="hos_info_open")
+    @Column(name = "hos_info_open")
     private String openTime;
 
-    @Column(name="hos_info_close")
+    @Column(name = "hos_info_close")
     private String closeTime;
 
-    @Column(name="hos_info_intro")
+    @Column(name = "hos_info_intro")
     private String intro;
 
-    @Column(name="hos_info_isapproved")
+    @Column(name = "hos_info_isapproved")
     private boolean isApproved;
 
-    @Column(name="hos_info_bookmark")
+    @Column(name = "hos_info_bookmark")
     private int bookmark;
 
-    @Column(name="hos_info_url")
+    @Column(name = "hos_info_url")
     private String url;
 
 

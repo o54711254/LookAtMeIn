@@ -1,7 +1,5 @@
 package com.ssafy.lam.reserve.domain;
 
-import com.ssafy.lam.customer.domain.Customer;
-import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -11,11 +9,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "reserve")
-public class Reserve {
+@Table(name = "pastReserve")
+public class PastReserve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reserveSeq;
+    @Column(name = "past_reserve_seq")
+    private Long pReserveSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_user_seq")
@@ -25,7 +24,11 @@ public class Reserve {
     @JoinColumn(name = "hospital_user_seq")
     private User hospital; // 예약을 받는 병원
 
-    private int reserveType; // 1 : 상담예약, 2 : 병원예약
+    @Column(name = "past_reserve_content")
+    private String pContent;
+
+    @Column(name = "past_reserve_price")
+    private int pPrice;
 
     private int year;
     private int month;
@@ -33,15 +36,19 @@ public class Reserve {
     private String dayofweek;
     private int time;
 
+    private int img;
+
     @Builder
-    public Reserve(User customer, User hospital, int reserveType, int year, int month, int day, String dayofweek, int time) {
+    public PastReserve(User customer, User hospital, String pContent, int pPrice, int year, int month, int day, String dayofweek, int time, int img) {
         this.customer = customer;
         this.hospital = hospital;
-        this.reserveType = reserveType;
+        this.pContent = pContent;
+        this.pPrice = pPrice;
         this.year = year;
         this.month = month;
         this.day = day;
         this.dayofweek = dayofweek;
         this.time = time;
+        this.img = img;
     }
 }
