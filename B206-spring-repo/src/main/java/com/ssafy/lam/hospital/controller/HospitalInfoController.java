@@ -24,51 +24,38 @@ import java.util.List;
 public class HospitalInfoController {
 
     private final HospitalService hospitalService;
-    private final ReviewBoardService reviewBoardService;
     private Logger log = LoggerFactory.getLogger(HosptialController.class);
 
     @Autowired
-    public HospitalInfoController(HospitalService hospitalService, ReviewBoardService reviewBoardService) {
+    public HospitalInfoController(HospitalService hospitalService) {
         this.hospitalService = hospitalService;
-        this.reviewBoardService = reviewBoardService;
     }
-
-//    @Autowired
-//    public HospitalInfoController(HospitalService hospitalService) {
-//        this.hospitalService = hospitalService;
-//    }
 
     @GetMapping("/detail/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 병원 상세 정보")
-    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable long hospital_seq) {
+    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq) {
         HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalInfo(hospital_seq);
         return new ResponseEntity<>(hospitalDetailDto, HttpStatus.OK);
     }
 
-//    @GetMapping("/reviews/{hospital_seq}")
-//    @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 후기 목록")
-//    public ResponseEntity<List<ReviewListDisplay>> getHospitalReview(@PathVariable long hospital_seq) {
-//        List<ReviewBoard> reviews = reviewBoardService.getReviewsByHospital(hospital_seq);
-//        List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
-//        for(ReviewBoard r : reviews) {
-//            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
-//                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-//                    r.getPrice()));
-//        }
-//        return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
-//    }
+    @GetMapping("/reviews/{hospital_seq}")
+    @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 후기 목록")
+    public ResponseEntity<List<ReviewListDisplay>> getHospitalReview(@PathVariable Long hospital_seq) {
+        List<ReviewBoard> reviews = hospitalService.getReviewsByHospital(hospital_seq);
+        List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
+        for(ReviewBoard r : reviews) {
+            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
+                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
+                    r.getPrice()));
+        }
+        return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
+    }
 
 //    @GetMapping("/doctors/{hospital_seq}")
 //    @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
 //    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
-//        List<Doctor> doctors = reviewBoardService.getReviewsByHospital(hospital_seq);
-//        List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
-//        for(ReviewBoard r : reviews) {
-//            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
-//                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-//                    r.getPrice()));
-//        }
-//        return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
+//        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
+//        return new ResponseEntity<>(doctors, HttpStatus.OK);
 //    }
 
 }
