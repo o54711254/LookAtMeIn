@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axiosAPi from "../../../../api/axiosApi";
-import StarRating from "../../../ReviewBoard/StarRating/StarResult";
+import StarResult from "../../../ReviewBoard/StarRating/StarResult";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 // axios 완료
@@ -22,23 +22,25 @@ function ReviewList() {
       });
   }, []);
 
-  const handleChange = () => {
-    navigate("/api/reviewBoard/{");
+  const handleClick = (reviewBoard_seq) => {
+    navigate(`/reviewdetail/${reviewBoard_seq}`);
   };
 
   return (
     <div>
-      <div>ㅇ : {reviewBoardList.length}</div>
+      <div>작성한 글 갯수 : {reviewBoardList.length}</div>
       {reviewBoardList.length >= 0 ? (
         <div>
-          {reviewBoardList.map((board, index) => (
-            <li key={index}>
-              <div>작성자: {board.customer_id}</div>
+          {reviewBoardList.map((board) => (
+            <li
+              key={board.reviewBoard_seq}
+              onClick={() => handleClick(board.reviewBoard_seq)}
+            >
+              <div>작성자: {board.customer_name}</div>
               <div>제목: {board.reviewBoard_title}</div>
-              <div>조회수: {board.reviewBoard_cnt}</div>
               <div>작성날짜: {board.reviewBoard_regDate}</div>
               <div>
-                <StarRating score={board.reviewBoard_score} />
+                <StarResult score={board.reviewBoard_score} />
               </div>
             </li>
           ))}
