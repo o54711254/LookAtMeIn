@@ -18,7 +18,7 @@ function ReviewList() {
         console(reviewBoardList);
       })
       .catch((error) => {
-        console.log("데이터를 가져오는데 실패했습니다.", error);
+        console.log("시술 후기 데이터를 가져오는데 실패했습니다.", error);
       });
   }, []);
 
