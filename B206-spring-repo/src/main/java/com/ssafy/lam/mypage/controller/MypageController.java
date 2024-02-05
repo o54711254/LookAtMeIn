@@ -54,4 +54,8 @@ public class MypageController {
         return new ResponseEntity<Hospital>(hospitalSaveDto, HttpStatus.OK);
     }
 
+    @GetMapping("/")
+    public ResponseEntity<?> getMapageFreeboard(){
+        
+    }
 }
