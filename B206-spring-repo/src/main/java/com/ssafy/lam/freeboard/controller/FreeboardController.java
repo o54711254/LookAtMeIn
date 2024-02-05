@@ -43,6 +43,7 @@ public class FreeboardController {
         List<Freeboard> freeboardList = freeboardService.getAllFreeboards();
         List<FreeboardResponseDto> freeboardResponseDtoList = new ArrayList<>();
 
+
         for(Freeboard freeboard : freeboardList){
             FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                     .freeboardSeq(freeboard.getFreeboardSeq())
@@ -59,25 +60,25 @@ public class FreeboardController {
 
     @GetMapping("/freeBoardList/{freeBoard_seq}")
     @Operation(summary = "자유게시판 글 상세보기")
-    public ResponseEntity<FreeboardResponseDto> detail(@PathVariable Long freeBoard_seq){
-        Freeboard freeboard = freeboardService.getFreeboard(freeBoard_seq);
+    public ResponseEntity<?> detail(@PathVariable Long freeBoard_seq){
+        FreeboardResponseDto freeboardResponseDto =  null ;
+        try{
+            freeboardResponseDto = freeboardService.getFreeboard(freeBoard_seq);
 
-        FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
-                .freeboardSeq(freeboard.getFreeboardSeq())
-                .userId(freeboard.getUser().getUserId())
-                .freeboardTitle(freeboard.getTitle())
-                .freeboardContent(freeboard.getContent())
-                .freeboardRegisterdate(freeboard.getRegisterDate())
-                .build();
+            return ResponseEntity.ok().body(freeboardResponseDto);
+        }catch(NoArticleExeption e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
 
-        return ResponseEntity.ok().body(freeboardResponseDto);
+
+
 
     }
-    @PutMapping("/update/{user_seq}")
+    @PutMapping("/update/{freeboardSeq}")
     @Operation(summary = "자유게시판 글 수정")
-    public ResponseEntity<?> update(@PathVariable Long user_seq, @RequestBody FreeboardRequestDto freeboardRequestDto){
+    public ResponseEntity<?> update(@PathVariable Long freeboardSeq, @RequestBody FreeboardRequestDto freeboardRequestDto){
         try{
-            freeboardService.updateFreeboard(user_seq, freeboardRequestDto);
+            freeboardService.updateFreeboard(freeboardSeq, freeboardRequestDto);
             return ResponseEntity.ok().build();
         }catch (NoArticleExeption e){
             return ResponseEntity.badRequest().body(e.getMessage());

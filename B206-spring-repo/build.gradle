@@ -61,13 +61,7 @@ dependencies {
     implementation group: 'io.swagger', name: 'swagger-annotations', version: '1.6.12'
     implementation 'mysql:mysql-connector-java:8.0.33'  // MySQL 드라이버 의존성
 
-    //채팅관련
-    // sockjs
-    implementation 'org.webjars:sockjs-client:1.5.1'
-    // stomp
-    implementation 'org.webjars:stomp-websocket:2.3.4'
-    // gson
-    implementation 'com.google.code.gson:gson:2.9.0'
+    // 웹소켓
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 

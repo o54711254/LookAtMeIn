@@ -29,7 +29,6 @@ public class Hospital {
     @OneToMany(mappedBy = "hospital")
     private List<Coordinator> coordinators = new ArrayList<>();
 
-
     @Column(name="hos_info_tel")
     private String tel;
 

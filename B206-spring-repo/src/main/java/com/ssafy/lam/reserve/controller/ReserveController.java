@@ -32,7 +32,7 @@ public class ReserveController {
 
     @GetMapping("/user/{userSeq}")
     public ResponseEntity<List<ReserveResponseDto>> getReservesByUser(@PathVariable long userSeq) {
-        List<ReserveResponseDto> reserves = reserveService.getReservesByUser(userSeq);
+        List<ReserveResponseDto> reserves = reserveService.findByUserSeq(userSeq);
         return ResponseEntity.ok(reserves);
     }
 

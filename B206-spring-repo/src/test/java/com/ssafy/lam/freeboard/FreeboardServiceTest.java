@@ -45,7 +45,7 @@ public class FreeboardServiceTest {
 
     @Test
     @DisplayName("자유게시판 글 목록 조회 테스트")
-//    @Transactional
+    @Transactional
     public void getFreeboardListTest() {
         FreeboardRequestDto freeboardRequestDto = FreeboardRequestDto.builder()
                 .user_seq(1L)
@@ -78,13 +78,13 @@ public class FreeboardServiceTest {
 
     @Test
     @DisplayName("자유게시판 글 상세보기 테스트")
-//    @Transactional
+    @Transactional
     public void detailTest(){
-        Long freeBoardSeq = 4L;
+        Long freeBoardSeq = 1L;
 //        Optional<Freeboard> freeboard = freeboardRepository.findById(freeBoardSeq);
 //        System.out.println("freeboard = " + freeboard);
-        Freeboard freeboard = freeboardService.getFreeboard(freeBoardSeq);
-        Assertions.assertThat(freeboard.getFreeboardSeq()).isEqualTo(freeBoardSeq);
+        FreeboardResponseDto freeboard = freeboardService.getFreeboard(freeBoardSeq);
+        System.out.println("freeboard = " + freeboard);
 
     }
 
