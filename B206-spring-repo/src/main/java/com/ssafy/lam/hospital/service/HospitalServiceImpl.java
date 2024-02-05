@@ -54,10 +54,60 @@ public class HospitalServiceImpl implements HospitalService {
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
-        return hospitalRepostiory.save(hospital);
+        hospital = hospitalRepository.save(hospital);
+        for(CategoryDto category : categoryDto){
+            log.info("category : {}", category);
+            Category categoryEntity = Category.builder()
+                    .part(category.getPart())
+                    .hospital(hospital)
+                    .build();
 
+            categoryRepository.save(categoryEntity);
 
+        }
+
+        return hospital;
     }
 
+    @Override
+    public HospitalDto getHospital(long userId) {
+        Optional<com.ssafy.lam.hospital.domain.Hospital> hospitalOptional = hospitalRepository.findById(userId);
+        if (hospitalOptional.isPresent()) {
+            com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
+
+            HospitalDto dto = HospitalDto.builder()
+                    .hospitalInfo_id(hospital.getUser().getUserId())
+                    .hospitalInfo_password(hospital.getUser().getPassword())
+                    .hospitalInfo_name(hospital.getUser().getName())
+                    .hospitalInfo_phoneNumber(hospital.getTel())
+                    .hospitalInfo_introduce(hospital.getIntro())
+                    .hospitalInfo_address(hospital.getAddress())
+                    .hospitalInfo_open(hospital.getOpenTime())
+                    .hospitalInfo_close(hospital.getCloseTime())
+                    .hospitalInfo_url(hospital.getUrl())
+                    .build();
+            return dto;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Hospital updateHospital(long userSeq, HospitalDto hospitalDto) {
+        User user = userRepository.findById(userSeq).get();
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
+
+        user.setPassword(hospitalDto.getHospitalInfo_password());
+        user.setName(hospitalDto.getHospitalInfo_name());
+        hospital.setTel(hospitalDto.getHospitalInfo_phoneNumber());
+        hospital.setEmail(hospitalDto.getHospitalInfo_email());
+        hospital.setOpenTime(hospitalDto.getHospitalInfo_open());
+        hospital.setCloseTime(hospitalDto.getHospitalInfo_close());
+        hospital.setAddress(hospitalDto.getHospitalInfo_address());
+        hospital.setUrl(hospitalDto.getHospitalInfo_url());
+
+        userRepository.save(user);
+        return hospitalRepository.save(hospital);
+    }
 
 }
