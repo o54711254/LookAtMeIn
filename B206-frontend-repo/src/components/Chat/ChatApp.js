@@ -54,20 +54,21 @@ function ChatApp() {
       .get(`/chatroom/${roomId}/messages`)
       .then((response) => {
         console.log("메시지 목록", response.data);
-        setMessages(response.data)})
+        setMessages(response.data);
+      })
       .catch((error) => console.error("Failed to fetch chat messages.", error));
   };
   // 새 메시지를 보내는 함수
   const sendMessage = () => {
     if (stompClient.current && message) {
-       // senderSeq에는 현재 사용자의 ID를 넣어야 함. 지금은 일단 1로 설정
-       const messageObj = {
+      // senderSeq에는 현재 사용자의 ID를 넣어야 함. 지금은 일단 1로 설정
+      const messageObj = {
         chatroomSeq: roomId,
         senderSeq: 1,
-        sender : currentUser.userName,
+        sender: currentUser.userId,
         message: message,
       };
-      
+
       stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
       setMessage(""); // 입력 필드 초기화
     }
@@ -80,10 +81,10 @@ function ChatApp() {
           <div
             key={index}
             style={{
-              textAlign: msg.sender === currentUser.userName ? "right" : "left",
+              textAlign: msg.sender === currentUser.userId ? "right" : "left",
             }}
           >
-            {msg.sender !== currentUser.userName && <p>{msg.sender}</p>}
+            {msg.sender !== currentUser.userId && <p>{msg.sender}</p>}
             <p>{msg.message}</p>
           </div>
         ))}

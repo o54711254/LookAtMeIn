@@ -8,10 +8,14 @@ function OpenViduRoom() {
   return (
     <div>
       <VideoRoom
-        hospital={location.state.coordinatorSeq}
-        client={location.state.userSeq}
-        reservationSeq={location.state.reservationSeq}
-        who={location.state.who}
+        // hospital={location.state.hospitalSeq}
+        // client={location.state.userSeq}
+        // reservationSeq={location.state.reservationSeq}
+        // who={location.state.who}
+        hospital="12"
+        client="1"
+        reservationSeq="1"
+        who="1"
       />
     </div>
   );

@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface ReviewBoardRepository extends JpaRepository<ReviewBoard, Long> {
     public List<ReviewBoard> findByIsdeletedFalse();
-    List<ReviewBoard> findByUserUserSeqAndIsdeletedFalse(Long userSeq);
+    public List<ReviewBoard> findByUserUserSeqAndIsdeletedFalse(Long userSeq);
+//    public double findAvgByHospitalName(String hospitalName);
 }
