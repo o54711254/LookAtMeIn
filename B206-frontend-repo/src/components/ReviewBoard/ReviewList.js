@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
 import StarResult from "./StarRating/StarResult";
 import { useNavigate } from "react-router-dom";
+import styles from "./ReviewList.module.css";
 
 // axios 완료
 
@@ -28,6 +29,7 @@ function ReviewList() {
           <li
             key={board.reviewBoard_seq}
             onClick={() => handleClick(board.reviewBoard_seq)}
+            className={styles.reviewItem}
           >
             <div>작성자: {board.customer_name}</div>
             <div>제목: {board.reviewBoard_title}</div>

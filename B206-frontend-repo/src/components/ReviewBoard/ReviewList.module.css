@@ -1,0 +1,11 @@
+.reviewItem{
+    background-color: #fff; /* 배경색 */
+  border: 1px solid #ddd; /* 테두리 */
+  padding: 10px; /* 내부 여백 */
+  margin-bottom: 10px; /* 하단 마진 */
+  list-style-type: none; /* 기본 목록 스타일 제거 */
+
+}
+.reviewItem:hover{
+    background-color: #f8f8f8;
+}

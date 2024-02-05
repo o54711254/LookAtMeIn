@@ -49,6 +49,7 @@ function LoginForm() {
         //customer
         try {
           await axiosApi.post("/api/user/login", values).then((res) => {
+            console.log(values);
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
               //로그인 성공
@@ -58,6 +59,11 @@ function LoginForm() {
                   userId: values.userId, // 사용자 아이디
                   userName: res.data.userName, // 사용자 이름
                   userPassword: values.userPassword, // 사용자 비밀번호
+                  // userGender:
+                  // userBirth:
+                  // userPhone:
+                  // userAddress:
+                  // userEmail:
                   role: res.data.userType, // 역할 업데이트
                 })
               );

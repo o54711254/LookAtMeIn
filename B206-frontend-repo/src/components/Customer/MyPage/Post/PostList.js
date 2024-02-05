@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import axiosAPi from "../../../../api/axiosApi";
+import { useSelector } from "react-redux";
 
 function PostList() {
   const [postList, setPostList] = useState([]);
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     axiosAPi
-      .get(`/customer/freeBoardList/{user_seq}`)
+      .get(`/api/mypage/free/${user.userSeq}`)
       .then((res) => {
+        console.log(res.data);
         setPostList(res.data);
       })
       .catch((error) => {

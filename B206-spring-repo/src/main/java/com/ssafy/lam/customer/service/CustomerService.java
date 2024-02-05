@@ -17,5 +17,5 @@ public interface CustomerService {
     //}
     CustomerDto getCustomer(long userId);
 
-    Customer updateCustomer(long userSeq, CustomerDto customerDto);
+    Customer updateCustomer(Long userSeq, CustomerDto customerDto);
 }

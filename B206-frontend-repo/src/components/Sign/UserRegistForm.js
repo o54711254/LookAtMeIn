@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axiosAPi from "../../api/axiosApi";
-import logo from "../../assets/lab_logo.png";
+import logo from "../../assets/logo.PNG";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
@@ -154,10 +154,7 @@ function UserRegistForm() {
   return (
     <>
       <div className={styles.UserRegistForm}>
-        <div>
-          <img src={logo} alt="로고사진" className={styles.logoimage}/>
-          <h1>룩앳미인</h1>
-        </div>
+        {/* <img src={logo}/> */}
         <form onSubmit={formik.handleSubmit}>
           <div className="inputText">
             <h3>아이디</h3>
@@ -167,13 +164,14 @@ function UserRegistForm() {
               name="id"
               value={formik.values.id}
               onChange={formik.handleChange}
+              id={styles.inputB}
               className={formik.touched.id && formik.errors.id ? "error" : ""}
             />
+              <button onClick={checkDuplicateId} className={styles.button}>중복확인</button>
             {formik.touched.id && formik.errors.id && (
               <div className="helperText">{formik.errors.id}</div>
             )}
 
-            <button onClick={checkDuplicateId} className={styles.button}>중복확인</button>
             {useable === null ? (
               ""
             ) : useable ? (
@@ -189,6 +187,7 @@ function UserRegistForm() {
               type="password"
               onChange={formik.handleChange}
               placeholder="영문, 숫자, 특수문자 조합 8~16자를 입력하세요"
+              id={styles.input}
               value={formik.values.password}
               className={
                 formik.touched.password && formik.errors.password ? "error" : ""
@@ -205,6 +204,7 @@ function UserRegistForm() {
               name="confirmPassword"
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
+              id={styles.input}
               placeholder="비밀번호 확인"
               style={{ color: isPasswordMatch ? "green" : "inherit" }} // 조건부 스타일 적용
             />
@@ -220,6 +220,7 @@ function UserRegistForm() {
               name="name"
               value={formik.values.name}
               onChange={formik.handleChange}
+              id={styles.input}
               className={
                 formik.touched.name && formik.errors.name ? "error" : ""
               }
@@ -228,7 +229,7 @@ function UserRegistForm() {
               <div className="helperText">{formik.errors.name}</div>
             )}
           </div>
-          <div className="inputText">
+          <div className="inputText" id={styles.gender}>
             <h3>성별</h3>
             <div>
               <label>
@@ -265,6 +266,7 @@ function UserRegistForm() {
               placeholder="YYYY.MM.DD"
               name="birth"
               value={formik.values.birth}
+              id={styles.input}
               onChange={formik.handleChange}
               className={
                 formik.touched.birth && formik.errors.birth ? "error" : ""
@@ -281,6 +283,7 @@ function UserRegistForm() {
               placeholder="01000000000"
               name="phoneNumber"
               value={formik.values.phoneNumber}
+              id={styles.input}
               onChange={formik.handleChange}
               className={
                 formik.touched.phoneNumber && formik.errors.phoneNumber
@@ -299,6 +302,7 @@ function UserRegistForm() {
               name="address"
               value={formik.values.address}
               onChange={formik.handleChange}
+              id={styles.inputB}
               readOnly
             />
             <button type="button" onClick={showModal} className={styles.button}>
@@ -322,6 +326,7 @@ function UserRegistForm() {
               name="email"
               value={formik.values.email}
               onChange={formik.handleChange}
+              id={styles.input}
               className={
                 formik.touched.email && formik.errors.email ? "error" : ""
               }
@@ -330,8 +335,8 @@ function UserRegistForm() {
               <div className="helperText">{formik.errors.email}</div>
             )}
           </div>
-          <div className="RegistButton">
-            <button type="submit">회원가입</button>
+          <div>
+            <button className={styles.RegistButton} type="submit">회원가입</button>
           </div>
         </form>
       </div>
