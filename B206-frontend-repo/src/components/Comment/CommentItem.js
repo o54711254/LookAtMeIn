@@ -44,7 +44,7 @@ function CommentItem({ comment }) {
     <>
       <li>
         {!isUpdate ? (
-          <p>{comment.comment_content}</p>
+          <p>댓글 내용 : {comment.comment_content}</p>
         ) : (
           <>
             <input
@@ -56,8 +56,8 @@ function CommentItem({ comment }) {
           </>
         )}
 
-        <p>{comment.customerId}</p>
-        <p>{comment.freeboard_seq}</p>
+        <p>댓글 작성자 : {comment.customerId}</p>
+        {/* <p>{comment.freeboard_seq}</p> */}
         <button onClick={startUpdate}>수정하기</button>
         <button onClick={handleDelete}>삭제하기</button>
       </li>

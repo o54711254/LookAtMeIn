@@ -48,8 +48,7 @@ function LoginForm() {
       if (membertype === "customer") {
         //customer
         try {
-          await axiosApi.post("/api/user/login", values)
-          .then((res) => {
+          await axiosApi.post("/api/user/login", values).then((res) => {
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
               //로그인 성공
@@ -59,7 +58,7 @@ function LoginForm() {
                   userId: values.userId, // 사용자 아이디
                   userName: res.data.userName, // 사용자 이름
                   userPassword: values.userPassword, // 사용자 비밀번호
-                  role: res.data.userType // 역할 업데이트
+                  role: res.data.userType, // 역할 업데이트
                 })
               );
 
@@ -78,7 +77,7 @@ function LoginForm() {
               setTimeout(() => {
                 navigate("/");
                 dispatch(changeLoading());
-              }, 3000);
+              }, 1000);
             } else {
               // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
               //   position: toast.POSITION.TOP_CENTER,
@@ -106,7 +105,7 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType // 역할 업데이트
+                    role: res.data.userType, // 역할 업데이트
                   })
                 );
 
@@ -154,7 +153,7 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType // 역할 업데이트
+                    role: res.data.userType, // 역할 업데이트
                   })
                 );
 
@@ -202,7 +201,7 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType // 역할 업데이트
+                    role: res.data.userType, // 역할 업데이트
                   })
                 );
 
