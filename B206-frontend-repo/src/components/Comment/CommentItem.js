@@ -27,7 +27,7 @@ function CommentItem({ comment }) {
     }
   };
   const handleDelete = () => {
-    axios
+    axiosApi
       .put(`/api/comment/delete/${comment.comment_seq}`, {
         freeBoard_complain: true,
       })
