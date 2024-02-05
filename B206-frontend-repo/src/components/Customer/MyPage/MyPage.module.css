@@ -1,0 +1,37 @@
+/* MyPage.module.css */
+.mypageContainer {
+  display: flex;
+  /* 다른 스타일 */
+}
+
+.sidebar {
+  flex: 1;
+  /* 다른 스타일 */
+}
+
+.profileImage {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.profileName {
+  /* 스타일 */
+}
+
+.navigation {
+  /* 스타일 */
+}
+
+.navLink {
+  /* 스타일 */
+  display: block;
+  padding: 10px;
+  color: black; /* 기본 링크 색상 */
+  text-decoration: none; /* 밑줄 없애기 */
+}
+
+.active {
+  color: blue; /* 활성 링크 색상 */
+  font-weight: bold;
+}

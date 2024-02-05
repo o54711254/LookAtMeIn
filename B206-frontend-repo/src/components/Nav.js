@@ -74,7 +74,7 @@ function Nav() {
       {/* 메뉴 내용 */}
       <div className={`${styles.navContainer} ${showMenu ? styles.show : ""}`}>
         <div className={styles.nav1}>
-          <Link to="/hospitaldList">병원 정보</Link>
+          <Link to="/hospitalList">병원 정보</Link>
           <Link to="/reviewList">시술 후기</Link>
           <Link to="/freeBoard/freeBoardList">자유게시판</Link>
           <div
