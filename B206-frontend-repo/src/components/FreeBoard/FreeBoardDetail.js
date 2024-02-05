@@ -38,7 +38,7 @@ function FreeBoardDetail() {
       <div>작성자 아이디: {post.userId}</div>
       {/* <div>작성자 이메일: {post.userEmail}</div> */}
       <div>작성 날짜: {post.freeboardRegisterdate}</div>
-      {/* <img src={post.freeboardImg} alt="게시글 이미지" /> */}
+      <img src={post.freeboardImg} alt="게시글 이미지" />
       <div>글 내용: {post.freeboardContent}</div>
       <div>글 제목: {post.freeboardTitle}</div>
       {/* <div>해시태그: {post.hashTag}</div> */}

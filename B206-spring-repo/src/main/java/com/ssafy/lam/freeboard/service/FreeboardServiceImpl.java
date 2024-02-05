@@ -7,6 +7,7 @@ import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.file.dto.FileResponseDto;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
@@ -64,10 +65,18 @@ public class FreeboardServiceImpl implements FreeboardService {
 
     @Override
     public FreeboardResponseDto getFreeboard(Long freeBoardSeq) {
+        // 상세조회하려는 게시글 가져오기
         Freeboard freeboard = freeboardRepository.findByfreeboardSeqAndIsDeletedFalse(freeBoardSeq).orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
+
+        // 게시글 작성자 정보 가져오기
         Customer customer = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+
+        FileResponseDto uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
+
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
+                .fileResponseDto(uploadFile)
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())
