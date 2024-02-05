@@ -1,6 +1,7 @@
 package com.ssafy.lam.user.controller;
 
 
+import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.dto.UserDto;
@@ -78,6 +79,8 @@ public class UserController {
         }
 
         TokenInfo tokenInfo = userService.getLoginToken(user);
+
+
         UserTokenInfo userTokenInfo = UserTokenInfo.builder()
                 .userName(user.getName())
                 .userSeq(user.getUserSeq())
@@ -85,7 +88,6 @@ public class UserController {
                 .userId(user.getUserId())
                 .tokenInfo(tokenInfo)
                 .build();
-
         return ResponseEntity.ok(userTokenInfo);
 
 
