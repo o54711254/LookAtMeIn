@@ -1,5 +1,8 @@
 package com.ssafy.lam.hospital.service;
 
+import com.ssafy.lam.hospital.domain.Category;
+import com.ssafy.lam.hospital.domain.CategoryRepository;
+import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.hospital.dto.CategoryDto;
@@ -23,11 +26,12 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CategoryRepository categoryRepository;
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
     @Override
-    public com.ssafy.lam.hospital.domain.Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
+    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
         log.info("createHospital : {}", hospitalDto);
         List<String> roles = new ArrayList<>();
         roles.add("HOSPITAL");
@@ -40,8 +44,7 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
 
         userService.createUser(user);
-
-        com.ssafy.lam.hospital.domain.Hospital hospital = com.ssafy.lam.hospital.domain.Hospital.builder()
+        Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
                 .address(hospitalDto.getHospitalInfo_address())
@@ -51,8 +54,19 @@ public class HospitalServiceImpl implements HospitalService {
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
+        hospital = hospitalRepository.save(hospital);
+        for(CategoryDto category : categoryDto){
+            log.info("category : {}", category);
+            Category categoryEntity = Category.builder()
+                    .part(category.getPart())
+                    .hospital(hospital)
+                    .build();
 
-        return hospitalRepository.save(hospital);
+            categoryRepository.save(categoryEntity);
+
+        }
+
+        return hospital;
     }
 
     @Override

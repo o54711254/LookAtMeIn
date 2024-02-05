@@ -45,17 +45,8 @@ public class HospitalServiceTest {
         List<CategoryDto> categoryDtoList = new ArrayList<>();
         categoryDtoList.add(categoryDto);
         categoryDtoList.add(categoryDto2);
-
-//        Hospital hospital = hospitalService.createHospital(hospitalDto, categoryDtoList);
-//        System.out.println("hospital.getUser().getUserId() = " + hospital.getUser().getUserId());
-        HospitalRequestDto hospitalRequestDto = HospitalRequestDto.builder()
-                .hospitalDto(hospitalDto)
-                .categoryList(categoryDtoList)
-                .build();
-
-//        String ret = hosptialController.regist(hospitalRequestDto);
-//        System.out.println("ret = " + ret);
-//        Assertions.assertThat(ret)
-//        Assertions.assertThat(hospital.getUser().getUserId()).isEqualTo("polya");
+        Hospital hospital = hospitalService.createHospital(hospitalDto, categoryDtoList);
+        System.out.println("hospital.getHospitalSeq() = " + hospital.getHospitalSeq());
+    
     }
 }

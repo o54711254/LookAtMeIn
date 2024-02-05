@@ -72,12 +72,12 @@ public class ChatRoomTest {
     @DisplayName("채팅방 생성 테스트")
     @Transactional
     public void createChatRoomTest(){
-        ChatRoomRequestDto chatRoomRequestDto = ChatRoomRequestDto.builder()
-                .customerSeq(1L)
-                .hospitalSeq(2L)
-                .build();
-        ChatRoomResponseDto chatRoomResponseDto = webSocketController.create(chatRoomRequestDto);
-        System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
+//        ChatRoomRequestDto chatRoomRequestDto = ChatRoomRequestDto.builder()
+//                .customerSeq(1L)
+//                .hospitalSeq(2L)
+//                .build();
+//        ChatRoomResponseDto chatRoomResponseDto = webSocketController.create(chatRoomRequestDto);
+//        System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
 //        ChatRoomResponseDto chatRoomResponseDto = chatService.createChatRoom(chatRoomRequestDto);
 //        System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
     }

@@ -2,11 +2,8 @@ package com.ssafy.lam.customer.controller;
 
 
 import com.ssafy.lam.customer.dto.CustomerDto;
-import com.ssafy.lam.customer.dto.CustomerTokenInfo;
 import com.ssafy.lam.customer.service.CustomerService;
 import com.ssafy.lam.customer.domain.Customer;
-import com.ssafy.lam.entity.TokenInfo;
-import com.ssafy.lam.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +29,15 @@ public class CustomerController {
     public ResponseEntity<Void> regist(@RequestBody CustomerDto customerDto) {
         log.info("회원가입 정보 : {}", customerDto);
         customerService.createCustomer(customerDto);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PutMapping("/mypage/modify/{userSeq}")
+    @Operation(summary = "고객 정보 수정")
+    public ResponseEntity<Void> modify(@PathVariable Long userSeq, @RequestBody CustomerDto customerDto) {
+        log.info("수정 정보 : {}", customerDto);
+        Customer customer = customerService.updateCustomer(userSeq, customerDto);
         return ResponseEntity.ok().build();
     }
 
