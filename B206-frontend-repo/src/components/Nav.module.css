@@ -67,7 +67,7 @@
 }
 
 /* 메뉴 버튼과 navContainer : 화면 크기 줄면 반응형으로 container대신 menu버튼나오게 했는데 왜 안되냐고 */
-@media (max-width: 1200px) {
+@media (max-width: 100px) {
   .navContainer,
   .nav1,
   .nav2 {
