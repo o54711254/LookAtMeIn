@@ -3,7 +3,7 @@ import axiosAPi from "../../../../api/axiosApi";
 import StarRating from "../../../ReviewBoard/StarRating/StarResult";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+// axios 완료
 function ReviewList() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
   const user = useSelector((state) => state.user);
@@ -11,7 +11,7 @@ function ReviewList() {
 
   useEffect(() => {
     axiosAPi
-      .get(`/reviewBoard/list/${user.userSeq}`)
+      .get(`/api/mypage/review/${user.userSeq}`)
       .then((res) => {
         console.log(res.data);
         setReviewBoardList(res.data);

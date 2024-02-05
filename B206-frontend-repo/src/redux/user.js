@@ -28,7 +28,7 @@ export const userSlice = createSlice({
       state.userGender = action.payload.userGender;
       state.userBirth = action.payload.userBirth;
       state.userPhone = action.payload.userPhone;
-      state.userAdress = action.payload.userAdress;
+      state.userAddress = action.payload.userAddress;
       state.userEmail = action.payload.userEmail;
       state.role = action.payload.role; // 관리자 여부 업데이트
       return state;
@@ -42,7 +42,7 @@ export const userSlice = createSlice({
       state.userGender = ""; // 사용자 성별
       state.userBirth = ""; // 생일
       state.userPhone = ""; // 전화번호
-      state.userAdress = ""; // 주소
+      state.userAddress = ""; // 주소
       state.userEmail = ""; // 이메일
       state.role = ""; // 관리자 여부 초기화
       return state;
