@@ -3,6 +3,7 @@ package com.ssafy.lam.hospital.service;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.hospital.dto.CategoryDto;
+import com.ssafy.lam.hospital.dto.HospitalDetailDto;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
@@ -27,7 +28,7 @@ public class HospitalServiceImpl implements HospitalService {
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
     @Override
-    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
+    public com.ssafy.lam.hospital.domain.Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
         log.info("createHospital : {}", hospitalDto);
         List<String> roles = new ArrayList<>();
         roles.add("HOSPITAL");
@@ -41,7 +42,7 @@ public class HospitalServiceImpl implements HospitalService {
 
         userService.createUser(user);
 
-        Hospital hospital = Hospital.builder()
+        com.ssafy.lam.hospital.domain.Hospital hospital = com.ssafy.lam.hospital.domain.Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
                 .address(hospitalDto.getHospitalInfo_address())
@@ -57,9 +58,9 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public HospitalDto getHospital(long userId) {
-        Optional<Hospital> hospitalOptional = hospitalRepository.findByUserUserSeq(userId);
+        Optional<com.ssafy.lam.hospital.domain.Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
-            Hospital hospital = hospitalOptional.get();
+            com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
 
             HospitalDto dto = HospitalDto.builder()
                     .hospitalInfo_id(hospital.getUser().getUserId())
@@ -94,6 +95,30 @@ public class HospitalServiceImpl implements HospitalService {
 
         userRepository.save(user);
         return hospitalRepository.save(hospital);
+    }
+
+    ////////////
+
+    @Override
+    public HospitalDetailDto getHospitalInfo(long hospitalSeq) { // 고객이 병원 페이지 조회
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
+        if (hospitalOptional.isPresent()) {
+            Hospital hospital = hospitalOptional.get();
+
+            HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
+                    .hospitalInfo_seq(hospitalSeq)
+                    .hospitalInfo_name(hospital.getUser().getName())
+                    .hospitalInfo_phoneNumber(hospital.getTel())
+                    .hospitalInfo_introduce(hospital.getIntro())
+                    .hospitalInfo_address(hospital.getAddress())
+                    .hospitalInfo_open(hospital.getOpenTime())
+                    .hospitalInfo_close(hospital.getCloseTime())
+                    .hospitalInfo_url(hospital.getUrl())
+                    .build();
+            return hospitalDetailDto;
+        } else {
+            return null;
+        }
     }
 
 }
