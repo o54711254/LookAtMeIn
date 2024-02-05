@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axiosApi from "./../../../../api/axiosApi"; // axiosApi 모듈을 불러옵니다.
+import axiosApi from "../../../api/axiosApi"; // axiosApi 모듈을 불러옵니다.
 import { useSelector } from "react-redux"; // useSelector를 불러옵니다.
 
 // Axios 연결 확인 완료
@@ -14,7 +14,7 @@ function ReservationList() {
     const fetchReservations = async () => {
       try {
         const response = await axiosApi.get(`/api/reserve/user/${userSeq}`); // axiosApi를 사용하여 HTTP GET 요청을 보냅니다.
-        console.log(response.data)
+        console.log(response.data);
         setReservations(response.data);
       } catch (error) {
         console.error("Error fetching reservations:", error);
