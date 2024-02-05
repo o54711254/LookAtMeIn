@@ -1,5 +1,8 @@
 package com.ssafy.lam.hospital.service;
 
+import com.ssafy.lam.hospital.domain.Category;
+import com.ssafy.lam.hospital.domain.CategoryRepository;
+import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.hospital.dto.CategoryDto;
@@ -23,6 +26,7 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CategoryRepository categoryRepository;
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
@@ -40,7 +44,6 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
 
         userService.createUser(user);
-
         Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
@@ -51,49 +54,10 @@ public class HospitalServiceImpl implements HospitalService {
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
+        return hospitalRepostiory.save(hospital);
 
-        return hospitalRepository.save(hospital);
+
     }
 
-    @Override
-    public HospitalDto getHospital(long userId) {
-        Optional<Hospital> hospitalOptional = hospitalRepository.findByUserUserSeq(userId);
-        if (hospitalOptional.isPresent()) {
-            Hospital hospital = hospitalOptional.get();
-
-            HospitalDto dto = HospitalDto.builder()
-                    .hospitalInfo_id(hospital.getUser().getUserId())
-                    .hospitalInfo_password(hospital.getUser().getPassword())
-                    .hospitalInfo_name(hospital.getUser().getName())
-                    .hospitalInfo_phoneNumber(hospital.getTel())
-                    .hospitalInfo_introduce(hospital.getIntro())
-                    .hospitalInfo_address(hospital.getAddress())
-                    .hospitalInfo_open(hospital.getOpenTime())
-                    .hospitalInfo_close(hospital.getCloseTime())
-                    .hospitalInfo_url(hospital.getUrl())
-                    .build();
-            return dto;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public Hospital updateHospital(long userSeq, HospitalDto hospitalDto) {
-        User user = userRepository.findById(userSeq).get();
-        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
-
-        user.setPassword(hospitalDto.getHospitalInfo_password());
-        user.setName(hospitalDto.getHospitalInfo_name());
-        hospital.setTel(hospitalDto.getHospitalInfo_phoneNumber());
-        hospital.setEmail(hospitalDto.getHospitalInfo_email());
-        hospital.setOpenTime(hospitalDto.getHospitalInfo_open());
-        hospital.setCloseTime(hospitalDto.getHospitalInfo_close());
-        hospital.setAddress(hospitalDto.getHospitalInfo_address());
-        hospital.setUrl(hospitalDto.getHospitalInfo_url());
-
-        userRepository.save(user);
-        return hospitalRepository.save(hospital);
-    }
 
 }
