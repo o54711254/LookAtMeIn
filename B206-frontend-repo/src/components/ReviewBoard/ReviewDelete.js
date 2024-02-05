@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
 
-const ReviewDelete = ({ reviewBoard_seq, onUpdated }) => {
+function ReviewDelete({ reviewBoard_seq, onUpdated }) {
   const handleUpdate = () => {
     console.log(reviewBoard_seq);
     axios
@@ -23,6 +23,6 @@ const ReviewDelete = ({ reviewBoard_seq, onUpdated }) => {
       삭제하기
     </Button>
   );
-};
+}
 
 export default ReviewDelete;

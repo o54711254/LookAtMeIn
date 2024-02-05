@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 import StarResult from "./StarRating/StarResult";
 import ReviewDelete from "./ReviewDelete";
+import { Button } from "@mui/material";
 
 // axios 완료 (reviewBoard_seq 넘어오는 것만 확인하면 될 듯)
 
@@ -12,7 +13,6 @@ function ReviewDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(reviewBoard_seq);
     axiosApi
       .get(`/api/reviewBoard/${reviewBoard_seq}`)
       .then((res) => {
@@ -23,6 +23,10 @@ function ReviewDetail() {
         console.log("데이터를 불러오는데 실패했습니다.", error);
       });
   }, []);
+
+  const onReviewUpdate = () => {
+    navigate(`/reviewupdate`, { state: reviewDetail });
+  };
 
   const onReviewDeleted = () => {
     navigate(`/reviewList`);
@@ -40,6 +44,8 @@ function ReviewDetail() {
         <div>지역: {reviewDetail.reviewBoard_region}</div>
         <div>시술 부위: {reviewDetail.reviewBoard_surgery}</div>
         <div>병원: {reviewDetail.reviewBoard_hospital}</div>
+
+        <Button onClick={onReviewUpdate}>수정</Button>
         <ReviewDelete
           reviewBoard_seq={reviewBoard_seq}
           onUpdated={onReviewDeleted}
