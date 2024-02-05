@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 import StarResult from "./StarRating/StarResult";
+import ReviewDelete from "./ReviewDelete";
 
 // axios 완료 (reviewBoard_seq 넘어오는 것만 확인하면 될 듯)
 
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);
   const { reviewBoard_seq } = useParams(); // URL 파라미터에서 reviewBoard_seq를 가져옴
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(reviewBoard_seq);
@@ -22,6 +24,10 @@ function ReviewDetail() {
       });
   }, []);
 
+  const onReviewDeleted = () => {
+    navigate(`/reviewList`);
+  };
+
   return (
     <div>
       <h1>리뷰 보드 디테일</h1>
@@ -34,6 +40,10 @@ function ReviewDetail() {
         <div>지역: {reviewDetail.reviewBoard_region}</div>
         <div>시술 부위: {reviewDetail.reviewBoard_surgery}</div>
         <div>병원: {reviewDetail.reviewBoard_hospital}</div>
+        <ReviewDelete
+          reviewBoard_seq={reviewBoard_seq}
+          onUpdated={onReviewDeleted}
+        ></ReviewDelete>
       </div>
     </div>
   );

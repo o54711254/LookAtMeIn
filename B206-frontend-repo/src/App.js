@@ -34,7 +34,7 @@ import Favorite from "./components/HospitalBoard/HospitalWish.js";
 import Questionnaire from "./components/Modal/Questionnaire.js";
 
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
-import Worldcup from "./components/WorldCup/worldcup.js";
+import Worldcup from "./components/WorldCup/Worldcup.js";
 
 function App() {
   return (
