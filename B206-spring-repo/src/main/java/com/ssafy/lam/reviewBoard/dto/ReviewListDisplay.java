@@ -8,6 +8,7 @@ import lombok.*;
 @ToString
 public class ReviewListDisplay {
 
+    private long reviewBoard_seq; // 게시글 번호
     private String customer_name; // 작성자
     private String reviewBoard_title;// 제목
     private int reviewBoard_cnt; // 조회수
@@ -20,10 +21,11 @@ public class ReviewListDisplay {
     private int reviewBoard_price; // 시술 가격
 
     @Builder
-    public ReviewListDisplay(String customer_name, String reviewBoard_title, int reviewBoard_cnt,
+    public ReviewListDisplay(long reviewBoard_seq, String customer_name, String reviewBoard_title, int reviewBoard_cnt,
                              long reviewBoard_regDate, double reviewBoard_score, String reviewBoard_doctor,
                              String reviewBoard_region, String reviewBoard_surgery, String reviewBoard_hospital,
                              int reviewBoard_price) {
+        this.reviewBoard_seq = reviewBoard_seq;
         this.customer_name = customer_name;
         this.reviewBoard_title = reviewBoard_title;
         this.reviewBoard_cnt = reviewBoard_cnt;

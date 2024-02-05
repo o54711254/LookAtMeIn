@@ -10,7 +10,7 @@ export default class StreamComponent extends Component {
     super(props);
     console.log(this.props);
     this.state = {
-      nickname: this.props.user.getNickname(),
+      nickname: 1,
       showForm: false,
       mutedSound: false,
       isFormValid: true,

@@ -67,7 +67,7 @@ public class ChatService {
 
     // 채팅방 생성
     public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto chatRoomRequestDto) {
-
+        
         User hospital = userRepository.findById(chatRoomRequestDto.getHospitalSeq()).get();
         if(!hospital.getUserType().equals("HOSPITAL")){
             throw new IllegalArgumentException("병원이 아닌 사용자는 채팅방을 생성할 수 없습니다.");
