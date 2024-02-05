@@ -12,6 +12,8 @@ public interface CustomerService {
 //    void deleteCustomer(long seq);
 //
 //
+
+    Customer updateCustomer(Long userSeq, CustomerDto updatedCustomer);
     Customer findByCustomerId(String customerId);
 //}
 }

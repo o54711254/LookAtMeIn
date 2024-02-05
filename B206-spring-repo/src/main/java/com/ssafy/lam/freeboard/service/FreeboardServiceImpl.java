@@ -73,12 +73,12 @@ public class FreeboardServiceImpl implements FreeboardService {
 
 
         FileResponseDto uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
-        System.out.println("uploadFile.getOriginalPath() = " + uploadFile.getOriginalPath());
+//        System.out.println("uploadFile.getOriginalPath() = " + uploadFile.getOriginalPath());
 
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
                 .fileSeq(freeboard.getUploadFile().getSeq())
-                .fileUrl(uploadFile.getOriginalPath().getFilename())
+                .fileUrl(uploadFile.getOriginalPath())
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())

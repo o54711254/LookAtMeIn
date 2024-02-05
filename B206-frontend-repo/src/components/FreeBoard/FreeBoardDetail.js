@@ -8,6 +8,7 @@ import Comment from "../Comment/Comment";
 
 function FreeBoardDetail() {
   const [post, setPost] = useState(null);
+  const [img, setImg] = useState(null);
   const { freeboardSeq } = useParams();
   const navigate = useNavigate();
 
@@ -18,10 +19,12 @@ function FreeBoardDetail() {
           `/api/freeBoard/freeBoardList/${freeboardSeq}`
         );
 
-        response = await axiosApi.get(
-          `/api/file/${response.data.freeboardImg}`
+        setPost(response.data);
+        const response2 = await axiosApi.get(
+          `/api/file/${response.data.freeboardSeq}`
         )
-
+          console.log(response2.data);
+        setImg(response2.data);
         // setPost(response.data);
         console.log(response.data);
       } catch (error) {
@@ -45,7 +48,7 @@ function FreeBoardDetail() {
       <div>작성 날짜: {post.freeboardRegisterdate}</div>
       <img src={
         
-        post.freeboardImg
+        img
       } alt="게시글 이미지" />
       <div>글 내용: {post.freeboardContent}</div>
       <div>글 제목: {post.freeboardTitle}</div>

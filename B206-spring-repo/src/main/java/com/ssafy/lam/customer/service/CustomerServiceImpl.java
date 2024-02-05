@@ -58,10 +58,20 @@ public class CustomerServiceImpl implements CustomerService{
         return customerRepository.save(customer);
     }
 
-//    @Override
-//    public Customer updateCustomer(long seq, Customer updatedCustomer) {
-//        return null;
-//    }
+    @Override
+    public Customer updateCustomer(Long userSeq, CustomerDto updatedCustomer) {
+        User user = userService.getUser(userSeq);
+
+        user.setName(updatedCustomer.getCustomerName());
+        user.setPassword(updatedCustomer.getUserPassword());
+        Customer customer = customerRepository.findByUserUserId(user.getUserId()).orElse(null);
+        customer.setUser(user);
+        customer.setGender(updatedCustomer.getCustomerGender());
+        customer.setTel(updatedCustomer.getCustomerPhoneNumber());
+        customer.setEmail(updatedCustomer.getCustomerEmail());
+        customer.setAddress(updatedCustomer.getCustomerAddress());
+        return customerRepository.save(customer);
+    }
 
 //    @Override
 //    public void deleteCustomer(long seq) {

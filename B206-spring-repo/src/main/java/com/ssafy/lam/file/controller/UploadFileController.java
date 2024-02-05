@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URLEncoder;
+
 @RestController
 //@RequestMapping("/api/image")
 @RequestMapping("/api/file")
@@ -30,13 +32,23 @@ public class UploadFileController {
         return new ResponseEntity<>(imageFile.toString(), HttpStatus.OK);
     }
 
-    @GetMapping("/fole/{fileSeq}")
+    @GetMapping("/{fileSeq}")
     @Operation(summary = "사진 조회")
     public ResponseEntity<Resource> getFile(@PathVariable Long fileSeq) {
-        Resource file = imageService.loadFile(fileSeq);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
-                .body(file);
+        try{
+            Resource file = imageService.loadFile(fileSeq);
+            System.out.println("file.getFilename() = " + file.getFilename());
+
+            String str = URLEncoder.encode(file.getFilename(), "UTF-8").replaceAll("\\+", "%20");
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                    .body(file);
+
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
+
+
     }
 
 }

@@ -13,10 +13,10 @@ import org.springframework.core.io.Resource;
 public class FileResponseDto {
     private Long fileSeq;
     @JsonProperty("originalPath")
-    private Resource originalPath;
+    private String originalPath;
 
     @Builder
-    public FileResponseDto(Long fileSeq, Resource originalPath) {
+    public FileResponseDto(Long fileSeq, String originalPath) {
         this.fileSeq = fileSeq;
         this.originalPath = originalPath;
     }

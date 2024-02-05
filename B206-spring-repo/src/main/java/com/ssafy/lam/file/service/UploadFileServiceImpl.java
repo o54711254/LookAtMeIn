@@ -52,21 +52,12 @@ public class UploadFileServiceImpl implements UploadFileService {
             return null;
         }
 
-        try{
-            Path filePath = Paths.get(uploadFile.getOriginalPath());
-            Resource resource = new UrlResource(filePath.toUri());
+        System.out.println("uploadFile.getOriginalPath() = " + uploadFile.getOriginalPath());
 
-            if(resource.exists() || resource.isReadable()){
-                return FileResponseDto.builder()
-                        .fileSeq(uploadFile.getSeq())
-                        .originalPath(resource)
-                        .build();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return null;
+        return FileResponseDto.builder()
+                .fileSeq(uploadFile.getSeq())
+                .originalPath(uploadFile.getOriginalPath())
+                .build();
     }
 
 

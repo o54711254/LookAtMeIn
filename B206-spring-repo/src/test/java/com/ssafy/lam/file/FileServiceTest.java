@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.Resource;
 
 @SpringBootTest
 public class FileServiceTest {
@@ -18,7 +19,10 @@ public class FileServiceTest {
         // given
         Long fileSeq = 1L;
         FileResponseDto dto = uploadFileService.getUploadFile(fileSeq);
-        System.out.println("dto.getOriginalPath().getFilename() = " + dto.getOriginalPath().getFilename());
+        System.out.println("dto.getOriginalPath().getFilename() = " + dto.getOriginalPath());
+
+        Resource resource = uploadFileService.loadFile(fileSeq);
+        System.out.println("resource.getFilename() = " + resource.getFilename());
         // when
         // then
     }
