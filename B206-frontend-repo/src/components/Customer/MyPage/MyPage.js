@@ -10,7 +10,7 @@ function MyPage() {
   return (
     <div className={styles.mypageContainer}>
       <div className={styles.sidebar}>
-        {/* <img
+        {/* <imgdd
           src="/path-to-your-profile-image.jpg"
           alt="프로필 이미지"
           className={styles.profileImage}
