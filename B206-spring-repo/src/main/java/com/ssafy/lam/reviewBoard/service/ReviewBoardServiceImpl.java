@@ -1,10 +1,10 @@
 package com.ssafy.lam.reviewBoard.service;
 
-import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
+import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -83,8 +84,32 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
     }
 
     @Override
-    public List<ReviewBoard> getReviewByUserSeq(Long userSeq) {
-        List<ReviewBoard> reviewBoards = reviewBoardRepository.findByUserUserSeqAndIsdeletedFalse(userSeq);
-        return reviewBoards;
+    public List<ReviewListDisplay> getReviewByUserSeq(Long userSeq) {
+       return reviewBoardRepository.findAllByUserUserSeqAndIsdeletedFalse(userSeq).stream()
+               .map(reviewBoard -> new ReviewListDisplay(
+                       reviewBoard.getReviewBoard_seq(),
+                       reviewBoard.getCustomer_name(),
+                       reviewBoard.getReviewBoard_title(),
+                       reviewBoard.getReviewBoard_cnt(),
+                       reviewBoard.getReviewBoard_regDate(),
+                       reviewBoard.getReviewBoard_score(),
+                       reviewBoard.getReviewBoard_doctor(),
+                       reviewBoard.getReviewBoard_region(),
+                       reviewBoard.getReviewBoard_surgery(),
+                       reviewBoard.getReviewBoard_hospital(),
+                       reviewBoard.getReviewBoard_price()
+               )).collect(Collectors.toList());
     }
+//            return reserveRepository.findByUserSeq(userSeq).stream()
+//                .map(reserve -> new ReserveResponseDto(
+//            reserve.getCustomer().getName(),
+//                        reserve.getHospital().getName(),
+//                        reserve.getReserveType(),
+//                                reserve.getYear(),
+//                                reserve.getMonth(),
+//                                reserve.getDay(),
+//                                reserve.getDayofweek(),
+//                                reserve.getTime()))
+//                                .collect(Collectors.toList());
+//}
 }

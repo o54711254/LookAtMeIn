@@ -27,7 +27,7 @@ public class HospitalServiceImpl implements HospitalService {
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
     @Override
-    public com.ssafy.lam.hospital.domain.Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
+    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
         log.info("createHospital : {}", hospitalDto);
         List<String> roles = new ArrayList<>();
         roles.add("HOSPITAL");
@@ -41,7 +41,7 @@ public class HospitalServiceImpl implements HospitalService {
 
         userService.createUser(user);
 
-        com.ssafy.lam.hospital.domain.Hospital hospital = com.ssafy.lam.hospital.domain.Hospital.builder()
+        Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
                 .address(hospitalDto.getHospitalInfo_address())
@@ -57,9 +57,9 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public HospitalDto getHospital(long userId) {
-        Optional<com.ssafy.lam.hospital.domain.Hospital> hospitalOptional = hospitalRepository.findById(userId);
+        Optional<Hospital> hospitalOptional = hospitalRepository.findByUserUserSeq(userId);
         if (hospitalOptional.isPresent()) {
-            com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
+            Hospital hospital = hospitalOptional.get();
 
             HospitalDto dto = HospitalDto.builder()
                     .hospitalInfo_id(hospital.getUser().getUserId())
