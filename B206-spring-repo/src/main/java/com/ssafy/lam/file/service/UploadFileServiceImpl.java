@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -78,7 +79,8 @@ public class UploadFileServiceImpl implements UploadFileService {
             try {
                 // 파일 업로드
                 log.info("file path : {}", uploadPath);
-                String saveName = uploadPath + "/" + originName;
+//                String saveName = uploadPath + "/" + originName;
+                String saveName = originName;
                 File localFile = new File(saveName);
                 file.transferTo(localFile);
                 fileRequestDto = FileRequestDto.builder()
@@ -100,17 +102,19 @@ public class UploadFileServiceImpl implements UploadFileService {
             return null;
         }
 
+        Resource resource = null;
+
         try{
             String filename = uploadFile.getOriginalPath();
             System.out.println("filename = " + filename);
 
-
+//
             Path filePath = Paths.get(filename);
+            System.out.println("filePath = " + filePath);
 
-            Resource resource = new UrlResource(filePath.toUri());
 
-
-            System.out.println("resource.getFilename() = " + resource.getFilename());
+            resource = new UrlResource(filePath.toUri());
+            System.out.println("resource.getFilename() = " + resource.getURI());
 
             if(resource.exists() || resource.isReadable()){
                 return resource;
@@ -118,7 +122,6 @@ public class UploadFileServiceImpl implements UploadFileService {
         }catch (Exception e){
             e.printStackTrace();
         }
-
-        return null;
+        return resource;
     }
 }

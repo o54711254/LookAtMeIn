@@ -34,12 +34,12 @@ public class UploadFileController {
 
     @GetMapping("/{fileSeq}")
     @Operation(summary = "사진 조회")
-    public ResponseEntity<Resource> getFile(@PathVariable Long fileSeq) {
+    public ResponseEntity<?> getFile(@PathVariable Long fileSeq) {
         try{
             Resource file = imageService.loadFile(fileSeq);
             String str = URLEncoder.encode(file.getFilename(), "UTF-8").replace("+", "%20");
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + str + ";")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + str + "\"")
                     .body(file);
 
         }catch (Exception e){

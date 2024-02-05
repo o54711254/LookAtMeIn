@@ -20,10 +20,11 @@ function FreeBoardDetail() {
         );
 
         setPost(response.data);
+        console.log(response.data);
         const response2 = await axiosApi.get(
-          `/api/file/${response.data.freeboardSeq}`
+          `/api/file/${response.data.fileSeq}`
         )
-          console.log(response2.data);
+          console.log("response2: ", response2.data);
         setImg(response2.data);
         // setPost(response.data);
         console.log(response.data);
