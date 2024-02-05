@@ -8,6 +8,7 @@ import com.ssafy.lam.file.dto.FileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.StringTokenizer;
@@ -98,8 +101,16 @@ public class UploadFileServiceImpl implements UploadFileService {
         }
 
         try{
-            Path filePath = Paths.get(uploadFile.getOriginalPath());
+            String filename = uploadFile.getOriginalPath();
+            System.out.println("filename = " + filename);
+
+
+            Path filePath = Paths.get(filename);
+
             Resource resource = new UrlResource(filePath.toUri());
+
+
+            System.out.println("resource.getFilename() = " + resource.getFilename());
 
             if(resource.exists() || resource.isReadable()){
                 return resource;

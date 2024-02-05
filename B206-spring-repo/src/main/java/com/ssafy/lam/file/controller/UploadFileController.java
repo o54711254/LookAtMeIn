@@ -37,11 +37,9 @@ public class UploadFileController {
     public ResponseEntity<Resource> getFile(@PathVariable Long fileSeq) {
         try{
             Resource file = imageService.loadFile(fileSeq);
-            System.out.println("file.getFilename() = " + file.getFilename());
-
-            String str = URLEncoder.encode(file.getFilename(), "UTF-8").replaceAll("\\+", "%20");
+            String str = URLEncoder.encode(file.getFilename(), "UTF-8").replace("+", "%20");
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + str + ";")
                     .body(file);
 
         }catch (Exception e){
