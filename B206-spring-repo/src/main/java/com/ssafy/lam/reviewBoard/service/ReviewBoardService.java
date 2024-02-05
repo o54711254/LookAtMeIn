@@ -3,6 +3,7 @@ package com.ssafy.lam.reviewBoard.service;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
+import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 
 import java.util.List;
 
@@ -23,5 +24,5 @@ public interface ReviewBoardService {
     // 게시판 삭제(해당 글 비활성화)
     void deactivateReview(long seq);
 
-    List<ReviewBoard> getReviewByUserSeq(Long userSeq);
+    List<ReviewListDisplay> getReviewByUserSeq(Long userSeq);
 }

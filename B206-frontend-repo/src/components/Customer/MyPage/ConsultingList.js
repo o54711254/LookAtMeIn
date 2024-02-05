@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosAPi from "../../../../api/axiosApi";
+import axiosAPi from "../../../api/axiosApi";
 
 function ConsultingList() {
   const [postList, setPostList] = useState([]);
