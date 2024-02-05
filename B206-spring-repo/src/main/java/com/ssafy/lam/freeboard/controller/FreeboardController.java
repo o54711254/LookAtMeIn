@@ -2,11 +2,13 @@ package com.ssafy.lam.freeboard.controller;
 
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.exception.UnAuthorizedException;
+import com.ssafy.lam.file.service.FileStorageService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.freeboard.service.FreeboardService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +20,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/freeBoard")
+@RequiredArgsConstructor
 public class FreeboardController {
     private final FreeboardService freeboardService;
 
+
     private Logger log = LoggerFactory.getLogger(FreeboardController.class);
 
-    @Autowired
-    public FreeboardController(FreeboardService freeboardService) {
-        log.info("FreeBoardController init");
-        this.freeboardService = freeboardService;
-    }
 
     @PostMapping("/regist")
     @Operation(summary = "자유게시판 글 등록")
