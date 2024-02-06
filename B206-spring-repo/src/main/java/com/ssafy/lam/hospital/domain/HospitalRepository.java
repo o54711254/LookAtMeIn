@@ -13,5 +13,4 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     List<Hospital> findByIsApprovedFalse();
 
-    List<Hospital>
 }
