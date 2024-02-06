@@ -12,25 +12,52 @@ function FreeBoardDetail() {
   const { freeboardSeq } = useParams();
   const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   const fetchPost = async () => {
+  //     try {
+  //       let response = await axiosApi.get(
+  //         `/api/freeBoard/freeBoardList/${freeboardSeq}`
+  //       );
+
+  //       setPost(response.data);// 먼저 게시글 정보를 설정
+
+  //       const response2 = await axiosApi.get(
+  //         `/api/file/${response.data.freeboardSeq}`
+  //       )
+  //         console.log(response2.data);
+  //       setImg(response2.data);
+  //       // setPost(response.data);
+  //       console.log(response.data);
+  //     } catch (error) {
+  //       console.log("자유게시판 상세 불러오기 실패 : ", error);
+  //     }
+  //   };
+  //   if (freeboardSeq) {
+  //     fetchPost();
+  //   }
+  // }, [freeboardSeq]);
   useEffect(() => {
     const fetchPost = async () => {
       try {
         let response = await axiosApi.get(
           `/api/freeBoard/freeBoardList/${freeboardSeq}`
         );
+        setPost(response.data); // 먼저 게시글 정보를 설정
 
-        setPost(response.data);
-        const response2 = await axiosApi.get(
-          `/api/file/${response.data.freeboardSeq}`
-        )
-          console.log(response2.data);
-        setImg(response2.data);
-        // setPost(response.data);
-        console.log(response.data);
+        try {
+          const response2 = await axiosApi.get(
+            `/api/file/${response.data.freeboardSeq}`
+          );
+          setImg(response2.data); // 이미지 정보 설정
+        } catch (imageError) {
+          console.log("이미지 로딩 실패: ", imageError);
+          setImg(null); // 이미지 로딩 실패시 img를 null로 설정
+        }
       } catch (error) {
-        console.log("자유게시판 상세 불러오기 실패 : ", error);
+        console.log("자유게시판 상세 불러오기 실패: ", error);
       }
     };
+
     if (freeboardSeq) {
       fetchPost();
     }
@@ -46,10 +73,8 @@ function FreeBoardDetail() {
       <div>작성자 아이디: {post.userId}</div>
       <div>작성자 이메일: {post.userEmail}</div>
       <div>작성 날짜: {post.freeboardRegisterdate}</div>
-      <img src={
-        
-        img
-      } alt="게시글 이미지" />
+      {/* <img src={img} alt="게시글 이미지" /> */}
+      {img ? <img src={img} alt="게시글 이미지" /> : <div>이미지 없음</div>}
       <div>글 내용: {post.freeboardContent}</div>
       <div>글 제목: {post.freeboardTitle}</div>
       {/* <div>해시태그: {post.hashTag}</div> */}

@@ -94,12 +94,12 @@ function LoginForm() {
         //hospital
         try {
           await axiosApi
-            .post("/api/user/login", values, {
-              //values에는 이메일과 비밀번호가 담겨 있음
-            })
+            .post("/api/user/login", values)
+            //values에는 이메일과 비밀번호가 담겨 있음
+
             .then((res) => {
               //res는 서버에서 받은 응답 객체
-              if (res.data.status === 200) {
+              if (res.status === 200) {
                 //로그인 성공
                 console.log(res.data);
                 dispatch(
