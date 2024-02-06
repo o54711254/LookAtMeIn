@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import * as yup from "yup";
-import logo from "../../assets/logo.PNG";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
@@ -79,7 +79,9 @@ function LoginForm() {
               window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
             }
           });
-        } catch {}
+        } catch { 
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+      }
       } else if (membertype === "hospital") {
         //hospital
         try {
@@ -113,7 +115,9 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else if (membertype === "coordinator") {
         //coordinator
         try {
@@ -148,7 +152,9 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else if (membertype === "admin") {
         //admin
         try {
@@ -184,7 +190,9 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else {
         window.alert("회원유형을 선택해주세요 !");
       }
@@ -193,13 +201,11 @@ function LoginForm() {
 
   return (
     <div className={styles.loginform}>
-      <div className="로그인 창 시작">
-        <img src={logo} alt="로고사진" className={styles.logo}/>
-        <h1>룩앳미인</h1>
-      </div>
-
       <form onSubmit={formik.handleSubmit}>
-        <div className="radioButtons">
+      <div className="로그인 창 시작" id={styles.loginheader}>
+        <img src={logo} alt="로고사진" className={styles.logo}/>
+      </div >
+        <div className="radioButtons" id={styles.radio}>
           <div className="radioButton">
             <input
               id="admin"
@@ -242,7 +248,7 @@ function LoginForm() {
           </div>
         </div>
 
-        <div className="idInput">
+        <div className="idInput" id={styles.userinput}>
           <h3>아이디</h3>
           <input
             name="userId"
@@ -257,7 +263,7 @@ function LoginForm() {
             <div className="helperText">{formik.errors.id}</div>
           )}
         </div>
-        <div className="passwordInput">
+        <div className="passwordInput" id={styles.userinput}>
           <h3>비밀번호</h3>
           <input
             name="userPassword"

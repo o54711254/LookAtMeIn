@@ -1,7 +1,7 @@
 import { Link, Route, Routes } from "react-router-dom";
 import HospitalList from "./HospitalList";
 import Reported from "./Reported/Reported";
-function AdminMyPage() {
+function AdminMyPageForm() {
   return (
     <div>
       <Link to="hospital">병원 관리</Link>
@@ -13,4 +13,4 @@ function AdminMyPage() {
     </div>
   );
 }
-export default AdminMyPage;
+export default AdminMyPageForm;
