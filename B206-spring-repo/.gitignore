@@ -13,6 +13,7 @@
 # Linux trash folder which might appear on any partition or disk
 .Trash-*
 
+/images
 
 
 # .nfs files are1. 병원마이페이지 - 코디네이터 등록하기
