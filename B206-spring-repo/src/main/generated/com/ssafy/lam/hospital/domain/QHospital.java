@@ -26,8 +26,6 @@ public class QHospital extends EntityPathBase<Hospital> {
 
     public final NumberPath<Integer> bookmark = createNumber("bookmark", Integer.class);
 
-    public final ListPath<Category, QCategory> category = this.<Category, QCategory>createList("category", Category.class, QCategory.class, PathInits.DIRECT2);
-
     public final StringPath closeTime = createString("closeTime");
 
     public final ListPath<com.ssafy.lam.coordinator.domain.Coordinator, com.ssafy.lam.coordinator.domain.QCoordinator> coordinators = this.<com.ssafy.lam.coordinator.domain.Coordinator, com.ssafy.lam.coordinator.domain.QCoordinator>createList("coordinators", com.ssafy.lam.coordinator.domain.Coordinator.class, com.ssafy.lam.coordinator.domain.QCoordinator.class, PathInits.DIRECT2);

@@ -19,13 +19,11 @@ public class QUploadFile extends EntityPathBase<UploadFile> {
 
     public static final QUploadFile uploadFile = new QUploadFile("uploadFile");
 
-    public final StringPath afterPath = createString("afterPath");
-
-    public final StringPath category = createString("category");
-
-    public final StringPath originalPath = createString("originalPath");
+    public final StringPath name = createString("name");
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
+
+    public final StringPath type = createString("type");
 
     public QUploadFile(String variable) {
         super(UploadFile.class, forVariable(variable));

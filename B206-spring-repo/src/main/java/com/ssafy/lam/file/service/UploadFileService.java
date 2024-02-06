@@ -1,19 +1,16 @@
 package com.ssafy.lam.file.service;
 
 import com.ssafy.lam.file.domain.UploadFile;
-import com.ssafy.lam.file.dto.FileUploadDto;
+import com.ssafy.lam.file.dto.FileResponseDto;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.io.File;
 
 public interface UploadFileService {
 
-    UploadFile store(MultipartFile multipartFile, String origial, String after);
-    
-    // 사진 업로드
-    FileUploadDto saveFile(MultipartFile file) throws IOException;
+    UploadFile store(MultipartFile multipartFile);
 
-    // 사진 다운로드
-//    ImageDownloadDto downloadImage(ImageRequestDto imageRequestDto);
-    
+    UploadFile getUploadFile(Long fileSeq);
+
 }

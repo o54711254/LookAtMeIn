@@ -1,13 +1,11 @@
 package com.ssafy.lam.file.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UploadFile {
 
@@ -16,20 +14,18 @@ public class UploadFile {
     @Column(name = "file_seq")
     private long seq; // 이미지 번호
 
-    @Column(name = "category")
-    private String category; // 이미지 카테고리
+    @Column(name = "type")
+    private String type; // 이미지 카테고리
 
-    @Column(name = "original_path")
-    private String originalPath; // 파일 경로, 성헝 전 사진 경로
+    @Column(name="filename")
+    private String name;
 
-    @Column(name = "after_path")
-    private String afterPath; // 성형 후 사진 경로
 
     @Builder
-    public UploadFile(long seq, String category, String originalPath, String afterPath) {
+
+    public UploadFile(long seq, String type, String name) {
         this.seq = seq;
-        this.category = category;
-        this.originalPath = originalPath;
-        this.afterPath = afterPath;
+        this.type = type;
+        this.name = name;
     }
 }
