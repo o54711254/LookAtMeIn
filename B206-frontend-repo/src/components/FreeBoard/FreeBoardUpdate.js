@@ -65,6 +65,7 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
       setImage(null);
       window.location.reload();
     } catch (error) {
+      console.log(post);
       console.log(formData);
       console.log("자게 글 작성 에러남 : ", error);
     }
