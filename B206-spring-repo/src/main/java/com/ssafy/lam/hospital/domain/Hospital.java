@@ -57,6 +57,10 @@ public class Hospital {
     @Column(name = "hos_info_url")
     private String url;
 
+    public void approve() {
+        this.isApproved = true;
+    }
+
     @Builder
 
     public Hospital(Long hospitalSeq, User user, List<Coordinator> coordinators, String tel, String email, String address, String openTime, String closeTime, String intro, boolean isApproved, int bookmark, String url) {

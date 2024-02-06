@@ -27,9 +27,11 @@ public class MultipartConfig {
     @Bean
     public MultipartConfigElement multipartConfigElement() {
         String uploadDir = System.getProperty("user.dir");
-//        System.out.println("uploadDir = " + uploadDir);
+
+        System.out.println("uploadDir = " + uploadDir);
         MultipartConfigFactory factory = new MultipartConfigFactory();
-        String location = uploadDir + File.separator + "lamImages";
+        String location = uploadDir + File.separator + "images";
+//        String location = "/images";
         factory.setLocation(location); // 파일 저장 위치
         factory.setMaxRequestSize(DataSize.ofMegabytes(100L)); // 최대 파일 전송 크기
         factory.setMaxFileSize(DataSize.ofMegabytes(100L)); // 최대 파일 크기

@@ -6,6 +6,7 @@ import com.ssafy.lam.file.domain.UploadFileRepository;
 import com.ssafy.lam.file.dto.FileRequestDto;
 import com.ssafy.lam.file.dto.FileResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,45 +31,31 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     private final UploadFileRepository uploadFileRepository;
 
-//    @Value("${upload.path}")
-//    private String uploadPath;
     MultipartConfig multipartConfig = new MultipartConfig();
-    // 파일 저장 위치: c:\lamImages - MultipartConfig.java에서 설정
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     private Logger log = LoggerFactory.getLogger(UploadFileServiceImpl.class);
 
     @Override
-    public UploadFile store(MultipartFile file, String original, String after) {
-        FileRequestDto fileRequestDto = saveFile(file);
-        if (fileRequestDto != null) {
-            UploadFile uploadFile = UploadFile.builder()
-                    .originalPath(fileRequestDto.getOriginName()).build();
-            return uploadFileRepository.save(uploadFile);
-        }
-        return null;
+    public UploadFile store(MultipartFile file) {
+        UploadFile uploadFile = saveFile(file);
+        return uploadFileRepository.save(uploadFile);
     }
 
     @Override
-    public FileResponseDto getUploadFile(Long fileSeq){
+    public UploadFile getUploadFile(Long fileSeq){
         UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
         if(uploadFile == null){
             return null;
         }
 
-        System.out.println("uploadFile.getOriginalPath() = " + uploadFile.getOriginalPath());
-
-        return FileResponseDto.builder()
-                .fileSeq(uploadFile.getSeq())
-                .originalPath(uploadFile.getOriginalPath())
-                .build();
+        return uploadFile;
     }
 
 
     // 파일 업로드
-    @Override
-    public FileRequestDto saveFile(MultipartFile file) {
-        FileRequestDto fileRequestDto = null;
+    public UploadFile saveFile(MultipartFile file) {
+        UploadFile uploadFile = null;
         if (file != null) {
 //            String originName = file.getOriginalFilename();
             StringTokenizer st = new StringTokenizer(file.getOriginalFilename(), ".");
@@ -79,46 +67,20 @@ public class UploadFileServiceImpl implements UploadFileService {
                 // 파일 업로드
                 log.info("file path : {}", uploadPath);
                 String saveName = uploadPath + "/" + originName;
+//                String saveName = originName;
                 File localFile = new File(saveName);
                 file.transferTo(localFile);
-                fileRequestDto = FileRequestDto.builder()
-                        .originName(saveName)
+                uploadFile = UploadFile.builder()
+                        .name(originName)
+                        .type(file.getContentType())
                         .build();
                 log.info("파일 저장 완료: {}", localFile.getCanonicalPath());
             } catch (IllegalStateException | IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return fileRequestDto;
+        return uploadFile;
     }
 
 
-    @Override
-    public Resource loadFile(Long fileSeq) {
-        UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
-        if(uploadFile == null){
-            return null;
-        }
-
-        try{
-            String filename = uploadFile.getOriginalPath();
-            System.out.println("filename = " + filename);
-
-
-            Path filePath = Paths.get(filename);
-
-            Resource resource = new UrlResource(filePath.toUri());
-
-
-            System.out.println("resource.getFilename() = " + resource.getFilename());
-
-            if(resource.exists() || resource.isReadable()){
-                return resource;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return null;
-    }
 }
