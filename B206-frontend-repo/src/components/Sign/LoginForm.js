@@ -193,13 +193,11 @@ function LoginForm() {
 
   return (
     <div className={styles.loginform}>
-      <div className="로그인 창 시작">
-        <img src={logo} alt="로고사진" className={styles.logo}/>
-        <h1>룩앳미인</h1>
-      </div>
-
       <form onSubmit={formik.handleSubmit}>
-        <div className="radioButtons">
+      <div className="로그인 창 시작" id={styles.loginheader}>
+        <img src={logo} alt="로고사진" className={styles.logo}/>
+      </div >
+        <div className="radioButtons" id={styles.radio}>
           <div className="radioButton">
             <input
               id="admin"
@@ -242,7 +240,7 @@ function LoginForm() {
           </div>
         </div>
 
-        <div className="idInput">
+        <div className="idInput" id={styles.userinput}>
           <h3>아이디</h3>
           <input
             name="userId"
@@ -257,7 +255,7 @@ function LoginForm() {
             <div className="helperText">{formik.errors.id}</div>
           )}
         </div>
-        <div className="passwordInput">
+        <div className="passwordInput" id={styles.userinput}>
           <h3>비밀번호</h3>
           <input
             name="userPassword"
