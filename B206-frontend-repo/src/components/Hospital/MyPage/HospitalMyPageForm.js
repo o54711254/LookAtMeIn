@@ -1,10 +1,10 @@
 import { NavLink, Route, Routes } from "react-router-dom";
-import Doctor from "./Doctor";
+import Doctor from "./Doctor.js";
 import ReservationList from "./ReservationList.js";
 import ConsultingList from "./ConsultingList.js";
 import styles from "./HospitalMyPage.module.css";
 
-function HospitalMyPage() {
+function HospitalMyPageForm() {
   return (
     <div className={styles.mypageContainer}>
       <div className={styles.sidebar}>
@@ -51,4 +51,4 @@ function HospitalMyPage() {
     </div>
   );
 }
-export default HospitalMyPage;
+export default HospitalMyPageForm;
