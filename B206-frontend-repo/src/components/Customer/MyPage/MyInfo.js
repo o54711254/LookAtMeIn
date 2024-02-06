@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../../api/axiosApi";
-
+// axios 완료
 function MyInfo() {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();

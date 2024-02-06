@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosApi from "../../../api/axiosApi";
-
+// axios 완료
 function InfoUpdate() {
   const location = useLocation();
   const navigate = useNavigate();

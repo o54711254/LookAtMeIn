@@ -13,7 +13,7 @@ function ReviewUpdate() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(initialReviewDetail);
+    console.log("초기데이터", initialReviewDetail);
     setUpdateData(initialReviewDetail);
   }, [initialReviewDetail]);
 

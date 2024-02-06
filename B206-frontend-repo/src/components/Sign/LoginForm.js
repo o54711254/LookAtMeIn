@@ -44,7 +44,6 @@ function LoginForm() {
     validationSchema: validationSchema,
 
     onSubmit: async (values) => {
-      console.log(values);
       if (membertype === "customer") {
         //customer
         try {
@@ -72,20 +71,10 @@ function LoginForm() {
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
               const accessToken = res.data.tokenInfo.accessToken;
               dispatch(setToken({ accessToken: accessToken }));
-              // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-              //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-              //   position: toast.POSITION.TOP_CENTER,
-              //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-              //   autoClose: 2000,
-              // });
               window.alert("반갑습니다. 로그인이 완료되었습니다. ");
               // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
               navigate("/");
             } else {
-              // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-              //   position: toast.POSITION.TOP_CENTER,
-              //   autoClose: 2000,
-              // });
               window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
             }
           });
@@ -101,7 +90,7 @@ function LoginForm() {
               //res는 서버에서 받은 응답 객체
               if (res.status === 200) {
                 //로그인 성공
-                console.log(res.data);
+                console.log("로그인성공", res.data);
                 dispatch(
                   loginUser({
                     userSeq: res.data.userSeq, // 사용자 일련번호
@@ -116,20 +105,10 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.data.tokenInfo.accessToken;
                 dispatch(setToken({ accessToken: accessToken }));
-                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                //   position: toast.POSITION.TOP_CENTER,
-                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                //   autoClose: 2000,
-                // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 특정 경로로 이동
                 navigate("/hospital/mypage"); //병원 로그인 성공하면 병원 마이페이지로 이동//홈? 마페?
               } else {
-                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                //   position: toast.POSITION.TOP_CENTER,
-                //   autoClose: 2000,
-                // });
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
@@ -161,20 +140,10 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.data.tokenInfo.accessToken;
                 dispatch(setToken({ accessToken: accessToken }));
-                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                //   position: toast.POSITION.TOP_CENTER,
-                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                //   autoClose: 2000,
-                // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
                 navigate("/");
               } else {
-                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                //   position: toast.POSITION.TOP_CENTER,
-                //   autoClose: 2000,
-                // });
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
@@ -206,59 +175,22 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.headers.get("authorization");
                 dispatch(setToken({ accessToken: accessToken }));
-                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                //   position: toast.POSITION.TOP_CENTER,
-                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                //   autoClose: 2000,
-                // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 console.log(res.data);
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
                 navigate("/");
               } else {
-                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                //   position: toast.POSITION.TOP_CENTER,
-                //   autoClose: 2000,
-                // });
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
         } catch {}
       } else {
-        // toast.error(<h3>회원유형을 선택해주세요 !</h3>, {
-        //   position: toast.POSITION.TOP_CENTER,
-        //   autoClose: 1000,
-        //   hideProgressBar: true,
-        // });
         window.alert("회원유형을 선택해주세요 !");
       }
     },
   });
 
   return (
-    // <div className="loginForm">
-    //   <div>
-    //     <img src={logo} alt="로고사진" />
-    //     <h1>룩앳미인</h1>
-    //   </div>
-
-    //   <h3>아이디</h3>
-    //   <input type="text" placeholder="abcdef@ssafy.com" />
-    //   <h3>비밀번호</h3>
-    //   <input
-    //     type="password"
-    //     placeholder="영문, 숫자, 특수문자 조합 8~16자를 입력하세요"
-    //   />
-    //   <div className="loginButton">
-    //     <button type="submit">로그인</button>
-    //   </div>
-    //   <div>
-    //     <Link to="/Regist">회원가입 </Link> |
-    //     <Link to="/FindPassword"> 비밀번호 찾기</Link>
-    //   </div>
-    // </div>
-
     <div>
       <div className="로그인 창 시작">
         <img src={logo} alt="로고사진" />

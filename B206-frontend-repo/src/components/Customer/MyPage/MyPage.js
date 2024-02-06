@@ -61,6 +61,14 @@ function MyPage() {
             내 게시물
           </NavLink>
           <NavLink
+            to="reserve"
+            className={({ isActive }) =>
+              isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+            }
+          >
+            예약 상담 목록
+          </NavLink>
+          <NavLink
             to="consult"
             className={({ isActive }) =>
               isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
@@ -68,7 +76,6 @@ function MyPage() {
           >
             나의 이상향
           </NavLink>
-          {/* 이 부분에 추가적인 링크를 설정할 수 있습니다. */}
         </nav>
       </div>
       <div className={styles.content}>
