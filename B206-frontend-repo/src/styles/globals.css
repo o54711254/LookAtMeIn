@@ -50,6 +50,13 @@ table {
   .content {
 	flex-grow: 1;
   }
+
+  .con {
+	padding-left:15%;
+	padding-right:15%;
+	padding-top: 10%;
+  }
+  
   
 
   

@@ -24,7 +24,7 @@ import ChatApp from "./components/Chat/ChatApp";
 import Footer from "./components/Footer";
 import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
 
-// import "./styles/globals.css";
+import "./styles/globals.css";
 
 import FindPassword from "./components/Sign/FindPassword";
 import ReserveModal from "./components/Modal/DateTimePickerModal";
@@ -38,7 +38,6 @@ import Worldcup from "./components/WorldCup/Worldcup.js";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 import HospitalDetail from "./components/HospitalBoard/HospitalDetail.js";
 
-import Registu from "./pages/login.js"
 
 function App() {
   return (
@@ -47,7 +46,7 @@ function App() {
         <div className="content">
           <BrowserRouter>
             <Nav />
-            <div style={{ paddingTop: "70px" }}>
+            <div className="con">
               {/* <Nav /> */}
               {/* <Link to="mypage">마이페이지</Link> */}
               <div>
@@ -115,7 +114,6 @@ function App() {
 
                   <Route path="/face" element={<FacialAsy />} />
 
-                  <Route path="/registtest" element={<Registu/>}/>
 
                   {/* <Route path="/search/*" element={<SearchList />} /> */}
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}

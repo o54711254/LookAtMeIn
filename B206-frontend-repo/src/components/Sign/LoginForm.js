@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import * as yup from "yup";
-import logo from "../../assets/lab_logo.png";
+import logo from "../../assets/logo.PNG";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
@@ -12,6 +12,7 @@ import { loginUser } from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styles from "./LoginForm.module.css";
+import { style } from "@mui/system";
 
 // axios test 완료
 
@@ -191,9 +192,9 @@ function LoginForm() {
   });
 
   return (
-    <div>
+    <div className={styles.loginform}>
       <div className="로그인 창 시작">
-        <img src={logo} alt="로고사진" />
+        <img src={logo} alt="로고사진" className={styles.logo}/>
         <h1>룩앳미인</h1>
       </div>
 
@@ -249,6 +250,7 @@ function LoginForm() {
             value={formik.values.userId}
             onChange={formik.handleChange}
             type="text"
+            id = {styles.input}
             className={formik.touched.id && formik.errors.id ? "error" : ""}
           />
           {formik.touched.id && formik.errors.id && (
@@ -263,6 +265,7 @@ function LoginForm() {
             value={formik.values.userPassword}
             onChange={formik.handleChange}
             type="password"
+            id = {styles.input}
             className={
               formik.touched.userPassword && formik.errors.userPassword
                 ? "error"
@@ -274,10 +277,10 @@ function LoginForm() {
           )}
         </div>
 
-        <button type="submit">로그인</button>
-        <div>
-          <Link to="/regist">회원가입</Link>
-          <Link to="/findPassword"> 비밀번호 찾기</Link>
+        <button type="submit" className={styles.loginButton}>로그인</button>
+        <div className={styles.selectBox}>
+          <Link to="/regist" className={styles.select}>회원가입</Link>
+          <Link to="/findPassword" className={styles.select}> 비밀번호 찾기</Link>
         </div>
       </form>
     </div>
