@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as faceapi from "face-api.js";
+import styles from "./FacialAsymmetry.module.css";
 
 function FaceSymmetry() {
   const imageRef = useRef();
@@ -55,7 +56,7 @@ function FaceSymmetry() {
   };
 
   const calculateAsymmetry = (landmarks) => {
-    // 눈의 위치 차이 계산tlqkfdfs
+    // 눈의 위치 차이 계산
     const leftEye = landmarks.getLeftEye();
     const rightEye = landmarks.getRightEye();
     const eyeAsymmetry = Math.abs(leftEye[0].y - rightEye[0].y);
@@ -74,7 +75,14 @@ function FaceSymmetry() {
 
   return (
     <div>
-      <input type="file" onChange={handleImageUpload} />
+      <div className={styles.btn}>
+        <span>+</span>
+        <input
+          type="file"
+          onChange={handleImageUpload}
+          className={styles.FileInput_hidden_overlay}
+        />
+      </div>
       {image && (
         <>
           <img

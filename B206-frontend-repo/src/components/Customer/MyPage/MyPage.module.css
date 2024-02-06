@@ -2,7 +2,6 @@
 .mypageContainer {
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
   background-color: rgba(239, 232, 222, 0.2);
 }
 
@@ -10,9 +9,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
   width: 100%;
   height: 60px;
+  margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 50px;
@@ -23,6 +22,7 @@
 }
 .profileImage {
   background-image: url("../../../assets/logo.png");
+  background-color: #ffffff;
   background-position: center;
   background-size: cover;
   width: 50px;
@@ -43,7 +43,7 @@
 }
 
 .sidebar {
-  justify-content: space-around;
+  display: flex;
   background-color: #ffffff;
   margin-left: 20px;
   margin-right: 40px;
@@ -88,4 +88,9 @@
 .active {
   color: rgb(124, 124, 131); /* 활성 링크 색상 */
   font-weight: bold;
+}
+
+.contents{
+  display: flex;
+  width: 70%;
 }

@@ -41,19 +41,19 @@ function MyPage() {
           </div>
           <div className={styles.horizon}></div>
           <div className={styles.column}>
-            <img src={reserve} className={styles.icon} />
+            <img src={reserve} alt="icon" className={styles.icon} />
             <NavLink
               to="reserve"
               className={({ isActive }) =>
                 isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
             >
-              예약 상담 목록
+              상담 예약
             </NavLink>
           </div>
           <div className={styles.horizon}></div>
           <div className={styles.column}>
-            <img src={consult} className={styles.icon} />
+            <img src={consult} alt="icon" className={styles.icon} />
             <NavLink
               to="consult"
               className={({ isActive }) =>
@@ -65,7 +65,7 @@ function MyPage() {
           </div>
           <div className={styles.horizon}></div>
           <div className={styles.column}>
-            <img src={post} className={styles.icon} />
+            <img src={post} alt="icon" className={styles.icon} />
             <NavLink
               to="mypost"
               className={({ isActive }) =>
@@ -77,7 +77,7 @@ function MyPage() {
           </div>
           <div className={styles.horizon}></div>
           <div className={styles.column}>
-            <img src={beauty} className={styles.icon} />
+            <img src={beauty} alt="icon" className={styles.icon} />
             <NavLink
               to="mypost"
               className={({ isActive }) =>
@@ -90,7 +90,7 @@ function MyPage() {
           <div className={styles.horizon}></div>
         </nav>
       </div>
-      <div className={styles.content}>
+      <div className={styles.contents}>
         <Routes>
           <Route path="info" element={<MyInfo />} />
           <Route path="info/update" element={<InfoUpdate />} />

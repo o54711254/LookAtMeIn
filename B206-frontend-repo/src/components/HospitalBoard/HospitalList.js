@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
+import styles from "./HospitalList.module.css";
+import profile from "../../assets/gun.png";
 
 const HospitalList = () => {
   const [hospitalInfo, setHospitalInfo] = useState(null);
@@ -26,17 +28,28 @@ const HospitalList = () => {
   }, []);
 
   return (
-    <div>
-      <h3>여기는 병원 리스트 페이지</h3>
-      {hospitalInfo && (
-        <>
-          <Typography variant="h6">{hospitalInfo.hospitalInfo_name}</Typography>
-          <Typography>{hospitalInfo.hospitalInfo_introduce}</Typography>
-          <Typography>{hospitalInfo.hospitalInfo_addresss}</Typography>
-        </>
-      )}
-      {category && <Typography>{category.category_surgery}</Typography>}
-    </div>
+    <>
+      <div className={styles.boardhead}>
+        <div className={styles.headtitle}>
+          <p>병원 소개</p>
+        </div>
+        <div className={styles.headtext}>
+          <p>룩앳미인에서 다양한 병원 정보를 알아보세요</p>
+        </div>
+        <div>
+          {hospitalInfo && (
+            <>
+              <Typography variant="h6">
+                {hospitalInfo.hospitalInfo_name}
+              </Typography>
+              <Typography>{hospitalInfo.hospitalInfo_introduce}</Typography>
+              <Typography>{hospitalInfo.hospitalInfo_addresss}</Typography>
+            </>
+          )}
+          {category && <Typography>{category.category_surgery}</Typography>}
+        </div>
+      </div>
+    </>
   );
 };
 
