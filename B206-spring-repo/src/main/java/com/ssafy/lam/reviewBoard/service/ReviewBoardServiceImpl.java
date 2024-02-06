@@ -81,4 +81,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
             reviewBoardRepository.save(selectedReview);
         }
     }
+
+    @Override
+    public void reportReview(Long seq) {
+        Optional<ReviewBoard> reportedReview = reviewBoardRepository.findById(seq);
+        if(reportedReview.isPresent()) {
+            ReviewBoard selectedReview = reportedReview.get();
+            selectedReview.setComplain(true);
+            reviewBoardRepository.save(selectedReview);
+        }
+    }
+
 }

@@ -22,5 +22,9 @@ public interface ReviewBoardService {
 
     // 게시판 삭제(해당 글 비활성화)
     void deactivateReview(long seq);
+    
+    // 게시글 신고
+    void reportReview(Long seq);
+
 
 }
