@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import * as yup from "yup";
-import logo from "../../assets/logo.PNG";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
@@ -79,7 +79,9 @@ function LoginForm() {
               window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
             }
           });
-        } catch {}
+        } catch { 
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+      }
       } else if (membertype === "hospital") {
         //hospital
         try {
@@ -113,7 +115,9 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else if (membertype === "coordinator") {
         //coordinator
         try {
@@ -148,7 +152,9 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else if (membertype === "admin") {
         //admin
         try {
@@ -184,7 +190,9 @@ function LoginForm() {
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else {
         window.alert("회원유형을 선택해주세요 !");
       }

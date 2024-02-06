@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axiosAPi from "../../api/axiosApi";
-import logo from "../../assets/logo.PNG";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";

@@ -5,6 +5,7 @@ import UserRegistForm from "../../components/Sign/UserRegistForm";
 import HospitalRegistForm from "../../components/Sign/HospitalRegistForm";
 import styles from "./Regist.module.css"
 import { Button } from '@mui/material';
+import logo from "../../assets/logo.png"
 
 
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -18,6 +19,7 @@ function Regist() {
 
   return (
     <div className={styles.container}>
+      <img src={logo} alt="로고사진" className={styles.logo}/>
       <div className={styles.agreementSection}>
         <p>
           개인정보보호에 따라 룩앳미인에 회원가입 신청하시는 분께 수집하는
@@ -85,23 +87,20 @@ function Regist() {
           이용자는 개인정보의 수집 및 이용 동의를 거부할 권리가 있습니다.
           회원가입 시 수집하는 최소한의 개인정보, 즉, 필수 항목에 대한 수집 및
           이용 동의를 거부하실 경우, 회원가입이 어려울 수 있습니다.
+          <br/><br/>
         </p>
       <div className={styles.check}>
        <label>
+       개인정보 수집 및 이용 동의
          <input type="checkbox" checked={isAgreed} onChange={handleCheckbox} />
-         개인정보 수집 및 이용
        </label>
      </div>
       </div>
       <div className={styles.registBox}>
       {isAgreed && (
         <>
-           <Button component={Link} to="/regist/UserRegist" className={styles.registButton} style={{ backgroundColor: 'rgba(254, 202, 171, 0.38)'}}>
-        고객 회원가입
-      </Button>
-      <Button component={Link} to="/regist/HospitalRegist" className={styles.registButton} style={{ backgroundColor: 'rgba(254, 202, 171, 0.38)' }} >
-        병원 회원가입
-      </Button>
+          <Link to="/regist" className={styles.select}>고객 회원가입</Link>
+          <Link to="/regist" className={styles.select}>병원 회원가입</Link>
         </>
       )}
       </div>

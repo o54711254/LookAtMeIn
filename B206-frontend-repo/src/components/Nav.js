@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.PNG";
+import logo from "../assets/logo.png";
 import styles from "./Nav.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/user";
