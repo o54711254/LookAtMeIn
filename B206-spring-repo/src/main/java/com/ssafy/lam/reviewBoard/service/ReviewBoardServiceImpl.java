@@ -100,16 +100,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
                        reviewBoard.getReviewBoard_price()
                )).collect(Collectors.toList());
     }
-//            return reserveRepository.findByUserSeq(userSeq).stream()
-//                .map(reserve -> new ReserveResponseDto(
-//            reserve.getCustomer().getName(),
-//                        reserve.getHospital().getName(),
-//                        reserve.getReserveType(),
-//                                reserve.getYear(),
-//                                reserve.getMonth(),
-//                                reserve.getDay(),
-//                                reserve.getDayofweek(),
-//                                reserve.getTime()))
-//                                .collect(Collectors.toList());
-//}
+
+    @Override
+    public void reportReview(Long seq) {
+        Optional<ReviewBoard> reportedReview = reviewBoardRepository.findById(seq);
+        if(reportedReview.isPresent()) {
+            ReviewBoard selectedReview = reportedReview.get();
+            selectedReview.setComplain(true);
+            reviewBoardRepository.save(selectedReview);
+        }
+    }
+
 }
