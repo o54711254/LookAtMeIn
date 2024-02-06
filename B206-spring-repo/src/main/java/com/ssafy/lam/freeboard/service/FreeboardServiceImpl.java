@@ -41,7 +41,7 @@ public class FreeboardServiceImpl implements FreeboardService {
 
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         System.out.println("user = " + user);
-        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile(),null, null);
+        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
 
         log.info("글 등록 유저 정보: {}", user);
 
@@ -78,7 +78,7 @@ public class FreeboardServiceImpl implements FreeboardService {
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
                 .fileSeq(freeboard.getUploadFile().getSeq())
-                .fileUrl(uploadFile.getOriginalPath())
+                .fileUrl(uploadFile.getName())
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())

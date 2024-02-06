@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import FreeBoardDelete from "./FreeBoardDelete";
 import FreeBoardUpdate from "./FreeBoardUpdate";
 import Comment from "../Comment/Comment";
+import downloadApi from "../../api/downloadApi";
 
 function FreeBoardDetail() {
   const [post, setPost] = useState(null);
@@ -22,9 +23,10 @@ function FreeBoardDetail() {
         setPost(response.data);
         console.log(response.data);
         const response2 = await axiosApi.get(
-          `/api/file/${response.data.fileSeq}`
+          `/api/file/${response.data.fileSeq}`,
+          
         )
-          console.log("response2: ", response2.data);
+          console.log("response2: ", response2);
         setImg(response2.data);
         // setPost(response.data);
         console.log(response.data);

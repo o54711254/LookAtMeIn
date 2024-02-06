@@ -6,6 +6,7 @@ import com.ssafy.lam.file.domain.UploadFileRepository;
 import com.ssafy.lam.file.dto.FileRequestDto;
 import com.ssafy.lam.file.dto.FileResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.InputStreamResource;
@@ -39,14 +40,11 @@ public class UploadFileServiceImpl implements UploadFileService {
     private Logger log = LoggerFactory.getLogger(UploadFileServiceImpl.class);
 
     @Override
-    public UploadFile store(MultipartFile file, String original, String after) {
-        FileRequestDto fileRequestDto = saveFile(file);
-        if (fileRequestDto != null) {
-            UploadFile uploadFile = UploadFile.builder()
-                    .originalPath(fileRequestDto.getOriginName()).build();
-            return uploadFileRepository.save(uploadFile);
-        }
-        return null;
+    public UploadFile store(MultipartFile file) {
+        UploadFile uploadFile = saveFile(file);
+
+        return uploadFileRepository.save(uploadFile);
+
     }
 
     @Override
@@ -56,19 +54,18 @@ public class UploadFileServiceImpl implements UploadFileService {
             return null;
         }
 
-        System.out.println("uploadFile.getOriginalPath() = " + uploadFile.getOriginalPath());
 
         return FileResponseDto.builder()
                 .fileSeq(uploadFile.getSeq())
-                .originalPath(uploadFile.getOriginalPath())
+                .type(uploadFile.getCategory())
+                .name(uploadFile.getName())
                 .build();
     }
 
 
     // 파일 업로드
-    @Override
-    public FileRequestDto saveFile(MultipartFile file) {
-        FileRequestDto fileRequestDto = null;
+    public UploadFile saveFile(MultipartFile file) {
+        UploadFile uploadFile = null;
         if (file != null) {
 //            String originName = file.getOriginalFilename();
             StringTokenizer st = new StringTokenizer(file.getOriginalFilename(), ".");
@@ -83,45 +80,40 @@ public class UploadFileServiceImpl implements UploadFileService {
                 String saveName = originName;
                 File localFile = new File(saveName);
                 file.transferTo(localFile);
-                fileRequestDto = FileRequestDto.builder()
-                        .originName(saveName)
+                uploadFile = UploadFile.builder()
+                        .name(originName)
+                        .category(file.getContentType())
                         .build();
                 log.info("파일 저장 완료: {}", localFile.getCanonicalPath());
             } catch (IllegalStateException | IOException e) {
                 throw new RuntimeException(e);
             }
         }
-        return fileRequestDto;
+        return uploadFile;
     }
 
 
+
     @Override
-    public Resource loadFile(Long fileSeq) {
+    public File loadFile(Long fileSeq) {
         UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
         if(uploadFile == null){
             return null;
         }
 
-        Resource resource = null;
+        File file = null;
 
         try{
-            String filename = uploadFile.getOriginalPath();
-            System.out.println("filename = " + filename);
+            log.info("uploadPath:{}", uploadPath);
+            String filename = uploadFile.getName();
 
-//
-            Path filePath = Paths.get(filename);
-            System.out.println("filePath = " + filePath);
+            Path filePath = Paths.get(uploadPath,filename);
 
-
-            resource = new UrlResource(filePath.toUri());
-            System.out.println("resource.getFilename() = " + resource.getURI());
-
-            if(resource.exists() || resource.isReadable()){
-                return resource;
-            }
+            file = new File(filePath.toString());
+//            log.info("file path:{}", file.getAbsolutePath());
         }catch (Exception e){
             e.printStackTrace();
         }
-        return resource;
+        return file;
     }
 }

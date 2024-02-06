@@ -19,17 +19,11 @@ public class UploadFile {
     @Column(name = "category")
     private String category; // 이미지 카테고리
 
-    @Column(name = "original_path")
-    private String originalPath; // 파일 경로, 성헝 전 사진 경로
-
-    @Column(name = "after_path")
-    private String afterPath; // 성형 후 사진 경로
-
+    @Column(name="filename")
+    private String name;
     @Builder
-    public UploadFile(long seq, String category, String originalPath, String afterPath) {
-        this.seq = seq;
+    public UploadFile(String category, String name) {
         this.category = category;
-        this.originalPath = originalPath;
-        this.afterPath = afterPath;
+        this.name = name;
     }
 }

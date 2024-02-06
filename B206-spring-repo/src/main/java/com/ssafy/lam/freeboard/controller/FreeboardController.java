@@ -3,7 +3,6 @@ package com.ssafy.lam.freeboard.controller;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.exception.UnAuthorizedException;
 
-import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
@@ -13,8 +12,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -12,12 +12,15 @@ import org.springframework.core.io.Resource;
 @NoArgsConstructor
 public class FileResponseDto {
     private Long fileSeq;
-    @JsonProperty("originalPath")
-    private String originalPath;
+    private String name;
+    private String type;
+
 
     @Builder
-    public FileResponseDto(Long fileSeq, String originalPath) {
+
+    public FileResponseDto(Long fileSeq, String name, String type) {
         this.fileSeq = fileSeq;
-        this.originalPath = originalPath;
+        this.name = name;
+        this.type = type;
     }
 }
