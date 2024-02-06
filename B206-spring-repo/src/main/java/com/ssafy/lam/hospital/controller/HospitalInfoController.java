@@ -1,6 +1,7 @@
 package com.ssafy.lam.hospital.controller;
 
 import com.ssafy.lam.hospital.domain.Doctor;
+import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.HospitalDetailDto;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.hospital.service.HospitalService;
@@ -29,6 +30,19 @@ public class HospitalInfoController {
     @Autowired
     public HospitalInfoController(HospitalService hospitalService) {
         this.hospitalService = hospitalService;
+    }
+
+    @GetMapping("/list")
+    @Operation(summary = "고객이 병원 전체 목록을 조회한다.")
+    public ResponseEntity<List<HospitalDetailDto>> getAllHospital() {
+        List<Hospital> hospitalList = hospitalService.getAllHospitalInfo();
+        List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
+        for(Hospital h : hospitalList) {
+            hospitalDetailDtoList.add(new HospitalDetailDto(h.getHospitalSeq(), h.getUser().getName(), h.getTel(),
+                    h.getIntro(), h.getAddress(), h.getOpenTime(), h.getCloseTime(), h.getUrl(),
+                    h.getUser().getUserSeq()));
+        }
+        return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
 
     @GetMapping("/detail/{hospital_seq}")
