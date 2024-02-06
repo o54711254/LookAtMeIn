@@ -55,7 +55,7 @@ function FaceSymmetry() {
   };
 
   const calculateAsymmetry = (landmarks) => {
-    // 눈의 위치 차이 계산
+    // 눈의 위치 차이 계산tlqkf
     const leftEye = landmarks.getLeftEye();
     const rightEye = landmarks.getRightEye();
     const eyeAsymmetry = Math.abs(leftEye[0].y - rightEye[0].y);
