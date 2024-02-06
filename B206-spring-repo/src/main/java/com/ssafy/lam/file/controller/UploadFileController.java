@@ -44,13 +44,12 @@ public class UploadFileController {
     @Operation(summary = "사진 조회")
     public ResponseEntity<?> getFile(@PathVariable Long fileSeq) {
         try{
-            File file = fileService.loadFile(fileSeq);
-            String str = URLEncoder.encode(file.getAbsolutePath(), "UTF-8").replace("+", "%20");
+            Resource resource = fileService.loadFile(fileSeq);
+            String str = URLEncoder.encode(resource.getFilename(), "UTF-8").replace("+", "%20");
 
 //            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 //            System.out.println("resource = " + resource.getURI());
 
-            Resource resource = new UrlResource(file.toURI());
             log.info("resource = " + resource);
 
             return ResponseEntity.ok()

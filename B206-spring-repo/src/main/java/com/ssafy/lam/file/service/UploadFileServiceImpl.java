@@ -95,13 +95,13 @@ public class UploadFileServiceImpl implements UploadFileService {
 
 
     @Override
-    public File loadFile(Long fileSeq) {
+    public Resource loadFile(Long fileSeq) {
         UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
         if(uploadFile == null){
             return null;
         }
 
-        File file = null;
+        Resource resource = null;
 
         try{
             log.info("uploadPath:{}", uploadPath);
@@ -109,11 +109,11 @@ public class UploadFileServiceImpl implements UploadFileService {
 
             Path filePath = Paths.get(uploadPath,filename);
 
-            file = new File(filePath.toString());
+            resource = new UrlResource(filePath.toUri());
 //            log.info("file path:{}", file.getAbsolutePath());
         }catch (Exception e){
             e.printStackTrace();
         }
-        return file;
+        return resource;
     }
 }
