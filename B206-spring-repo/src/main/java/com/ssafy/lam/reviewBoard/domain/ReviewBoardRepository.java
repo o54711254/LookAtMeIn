@@ -14,4 +14,6 @@ public interface ReviewBoardRepository extends JpaRepository<ReviewBoard, Long> 
 
     @Query("SELECT new com.ssafy.lam.reviewBoard.dto.ReviewListDisplay(r.seq, u.name, r.title, r.cnt, r.regdate, r.score, r.doctor, r.region, r.surgery, r.hospital, r.price) FROM ReviewBoard r JOIN r.user u WHERE u.userSeq = :userSeq AND r.isdeleted = false")
     List<ReviewListDisplay> findAllByUserUserSeqAndIsdeletedFalse(Long userSeq);
+
+    List<ReviewBoard> findByComplainTrueAndIsdeletedFalse();
 }

@@ -15,5 +15,6 @@ public interface FreeboardRepository extends JpaRepository<Freeboard, Long> {
 
     List<Freeboard> findByUserUserSeqAndIsDeletedFalse(Long userSeq);
 
-    List<Freeboard> findByComplainTrue();
+    List<Freeboard> findByComplainTrueAndIsDeletedFalse();
+
 }

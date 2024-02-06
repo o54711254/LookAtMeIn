@@ -2,6 +2,9 @@ package com.ssafy.lam.admin.controller;
 
 import com.ssafy.lam.admin.service.AdminService;
 import com.ssafy.lam.freeboard.dto.FreeboardAdminDto;
+import com.ssafy.lam.hospital.dto.HospitalAdminDto;
+import com.ssafy.lam.reviewBoard.dto.ReviewBoardAdminDto;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,21 +20,36 @@ import java.util.stream.Collectors;
 public class AdminController {
     private final AdminService adminService;
 
-//    @GetMapping("/complainedFreeboards")
-//    public ResponseEntity<List<FreeboardAdminDto>> getComplainedFreeboards() {
-//        List<FreeboardAdminDto> complainedFreeboards = adminService.findComplainedFreeboards();
-//        return ResponseEntity.ok(complainedFreeboards);
-//    }
-    //신고된 자유 게시글 목록 조회
-    //return List<FreeBoard>
-    //boolean처리된것만
+    @GetMapping("/freeComplain")
+    @Operation(summary = "자유게시판에서 신고된 게시물 조회")
+    public ResponseEntity<List<FreeboardAdminDto>> getComplainedAndNotDeletedFreeboards() {
+        List<FreeboardAdminDto> freeboards = adminService.findComplainedAndNotDeletedFreeboards();
+        return ResponseEntity.ok(freeboards);
+    }
 
-    //신고된 후기 게시글 조회
-    //위에와마찬가지로
 
-    //등록병원목록
+    @GetMapping("/reviewComplain")
+    @Operation(summary = "리뷰게시판에서 신고된 게시물 조회")
+    public ResponseEntity<List<ReviewBoardAdminDto>> getComplainedAndNotDeletedReviewBoards() {
+        List<ReviewBoardAdminDto> reviewBoards = adminService.findComplainedAndNotDeletedReviewBoards();
+        return ResponseEntity.ok(reviewBoards);
+    }
 
     //미승인병원목록
+    @GetMapping("/unapproveHos")
+    @Operation(summary = "미승인 병원 목록 조회")
+    public ResponseEntity<List<HospitalAdminDto>> getUnapprovHos() {
+        List<HospitalAdminDto> hospitals = adminService.findUnapprovedHospitals();
+        return ResponseEntity.ok(hospitals);
+    }
+
+    //등록병원목록
+    @GetMapping("/approveHos")
+    @Operation(summary = "승인된 병원 목록")
+    public ResponseEntity<?> getApproveHos(){
+        List<HospitalAdminDto> hospitals = adminService.findUnapprovedHospitals();
+        return ResponseEntity.ok(hospitals);
+    }
 
     //병원반려
 }

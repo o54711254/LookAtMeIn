@@ -10,4 +10,8 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
     Optional<Hospital> findByUserUserSeq(Long userSeq);
 
     List<Hospital> findAllByUserUserSeq(Long userSeq);
+
+    List<Hospital> findByIsApprovedFalse();
+
+    List<Hospital>
 }
