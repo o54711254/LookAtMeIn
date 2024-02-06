@@ -4,6 +4,7 @@ import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.dto.CustomerDto;
 import com.ssafy.lam.customer.service.CustomerService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
+import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.freeboard.service.FreeboardService;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.HospitalDto;
@@ -74,7 +75,7 @@ public class MypageController {
     @GetMapping("/free/{userSeq}")
     @Operation(summary = "고객이 작성한 자유게시판 조회")
     public ResponseEntity<?> getFreeboard(@PathVariable long userSeq) {
-        List<Freeboard> boardList = freeboardService.getFreeboardByUserSeq(userSeq);
+        List<FreeboardResponseDto> boardList = freeboardService.getFreeboardByUserSeq(userSeq);
         return new ResponseEntity<>(boardList, HttpStatus.OK);
     }
 

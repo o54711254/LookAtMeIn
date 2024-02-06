@@ -1,17 +1,13 @@
 package com.ssafy.lam.freeboard.domain;
 
-import com.ssafy.lam.comment.domain.Comment;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import java.awt.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -28,20 +24,21 @@ public class Freeboard {
     @Column(name = "free_board_content")
     private String content;
 
-    @Column(name="free_board_cnt")
+    @Column(name = "free_board_cnt")
     private int cnt;
 
-    @Column(name="free_board_regdate")
-    private LocalDateTime registerDate;;
+    @Column(name = "free_board_regdate")
+    private LocalDateTime registerDate;
+    ;
 
-    @Column(name="free_board_complain")
+    @Column(name = "free_board_complain")
     private boolean complain;
 
-    @Column(name="free_board_isDeleted")
+    @Column(name = "free_board_isDeleted")
     private boolean isDeleted;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="upload_file_seq")
+    @JoinColumn(name = "upload_file_seq")
     private UploadFile uploadFile;
 
     public void setDeleted(boolean deleted) {
@@ -49,7 +46,7 @@ public class Freeboard {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="free_board_customer_seq")
+    @JoinColumn(name = "free_board_customer_seq")
     private User user;
 
 
