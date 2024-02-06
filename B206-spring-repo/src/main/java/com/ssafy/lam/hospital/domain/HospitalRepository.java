@@ -16,6 +16,8 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     List<Hospital> findByIsApprovedFalse();
 
+    List<Hospital> findByIsApprovedTrue();
+
     @Query(value = "select r from ReviewBoard r where r.hospital = (select u.name from User u where u.userSeq = (select h.user.userSeq from Hospital h where h.hospitalSeq = :hospitalSeq))")
     List<ReviewBoard> findReviewsByHospitalSeq(@Param("hospitalSeq") Long hospitalSeq);
 

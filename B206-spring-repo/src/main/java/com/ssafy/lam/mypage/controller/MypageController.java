@@ -92,4 +92,5 @@ public class MypageController {
         List<ReserveResponseDto> reserveList = reserveService.findByUserSeq(userSeq);
         return new ResponseEntity<>(reserveList, HttpStatus.OK);
     }
+    
 }

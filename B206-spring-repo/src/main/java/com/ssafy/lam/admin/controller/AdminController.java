@@ -7,9 +7,7 @@ import com.ssafy.lam.reviewBoard.dto.ReviewBoardAdminDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,8 +45,19 @@ public class AdminController {
     @GetMapping("/approveHos")
     @Operation(summary = "승인된 병원 목록")
     public ResponseEntity<?> getApproveHos(){
-        List<HospitalAdminDto> hospitals = adminService.findUnapprovedHospitals();
+        List<HospitalAdminDto> hospitals = adminService.findApprovedHospitals();
         return ResponseEntity.ok(hospitals);
+    }
+
+    @PostMapping("/approve-hospital/{hospitalSeq}")
+    @Operation(summary = "미승인 병원 클릭하면 승인으로 변경")
+    public ResponseEntity<?> approveHospital(@PathVariable Long hospitalSeq) {
+        boolean result = adminService.approveHospital(hospitalSeq);
+        if (result) {
+            return ResponseEntity.ok().body("병원 승인이 완료되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("병원 승인에 실패하였습니다.");
+        }
     }
 
     //병원반려

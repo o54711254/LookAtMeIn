@@ -19,4 +19,9 @@ public interface AdminService {
     List<ReviewBoardAdminDto> findComplainedAndNotDeletedReviewBoards();
 
     List<HospitalAdminDto> findUnapprovedHospitals();
+
+    List<HospitalAdminDto> findApprovedHospitals();
+
+    boolean approveHospital(Long hospitalSeq);
+
 }
