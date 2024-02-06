@@ -1,6 +1,7 @@
 package com.ssafy.lam.search.controller;
 
 import com.ssafy.lam.search.service.SearchService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/search")
+    @Operation(summary = "검색 : 제목,내용,부위,병원이름 등 넣으면 검색 (category는 freeboard,hospital 등 빈값으로 넣으면 전체)")
     public ResponseEntity<List<?>> search(
             @RequestParam String keyword,
             @RequestParam(required = false) String category) {
