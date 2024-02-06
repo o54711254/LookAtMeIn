@@ -7,6 +7,7 @@ import styles from "./MyPage.module.css";
 import ReservationList from "./ReservationList";
 import ConsultingList from "./ConsultingList";
 import InfoUpdate from "./InfoUpdate";
+import MyInfo from "./MyInfo";
 
 function MyPage() {
   return (
@@ -52,12 +53,12 @@ function MyPage() {
             상담내역
           </NavLink>
           <NavLink
-            to="update"
+            to="info"
             className={({ isActive }) =>
               isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
             }
           >
-            정보수정
+            내정보
           </NavLink>
         </nav>
       </div>
@@ -67,8 +68,8 @@ function MyPage() {
           <Route path="mypost/*" element={<MyPost />} />
           <Route path="reserve" element={<ReservationList />} />
           <Route path="consult" element={<ConsultingList />} />
-          <Route path="update" element={<InfoUpdate />} />
-          {/* 이 부분에 추가적인 라우트를 설정할 수 있습니다. */}
+          <Route path="info" element={<MyInfo />} />
+          <Route path="info/update" element={<InfoUpdate />} />
         </Routes>
       </div>
     </div>
