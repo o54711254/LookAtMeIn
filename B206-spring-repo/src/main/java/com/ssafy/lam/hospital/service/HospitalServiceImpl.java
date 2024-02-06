@@ -24,6 +24,7 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CategoryRepository categoryRepository;
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
