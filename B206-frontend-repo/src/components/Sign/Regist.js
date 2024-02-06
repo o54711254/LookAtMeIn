@@ -99,8 +99,8 @@ function Regist() {
       <div className={styles.registBox}>
       {isAgreed && (
         <>
-          <Link to="/regist" className={styles.select}>고객 회원가입</Link>
-          <Link to="/regist" className={styles.select}>병원 회원가입</Link>
+          <Link to="/regist/UserRegist" className={styles.select}>고객 회원가입</Link>
+          <Link to="/regist/HospitalRegist" className={styles.select}>병원 회원가입</Link>
         </>
       )}
       </div>

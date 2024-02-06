@@ -153,12 +153,12 @@ function UserRegistForm() {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <div className={styles.UserRegistForm}>
-        {/* <img src={logo}/> */}
+        <img src={logo} alt="로고" id={styles.logo}/>
         <form onSubmit={formik.handleSubmit}>
           <div className="inputText">
-            <h3>아이디</h3>
+            <h3 className={styles.text}>아이디</h3>
             <input
               type="text"
               placeholder="abcd1234"
@@ -182,7 +182,7 @@ function UserRegistForm() {
             )}
           </div>
           <div className={styles.inputText}>
-            <h3>비밀번호</h3>
+            <h3 className={styles.text}>비밀번호</h3>
             <input
               name="password"
               type="password"
@@ -199,7 +199,7 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>비밀번호 확인</h3>
+            <h3 className={styles.text}>비밀번호 확인</h3>
             <input
               type="password"
               name="confirmPassword"
@@ -214,7 +214,7 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>이름</h3>
+            <h3 className={styles.text}>이름</h3>
             <input
               type="text"
               placeholder="한글 이름"
@@ -231,7 +231,7 @@ function UserRegistForm() {
             )}
           </div>
           <FormControl component="fieldset">
-      <FormLabel component="legend"><h3>성별</h3></FormLabel>
+      <FormLabel component="legend"><h3 className={styles.text}>성별</h3></FormLabel>
       <RadioGroup
         row
         aria-label="gender"
@@ -274,7 +274,7 @@ function UserRegistForm() {
             )}
           </div> */}
           <div className="inputText">
-            <h3>생년월일</h3>
+            <h3 className={styles.text}>생년월일</h3>
             <input
               type="text"
               placeholder="YYYY.MM.DD"
@@ -291,7 +291,7 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>전화번호</h3>
+            <h3 className={styles.text}>전화번호</h3>
             <input
               type="text"
               placeholder="01000000000"
@@ -310,7 +310,7 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>주소</h3>
+            <h3 className={styles.text}>주소</h3>
             <input
               type="text"
               name="address"
@@ -333,7 +333,7 @@ function UserRegistForm() {
             </Modal>
           </div>
           <div className="inputText">
-            <h3>이메일</h3>
+            <h3 className={styles.text}>이메일</h3>
             <input
               type="text"
               placeholder="abcdef@ssafy.com"
@@ -354,7 +354,7 @@ function UserRegistForm() {
           </div>
         </form>
       </div>
-    </>
+      </div>
   );
 }
 export default UserRegistForm;
