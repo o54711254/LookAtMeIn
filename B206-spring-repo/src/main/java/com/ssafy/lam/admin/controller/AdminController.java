@@ -7,12 +7,9 @@ import com.ssafy.lam.reviewBoard.dto.ReviewBoardAdminDto;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -27,7 +24,6 @@ public class AdminController {
         return ResponseEntity.ok(freeboards);
     }
 
-
     @GetMapping("/reviewComplain")
     @Operation(summary = "리뷰게시판에서 신고된 게시물 조회")
     public ResponseEntity<List<ReviewBoardAdminDto>> getComplainedAndNotDeletedReviewBoards() {
@@ -35,7 +31,6 @@ public class AdminController {
         return ResponseEntity.ok(reviewBoards);
     }
 
-    //미승인병원목록
     @GetMapping("/unapproveHos")
     @Operation(summary = "미승인 병원 목록 조회")
     public ResponseEntity<List<HospitalAdminDto>> getUnapprovHos() {
@@ -43,13 +38,25 @@ public class AdminController {
         return ResponseEntity.ok(hospitals);
     }
 
-    //등록병원목록
     @GetMapping("/approveHos")
     @Operation(summary = "승인된 병원 목록")
-    public ResponseEntity<?> getApproveHos(){
-        List<HospitalAdminDto> hospitals = adminService.findUnapprovedHospitals();
+    public ResponseEntity<?> getApproveHos() {
+        List<HospitalAdminDto> hospitals = adminService.findApprovedHospitals();
         return ResponseEntity.ok(hospitals);
     }
 
+    @PatchMapping("/approveHos/{userSeq}")
+    @Operation(summary = "미승인 병원 클릭하면 승인으로 변경")
+    public ResponseEntity<?> updateApproveTrue(@PathVariable Long userSeq) {
+        boolean result = adminService.approveHospital(userSeq);
+        if (result) {
+            return ResponseEntity.ok().body("병원 승인이 완료되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("병원 승인에 실패하였습니다.");
+        }
+    }
+
     //병원반려
+
+
 }

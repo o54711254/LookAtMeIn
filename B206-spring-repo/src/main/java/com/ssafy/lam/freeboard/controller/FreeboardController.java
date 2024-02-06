@@ -3,6 +3,7 @@ package com.ssafy.lam.freeboard.controller;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.exception.UnAuthorizedException;
 
+import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +23,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FreeboardController {
     private final FreeboardService freeboardService;
+    private final UploadFileService uploadFileService;
+
 
 
     private Logger log = LoggerFactory.getLogger(FreeboardController.class);
@@ -33,7 +35,7 @@ public class FreeboardController {
     public ResponseEntity<Void> regist(@ModelAttribute FreeboardRequestDto freeBoardRequestDto) {
         log.info("글 등록 정보 : {}", freeBoardRequestDto);
         System.out.println(freeBoardRequestDto);
-        freeboardService.createFreeboard(freeBoardRequestDto);
+        Freeboard freeboard = freeboardService.createFreeboard(freeBoardRequestDto);
         return ResponseEntity.ok().build();
     }
 
@@ -62,8 +64,10 @@ public class FreeboardController {
     @Operation(summary = "자유게시판 글 상세보기")
     public ResponseEntity<?> detail(@PathVariable Long freeBoard_seq){
         FreeboardResponseDto freeboardResponseDto =  null ;
+
         try{
             freeboardResponseDto = freeboardService.getFreeboard(freeBoard_seq);
+//            uploadFileService.loadFile(freeboardResponseDto.getFileSeq());
 
             return ResponseEntity.ok().body(freeboardResponseDto);
         }catch(NoArticleExeption e){

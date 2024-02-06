@@ -7,6 +7,7 @@ import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.file.dto.FileResponseDto;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
@@ -40,7 +41,8 @@ public class FreeboardServiceImpl implements FreeboardService {
 
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         System.out.println("user = " + user);
-        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile(), null, null);
+        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
+
 
         log.info("글 등록 유저 정보: {}", user);
 
@@ -51,7 +53,6 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .title(freeboardRequestDto.getFreeBoard_title())
                 .content(freeboardRequestDto.getFreeBoard_content())
                 .build();
-
         return freeboardRepository.save(freeboard);
     }
 
@@ -63,10 +64,21 @@ public class FreeboardServiceImpl implements FreeboardService {
 
     @Override
     public FreeboardResponseDto getFreeboard(Long freeBoardSeq) {
+        // 상세조회하려는 게시글 가져오기
         Freeboard freeboard = freeboardRepository.findByfreeboardSeqAndIsDeletedFalse(freeBoardSeq).orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
+
+        // 게시글 작성자 정보 가져오기
         Customer customer = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+
+        UploadFile uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
+
+        String url = "http://localhost/api/file/" + uploadFile.getSeq();
+
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
+                .fileSeq(freeboard.getUploadFile().getSeq())
+                .fileUrl(url)
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())
@@ -75,6 +87,8 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .build();
 
 
+
+        // 현재 게시물에 달린 댓글 가져오기
         List<Comment> commentList = commentService.getAllComments(freeBoardSeq);
         List<CommentRequestDto> commentRequestDtoList = new ArrayList<>();
         for (Comment comment : commentList) {

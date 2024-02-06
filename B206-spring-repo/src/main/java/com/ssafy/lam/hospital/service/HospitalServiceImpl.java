@@ -1,9 +1,6 @@
 package com.ssafy.lam.hospital.service;
 
-import com.ssafy.lam.hospital.domain.Career;
-import com.ssafy.lam.hospital.domain.Doctor;
-import com.ssafy.lam.hospital.domain.Hospital;
-import com.ssafy.lam.hospital.domain.HospitalRepository;
+import com.ssafy.lam.hospital.domain.*;
 import com.ssafy.lam.hospital.dto.CategoryDto;
 import com.ssafy.lam.hospital.dto.HospitalDetailDto;
 import com.ssafy.lam.hospital.dto.HospitalDto;
@@ -27,6 +24,7 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CategoryRepository categoryRepository;
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
@@ -44,7 +42,6 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
 
         userService.createUser(user);
-
         Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
@@ -55,8 +52,19 @@ public class HospitalServiceImpl implements HospitalService {
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
+        hospital = hospitalRepository.save(hospital);
+        for (CategoryDto category : categoryDto) {
+            log.info("category : {}", category);
+            Category categoryEntity = Category.builder()
+                    .part(category.getPart())
+                    .hospital(hospital)
+                    .build();
 
-        return hospitalRepository.save(hospital);
+            categoryRepository.save(categoryEntity);
+
+        }
+
+        return hospital;
     }
 
     @Override

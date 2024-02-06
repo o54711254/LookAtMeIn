@@ -3,10 +3,12 @@ package com.ssafy.lam.admin.service;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
 import com.ssafy.lam.freeboard.dto.FreeboardAdminDto;
+import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.hospital.dto.HospitalAdminDto;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardAdminDto;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +72,28 @@ public class AdminServiceImpl implements AdminService {
                         .isApproved(hospital.isApproved())
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<HospitalAdminDto> findApprovedHospitals() {
+        return hospitalRepository.findByIsApprovedTrue().stream()
+                .map(hospital -> HospitalAdminDto.builder()
+                        .hospitalSeq(hospital.getHospitalSeq())
+                        .userSeq(hospital.getUser().getUserSeq())
+                        .hospitalInfo_id(hospital.getUser().getUserId())
+                        .hospitalInfo_name(hospital.getUser().getName())
+                        .isApproved(hospital.isApproved())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public boolean approveHospital(Long userSeq) {
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. ID: " + userSeq));
+        hospital.approve();
+        return true;
     }
 
 }
