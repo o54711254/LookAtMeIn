@@ -1,12 +1,7 @@
 package com.ssafy.lam.hospital.service;
 
-import com.ssafy.lam.hospital.domain.Career;
-import com.ssafy.lam.hospital.domain.Doctor;
-import com.ssafy.lam.hospital.domain.Hospital;
-import com.ssafy.lam.hospital.domain.HospitalRepository;
-import com.ssafy.lam.hospital.dto.CategoryDto;
-import com.ssafy.lam.hospital.dto.HospitalDetailDto;
-import com.ssafy.lam.hospital.dto.HospitalDto;
+import com.ssafy.lam.hospital.domain.*;
+import com.ssafy.lam.hospital.dto.*;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
@@ -27,6 +22,10 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final DoctorRepository doctorRepository;
+    private final CareerRepository careerRepository;
+    private final CategoryRepository categoryRepository;
+
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
@@ -108,8 +107,20 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public void createDoctor(Doctor doctor, List<CategoryDto> categoryDtoList, List<Career> careerList) {
-//        hospitalRepository.create(doctor);
+    public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList) {
+        Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
+        Doctor doctor = Doctor.builder().docInfoSeq(doctorDto.getDoc_info_seq()).docInfoName(doctorDto.getDoc_info_name())
+                .hospital(hospital).build();
+        doctorRepository.save(doctor);
+        for(CategoryDto c : categoryDtoList) {
+            Category category = Category.builder().part(c.getPart()).doctor(doctor).build();
+            categoryRepository.save(category);
+        }
+        for(CareerDto c : careerDtoList) {
+            Career career = Career.builder().careerStart(c.getCareer_start()).careerEnd(c.getCareer_end())
+                    .careerContent(c.getCareer_content()).doctor(doctor).build();
+            careerRepository.save(career);
+        }
     }
 
     @Override

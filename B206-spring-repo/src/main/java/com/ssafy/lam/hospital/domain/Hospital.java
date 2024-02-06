@@ -35,11 +35,6 @@ public class Hospital {
     @Column(name = "hos_info_email")
     private String email;
 
-    @OneToMany
-    @Column(name = "category_seq")
-    @JoinColumn(name = "category_seq")
-    List<Category> category;
-
     @Column(name = "hos_info_address")
     private String address;
 
@@ -63,12 +58,12 @@ public class Hospital {
 
 
     @Builder
-    public Hospital(Long hospitalSeq, User user, String tel, String email, List<Category> category, String address, String openTime, String closeTime, String intro, boolean isApproved, int bookmark, String url) {
+    public Hospital(Long hospitalSeq, User user, String tel, String email, String address, String openTime,
+                    String closeTime, String intro, boolean isApproved, int bookmark, String url) {
         this.hospitalSeq = hospitalSeq;
         this.user = user;
         this.tel = tel;
         this.email = email;
-        this.category = category;
         this.address = address;
         this.openTime = openTime;
         this.closeTime = closeTime;
