@@ -40,13 +40,15 @@
 }
 
 /* nav0과 nav2에 좌우 여백을 줘서 가운데 요소(nav1)와 일정 간격을 두도록 함 */
-.nav0 {
-  margin-right: auto; /* nav0를 왼쪽에 정렬 */
-}
 
+.nav0{
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
 .nav1 {
   /* 가운데에 위치하므로 여기에는 특별한 스타일이 필요 없음 */
-  margin-right: 100px;
+  margin-left: 80px;
 }
 
 .nav2 {

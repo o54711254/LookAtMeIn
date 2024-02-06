@@ -90,7 +90,7 @@ function MyPage() {
           <div className={styles.horizon}></div>
         </nav>
       </div>
-      <div className={styles.content}>
+      <div className={styles.contents}>
         <Routes>
           <Route path="info" element={<MyInfo />} />
           <Route path="info/update" element={<InfoUpdate />} />
