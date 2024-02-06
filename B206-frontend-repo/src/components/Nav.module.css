@@ -4,30 +4,28 @@
   align-items: center; /* 세로 중앙 정렬 */
   height: 70px; /* Navbar의 높이를 70px로 설정 */
   background-color: #fffaf4;
-  padding: 0 20px;
-  padding-left: 40px; /* 로고 쫌 더 오른쪽으로 옮기는 부분 */
   margin-bottom: 100px;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  
+
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
-span {
-  color: #df4a68;
-}
+
 .navBar a,
 .navBar div {
   /* 기존 스타일 */
-  transition: color 0.5s; /* 색상 변화 효과 */
-  font-size: 17px;
+  transition: color 0.3s; /* 색상 변화 효과 */
+}
+span {
+  color: #df4a68;
 }
 /* 마우스 호버 시 글자색 변경 */
 .navBar a:hover,
 .navBar div:hover {
   background-color: transparent; /* 호버 시 배경색 없음 */
-  color: rgb(219, 77, 101); /* 호버 시 기존 글자색 유지 */
+  color: inherit; /* 호버 시 기존 글자색 유지 */
 }
 
 /* 클릭 시 글자색 변경 */
@@ -45,13 +43,15 @@ span {
 }
 
 /* nav0과 nav2에 좌우 여백을 줘서 가운데 요소(nav1)와 일정 간격을 두도록 함 */
-.nav0 {
-  margin-right: auto; /* nav0를 왼쪽에 정렬 */
-}
 
+.nav0 {
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
 .nav1 {
   /* 가운데에 위치하므로 여기에는 특별한 스타일이 필요 없음 */
-  margin-right: 100px;
+  margin-left: 80px;
 }
 
 .nav2 {
@@ -68,10 +68,8 @@ span {
   position: absolute;
   top: 100%; /* .dropdown 바로 아래에 위치 */
   left: 0;
-  /* background-color: #f9f9f9; */
-
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   padding-top: 0.5em; /* 상단에 약간의 패딩을 추가하여 마우스 이벤트 간격 조절 */
 }
@@ -102,11 +100,9 @@ span {
   padding: 10px 15px; /* 패딩 */
   text-decoration: none; /* 링크 밑줄 제거 */
   font-weight: bold; /* 글씨 굵게 */
-
+  border-radius: 5px; /* 둥근 모서리 */
   transition: background-color 0.3s; /* 배경색 변화 효과 */
 }
 .menu:hover {
   background-color: #ddd; /* 마우스 오버 시 배경색 설정 */
 }
-
-/* Rectangle 58 */
