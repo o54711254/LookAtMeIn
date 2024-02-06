@@ -8,6 +8,7 @@ import logo from "../../assets/logo.PNG";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
 
 import styles from "./UserRegistForm.module.css"
 
@@ -229,7 +230,20 @@ function UserRegistForm() {
               <div className="helperText">{formik.errors.name}</div>
             )}
           </div>
-          <div className="inputText" id={styles.gender}>
+          <FormControl component="fieldset">
+      <FormLabel component="legend"><h3>성별</h3></FormLabel>
+      <RadioGroup
+        row
+        aria-label="gender"
+        name="gender"
+        value={formik.values.gender}
+        onChange={formik.handleChange}
+      >
+        <FormControlLabel value="남" control={<Radio />} label="남" />
+        <FormControlLabel value="여" control={<Radio />} label="여" />
+      </RadioGroup>
+    </FormControl>
+          {/* <div className="inputText" id={styles.gender}>
             <h3>성별</h3>
             <div>
               <label>
@@ -258,7 +272,7 @@ function UserRegistForm() {
             {formik.touched.gender && formik.errors.gender && (
               <div className="helperText">{formik.errors.gender}</div>
             )}
-          </div>
+          </div> */}
           <div className="inputText">
             <h3>생년월일</h3>
             <input
