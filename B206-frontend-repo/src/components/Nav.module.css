@@ -4,8 +4,6 @@
   align-items: center; /* 세로 중앙 정렬 */
   height: 70px; /* Navbar의 높이를 70px로 설정 */
   background-color: #fffaf4;
-  padding: 0 20px;
-  padding-left: 40px; /* 로고 쫌 더 오른쪽으로 옮기는 부분 */
   margin-bottom: 100px;
   position: fixed;
   width: 100%;

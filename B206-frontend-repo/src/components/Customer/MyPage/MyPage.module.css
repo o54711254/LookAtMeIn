@@ -23,6 +23,7 @@
 }
 .profileImage {
   background-image: url("../../../assets/logo.png");
+  background-color: #ffffff;
   background-position: center;
   background-size: cover;
   width: 50px;

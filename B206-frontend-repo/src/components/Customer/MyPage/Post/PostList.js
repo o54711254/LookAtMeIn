@@ -15,7 +15,7 @@ function PostList() {
       .catch((error) => {
         console.log("데이터를 가져오는데 실패했습니다.", error);
       });
-  });
+  }, []);
   return (
     <div>
       {postList.length > 0 ? (
