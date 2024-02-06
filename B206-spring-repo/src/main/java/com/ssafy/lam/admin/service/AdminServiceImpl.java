@@ -89,9 +89,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional
-    public boolean approveHospital(Long hospitalSeq) {
-        Hospital hospital = hospitalRepository.findById(hospitalSeq)
-                .orElseThrow(() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. ID: " + hospitalSeq));
+    public boolean approveHospital(Long userSeq) {
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. ID: " + userSeq));
         hospital.approve();
         return true;
     }

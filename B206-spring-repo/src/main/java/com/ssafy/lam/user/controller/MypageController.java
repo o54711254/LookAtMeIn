@@ -1,4 +1,4 @@
-package com.ssafy.lam.mypage.controller;
+package com.ssafy.lam.user.controller;
 
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.dto.CustomerDto;

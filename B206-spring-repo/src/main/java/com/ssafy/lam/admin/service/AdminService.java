@@ -22,6 +22,6 @@ public interface AdminService {
 
     List<HospitalAdminDto> findApprovedHospitals();
 
-    boolean approveHospital(Long hospitalSeq);
+    boolean approveHospital(Long userSeq);
 
 }

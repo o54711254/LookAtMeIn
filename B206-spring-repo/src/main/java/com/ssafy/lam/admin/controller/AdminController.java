@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -25,7 +24,6 @@ public class AdminController {
         return ResponseEntity.ok(freeboards);
     }
 
-
     @GetMapping("/reviewComplain")
     @Operation(summary = "리뷰게시판에서 신고된 게시물 조회")
     public ResponseEntity<List<ReviewBoardAdminDto>> getComplainedAndNotDeletedReviewBoards() {
@@ -33,7 +31,6 @@ public class AdminController {
         return ResponseEntity.ok(reviewBoards);
     }
 
-    //미승인병원목록
     @GetMapping("/unapproveHos")
     @Operation(summary = "미승인 병원 목록 조회")
     public ResponseEntity<List<HospitalAdminDto>> getUnapprovHos() {
@@ -41,18 +38,17 @@ public class AdminController {
         return ResponseEntity.ok(hospitals);
     }
 
-    //등록병원목록
     @GetMapping("/approveHos")
     @Operation(summary = "승인된 병원 목록")
-    public ResponseEntity<?> getApproveHos(){
+    public ResponseEntity<?> getApproveHos() {
         List<HospitalAdminDto> hospitals = adminService.findApprovedHospitals();
         return ResponseEntity.ok(hospitals);
     }
 
-    @PostMapping("/approve-hospital/{hospitalSeq}")
+    @PatchMapping("/approveHos/{userSeq}")
     @Operation(summary = "미승인 병원 클릭하면 승인으로 변경")
-    public ResponseEntity<?> approveHospital(@PathVariable Long hospitalSeq) {
-        boolean result = adminService.approveHospital(hospitalSeq);
+    public ResponseEntity<?> updateApproveTrue(@PathVariable Long userSeq) {
+        boolean result = adminService.approveHospital(userSeq);
         if (result) {
             return ResponseEntity.ok().body("병원 승인이 완료되었습니다.");
         } else {
@@ -61,4 +57,6 @@ public class AdminController {
     }
 
     //병원반려
+
+
 }
