@@ -1,27 +1,41 @@
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosApi from "../../../api/axiosApi";
-
+// axios 완료
 function InfoUpdate() {
   const location = useLocation();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const userData = location.state || user;
-  const [updateData, setUpdateData] = useState(userData);
+  const initialData = location.state || user;
+
+  const [updateData, setUpdateData] = useState({
+    userId: initialData.userId,
+    userPassword: "", // 보안을 위해 비밀번호는 초기화
+    customerName: initialData.customerName,
+    customerGender: initialData.customerGender,
+    customerPhoneNumber: initialData.customerPhoneNumber,
+    customerEmail: initialData.customerEmail,
+    customerAddress: initialData.customerAddress,
+  });
+
+  const handleInputChange = (e) => {
+    setUpdateData({
+      ...updateData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // 폼 제출 로직 처리
-    console.log("업데이트된 유저 ID:", updateData.userId);
-    console.log("업데이트된 유저 이름:", updateData.userName);
-    // 비밀번호는 콘솔에 출력하지 않음
     axiosApi
-      .put(`/api/user/update/${user.userSeq}`, updateData)
+      .put(`/api/mypage/user/${user.userSeq}`, updateData)
       .then((res) => {
         console.log(res.data);
+        navigate(`/mypage/info`);
       })
       .catch((error) => {
-        console.log("유저정보 수정 중 에러 발생", error);
+        console.error("유저 정보 수정 중 에러 발생", error);
       });
   };
 
@@ -32,27 +46,70 @@ function InfoUpdate() {
           <label htmlFor="userId">아이디:</label>
           <input
             id="userId"
+            name="userId"
             type="text"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            value={updateData.userId}
+            onChange={handleInputChange}
           />
         </div>
         <div>
-          <label htmlFor="userName">이름:</label>
+          <label htmlFor="userPassword">비밀번호:</label>
           <input
-            id="userName"
-            type="text"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">비밀번호:</label>
-          <input
-            id="password"
+            id="userPassword"
+            name="userPassword"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={updateData.userPassword}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customerName">이름:</label>
+          <input
+            id="customerName"
+            name="customerName"
+            type="text"
+            value={updateData.customerName}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customerGender">성별:</label>
+          <input
+            id="customerGender"
+            name="customerGender"
+            type="text"
+            value={updateData.customerGender}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customerPhoneNumber">전화번호:</label>
+          <input
+            id="customerPhoneNumber"
+            name="customerPhoneNumber"
+            type="text"
+            value={updateData.customerPhoneNumber}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customerEmail">이메일:</label>
+          <input
+            id="customerEmail"
+            name="customerEmail"
+            type="email"
+            value={updateData.customerEmail}
+            onChange={handleInputChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="customerAddress">주소:</label>
+          <input
+            id="customerAddress"
+            name="customerAddress"
+            type="text"
+            value={updateData.customerAddress}
+            onChange={handleInputChange}
           />
         </div>
         <button type="submit">정보 수정</button>

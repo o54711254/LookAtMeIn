@@ -12,6 +12,7 @@ import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.service.ReserveService;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
+import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
 import com.ssafy.lam.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -80,7 +81,7 @@ public class MypageController {
     @GetMapping("/review/{userSeq}")
     @Operation(summary = "고객이 작성한 리뷰게시판 조회")
     public ResponseEntity<?> getReviewBoard(@PathVariable long userSeq) {
-        List<ReviewBoard> reviewList = reviewBoardService.getReviewByUserSeq(userSeq);
+        List<ReviewListDisplay> reviewList = reviewBoardService.getReviewByUserSeq(userSeq);
         return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
 

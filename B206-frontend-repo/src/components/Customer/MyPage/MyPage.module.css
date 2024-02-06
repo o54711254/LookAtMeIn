@@ -1,6 +1,7 @@
 /* MyPage.module.css */
 .mypageContainer {
   display: flex;
+  padding-right: 50px;
   /* 다른 스타일 */
 }
 

@@ -3,15 +3,23 @@ package com.ssafy.lam.file.service;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.domain.UploadFileRepository;
-import com.ssafy.lam.file.dto.FileUploadDto;
+import com.ssafy.lam.file.dto.FileRequestDto;
+import com.ssafy.lam.file.dto.FileResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -31,19 +39,35 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     @Override
     public UploadFile store(MultipartFile file, String original, String after) {
-        FileUploadDto fileUploadDto = saveFile(file);
-        if (fileUploadDto != null) {
+        FileRequestDto fileRequestDto = saveFile(file);
+        if (fileRequestDto != null) {
             UploadFile uploadFile = UploadFile.builder()
-                    .originalPath(fileUploadDto.getOriginName()).build();
+                    .originalPath(fileRequestDto.getOriginName()).build();
             return uploadFileRepository.save(uploadFile);
         }
         return null;
     }
 
+    @Override
+    public FileResponseDto getUploadFile(Long fileSeq){
+        UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
+        if(uploadFile == null){
+            return null;
+        }
+
+        System.out.println("uploadFile.getOriginalPath() = " + uploadFile.getOriginalPath());
+
+        return FileResponseDto.builder()
+                .fileSeq(uploadFile.getSeq())
+                .originalPath(uploadFile.getOriginalPath())
+                .build();
+    }
+
+
     // 파일 업로드
     @Override
-    public FileUploadDto saveFile(MultipartFile file) {
-        FileUploadDto fileUploadDto = null;
+    public FileRequestDto saveFile(MultipartFile file) {
+        FileRequestDto fileRequestDto = null;
         if (file != null) {
 //            String originName = file.getOriginalFilename();
             StringTokenizer st = new StringTokenizer(file.getOriginalFilename(), ".");
@@ -57,7 +81,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                 String saveName = uploadPath + "/" + originName;
                 File localFile = new File(saveName);
                 file.transferTo(localFile);
-                fileUploadDto = FileUploadDto.builder()
+                fileRequestDto = FileRequestDto.builder()
                         .originName(saveName)
                         .build();
                 log.info("파일 저장 완료: {}", localFile.getCanonicalPath());
@@ -65,11 +89,36 @@ public class UploadFileServiceImpl implements UploadFileService {
                 throw new RuntimeException(e);
             }
         }
-        return fileUploadDto;
+        return fileRequestDto;
     }
 
-//    @Override
-//    public ImageDownloadDto downloadImage(ImageRequestDto imageRequestDto) {
-//        return null;
-//    }
+
+    @Override
+    public Resource loadFile(Long fileSeq) {
+        UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
+        if(uploadFile == null){
+            return null;
+        }
+
+        try{
+            String filename = uploadFile.getOriginalPath();
+            System.out.println("filename = " + filename);
+
+
+            Path filePath = Paths.get(filename);
+
+            Resource resource = new UrlResource(filePath.toUri());
+
+
+            System.out.println("resource.getFilename() = " + resource.getFilename());
+
+            if(resource.exists() || resource.isReadable()){
+                return resource;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

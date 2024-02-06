@@ -7,6 +7,7 @@ import { logoutUser } from "../redux/user";
 
 function Nav() {
   const user = useSelector((state) => state.user);
+  const userRoll = user.role;
   const isLogin = user.userSeq !== "";
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function Nav() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
+    console.log(user.role);
     const handleScroll = () => {
       if (window.scrollY > 100) {
         // 100px 이상 스크롤 되었을 때
@@ -103,7 +105,14 @@ function Nav() {
           ) : (
             <>
               <Link to="/requestboardlist">상담요청 게시판</Link>
-              <Link to="/mypage">마이페이지</Link>
+              {/* 조건부 렌더링을 사용하여 다른 마이페이지 링크를 표시 */}
+              {userRoll === "CUSTOMER" && <Link to="/mypage">마이페이지</Link>}
+              {userRoll === "HOSPITAL" && (
+                <Link to="/hospital-mypage">마이페이지</Link>
+              )}
+              {userRoll === "ADMIN" && (
+                <Link to="/admin-mypage">마이페이지</Link>
+              )}
               <div onClick={handleLogout} className={styles.cursor}>
                 로그아웃
               </div>

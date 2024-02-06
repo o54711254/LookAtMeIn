@@ -1,6 +1,7 @@
 package com.ssafy.lam.user.controller;
 
 
+import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.entity.TokenInfo;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.dto.UserDto;
@@ -48,12 +49,12 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{seq}")
-    @Operation(summary = "고객 번호에 해당하는 고객 정보를 수정한다.")
-    public ResponseEntity<User> updateCustomer(@PathVariable long seq, @RequestBody User updatedUser) {
-        User user = userService.updateUser(seq, updatedUser);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }
+//    @PutMapping("/update/{seq}")
+//    @Operation(summary = "고객 번호에 해당하는 고객 정보를 수정한다.")
+//    public ResponseEntity<User> updateCustomer(@PathVariable long seq, @RequestBody User updatedUser) {
+//        User user = userService.updateUser(seq, updatedUser);
+//        return new ResponseEntity<>(user, HttpStatus.OK);
+//    }
 
     @DeleteMapping("/delete/{seq}")
     @Operation(summary = "고객 번호에 해당하는 고객 정보를 삭제한다.")
@@ -78,6 +79,8 @@ public class UserController {
         }
 
         TokenInfo tokenInfo = userService.getLoginToken(user);
+
+
         UserTokenInfo userTokenInfo = UserTokenInfo.builder()
                 .userName(user.getName())
                 .userSeq(user.getUserSeq())
@@ -85,7 +88,6 @@ public class UserController {
                 .userId(user.getUserId())
                 .tokenInfo(tokenInfo)
                 .build();
-
         return ResponseEntity.ok(userTokenInfo);
 
 
