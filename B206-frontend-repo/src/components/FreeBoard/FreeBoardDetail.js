@@ -22,14 +22,16 @@ function FreeBoardDetail() {
 
         setPost(response.data);
         console.log(response.data);
-        const response2 = await axiosApi.get(
-          `/api/file/${response.data.fileSeq}`,
-          
+        const imgResponse = await axiosApi.get(
+          response.data.fileUrl
         )
-          console.log("response2: ", response2);
-        setImg(response2.data);
-        // setPost(response.data);
-        console.log(response.data);
+        console.log("response2: ", imgResponse);
+        const base64 = imgResponse.data.base64;
+        const type = imgResponse.data.type;
+
+        const data =`data:${type};base64,${base64}`;
+        setImg(data);
+
       } catch (error) {
         console.log("자유게시판 상세 불러오기 실패 : ", error);
       }

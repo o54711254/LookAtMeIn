@@ -14,8 +14,8 @@ public class UploadFile {
     @Column(name = "file_seq")
     private long seq; // 이미지 번호
 
-    @Column(name = "category")
-    private String category; // 이미지 카테고리
+    @Column(name = "type")
+    private String type; // 이미지 카테고리
 
     @Column(name="filename")
     private String name;
@@ -23,9 +23,9 @@ public class UploadFile {
 
     @Builder
 
-    public UploadFile(long seq, String category, String name) {
+    public UploadFile(long seq, String type, String name) {
         this.seq = seq;
-        this.category = category;
+        this.type = type;
         this.name = name;
     }
 }

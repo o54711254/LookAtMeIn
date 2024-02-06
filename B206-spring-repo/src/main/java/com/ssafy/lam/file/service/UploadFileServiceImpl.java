@@ -32,7 +32,6 @@ public class UploadFileServiceImpl implements UploadFileService {
     private final UploadFileRepository uploadFileRepository;
 
     MultipartConfig multipartConfig = new MultipartConfig();
-    // 파일 저장 위치: c:\lamImages - MultipartConfig.java에서 설정
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     private Logger log = LoggerFactory.getLogger(UploadFileServiceImpl.class);
@@ -73,7 +72,7 @@ public class UploadFileServiceImpl implements UploadFileService {
                 file.transferTo(localFile);
                 uploadFile = UploadFile.builder()
                         .name(originName)
-                        .category(file.getContentType())
+                        .type(file.getContentType())
                         .build();
                 log.info("파일 저장 완료: {}", localFile.getCanonicalPath());
             } catch (IllegalStateException | IOException e) {
