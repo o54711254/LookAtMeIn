@@ -12,7 +12,7 @@ function Comment({ comments, freeboardSeq }) {
       <CommentRegist freeboardSeq={freeboardSeq} />
       <ul>
         {comments.map((comment, index) => (
-          <CommentItem comment={comment} />
+          <CommentItem key={comment.comment_seq} comment={comment} />
         ))}
       </ul>
     </>

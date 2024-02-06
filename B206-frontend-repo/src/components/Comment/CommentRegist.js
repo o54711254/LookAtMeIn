@@ -27,6 +27,11 @@ function CommentRegist({ freeboardSeq }) {
       console.log("댓글 작성 에러남 : ", error);
     }
   };
+
+  const handleInputChange = (e) => {
+    setComment({ ...comment, comment_content: e.target.value });
+  };
+
   return (
     <div>
       {!isRegist ? (
@@ -34,6 +39,7 @@ function CommentRegist({ freeboardSeq }) {
           type="text"
           value={comment.comment_content}
           onFocus={startRegist}
+          onChange={handleInputChange}
         ></input>
       ) : (
         <>
