@@ -31,8 +31,6 @@ public class UploadFileServiceImpl implements UploadFileService {
 
     private final UploadFileRepository uploadFileRepository;
 
-//    @Value("${upload.path}")
-//    private String uploadPath;
     MultipartConfig multipartConfig = new MultipartConfig();
     // 파일 저장 위치: c:\lamImages - MultipartConfig.java에서 설정
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
@@ -42,24 +40,17 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     public UploadFile store(MultipartFile file) {
         UploadFile uploadFile = saveFile(file);
-
         return uploadFileRepository.save(uploadFile);
-
     }
 
     @Override
-    public FileResponseDto getUploadFile(Long fileSeq){
+    public UploadFile getUploadFile(Long fileSeq){
         UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
         if(uploadFile == null){
             return null;
         }
 
-
-        return FileResponseDto.builder()
-                .fileSeq(uploadFile.getSeq())
-                .type(uploadFile.getCategory())
-                .name(uploadFile.getName())
-                .build();
+        return uploadFile;
     }
 
 
@@ -76,8 +67,8 @@ public class UploadFileServiceImpl implements UploadFileService {
             try {
                 // 파일 업로드
                 log.info("file path : {}", uploadPath);
-//                String saveName = uploadPath + "/" + originName;
-                String saveName = originName;
+                String saveName = uploadPath + "/" + originName;
+//                String saveName = originName;
                 File localFile = new File(saveName);
                 file.transferTo(localFile);
                 uploadFile = UploadFile.builder()
@@ -93,27 +84,4 @@ public class UploadFileServiceImpl implements UploadFileService {
     }
 
 
-
-    @Override
-    public Resource loadFile(Long fileSeq) {
-        UploadFile uploadFile = uploadFileRepository.findById(fileSeq).orElse(null);
-        if(uploadFile == null){
-            return null;
-        }
-
-        Resource resource = null;
-
-        try{
-            log.info("uploadPath:{}", uploadPath);
-            String filename = uploadFile.getName();
-
-            Path filePath = Paths.get(uploadPath,filename);
-
-            resource = new UrlResource(filePath.toUri());
-//            log.info("file path:{}", file.getAbsolutePath());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return resource;
-    }
 }

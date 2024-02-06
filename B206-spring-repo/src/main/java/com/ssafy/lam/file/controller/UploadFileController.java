@@ -44,19 +44,8 @@ public class UploadFileController {
     @Operation(summary = "사진 조회")
     public ResponseEntity<?> getFile(@PathVariable Long fileSeq) {
         try{
-            Resource resource = fileService.loadFile(fileSeq);
-            String str = URLEncoder.encode(resource.getFilename(), "UTF-8").replace("+", "%20");
 
-//            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-//            System.out.println("resource = " + resource.getURI());
-
-            log.info("resource = " + resource);
-
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType("application/octet-stream"))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + str + "\"")
-                    .body(resource);
-
+            return null;
         }catch (Exception e){
             return ResponseEntity.notFound().build();
         }

@@ -1,13 +1,11 @@
 package com.ssafy.lam.file.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UploadFile {
 
@@ -21,8 +19,12 @@ public class UploadFile {
 
     @Column(name="filename")
     private String name;
+
+
     @Builder
-    public UploadFile(String category, String name) {
+
+    public UploadFile(long seq, String category, String name) {
+        this.seq = seq;
         this.category = category;
         this.name = name;
     }

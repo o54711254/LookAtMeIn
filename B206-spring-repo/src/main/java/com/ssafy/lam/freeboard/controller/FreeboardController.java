@@ -35,7 +35,7 @@ public class FreeboardController {
     public ResponseEntity<Void> regist(@ModelAttribute FreeboardRequestDto freeBoardRequestDto) {
         log.info("글 등록 정보 : {}", freeBoardRequestDto);
         System.out.println(freeBoardRequestDto);
-        freeboardService.createFreeboard(freeBoardRequestDto);
+        Freeboard freeboard = freeboardService.createFreeboard(freeBoardRequestDto);
         return ResponseEntity.ok().build();
     }
 
@@ -67,7 +67,7 @@ public class FreeboardController {
 
         try{
             freeboardResponseDto = freeboardService.getFreeboard(freeBoard_seq);
-            uploadFileService.loadFile(freeboardResponseDto.getFileSeq());
+//            uploadFileService.loadFile(freeboardResponseDto.getFileSeq());
 
             return ResponseEntity.ok().body(freeboardResponseDto);
         }catch(NoArticleExeption e){

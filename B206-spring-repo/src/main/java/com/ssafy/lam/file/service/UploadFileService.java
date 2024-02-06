@@ -10,12 +10,7 @@ import java.io.File;
 public interface UploadFileService {
 
     UploadFile store(MultipartFile multipartFile);
-    
 
+    UploadFile getUploadFile(Long fileSeq);
 
-    // 사진 다운로드
-//    ImageDownloadDto downloadImage(ImageRequestDto imageRequestDto);
-    FileResponseDto getUploadFile(Long fileSeq);
-
-    Resource loadFile(Long fileSeq);
 }
