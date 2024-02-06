@@ -9,7 +9,7 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-  
+
   /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
@@ -17,6 +17,9 @@
 .navBar div {
   /* 기존 스타일 */
   transition: color 0.3s; /* 색상 변화 효과 */
+}
+span {
+  color: #f7b1b1;
 }
 /* 마우스 호버 시 글자색 변경 */
 .navBar a:hover,
@@ -41,7 +44,7 @@
 
 /* nav0과 nav2에 좌우 여백을 줘서 가운데 요소(nav1)와 일정 간격을 두도록 함 */
 
-.nav0{
+.nav0 {
   margin-left: 10px;
   font-size: 18px;
   font-weight: 600;
@@ -65,8 +68,6 @@
   position: absolute;
   top: 100%; /* .dropdown 바로 아래에 위치 */
   left: 0;
-  /* background-color: #f9f9f9; */
-
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -79,13 +80,13 @@
 .dropdownContent a {
   display: block; /* 링크가 블록 요소처럼 동작하도록 함 */
   padding: 10px 15px; /* 상하 좌우 패딩을 적절히 조정 */
-  color: black; /* 텍스트 색상 설정, 필요에 따라 변경 가능 */
-  text-decoration: none; /* 링크 밑줄 제거 */
+  color: #2a2a2a; /* 텍스트 색상 설정, 필요에 따라 변경 가능 */
+  text-decoration: none; /* 링크 밑 줄 제거 */
 }
 
 .dropdownContent a:hover {
-  background-color: #ddd; /* 호버 상태일 때 배경색 변경 */
-  color: white; /* 호버 상태일 때 텍스트 색상 변경 */
+  /* background-color: rgba(254, 202, 171, 0.76); 호버 상태일 때 배경색 변경 */
+  color: rgb(219, 77, 101); /* 호버 상태일 때 텍스트 색상 변경 */
 }
 /* 숨겨진 요소의 기본 스타일 */
 .show {
