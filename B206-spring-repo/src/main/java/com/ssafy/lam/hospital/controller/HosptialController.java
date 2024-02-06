@@ -1,6 +1,7 @@
 package com.ssafy.lam.hospital.controller;
 
 
+import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.dto.HospitalDetailDto;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.hospital.dto.HospitalRequestDto;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/hospital")
@@ -32,6 +35,18 @@ public class HosptialController {
         hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
         return ResponseEntity.ok().build();
     }
+    
+    // 병원에서 의사 정보 추가
+//    @PostMapping("/{hospital_seq}/doctors/regist")
+//    @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사 추가")
 
+    
+    // 병원에서 의사 목록 조회
+    @GetMapping("/{hospital_seq}/doctors")
+    @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사 목록 조회")
+    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
+        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
+        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    }
 
 }

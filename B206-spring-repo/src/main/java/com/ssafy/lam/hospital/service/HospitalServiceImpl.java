@@ -1,5 +1,6 @@
 package com.ssafy.lam.hospital.service;
 
+import com.ssafy.lam.hospital.domain.Career;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
@@ -30,7 +31,7 @@ public class HospitalServiceImpl implements HospitalService {
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
     @Override
-    public com.ssafy.lam.hospital.domain.Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
+    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
         log.info("createHospital : {}", hospitalDto);
         List<String> roles = new ArrayList<>();
         roles.add("HOSPITAL");
@@ -44,7 +45,7 @@ public class HospitalServiceImpl implements HospitalService {
 
         userService.createUser(user);
 
-        com.ssafy.lam.hospital.domain.Hospital hospital = com.ssafy.lam.hospital.domain.Hospital.builder()
+        Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
                 .address(hospitalDto.getHospitalInfo_address())
@@ -60,9 +61,9 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public HospitalDto getHospital(long userId) {
-        Optional<com.ssafy.lam.hospital.domain.Hospital> hospitalOptional = hospitalRepository.findById(userId);
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
-            com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
+            Hospital hospital = hospitalOptional.get();
 
             HospitalDto dto = HospitalDto.builder()
                     .hospitalInfo_id(hospital.getUser().getUserId())
@@ -100,6 +101,16 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     ////////////
+
+    @Override
+    public List<Hospital> getAllHospitalInfo() {
+        return hospitalRepository.findAll();
+    }
+
+    @Override
+    public void createDoctor(Doctor doctor, List<CategoryDto> categoryDtoList, List<Career> careerList) {
+//        hospitalRepository.create(doctor);
+    }
 
     @Override
     public HospitalDetailDto getHospitalInfo(Long hospitalSeq) { // 고객이 병원 페이지 조회
