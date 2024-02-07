@@ -19,7 +19,6 @@ public class Career {
     private String careerContent;
 
     @ManyToOne
-    @JoinColumn(name = "doc_info_seq")
     private Doctor doctor;
 
     @Builder

@@ -67,7 +67,7 @@ public class HospitalInfoController {
 
     @GetMapping("/doctors/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
-    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
+    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable Long hospital_seq) {
         List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
