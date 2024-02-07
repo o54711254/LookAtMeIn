@@ -24,7 +24,7 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final NumberPath<Long> categorySeq = createNumber("categorySeq", Long.class);
 
-    public final QHospital hospital;
+    public final QDoctor doctor;
 
     public final StringPath part = createString("part");
 
@@ -46,7 +46,7 @@ public class QCategory extends EntityPathBase<Category> {
 
     public QCategory(Class<? extends Category> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.hospital = inits.isInitialized("hospital") ? new QHospital(forProperty("hospital"), inits.get("hospital")) : null;
+        this.doctor = inits.isInitialized("doctor") ? new QDoctor(forProperty("doctor"), inits.get("doctor")) : null;
     }
 
 }

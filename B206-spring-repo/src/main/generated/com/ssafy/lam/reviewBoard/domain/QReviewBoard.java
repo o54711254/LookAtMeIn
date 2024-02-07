@@ -30,11 +30,11 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public final StringPath doctor = createString("doctor");
 
+    public final NumberPath<Integer> expectedPrice = createNumber("expectedPrice", Integer.class);
+
     public final StringPath hospital = createString("hospital");
 
     public final BooleanPath isdeleted = createBoolean("isdeleted");
-
-    public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final NumberPath<Long> regdate = createNumber("regdate", Long.class);
 
@@ -45,6 +45,8 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 
     public final StringPath surgery = createString("surgery");
+
+    public final NumberPath<Integer> surgeryPrice = createNumber("surgeryPrice", Integer.class);
 
     public final StringPath title = createString("title");
 
