@@ -5,6 +5,7 @@ import StarResult from "./StarRating/StarResult";
 import ReviewDelete from "./ReviewDelete";
 import { Button } from "@mui/material";
 import styles from "./ReviewDetail.module.css"
+import profile from "../../assets/gun.png"
 
 // axios 완료 (reviewBoard_seq 넘어오는 것만 확인하면 될 듯)
 
@@ -35,24 +36,33 @@ function ReviewDetail() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        <div>작성자: {reviewDetail.customer_id}</div>
-        <div>{reviewDetail.reviewBoard_title}</div>
+      <div className={styles.header}>
+        <div className={styles.writer}><img src={profile} alt="aa" className={styles.profile}></img><p>{reviewDetail.customer_name}</p></div>
+        <div className={styles.title}><p>{reviewDetail.reviewBoard_title}</p></div>
       </div>
-      <div>
-        <div>내용: {reviewDetail.reviewBoard_content}</div>
-        <StarResult score={reviewDetail.reviewBoard_score} />
-        <div>의사: {reviewDetail.reviewBoard_doctor}</div>
-        <div>지역: {reviewDetail.reviewBoard_region}</div>
-        <div>시술 부위: {reviewDetail.reviewBoard_surgery}</div>
-        <div>병원: {reviewDetail.reviewBoard_hospital}</div>
-
+      <div className={styles.main}>
+        <div className={styles.mainleft}>
+          <div>시술 병원: {reviewDetail.reviewBoard_hospital}</div>
+          <div>시술 부위: {reviewDetail.reviewBoard_surgery}</div>
+          <div>담당 의사: {reviewDetail.reviewBoard_doctor}</div>
+          <div>지역: {reviewDetail.reviewBoard_region}</div>
+       </div>
+        <div className={styles.maincenter}>
+         <div className={styles.imgcon}><img src={profile} alt="글 사진"/></div>
+         <div>내용: {reviewDetail.reviewBoard_content}</div>
+         <div className={styles.star}><StarResult score={reviewDetail.reviewBoard_score}/></div>
+       </div>
+       <div className={styles.mainright}>
+          <p>의사 정보 들어갈 공간</p>
+        </div>
+      </div>
+      {/* <div>
         <Button onClick={onReviewUpdate}>수정</Button>
         <ReviewDelete
           reviewBoard_seq={reviewBoard_seq}
           onUpdated={onReviewDeleted}
-        ></ReviewDelete>
-      </div>
+          ></ReviewDelete>
+          </div> */}
     </div>
   );
 }
