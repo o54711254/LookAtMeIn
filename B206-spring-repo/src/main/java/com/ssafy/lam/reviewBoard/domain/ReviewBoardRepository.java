@@ -17,6 +17,5 @@ public interface ReviewBoardRepository extends JpaRepository<ReviewBoard, Long> 
 
     List<ReviewBoard> findByComplainTrueAndIsdeletedFalse();
     List<ReviewBoard> findByComplainTrue();
-//    double findAvgByHospital(long hospitalUserSeq);
-//    int countByHospital(long hospitalUserSeq);
+    public List<ReviewBoard> findByUserUserSeqAndIsdeletedFalse(Long userSeq);
 }

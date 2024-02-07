@@ -40,9 +40,9 @@ public class ReviewBoard {
     @Column(name = "review_board_score")
     private double score; // 별점
     @Column(name = "review_board_expected_price")
-    private int expectedPrice; // 가격
+    private int expectedPrice; // 견적 가격
     @Column(name = "review_board_surgery_price")
-    private int surgeryPrice; // 가격
+    private int surgeryPrice; // 시술 가격
     @Column(name = "review_board_regdate")
     private long regdate; // 작성시간
 

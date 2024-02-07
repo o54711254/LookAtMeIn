@@ -99,10 +99,11 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
                        reviewBoard.getReviewBoard_region(),
                        reviewBoard.getReviewBoard_surgery(),
                        reviewBoard.getReviewBoard_hospital(),
-                       reviewBoard.getReviewBoard_price()
+                       reviewBoard.getReviewBoard_expected_price(), 
+                       reviewBoard.getReviewBoard_surgery_price()
                )).collect(Collectors.toList());
     }
-
+ 
     @Override
     public void reportReview(Long seq) {
         Optional<ReviewBoard> reportedReview = reviewBoardRepository.findById(seq);
@@ -112,15 +113,4 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
             reviewBoardRepository.save(selectedReview);
         }
     }
-
-//    @Override
-//    public double avgScore(long seq) {
-//        return reviewBoardRepository.findAvgByHospital(seq);
-//    }
-//
-//    @Override
-//    public int cntReviews(long seq) {
-//        return reviewBoardRepository.countByHospital(seq);
-//    }
-
 }

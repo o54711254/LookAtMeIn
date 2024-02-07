@@ -53,20 +53,9 @@ public class HospitalServiceImpl implements HospitalService {
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
-        hospital = hospitalRepository.save(hospital);
-        for (CategoryDto category : categoryDto) {
-            log.info("category : {}", category);
-            Category categoryEntity = Category.builder()
-                    .part(category.getPart())
-                    .hospital(hospital)
-                    .build();
 
-            categoryRepository.save(categoryEntity);
-
-        }
-
-        return hospital;
-    }
+        return hospitalRepository.save(hospital);
+    }  
 
     @Override
     public HospitalDto getHospital(long userId) {

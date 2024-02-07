@@ -46,17 +46,23 @@ public class UploadFileController {
         return new ResponseEntity<>(imageFile.toString(), HttpStatus.OK);
     }
 
+
+    // 앞서서 상세조회할 때 반환한 URL로 이미지를 불러옴
     @GetMapping("/{fileSeq}")
     @Operation(summary = "사진 조회")
     public ResponseEntity<FileResponseDto> getFile(@PathVariable Long fileSeq) {
         try{
-            UploadFile uploadFile = fileService.getUploadFile(fileSeq);
-            Path path = Paths.get(uploadPath+"/"+uploadFile.getName());
+            UploadFile uploadFile = fileService.getUploadFile(fileSeq); // fileSeq에 맞는 파일을 DB에서 조회해서 반환
+            Path path = Paths.get(uploadPath+"/"+uploadFile.getName()); // 파일이 저장된 경로를 가져옴
 
+            // 파일을 base64로 인코딩해서 보내줘야함
+            // 프론트에서 파일을 볼 때는 항상 base64로 인코딩해서 보내야함
             String encodeFile = encodeFileToBase64(path);
             Resource resource = new UrlResource(path.toUri());
 
             if(resource.exists() || resource.isReadable()){
+
+                // 파일 정보를 담아서 반환4
                 FileResponseDto fileReponseDto = FileResponseDto.builder()
                         .fileSeq(uploadFile.getSeq())
                         .name(uploadFile.getName())
