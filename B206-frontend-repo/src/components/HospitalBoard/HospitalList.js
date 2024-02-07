@@ -8,7 +8,7 @@ const HospitalList = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/hospital/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
+      .get(`/api/hospital-info/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
       .then((response) => {
         if (response.data.message === "success") {
           setHospitalInfo(response.data.responseObj.hospitalinfo);
