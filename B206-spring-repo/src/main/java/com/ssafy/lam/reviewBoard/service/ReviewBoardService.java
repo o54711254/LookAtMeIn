@@ -31,4 +31,5 @@ public interface ReviewBoardService {
 //    int cntReviews(long seq);
 
 
+    List<ReviewBoard> getReviewByUserSeq(Long userSeq);
 }

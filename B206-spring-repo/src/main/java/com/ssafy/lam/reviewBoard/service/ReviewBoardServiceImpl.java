@@ -95,14 +95,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
         }
     }
 
-//    @Override
-//    public double avgScore(long seq) {
-//        return reviewBoardRepository.findAvgByHospital(seq);
-//    }
-//
-//    @Override
-//    public int cntReviews(long seq) {
-//        return reviewBoardRepository.countByHospital(seq);
-//    }
-
+    public List<ReviewBoard> getReviewByUserSeq(Long userSeq) {
+        List<ReviewBoard> reviewBoards = reviewBoardRepository.findByUserUserSeqAndIsdeletedFalse(userSeq);
+        return reviewBoards;
+    }
 }

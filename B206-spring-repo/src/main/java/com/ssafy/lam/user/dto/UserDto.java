@@ -6,9 +6,13 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 public class UserDto {
+
+    // 공통
     private String userId;
     private String userPassword;
     private String userName;
+
+
 
     @Builder
     public UserDto(String userId, String userPassword, String userName) {

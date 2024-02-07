@@ -15,7 +15,6 @@ public class Customer{
 
     @Id
     @GeneratedValue
-    @Column(name="customer_seq")
     private Long customerSeq;
 
     @OneToOne

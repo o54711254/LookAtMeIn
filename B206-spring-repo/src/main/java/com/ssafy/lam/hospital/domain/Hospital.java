@@ -56,12 +56,12 @@ public class Hospital {
     @Column(name = "hos_info_url")
     private String url;
 
-
     @Builder
     public Hospital(Long hospitalSeq, User user, String tel, String email, String address, String openTime,
                     String closeTime, String intro, boolean isApproved, int bookmark, String url) {
         this.hospitalSeq = hospitalSeq;
         this.user = user;
+        this.coordinators = coordinators;
         this.tel = tel;
         this.email = email;
         this.address = address;
@@ -72,5 +72,4 @@ public class Hospital {
         this.bookmark = bookmark;
         this.url = url;
     }
-
 }

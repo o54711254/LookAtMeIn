@@ -13,22 +13,22 @@ import lombok.NoArgsConstructor;
 @Table(name = "coord_info")
 public class Coordinator {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long coordInfoSeq;
+    @GeneratedValue
+    @Column(name="coord_info_seq")
+    private Long coordSeq;
 
-    private String coordInfoName;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_seq")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hos_info_seq")
     private Hospital hospital;
 
     @Builder
-    public Coordinator(String coordInfoName, User user, Hospital hospital) {
-        this.coordInfoName = coordInfoName;
+
+    public Coordinator(Long coordSeq, User user, Hospital hospital) {
+        this.coordSeq = coordSeq;
         this.user = user;
         this.hospital = hospital;
     }

@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @ToString
+@NoArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

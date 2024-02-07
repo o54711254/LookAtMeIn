@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 public class ReviewDisplay {
 
-    private long reviewBoard_seq; // 게시글 번호
+    private Long reviewBoard_seq; // 리뷰 게시판 번호
     private String reviewBoard_title; // 제목
     private String reviewBoard_content; // 내용
     private double reviewBoard_score; // 별점

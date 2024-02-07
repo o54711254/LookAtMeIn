@@ -2,11 +2,8 @@ package com.ssafy.lam.customer.controller;
 
 
 import com.ssafy.lam.customer.dto.CustomerDto;
-import com.ssafy.lam.customer.dto.CustomerTokenInfo;
 import com.ssafy.lam.customer.service.CustomerService;
 import com.ssafy.lam.customer.domain.Customer;
-import com.ssafy.lam.entity.TokenInfo;
-import com.ssafy.lam.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,44 +32,15 @@ public class CustomerController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/login")
-    @Operation(summary = "고객 로그인")
-    public ResponseEntity<CustomerTokenInfo> login(@RequestBody CustomerDto customerDto) {
-        log.info("로그인 정보 : {}", customerDto);
-        User user = User.builder()
-                .userId(customerDto.getUserId())
-                .name(customerDto.getCustomerName())
-                .password(customerDto.getUserPassword())
-                .build();
 
-        log.info("로그인 User 정보: {}", user);
-
-        Customer customer1 = customerService.findByCustomerId(user.getUserId());
-
-        if(customer1 == null){
-//            return ResponseEntity.notFound().build();
-            return null;
-        }
-
-        if(!customer1.getUser().getPassword().equals(user.getPassword())){
-//            return ResponseEntity.notFound().build();
-            return null;
-        }
-        TokenInfo tokenInfo = customerService.getLoginToken(user);
-
-        CustomerTokenInfo customerTokenInfo = CustomerTokenInfo.builder()
-                .userId(customer1.getUser().getUserId())
-                .username(customer1.getUser().getUsername())
-                .tokenInfo(tokenInfo)
-                .build();
-
-        return ResponseEntity.ok(customerTokenInfo);
-
-
-
-
-
+    @PutMapping("/mypage/modify/{userSeq}")
+    @Operation(summary = "고객 정보 수정")
+    public ResponseEntity<Void> modify(@PathVariable Long userSeq, @RequestBody CustomerDto customerDto) {
+        log.info("수정 정보 : {}", customerDto);
+        Customer customer = customerService.updateCustomer(userSeq, customerDto);
+        return ResponseEntity.ok().build();
     }
+
 
 
 }
