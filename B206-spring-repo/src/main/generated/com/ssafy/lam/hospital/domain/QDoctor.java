@@ -22,8 +22,6 @@ public class QDoctor extends EntityPathBase<Doctor> {
 
     public static final QDoctor doctor = new QDoctor("doctor");
 
-    public final ListPath<Career, QCareer> careers = this.<Career, QCareer>createList("careers", Career.class, QCareer.class, PathInits.DIRECT2);
-
     public final StringPath docInfoName = createString("docInfoName");
 
     public final NumberPath<Long> docInfoSeq = createNumber("docInfoSeq", Long.class);
