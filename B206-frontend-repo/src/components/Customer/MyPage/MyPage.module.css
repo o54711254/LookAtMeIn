@@ -10,7 +10,7 @@
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
-  height: 60px;
+  height: 80px;
   margin-top: 20px;
   margin-left: 20px;
   margin-right: 20px;
@@ -52,6 +52,7 @@
   border: 1px solid rgba(254, 202, 171, 0.76);
   border-radius: 30px;
   width: 15%;
+  height: 580px;
 }
 
 .navigation {
@@ -61,8 +62,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .icon {
@@ -75,7 +76,7 @@
 .navLink {
   /* 스타일 */
   text-align: left;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 550;
   display: block;
   color: black; /* 기본 링크 색상 */
