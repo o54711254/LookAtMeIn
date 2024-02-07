@@ -1,11 +1,14 @@
 package com.ssafy.lam.reviewBoard.domain;
 
+import com.ssafy.lam.tag.domain.ReviewHashtag;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter

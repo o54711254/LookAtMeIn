@@ -52,7 +52,6 @@ public class SearchService {
                 .fetch();
     }
 
-
     private List<ReviewBoard> searchInReviewBoard(String keyword) {
         QReviewBoard reviewBoard = QReviewBoard.reviewBoard;
         return queryFactory.selectFrom(reviewBoard)

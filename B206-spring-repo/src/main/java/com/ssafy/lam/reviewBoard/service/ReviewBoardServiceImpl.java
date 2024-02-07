@@ -5,8 +5,11 @@ import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
+import com.ssafy.lam.tag.domain.ReviewHashtagRepository;
+import com.ssafy.lam.tag.service.ReviewHashtagService;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,6 +22,7 @@ import java.util.stream.Collectors;
 public class ReviewBoardServiceImpl implements ReviewBoardService{
 
     private final ReviewBoardRepository reviewBoardRepository;
+    private final ReviewHashtagService reviewHashtagService;
 
     @Override
     public List<ReviewBoard> getAllReviews() {
@@ -37,25 +41,53 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
         return reviewBoardRepository.findById(seq).orElse(null);
     }
 
-    @Override
-    public ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister) {
-        User user = User.builder().name(reviewBoardRegister.getUsername()).userSeq(reviewBoardRegister.getUser_seq()).build();
-        LocalDate now = LocalDate.now();
-        long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
-        ReviewBoard reviewBoard = ReviewBoard.builder()
-                .title(reviewBoardRegister.getReviewBoard_title())
-                .content(reviewBoardRegister.getReviewBoard_content())
-                .hospital(reviewBoardRegister.getReviewBoard_hospital())
-                .doctor(reviewBoardRegister.getReviewBoard_doctor())
-                .surgery(reviewBoardRegister.getReviewBoard_surgery())
-                .region(reviewBoardRegister.getReviewBoard_region())
-                .score(reviewBoardRegister.getReviewBoard_score())
-                .user(user)
-                .price(reviewBoardRegister.getReviewBoard_price())
-                .regdate(date)
-                .build();
-        return reviewBoardRepository.save(reviewBoard);
+//    @Override
+//    public ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister) {
+//        User user = User.builder().name(reviewBoardRegister.getUsername()).userSeq(reviewBoardRegister.getUser_seq()).build();
+//        LocalDate now = LocalDate.now();
+//        long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
+//        ReviewBoard reviewBoard = ReviewBoard.builder()
+//                .title(reviewBoardRegister.getReviewBoard_title())
+//                .content(reviewBoardRegister.getReviewBoard_content())
+//                .hospital(reviewBoardRegister.getReviewBoard_hospital())
+//                .doctor(reviewBoardRegister.getReviewBoard_doctor())
+//                .surgery(reviewBoardRegister.getReviewBoard_surgery())
+//                .region(reviewBoardRegister.getReviewBoard_region())
+//                .score(reviewBoardRegister.getReviewBoard_score())
+//                .user(user)
+//                .price(reviewBoardRegister.getReviewBoard_price())
+//                .regdate(date)
+//                .build();
+//        return reviewBoardRepository.save(reviewBoard);
+//    }
+public ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister) {
+    User user = User.builder().name(reviewBoardRegister.getUsername()).userSeq(reviewBoardRegister.getUser_seq()).build();
+    LocalDate now = LocalDate.now();
+    long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
+
+    ReviewBoard reviewBoard = ReviewBoard.builder()
+            .title(reviewBoardRegister.getReviewBoard_title())
+            .content(reviewBoardRegister.getReviewBoard_content())
+            .hospital(reviewBoardRegister.getReviewBoard_hospital())
+            .doctor(reviewBoardRegister.getReviewBoard_doctor())
+            .surgery(reviewBoardRegister.getReviewBoard_surgery())
+            .region(reviewBoardRegister.getReviewBoard_region())
+            .score(reviewBoardRegister.getReviewBoard_score())
+            .price(reviewBoardRegister.getReviewBoard_price())
+            .regdate(date)
+            .user(user)
+            .build();
+
+    ReviewBoard savedReviewBoard = reviewBoardRepository.save(reviewBoard);
+
+    // 해시태그 처리
+    if (reviewBoardRegister.getHashtags() != null && !reviewBoardRegister.getHashtags().isEmpty()) {
+        reviewHashtagService.saveHashtag(savedReviewBoard, reviewBoardRegister.getHashtags());
     }
+
+    return savedReviewBoard;
+}
+
 
     @Override
     public void updateReview(ReviewBoardUpdate reviewBoardUpdate) {
