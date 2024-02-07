@@ -10,8 +10,8 @@ version = '0.0.1-SNAPSHOT'
 
 sonarqube {
     properties {
-        property "sonar.host.url", "http://158.180.88.174:9000"
-        property "sonar.login", "sqp_b990d8c89aaa36b644e892fb77595bfc61f417fb"
+        property "sonar.host.url", "http://152.67.220.157:9000/"
+        property "sonar.login", "squ_4a8bb8f119f3e6f90bdbe6ae9522e6499a90a770"
         property "sonar.sources", "src/main/java"
         property "sonar.tests", "src/test/java"
         property "sonar.language", "java"

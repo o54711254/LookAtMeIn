@@ -16,4 +16,6 @@ public interface ReviewBoardRepository extends JpaRepository<ReviewBoard, Long> 
     List<ReviewListDisplay> findAllByUserUserSeqAndIsdeletedFalse(Long userSeq);
 
     List<ReviewBoard> findByComplainTrueAndIsdeletedFalse();
+    List<ReviewBoard> findByComplainTrue();
+    public List<ReviewBoard> findByUserUserSeqAndIsdeletedFalse(Long userSeq);
 }

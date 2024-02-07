@@ -1,9 +1,12 @@
 package com.ssafy.lam.hospital.domain;
 
+import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
