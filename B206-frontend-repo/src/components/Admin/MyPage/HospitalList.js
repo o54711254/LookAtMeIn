@@ -7,7 +7,7 @@ function HospitalList() {
 
   useEffect(() => {
     const listURl =
-      listType === "all" ? `/admin/hoslist` : `/admin/hoslist/reject`;
+      listType === "all" ? `/api/admin/approveHost` : `/api/admin/unapproveHos`;
 
     axiosApi
       .get(listURl)
