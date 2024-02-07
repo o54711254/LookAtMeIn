@@ -51,7 +51,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
                 .region(reviewBoardRegister.getReviewBoard_region())
                 .score(reviewBoardRegister.getReviewBoard_score())
                 .user(user)
-                .price(reviewBoardRegister.getReviewBoard_price())
+                .expectedPrice(reviewBoardRegister.getReviewBoard_expected_price())
+                .surgeryPrice(reviewBoardRegister.getReviewBoard_surgery_price())
                 .regdate(date)
                 .build();
         return reviewBoardRepository.save(reviewBoard);
@@ -68,7 +69,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
             reviewBoard.setSurgery(reviewBoardUpdate.getReviewBoard_surgery());
             reviewBoard.setRegion(reviewBoardUpdate.getReviewBoard_region());
             reviewBoard.setScore(reviewBoardUpdate.getReviewBoard_score());
-            reviewBoard.setPrice(reviewBoardUpdate.getReviewBoard_price());
+            reviewBoard.setExpectedPrice(reviewBoardUpdate.getReviewBoard_expected_price());
+            reviewBoard.setSurgeryPrice(reviewBoardUpdate.getReviewBoard_surgery_price());
             reviewBoardRepository.save(reviewBoard);
         }
     }
@@ -110,5 +112,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
             reviewBoardRepository.save(selectedReview);
         }
     }
+
+//    @Override
+//    public double avgScore(long seq) {
+//        return reviewBoardRepository.findAvgByHospital(seq);
+//    }
+//
+//    @Override
+//    public int cntReviews(long seq) {
+//        return reviewBoardRepository.countByHospital(seq);
+//    }
 
 }

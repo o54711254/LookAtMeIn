@@ -60,7 +60,7 @@ public class HospitalInfoController {
         for(ReviewBoard r : reviews) {
             reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
                     r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-                    r.getPrice()));
+                    r.getExpectedPrice(), r.getSurgeryPrice()));
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
