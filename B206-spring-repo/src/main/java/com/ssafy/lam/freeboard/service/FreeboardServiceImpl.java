@@ -41,7 +41,8 @@ public class FreeboardServiceImpl implements FreeboardService {
 
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         System.out.println("user = " + user);
-        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile(), null, null);
+        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
+
 
         log.info("글 등록 유저 정보: {}", user);
 
@@ -52,7 +53,6 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .title(freeboardRequestDto.getFreeBoard_title())
                 .content(freeboardRequestDto.getFreeBoard_content())
                 .build();
-
         return freeboardRepository.save(freeboard);
     }
 
@@ -71,13 +71,14 @@ public class FreeboardServiceImpl implements FreeboardService {
         Customer customer = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
 
-        FileResponseDto uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
-//        System.out.println("uploadFile.getOriginalPath() = " + uploadFile.getOriginalPath());
+        UploadFile uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
+
+        String url = "http://localhost/api/file/" + uploadFile.getSeq();
 
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
                 .fileSeq(freeboard.getUploadFile().getSeq())
-                .fileUrl(uploadFile.getOriginalPath())
+                .fileUrl(url)
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())
@@ -86,6 +87,8 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .build();
 
 
+
+        // 현재 게시물에 달린 댓글 가져오기
         List<Comment> commentList = commentService.getAllComments(freeBoardSeq);
         List<CommentRequestDto> commentRequestDtoList = new ArrayList<>();
         for (Comment comment : commentList) {

@@ -1,23 +1,25 @@
 package com.ssafy.lam.file.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.core.io.Resource;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class FileResponseDto {
     private Long fileSeq;
-    @JsonProperty("originalPath")
-    private String originalPath;
+    private String name;
+    private String type;
+
+    private String base64;
 
     @Builder
-    public FileResponseDto(Long fileSeq, String originalPath) {
+    public FileResponseDto(Long fileSeq, String name, String type, String base64) {
         this.fileSeq = fileSeq;
-        this.originalPath = originalPath;
+        this.name = name;
+        this.type = type;
+        this.base64 = base64;
     }
 }

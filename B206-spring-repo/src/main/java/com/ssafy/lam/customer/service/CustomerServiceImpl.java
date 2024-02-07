@@ -86,8 +86,9 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findByUserUserId(customerId).orElse(null);
     }
 
-    public CustomerDto getCustomer(long userId) {
-        Optional<Customer> customerOptional = customerRepository.findByUserUserSeq(userId);
+
+    public CustomerDto getCustomer(Long userSeq) {
+        Optional<Customer> customerOptional = customerRepository.findByUserUserSeq(userSeq);
         if (customerOptional.isPresent()) {
             Customer customer = customerOptional.get();
 

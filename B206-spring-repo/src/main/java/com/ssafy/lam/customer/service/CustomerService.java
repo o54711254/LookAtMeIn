@@ -7,15 +7,11 @@ import com.ssafy.lam.user.domain.User;
 
 public interface CustomerService {
     //    Customer getCustomer(long seq);
-    com.ssafy.lam.customer.domain.Customer createCustomer(CustomerDto customerDto);
-//    Customer updateCustomer(long seq, CustomerDto updatedCustomer);
-//    void deleteCustomer(long seq);
-//
-//
-    com.ssafy.lam.customer.domain.Customer findByCustomerId(String customerId);
+    Customer createCustomer(CustomerDto customerDto);
 
-    //}
-    CustomerDto getCustomer(long userId);
+    CustomerDto getCustomer(Long userSeq);
 
-    Customer updateCustomer(Long userSeq, CustomerDto customerDto);
+    Customer updateCustomer(Long userSeq, CustomerDto updatedCustomer);
+    Customer findByCustomerId(String customerId);
+//}
 }

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import FreeBoardDelete from "./FreeBoardDelete";
 import FreeBoardUpdate from "./FreeBoardUpdate";
 import Comment from "../Comment/Comment";
+import downloadApi from "../../api/downloadApi";
 
 function FreeBoardDetail() {
   const [post, setPost] = useState(null);
@@ -44,15 +45,18 @@ function FreeBoardDetail() {
         );
         setPost(response.data); // 먼저 게시글 정보를 설정
 
-        try {
-          const response2 = await axiosApi.get(
-            `/api/file/${response.data.freeboardSeq}`
-          );
-          setImg(response2.data); // 이미지 정보 설정
-        } catch (imageError) {
-          console.log("이미지 로딩 실패: ", imageError);
-          setImg(null); // 이미지 로딩 실패시 img를 null로 설정
-        }
+        setPost(response.data);
+        console.log(response.data);
+        const imgResponse = await axiosApi.get(
+          response.data.fileUrl
+        )
+        console.log("response2: ", imgResponse);
+        const base64 = imgResponse.data.base64;
+        const type = imgResponse.data.type;
+
+        const data =`data:${type};base64,${base64}`;
+        setImg(data);
+
       } catch (error) {
         console.log("자유게시판 상세 불러오기 실패: ", error);
       }
