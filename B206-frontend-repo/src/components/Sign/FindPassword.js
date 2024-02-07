@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axiosApi from "axios";
-import logo from "../../assets/lab_logo.png";
+import logo from "../../assets/logo.png";
 
 function FindPassword() {
   const handleSubmit = async (e) => {
