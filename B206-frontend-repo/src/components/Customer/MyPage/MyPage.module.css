@@ -21,12 +21,12 @@
   text-decoration: none;
 }
 .profileImage {
-  background-image: url("../../../assets/logo.png");
+  background-image: url("../../../assets/man/유승호.jpg");
   background-color: #ffffff;
   background-position: center;
   background-size: cover;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   margin-right: 20px;
   margin-left: 10px;

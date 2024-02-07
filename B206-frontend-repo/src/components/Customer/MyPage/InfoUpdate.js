@@ -1,23 +1,31 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axiosApi from "../../../api/axiosApi";
-// axios 완료
+import styles from "./InfoUpdate.module.css"; // MyInfo의 CSS를 그대로 사용
+import profile from "../../../assets/man/유승호.jpg"; // 프로필 이미지 경로
+import check from "../../../assets/check.png";
+
 function InfoUpdate() {
   const location = useLocation();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const initialData = location.state || user;
+  const initialData = location.state || {};
+  const [updateData, setUpdateData] = useState(initialData);
 
-  const [updateData, setUpdateData] = useState({
-    userId: initialData.userId,
-    userPassword: "", // 보안을 위해 비밀번호는 초기화
-    customerName: initialData.customerName,
-    customerGender: initialData.customerGender,
-    customerPhoneNumber: initialData.customerPhoneNumber,
-    customerEmail: initialData.customerEmail,
-    customerAddress: initialData.customerAddress,
-  });
+  useEffect(() => {
+    if (!initialData.customerName) {
+      // location.state가 비어있을 경우, 사용자 정보를 다시 로드
+      axiosApi
+        .get(`/api/mypage/${user.userSeq}`)
+        .then((res) => {
+          setUpdateData(res.data);
+        })
+        .catch((error) => {
+          console.error("데이터를 불러오는 중 에러 발생", error);
+        });
+    }
+  }, [user.userSeq, initialData]);
 
   const handleInputChange = (e) => {
     setUpdateData({
@@ -30,8 +38,7 @@ function InfoUpdate() {
     event.preventDefault();
     axiosApi
       .put(`/api/mypage/user/${user.userSeq}`, updateData)
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         navigate(`/mypage/info`);
       })
       .catch((error) => {
@@ -40,81 +47,60 @@ function InfoUpdate() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="userId">아이디:</label>
-          <input
-            id="userId"
-            name="userId"
-            type="text"
-            value={updateData.userId}
-            onChange={handleInputChange}
-          />
+    <div className={styles.infoContainer}>
+      <div className={styles.infoTop}>
+        <img src={profile} alt="profileImg" className={styles.profileImg} />
+        <div className={styles.infoName}>
+          {updateData.customerName}싸피 님 반갑습니다!
+          <div className={styles.infoId}>ID : {updateData.userId}</div>
         </div>
-        <div>
-          <label htmlFor="userPassword">비밀번호:</label>
-          <input
-            id="userPassword"
-            name="userPassword"
-            type="password"
-            value={updateData.userPassword}
-            onChange={handleInputChange}
-          />
+      </div>
+      <form className={styles.updateContainer} onSubmit={handleSubmit}>
+        <div className={styles.box}>
+          <div className={styles.infoMiddle}>
+            <div className={styles.info}>고객정보</div>
+            <img
+              src={check}
+              alt="updateIcon"
+              className={styles.icon}
+              onClick={handleSubmit}
+            />
+          </div>
+          <div className={styles.infoBottom}>
+            <div className={styles.title}>성별</div>
+            <input
+              className={styles.contents}
+              name="customerGender"
+              value={updateData.customerGender}
+              onChange={handleInputChange}
+            />
+            <div className={styles.title}>주소</div>
+            <input
+              className={styles.contents}
+              name="customerAddress"
+              value={updateData.customerAddress}
+              onChange={handleInputChange}
+            />
+            <div className={styles.title}>이메일</div>
+            <input
+              className={styles.contents}
+              name="customerEmail"
+              type="email"
+              value={updateData.customerEmail}
+              onChange={handleInputChange}
+            />
+            <div className={styles.title}>전화번호</div>
+            <input
+              className={styles.contents}
+              name="customerPhoneNumber"
+              value={updateData.customerPhoneNumber}
+              onChange={handleInputChange}
+            />
+          </div>
         </div>
-        <div>
-          <label htmlFor="customerName">이름:</label>
-          <input
-            id="customerName"
-            name="customerName"
-            type="text"
-            value={updateData.customerName}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="customerGender">성별:</label>
-          <input
-            id="customerGender"
-            name="customerGender"
-            type="text"
-            value={updateData.customerGender}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="customerPhoneNumber">전화번호:</label>
-          <input
-            id="customerPhoneNumber"
-            name="customerPhoneNumber"
-            type="text"
-            value={updateData.customerPhoneNumber}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="customerEmail">이메일:</label>
-          <input
-            id="customerEmail"
-            name="customerEmail"
-            type="email"
-            value={updateData.customerEmail}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="customerAddress">주소:</label>
-          <input
-            id="customerAddress"
-            name="customerAddress"
-            type="text"
-            value={updateData.customerAddress}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="submit">정보 수정</button>
       </form>
     </div>
   );
 }
+
 export default InfoUpdate;
