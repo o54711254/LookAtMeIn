@@ -3,7 +3,11 @@ import axiosAPi from "../../../../api/axiosApi";
 import StarResult from "../../../ReviewBoard/StarRating/StarResult";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import profile from "../../../../assets/gun.png";
 import styles from "./ReviewList.module.css";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 // axios 완료
 function ReviewList() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
@@ -23,6 +27,12 @@ function ReviewList() {
       });
   }, []);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
+  });
+
   const handleClick = (reviewBoard_seq) => {
     navigate(`/reviewdetail/${reviewBoard_seq}`);
   };
@@ -34,20 +44,25 @@ function ReviewList() {
         <div>
           {reviewBoardList.map((board) => (
             <div
-              className={styles.reviewContainer}
+              key={board.reviewBoard_seq}
               onClick={() => handleClick(board.reviewBoard_seq)}
+              className={styles.reviewItem}
+              data-aos="fade-up"
             >
-              <div className={styles.front}>
-                <div className={styles.writer}> {board.customer_name}</div>
-                <StarResult score={board.reviewBoard_score} />
+              <div>
+                <img src={profile} alt="프로필" className={styles.profile} />
               </div>
-              <div className={styles.content}>{board.reviewBoard_title}</div>
-              <div className={styles.surgery}>#{board.reviewBoard_surgery}</div>
-              <div> 병원 : {board.reviewBoard_hospital}</div>
-              <div className={styles.region}> #{board.reviewBoard_region}</div>
+              <div className={styles.writer}>
+                <div>{board.customer_name}</div>
+                <div>
+                  <StarResult score={board.reviewBoard_score} />
+                </div>
+              </div>
+              <div className={styles.title}>
+                <div>{board.reviewBoard_title}</div>
+              </div>
               <div className={styles.price}>
-                {" "}
-                가격 : {board.reviewBoard_price}
+                시술가 : {board.reviewBoard_price} 원
               </div>
             </div>
           ))}
