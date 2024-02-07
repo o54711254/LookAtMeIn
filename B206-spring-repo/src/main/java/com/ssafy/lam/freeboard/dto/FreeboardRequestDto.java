@@ -15,6 +15,11 @@ public class FreeboardRequestDto {
     private String freeBoard_content;
     private Long freeBoard_seq;
 
+
+    // 프론트에서 formData로 보내줌
+    // formData("uploadFile", file)로 이미지 저장하는 부분이 있을텐데 key가 "uploadFile", value가 file객체
+    // key값과 DTO의 필드명이 같아야함
+    // 파일은 MultipartFile로 받아야함
     private MultipartFile uploadFile;
 
 

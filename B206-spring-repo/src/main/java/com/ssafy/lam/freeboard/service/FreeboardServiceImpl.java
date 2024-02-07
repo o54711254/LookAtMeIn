@@ -41,12 +41,17 @@ public class FreeboardServiceImpl implements FreeboardService {
 
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         System.out.println("user = " + user);
+        
+        // 파일 저장
+        // DTO의 MultiPartFile을 받아서 서비스로 보내서 파일 저장함
         UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
 
 
         log.info("글 등록 유저 정보: {}", user);
 
 
+
+        // 게시글에 UploadFile을 연관지어주고 저장
         Freeboard freeboard = Freeboard.builder()
                 .user(user)
                 .uploadFile(uploadFile)
@@ -74,12 +79,16 @@ public class FreeboardServiceImpl implements FreeboardService {
 
         UploadFile uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
 
+
+        // 파일을 가져오는데 필요한 URL 생성
+        // 파일을 보여줄때 URL로 GET요청을 한번더 보낸다
+        // 따라서 이 부분은 서버에서 실행할땐 localhost를 변경되야함
         String url = "http://localhost/api/file/" + uploadFile.getSeq();
 
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
                 .fileSeq(freeboard.getUploadFile().getSeq())
-                .fileUrl(url)
+                .fileUrl(url) // 파일을 조회할 URL
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())

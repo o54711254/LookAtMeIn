@@ -21,13 +21,13 @@ public class ReserveServiceTest {
     @DisplayName("reserveTest")
     public void test() {
         ReserveSaveRequestDto reserveSaveRequestDto = new ReserveSaveRequestDto();
-        reserveSaveRequestDto.setCustomerInfoSeq(1L);
-        reserveSaveRequestDto.setHospitalInfoSeq(2L);
+//        reserveSaveRequestDto.setCustomerInfoSeq(1L);
+//        reserveSaveRequestDto.setHospitalInfoSeq(2L);
 
 
-        Hospital hospital = hospitalRepository.findByUserUserSeq(reserveSaveRequestDto.getHospitalInfoSeq()).orElse(null);
+//        Hospital hospital = hospitalRepository.findByUserUserSeq(reserveSaveRequestDto.getHospitalInfoSeq()).orElse(null);
 
-        System.out.println("hospital = " + hospital);
+//        System.out.println("hospital = " + hospital);
 
     }
 
