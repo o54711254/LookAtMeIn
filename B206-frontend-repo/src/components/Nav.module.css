@@ -48,9 +48,13 @@ span {
   margin-left: 10px;
   font-size: 18px;
   font-weight: 600;
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
 }
 .nav1 {
   /* 가운데에 위치하므로 여기에는 특별한 스타일이 필요 없음 */
+  margin-left: 80px;
   margin-left: 80px;
 }
 
@@ -81,10 +85,14 @@ span {
   display: block; /* 링크가 블록 요소처럼 동작하도록 함 */
   padding: 10px 15px; /* 상하 좌우 패딩을 적절히 조정 */
   color: #2a2a2a; /* 텍스트 색상 설정, 필요에 따라 변경 가능 */
+  text-decoration: none; /* 링크 밑 줄 제거 */
+  color: #2a2a2a; /* 텍스트 색상 설정, 필요에 따라 변경 가능 */
   text-decoration: none; /* 링크 밑줄 제거 */
 }
 
 .dropdownContent a:hover {
+  /* background-color: rgba(254, 202, 171, 0.76); 호버 상태일 때 배경색 변경 */
+  color: rgb(219, 77, 101); /* 호버 상태일 때 텍스트 색상 변경 */
   /* background-color: rgba(254, 202, 171, 0.76); 호버 상태일 때 배경색 변경 */
   color: rgb(219, 77, 101); /* 호버 상태일 때 텍스트 색상 변경 */
 }
