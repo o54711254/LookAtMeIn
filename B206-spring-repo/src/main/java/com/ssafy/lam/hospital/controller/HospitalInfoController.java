@@ -38,9 +38,8 @@ public class HospitalInfoController {
         List<Hospital> hospitalList = hospitalService.getAllHospitalInfo();
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
         for(Hospital h : hospitalList) {
-            hospitalDetailDtoList.add(new HospitalDetailDto(h.getHospitalSeq(), h.getUser().getName(), h.getTel(),
-                    h.getIntro(), h.getAddress(), h.getOpenTime(), h.getCloseTime(), h.getUrl(),
-                    h.getUser().getUserSeq()));
+            HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalInfo(h.getHospitalSeq());
+            hospitalDetailDtoList.add(hospitalDetailDto);
         }
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
