@@ -21,4 +21,10 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long> {
 
     @Query(value = "select d from Doctor d where d.hospital.hospitalSeq = :hospitalSeq")
     Optional<List<Doctor>> findDoctorByHospitalSeq(@Param("hospitalSeq") Long hospitalSeq);
+
+    @Query(value = "select avg(r.score) from ReviewBoard r where r.hospital = (select u.name from User u where u.userSeq = (select h.user.userSeq from Hospital h where h.hospitalSeq = :hospitalSeq))")
+    Optional<Double> findAvgByHospitalSeq(Long hospitalSeq);
+
+    @Query(value = "select count(r.score) from ReviewBoard r where r.hospital = (select u.name from User u where u.userSeq = (select h.user.userSeq from Hospital h where h.hospitalSeq = :hospitalSeq))")
+    int countByHospitalSeq(Long hospitalSeq);
 }
