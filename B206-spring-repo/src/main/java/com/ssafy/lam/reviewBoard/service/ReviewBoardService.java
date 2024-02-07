@@ -3,6 +3,7 @@ package com.ssafy.lam.reviewBoard.service;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
+import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 
 import java.util.List;
 
@@ -25,6 +26,9 @@ public interface ReviewBoardService {
     
     // 게시글 신고
     void reportReview(Long seq);
+
+//    double avgScore(long seq);
+//    int cntReviews(long seq);
 
 
 }

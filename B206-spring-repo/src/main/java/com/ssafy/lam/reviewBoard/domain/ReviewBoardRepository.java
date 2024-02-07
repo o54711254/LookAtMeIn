@@ -8,6 +8,7 @@ import java.util.List;
 @Repository
 public interface ReviewBoardRepository extends JpaRepository<ReviewBoard, Long>, ReviewBoardCustomRepository {
     List<ReviewBoard> findByIsdeletedFalse();
+    List<ReviewBoard> findByComplainTrue();
 //    double findAvgByHospital(long hospitalUserSeq);
 //    int countByHospital(long hospitalUserSeq);
 }

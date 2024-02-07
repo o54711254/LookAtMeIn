@@ -30,8 +30,10 @@ public class ReviewBoard {
     private String region; // 지역
     @Column(name = "review_board_score")
     private double score; // 별점
-    @Column(name = "review_board_price")
-    private int price; // 가격
+    @Column(name = "review_board_expected_price")
+    private int expectedPrice; // 가격
+    @Column(name = "review_board_surgery_price")
+    private int surgeryPrice; // 가격
     @Column(name = "review_board_regdate")
     private long regdate; // 작성시간
     @Column(name = "review_board_complain")
@@ -46,8 +48,8 @@ public class ReviewBoard {
 
     @Builder
     public ReviewBoard(long seq, String title, String content, String hospital, String doctor, String surgery,
-                       String region, double score, int price, long regdate, boolean complain, boolean isdeleted,
-                       int cnt, User user) {
+                       String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain,
+                       boolean isdeleted, int cnt, User user) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -56,7 +58,8 @@ public class ReviewBoard {
         this.surgery = surgery;
         this.region = region;
         this.score = score;
-        this.price = price;
+        this.expectedPrice = expectedPrice;
+        this.surgeryPrice = surgeryPrice;
         this.regdate = regdate;
         this.complain = complain;
         this.isdeleted = isdeleted;
@@ -65,8 +68,8 @@ public class ReviewBoard {
     }
 
     public ReviewBoard toEntity(long seq, String title, String content, String hospital, String doctor, String surgery,
-                                String region, double score, int price, long regdate, boolean complain,
-                                boolean isdeleted, int cnt, User user) {
+                                String region, double score, int expectedPrice, int surgeryPrice, long regdate,
+                                boolean complain, boolean isdeleted, int cnt, User user) {
         return ReviewBoard.builder()
                 .seq(seq)
                 .title(title)
@@ -76,7 +79,8 @@ public class ReviewBoard {
                 .surgery(surgery)
                 .region(region)
                 .score(score)
-                .price(price)
+                .expectedPrice(expectedPrice)
+                .surgeryPrice(surgeryPrice)
                 .regdate(regdate)
                 .complain(complain)
                 .isdeleted(isdeleted)

@@ -41,7 +41,7 @@ public class ReviewBoardController {
         for(ReviewBoard r : reviews) {
             reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
                     r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-                    r.getPrice()));
+                    r.getExpectedPrice(), r.getSurgeryPrice()));
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class ReviewBoardController {
         if(review!=null) {
             detailReview = new ReviewDisplay(seq, review.getTitle(), review.getContent(), review.getScore(),
                     review.getUser().getName(), review.getDoctor(), review.getRegion(), review.getSurgery(),
-                    review.getHospital(), review.getPrice(), review.getCnt());
+                    review.getHospital(), review.getExpectedPrice(), review.getSurgeryPrice(), review.getCnt());
         }
         return new ResponseEntity<>(detailReview, HttpStatus.OK);
     }
@@ -86,5 +86,17 @@ public class ReviewBoardController {
         reviewBoardService.reportReview(seq);
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping("/avg/{seq}")
+//    @Operation(summary = "평균")
+//    public double avgScore(@PathVariable long seq) {
+//        return reviewBoardService.avgScore(seq);
+//    }
+//
+//    @GetMapping("/cnt/{seq}")
+//    @Operation(summary = "개수")
+//    public double cntReviews(@PathVariable long seq) {
+//        return reviewBoardService.cntReviews(seq);
+//    }
 
 }
