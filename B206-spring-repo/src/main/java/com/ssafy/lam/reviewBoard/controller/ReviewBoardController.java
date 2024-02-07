@@ -80,4 +80,11 @@ public class ReviewBoardController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/report/{seq}")
+    @Operation(summary = "신고받은 후기 게시글 번호에 해당하는 후기 정보를 '신고됨'으로 수정한다.")
+    public ResponseEntity<Void> reportReview(@PathVariable Long seq) {
+        reviewBoardService.reportReview(seq);
+        return ResponseEntity.ok().build();
+    }
+
 }

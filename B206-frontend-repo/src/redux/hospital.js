@@ -4,12 +4,12 @@ import { createSlice } from "@reduxjs/toolkit";
 export const hospitalSlice = createSlice({
   name: "hospital", // 리듀서의 이름
   initialState: {
-    userSeq: "", 
+    hospitalSeq: "", 
     hospitalName: "",
   }, // 초기 상태 값
   reducers: {
     setHospital: (state, action) => {
-      state.hospitalSeq = action.payload.userSeq; // 사용자 일련번호 업데이트
+      state.hospitalSeq = action.payload.hospitalSeq; // 사용자 일련번호 업데이트
       state.hospitalName = action.payload.hospitalName; // 사용자 이름 업데이트
       return state;
     },

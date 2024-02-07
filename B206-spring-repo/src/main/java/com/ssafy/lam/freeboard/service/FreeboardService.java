@@ -20,5 +20,5 @@ public interface FreeboardService {
     Freeboard deleteFreeboard(Long freeBoardSeq) throws NoArticleExeption;
 
 
-    List<Freeboard> getFreeboardByUserSeq(Long userSeq);
+    List<FreeboardResponseDto> getFreeboardByUserSeq(Long userSeq);
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import * as yup from "yup";
-import logo from "../../assets/lab_logo.png";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Field, useFormik } from "formik";
@@ -12,6 +12,7 @@ import { loginUser } from "../../redux/user.js";
 import { changeLoading, setToken } from "../../redux/auth";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styles from "./LoginForm.module.css";
+import { style } from "@mui/system";
 
 // axios test 완료
 
@@ -44,12 +45,11 @@ function LoginForm() {
     validationSchema: validationSchema,
 
     onSubmit: async (values) => {
-      console.log(values);
       if (membertype === "customer") {
         //customer
         try {
-          await axiosApi.post("/api/user/login", values)
-          .then((res) => {
+          await axiosApi.post("/api/user/login", values).then((res) => {
+            console.log(values);
             //res는 서버에서 받은 응답 객체
             if (res.status === 200) {
               //로그인 성공
@@ -59,7 +59,12 @@ function LoginForm() {
                   userId: values.userId, // 사용자 아이디
                   userName: res.data.userName, // 사용자 이름
                   userPassword: values.userPassword, // 사용자 비밀번호
-                  role: res.data.userType // 역할 업데이트
+                  // userGender:
+                  // userBirth:
+                  // userPhone:
+                  // userAddress:
+                  // userEmail:
+                  role: res.data.userType, // 역할 업데이트
                 })
               );
 
@@ -67,46 +72,35 @@ function LoginForm() {
               //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
               const accessToken = res.data.tokenInfo.accessToken;
               dispatch(setToken({ accessToken: accessToken }));
-              // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-              //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-              //   position: toast.POSITION.TOP_CENTER,
-              //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-              //   autoClose: 2000,
-              // });
               window.alert("반갑습니다. 로그인이 완료되었습니다. ");
               // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
-              setTimeout(() => {
-                navigate("/");
-                dispatch(changeLoading());
-              }, 3000);
+              navigate("/");
             } else {
-              // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-              //   position: toast.POSITION.TOP_CENTER,
-              //   autoClose: 2000,
-              // });
               window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
             }
           });
-        } catch {}
+        } catch { 
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+      }
       } else if (membertype === "hospital") {
         //hospital
         try {
           await axiosApi
-            .post("/api/user/login", values, {
-              //values에는 이메일과 비밀번호가 담겨 있음
-            })
+            .post("/api/user/login", values)
+            //values에는 이메일과 비밀번호가 담겨 있음
+
             .then((res) => {
               //res는 서버에서 받은 응답 객체
-              if (res.data.status === 200) {
+              if (res.status === 200) {
                 //로그인 성공
-                console.log(res.data);
+                console.log("로그인성공", res.data);
                 dispatch(
                   loginUser({
                     userSeq: res.data.userSeq, // 사용자 일련번호
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType // 역할 업데이트
+                    role: res.data.userType, // 역할 업데이트
                   })
                 );
 
@@ -114,27 +108,16 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.data.tokenInfo.accessToken;
                 dispatch(setToken({ accessToken: accessToken }));
-                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                //   position: toast.POSITION.TOP_CENTER,
-                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                //   autoClose: 2000,
-                // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 특정 경로로 이동
-                setTimeout(() => {
-                  navigate("/hospital/mypage"); //병원 로그인 성공하면 병원 마이페이지로 이동//홈? 마페?
-                  dispatch(changeLoading());
-                }, 2000);
+                navigate("/hospital/mypage"); //병원 로그인 성공하면 병원 마이페이지로 이동//홈? 마페?
               } else {
-                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                //   position: toast.POSITION.TOP_CENTER,
-                //   autoClose: 2000,
-                // });
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else if (membertype === "coordinator") {
         //coordinator
         try {
@@ -154,7 +137,7 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType // 역할 업데이트
+                    role: res.data.userType, // 역할 업데이트
                   })
                 );
 
@@ -162,27 +145,16 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.data.tokenInfo.accessToken;
                 dispatch(setToken({ accessToken: accessToken }));
-                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                //   position: toast.POSITION.TOP_CENTER,
-                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                //   autoClose: 2000,
-                // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
-                setTimeout(() => {
-                  navigate("/");
-                  dispatch(changeLoading());
-                }, 2000);
+                navigate("/");
               } else {
-                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                //   position: toast.POSITION.TOP_CENTER,
-                //   autoClose: 2000,
-                // });
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else if (membertype === "admin") {
         //admin
         try {
@@ -202,7 +174,7 @@ function LoginForm() {
                     userId: values.userId, // 사용자 아이디
                     userName: res.data.userName, // 사용자 이름
                     userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType // 역할 업데이트
+                    role: res.data.userType, // 역할 업데이트
                   })
                 );
 
@@ -210,70 +182,30 @@ function LoginForm() {
                 //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
                 const accessToken = res.headers.get("authorization");
                 dispatch(setToken({ accessToken: accessToken }));
-                // toast.success(<h3>반갑습니다. 로그인이 완료되었습니다. </h3>, {
-                //   // 토스트 메시지가 화면 상단 중앙에 나타나도록 하는 옵션
-                //   position: toast.POSITION.TOP_CENTER,
-                //   // 토스트 메시지가 자동으로 사라지는 시간을 밀리초 단위로 설정
-                //   autoClose: 2000,
-                // });
                 window.alert("반갑습니다. 로그인이 완료되었습니다. ");
                 console.log(res.data);
                 // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
-                setTimeout(() => {
-                  navigate("/");
-                  dispatch(changeLoading());
-                }, 2000);
+                navigate("/");
               } else {
-                // toast.error(<h3>아이디나 비밀번호를 다시 확인해 주세요.</h3>, {
-                //   position: toast.POSITION.TOP_CENTER,
-                //   autoClose: 2000,
-                // });
                 window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
               }
             });
-        } catch {}
+        } catch {
+          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
       } else {
-        // toast.error(<h3>회원유형을 선택해주세요 !</h3>, {
-        //   position: toast.POSITION.TOP_CENTER,
-        //   autoClose: 1000,
-        //   hideProgressBar: true,
-        // });
         window.alert("회원유형을 선택해주세요 !");
       }
     },
   });
 
   return (
-    // <div className="loginForm">
-    //   <div>
-    //     <img src={logo} alt="로고사진" />
-    //     <h1>룩앳미인</h1>
-    //   </div>
-
-    //   <h3>아이디</h3>
-    //   <input type="text" placeholder="abcdef@ssafy.com" />
-    //   <h3>비밀번호</h3>
-    //   <input
-    //     type="password"
-    //     placeholder="영문, 숫자, 특수문자 조합 8~16자를 입력하세요"
-    //   />
-    //   <div className="loginButton">
-    //     <button type="submit">로그인</button>
-    //   </div>
-    //   <div>
-    //     <Link to="/Regist">회원가입 </Link> |
-    //     <Link to="/FindPassword"> 비밀번호 찾기</Link>
-    //   </div>
-    // </div>
-
-    <div>
-      <div className="로그인 창 시작">
-        <img src={logo} alt="로고사진" />
-        <h1>룩앳미인</h1>
-      </div>
-
+    <div className={styles.loginform}>
       <form onSubmit={formik.handleSubmit}>
-        <div className="radioButtons">
+      <div className="로그인 창 시작" id={styles.loginheader}>
+        <img src={logo} alt="로고사진" className={styles.logo}/>
+      </div >
+        <div className="radioButtons" id={styles.radio}>
           <div className="radioButton">
             <input
               id="admin"
@@ -316,7 +248,7 @@ function LoginForm() {
           </div>
         </div>
 
-        <div className="idInput">
+        <div className="idInput" id={styles.userinput}>
           <h3>아이디</h3>
           <input
             name="userId"
@@ -324,13 +256,14 @@ function LoginForm() {
             value={formik.values.userId}
             onChange={formik.handleChange}
             type="text"
+            id = {styles.input}
             className={formik.touched.id && formik.errors.id ? "error" : ""}
           />
           {formik.touched.id && formik.errors.id && (
             <div className="helperText">{formik.errors.id}</div>
           )}
         </div>
-        <div className="passwordInput">
+        <div className="passwordInput" id={styles.userinput}>
           <h3>비밀번호</h3>
           <input
             name="userPassword"
@@ -338,6 +271,7 @@ function LoginForm() {
             value={formik.values.userPassword}
             onChange={formik.handleChange}
             type="password"
+            id = {styles.input}
             className={
               formik.touched.userPassword && formik.errors.userPassword
                 ? "error"
@@ -349,10 +283,10 @@ function LoginForm() {
           )}
         </div>
 
-        <button type="submit">로그인</button>
-        <div>
-          <Link to="/regist">회원가입</Link>
-          <Link to="/findPassword"> 비밀번호 찾기</Link>
+        <button type="submit" className={styles.loginButton}>로그인</button>
+        <div className={styles.selectBox}>
+          <Link to="/regist" className={styles.select}>회원가입</Link>
+          <Link to="/findPassword" className={styles.select}> 비밀번호 찾기</Link>
         </div>
       </form>
     </div>

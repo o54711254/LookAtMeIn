@@ -1,14 +1,17 @@
-import { Link, Route, Routes } from "react-router-dom";
+import { NavLink, Route, Routes } from "react-router-dom";
 import PostList from "./PostList";
 import ReviewList from "./ReviewList";
 import ConsultRequestList from "./ConsultRequestList";
+import styles from "./MyPost.module.css";
 
 function MyPost() {
   return (
-    <div>
-      <Link to="free">자유게시판</Link>
-      <Link to="review">후기게시판</Link>
-      <Link to="request">상담요청게시판</Link>
+    <div className={styles.postContainer}>
+      <div className={styles.postButton}>
+        <NavLink to="free">자유게시판</NavLink>
+        <NavLink to="review">후기게시판</NavLink>
+        <NavLink to="request">상담요청게시판</NavLink>
+      </div>
       <Routes>
         <Route path="free" element={<PostList />} />
         <Route path="review" element={<ReviewList />} />
