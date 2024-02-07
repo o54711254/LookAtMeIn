@@ -56,7 +56,6 @@ public class ReviewBoard {
     private int cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_seq")
     private User user; // 고객 seq
 
     @Builder
