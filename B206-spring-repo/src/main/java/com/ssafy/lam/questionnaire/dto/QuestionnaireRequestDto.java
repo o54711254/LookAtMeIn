@@ -1,0 +1,28 @@
+package com.ssafy.lam.questionnaire.dto;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
+
+@Getter
+@Setter
+@ToString
+public class QuestionnaireRequestDto {
+    private String questionnaire_blood;
+    private String questionnaire_remark;
+    private String questionnaire_title;
+    private String questionnaire_content;
+    private MultipartFile image;
+
+    @Builder
+    public QuestionnaireRequestDto(String questionnaire_blood, String questionnaire_remark, String questionnaire_title, String questionnaire_content, MultipartFile image) {
+        this.questionnaire_blood = questionnaire_blood;
+        this.questionnaire_remark = questionnaire_remark;
+        this.questionnaire_title = questionnaire_title;
+        this.questionnaire_content = questionnaire_content;
+        this.image = image;
+    }
+
+}
