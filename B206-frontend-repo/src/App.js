@@ -38,6 +38,8 @@ import Worldcup from "./components/WorldCup/Worldcup.js";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 import HospitalDetail from "./components/HospitalBoard/HospitalDetail.js";
 
+import Search from "./components/Search/SearchInput.js"
+
 function App() {
   return (
     <div>
@@ -110,9 +112,9 @@ function App() {
 
                   <Route path="/face" element={<FacialAsy />} />
 
-                  {/* <Route path="/search/*" element={<SearchList />} /> */}
+                  <Route path="/search/*" element={<Search />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
-                  {/* <Route path="/search/:query" element={<SearchList />} /> */}
+                  <Route path="/search/:query" element={<SearchList />} />
                 </Routes>
               </div>
             </div>
