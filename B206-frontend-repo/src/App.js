@@ -39,7 +39,7 @@ import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
 import HospitalDetail from "./pages/HospitalDetail.js";
 
-import Search from "./components/Search/SearchInput.js"
+import Search from "./components/Search/SearchInput.js";
 
 function App() {
   return (
