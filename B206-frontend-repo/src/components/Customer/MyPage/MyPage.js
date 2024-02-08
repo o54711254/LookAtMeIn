@@ -20,7 +20,7 @@ function MyPage() {
   return (
     <div className={styles.mypageContainer}>
       <NavLink to="info" className={styles.profile}>
-        <div className={styles.profileImage}></div>
+        <div className={styles.profileImage} />
         <div className={styles.profileInfo}>
           <div className={styles.profileName}>{user.userName}</div>
           <div className={styles.profileEmail}>asdfas@asdfsda.com</div>
