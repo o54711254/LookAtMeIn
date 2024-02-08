@@ -25,16 +25,18 @@ public class Reserve {
     @JoinColumn(name = "hospital_user_seq")
     private User hospital; // 예약을 받는 병원
 
-    private int reserveType; // 1 : 상담예약, 2 : 병원예약
+    private Integer reserveType; // 1 : 상담예약, 2 : 병원예약
 
-    private int year;
-    private int month;
-    private int day;
+    private Integer year;
+    private Integer month;
+    private Integer day;
     private String dayofweek;
-    private int time;
+    private Integer time;
 
     @Builder
-    public Reserve(User customer, User hospital, int reserveType, int year, int month, int day, String dayofweek, int time) {
+
+    public Reserve(Long reserveSeq, User customer, User hospital, Integer reserveType, Integer year, Integer month, Integer day, String dayofweek, Integer time) {
+        this.reserveSeq = reserveSeq;
         this.customer = customer;
         this.hospital = hospital;
         this.reserveType = reserveType;

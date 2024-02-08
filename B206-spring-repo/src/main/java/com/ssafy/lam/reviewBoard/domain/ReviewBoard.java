@@ -19,7 +19,7 @@ public class ReviewBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_board_seq")
-    private long seq;
+    private Long seq;
 
     @Column(name = "review_board_title")
     private String title; // 제목
@@ -46,16 +46,16 @@ public class ReviewBoard {
     @Column(name = "review_board_surgery_price")
     private Integer surgeryPrice; // 시술 가격
     @Column(name = "review_board_regdate")
-    private long regdate; // 작성시간
+    private Long regdate; // 작성시간
 
     @Column(name = "review_board_complain")
-    private boolean complain; // 신고여부
+    private Boolean complain; // 신고여부
 
     @Column(name = "review_board_isdeleted")
-    private boolean isdeleted; // 삭제여부
+    private Boolean isdeleted; // 삭제여부
 
     @Column(name = "review_board_cnt")
-    private int cnt = 0; // 조회수
+    private Integer cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
@@ -67,7 +67,8 @@ public class ReviewBoard {
 
 
     @Builder
-    public ReviewBoard(long seq, String title, String content, String hospital, String doctor, String surgery, String region, double score, Integer expectedPrice, Integer surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, User user, UploadFile uploadFile) {
+
+    public ReviewBoard(Long seq, String title, String content, String hospital, String doctor, String surgery, String region, double score, Integer expectedPrice, Integer surgeryPrice, Long regdate, Boolean complain, Boolean isdeleted, Integer cnt, User user, UploadFile uploadFile) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -85,10 +86,4 @@ public class ReviewBoard {
         this.user = user;
         this.uploadFile = uploadFile;
     }
-
-
-
-
-
-
 }

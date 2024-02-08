@@ -52,7 +52,7 @@ public class Hospital {
     private boolean isApproved;
 
     @Column(name = "hos_info_bookmark")
-    private int bookmark;
+    private Integer bookmark;
 
     @Column(name = "hos_info_url")
     private String url;
@@ -70,7 +70,7 @@ public class Hospital {
 
     @Builder
 
-    public Hospital(Long hospitalSeq, User user, List<Coordinator> coordinators, String tel, String email, String address, String openTime, String closeTime, String intro, boolean isApproved, int bookmark, String url, UploadFile registrationFile, UploadFile profileFile) {
+    public Hospital(Long hospitalSeq, User user, List<Coordinator> coordinators, String tel, String email, String address, String openTime, String closeTime, String intro, boolean isApproved, Integer bookmark, String url, UploadFile registrationFile, UploadFile profileFile) {
         this.hospitalSeq = hospitalSeq;
         this.user = user;
         this.coordinators = coordinators;
@@ -86,5 +86,4 @@ public class Hospital {
         this.registrationFile = registrationFile;
         this.profileFile = profileFile;
     }
-
 }
