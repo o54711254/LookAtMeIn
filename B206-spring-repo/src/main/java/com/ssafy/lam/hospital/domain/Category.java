@@ -5,11 +5,11 @@ import lombok.*;
 
 @Entity
 @Getter
-@ToString
 @NoArgsConstructor
+@ToString
 public class Category {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="category_seq")
     private Long categorySeq;
 
@@ -17,13 +17,12 @@ public class Category {
     private String part;
 
     @ManyToOne
-    @JoinColumn(name="hos_info_seq")
-    private Hospital hospital;
+    private Doctor doctor;
 
     @Builder
-    public Category(Long categorySeq, String part, Hospital hospital) {
+    public Category(Long categorySeq, String part, Doctor doctor) {
         this.categorySeq = categorySeq;
         this.part = part;
-        this.hospital = hospital;
+        this.doctor = doctor;
     }
 }

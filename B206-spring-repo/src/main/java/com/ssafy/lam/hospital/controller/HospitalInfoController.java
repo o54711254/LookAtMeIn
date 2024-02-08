@@ -38,9 +38,8 @@ public class HospitalInfoController {
         List<Hospital> hospitalList = hospitalService.getAllHospitalInfo();
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
         for(Hospital h : hospitalList) {
-            hospitalDetailDtoList.add(new HospitalDetailDto(h.getHospitalSeq(), h.getUser().getName(), h.getTel(),
-                    h.getIntro(), h.getAddress(), h.getOpenTime(), h.getCloseTime(), h.getUrl(),
-                    h.getUser().getUserSeq()));
+            HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalInfo(h.getHospitalSeq());
+            hospitalDetailDtoList.add(hospitalDetailDto);
         }
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
@@ -60,14 +59,14 @@ public class HospitalInfoController {
         for(ReviewBoard r : reviews) {
             reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
                     r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-                    r.getPrice()));
+                    r.getExpectedPrice(), r.getSurgeryPrice()));
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
 
     @GetMapping("/doctors/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
-    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
+    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable Long hospital_seq) {
         List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }

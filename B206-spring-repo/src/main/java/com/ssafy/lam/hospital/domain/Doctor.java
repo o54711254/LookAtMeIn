@@ -22,9 +22,6 @@ public class Doctor {
     @JoinColumn(name = "hos_info_seq")
     private Hospital hospital;
 
-    @OneToMany(mappedBy = "doctor")
-    private List<Career> careers;
-
     @Builder
     public Doctor(Long docInfoSeq, String docInfoName, Hospital hospital) {
         this.docInfoSeq = docInfoSeq;

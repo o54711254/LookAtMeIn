@@ -1,4 +1,4 @@
-package com.ssafy.lam.hospital.dto;
+package com.ssafy.lam.search.dto;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @ToString
-public class HospitalDetailDto {
+public class HospitalDto {
 
     private long hospitalInfo_seq;
     private String hospitalInfo_name;
@@ -15,7 +15,6 @@ public class HospitalDetailDto {
     private String hospitalInfo_address;
     private String hospitalInfo_open;
     private String hospitalInfo_close;
-    private String hospitalInfo_url;
     private long userSeq;
     private double hospitalInfo_avgScore; // 후기 평균 평점
     private int hospitalInfo_cntReviews; // 후기 총 개수
@@ -25,10 +24,10 @@ public class HospitalDetailDto {
     // 각 의사의 의사 프로필 사진, 이름, 평균 평점, 후기 개수, 카테고리 출력
 
     @Builder
-    public HospitalDetailDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber,
-                             String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open,
-                             String hospitalInfo_close, String hospitalInfo_url, long userSeq,
-                             double hospitalInfo_avgScore, int hospitalInfo_cntReviews) {
+    public HospitalDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber,
+                       String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open,
+                       String hospitalInfo_close, long userSeq,
+                       double hospitalInfo_avgScore, int hospitalInfo_cntReviews) {
         this.hospitalInfo_seq = hospitalInfo_seq;
         this.hospitalInfo_name = hospitalInfo_name;
         this.hospitalInfo_phoneNumber = hospitalInfo_phoneNumber;
@@ -36,7 +35,6 @@ public class HospitalDetailDto {
         this.hospitalInfo_address = hospitalInfo_address;
         this.hospitalInfo_open = hospitalInfo_open;
         this.hospitalInfo_close = hospitalInfo_close;
-        this.hospitalInfo_url = hospitalInfo_url;
         this.userSeq = userSeq;
         this.hospitalInfo_avgScore = hospitalInfo_avgScore;
         this.hospitalInfo_cntReviews = hospitalInfo_cntReviews;
