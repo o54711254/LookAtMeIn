@@ -3,9 +3,7 @@ package com.ssafy.lam.hospital.service;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hospital.domain.*;
-import com.ssafy.lam.hospital.dto.CategoryDto;
-import com.ssafy.lam.hospital.dto.HospitalDetailDto;
-import com.ssafy.lam.hospital.dto.HospitalDto;
+import com.ssafy.lam.hospital.dto.*;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
@@ -27,8 +25,12 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
-    private final CategoryRepository categoryRepository;
+    private final DoctorRepository doctorRepository;
+    private final CareerRepository careerRepository;
+    private final HospitalCategoryRepository hospitalCategoryRepository;
     private final UploadFileService uploadFileService;
+
+    private final DoctorCategoryRepository doctorCategoryRepository;
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
@@ -46,6 +48,7 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
 
         userService.createUser(user);
+
         Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
@@ -63,13 +66,11 @@ public class HospitalServiceImpl implements HospitalService {
         hospital = hospitalRepository.save(hospital);
         for (CategoryDto category : categoryDto) {
             log.info("category : {}", category);
-            Category categoryEntity = Category.builder()
+            HospitalCategory hospitalCategoryEntity = HospitalCategory.builder()
                     .part(category.getPart())
                     .hospital(hospital)
                     .build();
-
-            categoryRepository.save(categoryEntity);
-
+            hospitalCategoryRepository.save(hospitalCategoryEntity);
         }
 
         return hospital;
@@ -77,7 +78,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public HospitalDto getHospital(long userId) {
-        Optional<com.ssafy.lam.hospital.domain.Hospital> hospitalOptional = hospitalRepository.findById(userId);
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
             com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
 
@@ -124,8 +125,23 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public void createDoctor(Doctor doctor, List<CategoryDto> categoryDtoList, List<Career> careerList) {
-//        hospitalRepository.create(doctor);
+    public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList) {
+        Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
+        Doctor doctor = Doctor.builder().docInfoSeq(doctorDto.getDoc_info_seq()).docInfoName(doctorDto.getDoc_info_name())
+                .hospital(hospital).build();
+        doctorRepository.save(doctor);
+        for(CategoryDto c : categoryDtoList) {
+            DoctorCategory doctorCategory = DoctorCategory.builder()
+                    .part(c.getPart())
+                    .doctor(doctor)
+                    .build();
+            doctorCategoryRepository.save(doctorCategory);
+        }
+        for(CareerDto c : careerDtoList) {
+            Career career = Career.builder().careerStart(c.getCareer_start()).careerEnd(c.getCareer_end())
+                    .careerContent(c.getCareer_content()).doctor(doctor).build();
+            careerRepository.save(career);
+        }
     }
 
     @Override
@@ -133,6 +149,7 @@ public class HospitalServiceImpl implements HospitalService {
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
         if (hospitalOptional.isPresent()) {
             Hospital hospital = hospitalOptional.get();
+            double avgScore = hospitalRepository.findAvgByHospitalSeq(hospitalSeq).orElse(0.0);
             HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
                     .hospitalInfo_seq(hospitalSeq)
                     .hospitalInfo_name(hospital.getUser().getName())
@@ -143,6 +160,8 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_close(hospital.getCloseTime())
                     .hospitalInfo_url(hospital.getUrl())
                     .userSeq(hospital.getUser().getUserSeq())
+                    .hospitalInfo_avgScore(avgScore)
+                    .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
                     .build();
             return hospitalDetailDto;
         } else {

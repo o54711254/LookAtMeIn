@@ -2,16 +2,17 @@ package com.ssafy.lam.hospital.controller;
 
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
-import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.hospital.domain.DoctorCategory;
+import com.ssafy.lam.hospital.domain.HospitalCategory;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.hospital.dto.CategoryDto;
+import com.ssafy.lam.hospital.dto.DoctorListDto;
 import com.ssafy.lam.hospital.dto.HospitalDetailDto;
-import com.ssafy.lam.hospital.dto.HospitalDto;
+import com.ssafy.lam.hospital.service.DoctorService;
 import com.ssafy.lam.hospital.service.HospitalService;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
-import com.ssafy.lam.reviewBoard.dto.ReviewDisplay;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
-import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +31,16 @@ import java.util.List;
 public class HospitalInfoController {
 
     private final HospitalService hospitalService;
+    private final DoctorService doctorService;
     private Logger log = LoggerFactory.getLogger(HosptialController.class);
 
     MultipartConfig multipartConfig = new MultipartConfig();
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @Autowired
-    public HospitalInfoController(HospitalService hospitalService) {
+    public HospitalInfoController(HospitalService hospitalService, DoctorService doctorService) {
         this.hospitalService = hospitalService;
+        this.doctorService = doctorService;
     }
 
 
@@ -89,16 +92,34 @@ public class HospitalInfoController {
         for(ReviewBoard r : reviews) {
             reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
                     r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-                    r.getPrice()));
+                    r.getExpectedPrice(), r.getSurgeryPrice()));
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
 
+//    @GetMapping("/doctors/{hospital_seq}")
+//    @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
+//    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable Long hospital_seq) {
+//        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
+//        return new ResponseEntity<>(doctors, HttpStatus.OK);
+//    }
+
     @GetMapping("/doctors/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
-    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
+    public ResponseEntity<List<DoctorListDto>> getHospitalDoctors(@PathVariable Long hospital_seq) {
         List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
-        return new ResponseEntity<>(doctors, HttpStatus.OK);
+        List<DoctorListDto> doctorDtoList = new ArrayList<>();
+        for(Doctor d : doctors) {
+            List<DoctorCategory> doctorCategories = doctorService.getCategory(d.getDocInfoSeq());
+            List<CategoryDto> categoryDto = new ArrayList<>();
+            for(DoctorCategory c : doctorCategories) {
+                categoryDto.add(new CategoryDto(c.getPart()));
+            }
+            double avgScore = doctorService.getAvgScore(d.getDocInfoSeq());
+            int cntReviews = doctorService.getCntReviews(d.getDocInfoSeq());
+            doctorDtoList.add(new DoctorListDto(d.getDocInfoSeq(), d.getDocInfoName(), avgScore, cntReviews, categoryDto));
+        }
+        return new ResponseEntity<>(doctorDtoList, HttpStatus.OK);
     }
 
 }

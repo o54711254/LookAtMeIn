@@ -60,7 +60,8 @@ public class AdminServiceImpl implements AdminService {
                         .reviewBoard_region(reviewBoard.getRegion())
                         .score(reviewBoard.getScore())
                         .reviewBoard_hospital(reviewBoard.getHospital())
-                        .reviewBoard_price(reviewBoard.getPrice())
+                        .reviewBoard_expected_price(reviewBoard.getExpectedPrice())
+                        .reviewBoard_surgery_price(reviewBoard.getSurgeryPrice())
                         .regdate(reviewBoard.getRegdate())
                         .complain(reviewBoard.isComplain())
                         .isdeleted(reviewBoard.isIsdeleted())
@@ -84,10 +85,10 @@ public class AdminServiceImpl implements AdminService {
                             .isApproved(hospital.isApproved())
                             .build();
 
-                    Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
-                    String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
-
-                    hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+//                    Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
+//                    String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
+//
+//                    hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
 
                     hospitalAdminDtoList.add(hospitalAdminDto);
                 }catch (Exception e){
@@ -114,10 +115,10 @@ public class AdminServiceImpl implements AdminService {
                         .isApproved(hospital.isApproved())
                         .build();
 
-                Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
-                String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
-
-                hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+//                Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
+//                String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
+//
+//                hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
 
                 hospitalAdminDtoList.add(hospitalAdminDto);
             }catch (Exception e){

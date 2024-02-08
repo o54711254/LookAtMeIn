@@ -30,11 +30,11 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public final StringPath doctor = createString("doctor");
 
+    public final NumberPath<Integer> expectedPrice = createNumber("expectedPrice", Integer.class);
+
     public final StringPath hospital = createString("hospital");
 
     public final BooleanPath isdeleted = createBoolean("isdeleted");
-
-    public final NumberPath<Integer> price = createNumber("price", Integer.class);
 
     public final NumberPath<Long> regdate = createNumber("regdate", Long.class);
 
@@ -46,7 +46,11 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public final StringPath surgery = createString("surgery");
 
+    public final NumberPath<Integer> surgeryPrice = createNumber("surgeryPrice", Integer.class);
+
     public final StringPath title = createString("title");
+
+    public final com.ssafy.lam.file.domain.QUploadFile uploadFile;
 
     public final com.ssafy.lam.user.domain.QUser user;
 
@@ -68,6 +72,7 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public QReviewBoard(Class<? extends ReviewBoard> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.uploadFile = inits.isInitialized("uploadFile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("uploadFile")) : null;
         this.user = inits.isInitialized("user") ? new com.ssafy.lam.user.domain.QUser(forProperty("user")) : null;
     }
 

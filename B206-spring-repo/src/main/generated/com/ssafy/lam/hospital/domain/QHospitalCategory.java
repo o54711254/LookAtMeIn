@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QCategory is a Querydsl query type for Category
+ * QHospitalCategory is a Querydsl query type for HospitalCategory
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QCategory extends EntityPathBase<Category> {
+public class QHospitalCategory extends EntityPathBase<HospitalCategory> {
 
-    private static final long serialVersionUID = -1757698159L;
+    private static final long serialVersionUID = -1184764693L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QCategory category = new QCategory("category");
+    public static final QHospitalCategory hospitalCategory = new QHospitalCategory("hospitalCategory");
 
     public final NumberPath<Long> categorySeq = createNumber("categorySeq", Long.class);
 
@@ -28,23 +28,23 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final StringPath part = createString("part");
 
-    public QCategory(String variable) {
-        this(Category.class, forVariable(variable), INITS);
+    public QHospitalCategory(String variable) {
+        this(HospitalCategory.class, forVariable(variable), INITS);
     }
 
-    public QCategory(Path<? extends Category> path) {
+    public QHospitalCategory(Path<? extends HospitalCategory> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QCategory(PathMetadata metadata) {
+    public QHospitalCategory(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QCategory(PathMetadata metadata, PathInits inits) {
-        this(Category.class, metadata, inits);
+    public QHospitalCategory(PathMetadata metadata, PathInits inits) {
+        this(HospitalCategory.class, metadata, inits);
     }
 
-    public QCategory(Class<? extends Category> type, PathMetadata metadata, PathInits inits) {
+    public QHospitalCategory(Class<? extends HospitalCategory> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.hospital = inits.isInitialized("hospital") ? new QHospital(forProperty("hospital"), inits.get("hospital")) : null;
     }

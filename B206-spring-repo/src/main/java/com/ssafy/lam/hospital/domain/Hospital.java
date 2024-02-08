@@ -36,7 +36,6 @@ public class Hospital {
     @Column(name = "hos_info_email")
     private String email;
 
-
     @Column(name = "hos_info_address")
     private String address;
 
@@ -87,4 +86,5 @@ public class Hospital {
         this.registrationFile = registrationFile;
         this.profileFile = profileFile;
     }
+
 }
