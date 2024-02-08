@@ -90,43 +90,62 @@ function HospitalRegistForm() {
     onSubmit: async (values) => {
       const formData = new FormData();
       // Hospital 정보를 "hospital" 객체 내부에 넣어서 추가
-      formData.append("hospital[hospitalInfo_id]", values.id);
-      formData.append("hospital[hospitalInfo_password]", values.password);
-      formData.append("hospital[hospitalInfo_name]", values.name);
-      formData.append("hospital[hospitalInfo_address]", values.address);
-      formData.append("hospital[hospitalInfo_url]", values.url);
-      formData.append("hospital[hospitalInfo_email]", values.email);
-      formData.append("hospital[hospitalInfo_phoneNumber]", values.phoneNumber);
-      
-      // 선택적으로 입력하는 사항에 대해서도 "hospital" 객체 내부에 넣어서 추가
-      if (values.info) {
-        formData.append("hospital[hospitalInfo_introduce]", values.info);
-      }
-      if (values.open) {
-        formData.append("hospital[hospitalInfo_open]", values.open);
-      }
-      if (values.close) {
-        formData.append("hospital[hospitalInfo_close]", values.close);
+
+      const hospital ={
+        hospitalInfo_id: values.id,
+        hospitalInfo_password: values.password,
+        hospitalInfo_name: values.name,
+        hospitalInfo_address: values.address,
+        hospitalInfo_url: values.url,
+        hospitalInfo_email: values.email,
+        hospitalInfo_phoneNumber: values.phoneNumber,
       }
 
+      if(values.info){
+        hospital["hospitalInfo_introduce"] = values.info;
+      }
+
+      if(values.open){
+        hospital["hospitalInfo_open"] = values.open;
+      }
+
+      if(values.close){
+        hospital["hospitalInfo_close"] = values.close;
+      }
       // 비즈니스 등록증 파일 추가
-      // formData.append("uploadfile", businessRegistrationCertificate);
-      
+      // hospital["businessRegistrationCertificate"] = businessRegistrationCertificate; 
+
+      // formData.append("hospital", JSON.stringify(hospital));
+
+      // 카테고리 정보를 추가
+      const categoryList = []
+
       // CategoryList 배열 정보를 추가
-      // values.categoryList.forEach((category, index) => {
-      //   formData.append(`categoryList[${index}][part]`, category);
-      // });
+      values.categoryList.forEach((category, index) => {
+        categoryList.push({part: category});
+      });
+
+      const hospitalDto = {}
+      hospitalDto["hospital"] = hospital;
+      hospitalDto["categoryList"] = categoryList;
+
+      formData.append("hospital", JSON.stringify(hospitalDto));
+      formData.append("registrationFile", businessRegistrationCertificate);
+
+
+
       for (let key of formData.keys()) {
         console.log(key, ":", formData.get(key));
      }
       
       try {
         await axiosApi.post("/api/hospital/regist", formData, {
-          //서버에게 클라이언트가 보내는 데이터의 유형을 알려주는 것.
+          // 서버에게 클라이언트가 보내는 데이터의 유형을 알려주는 것.
           headers: {
             "Content-Type": "multipart/form-data", //multipart/form-data는 폼 데이터가 파일이나 이미지와 같은 바이너리 데이터를 포함할 수 있음을 나타냄
           },
         });
+        
         window.alert("회원가입이 완료되었습니다. 승인을 대기해주세요");
         setTimeout(() => {
           navigate("/");
