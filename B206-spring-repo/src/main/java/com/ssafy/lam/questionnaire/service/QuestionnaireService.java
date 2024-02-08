@@ -21,8 +21,6 @@ public class QuestionnaireService {
         User hospital = User.builder().userSeq(questionRequestDto.getHospital_seq()).build();
 
         Questionnaire questionnaire = Questionnaire.builder()
-                .customer(customer)
-                .hospital(hospital)
                 .blood(questionRequestDto.getQuestionnaire_blood())
                 .remark(questionRequestDto.getQuestionnaire_remark())
                 .title(questionRequestDto.getQuestionnaire_title())
@@ -34,4 +32,10 @@ public class QuestionnaireService {
 
     }
 
+    public Questionnaire getQuestionnaireDetail(Long questionSeq) {
+        Questionnaire questionnaire = quesionnareRepository.findById(questionSeq)
+                .orElseThrow(() -> new IllegalArgumentException("없는 문진서임 : " + questionSeq));
+
+        return questionnaire;
+    }
 }

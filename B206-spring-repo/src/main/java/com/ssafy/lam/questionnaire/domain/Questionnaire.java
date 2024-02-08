@@ -1,14 +1,17 @@
 package com.ssafy.lam.questionnaire.domain;
 
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Questionnaire {
 
     @Id
@@ -20,23 +23,17 @@ public class Questionnaire {
     private String content;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="customer_seq")
-    User customer;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="hospital_seq")
-    User hospital;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "upload_file_seq")
+    private UploadFile uploadFile;
 
     @Builder
-    public Questionnaire(Long seq, String blood, String remark, String title, String content, User customer, User hospital) {
+    public Questionnaire(Long seq, String blood, String remark, String title, String content, UploadFile uploadFile) {
         this.seq = seq;
         this.blood = blood;
         this.remark = remark;
         this.title = title;
         this.content = content;
-        this.customer = customer;
-        this.hospital = hospital;
+        this.uploadFile = uploadFile;
     }
 }
