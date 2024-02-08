@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./ReviewList.module.css";
 import profile from "../../assets/gun.png";
 
-// axios 완료
+// axios 완료d
 
 function ReviewList() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
