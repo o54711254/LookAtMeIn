@@ -35,7 +35,6 @@ function PostList() {
 
   return (
     <div>
-      <div>작성한 글 갯수 : {postList.length}</div>
       {postList.length > 0 ? (
         <div>
           {postList.map((board, index) => (

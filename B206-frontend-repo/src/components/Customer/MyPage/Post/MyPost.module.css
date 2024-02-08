@@ -4,7 +4,24 @@
     width: 100%;
 }
 .postButton{
-
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
 }
-.postContents{
+.button {
+    text-decoration: none;
+    background: #ffdbc6; /* 기본 배경색 */
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25); /* 기본 그림자 효과 */
+    border-radius: 25px;
+    padding: 10px;
+    color: rgb(90, 87, 87); /* 텍스트 색상 */
+    font-weight: 600;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s; /* 애니메이션 효과 */
+}
+
+.button:hover {
+    background: #fdb788; /* 호버 상태에서의 배경색 */
+    transform: scale(1.05); /* 버튼을 5% 확대 */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3); /* 호버 상태에서의 그림자 효과 */
+    color: white;
 }
