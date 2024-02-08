@@ -27,7 +27,7 @@ public class HosptialController {
 
     @PostMapping("/regist")
     @Operation(summary = "병원 정보를 등록한다.")
-    public ResponseEntity<Void> regist(@RequestBody HospitalRequestDto hospitalRequestDto) {
+    public ResponseEntity<Void> regist(@ModelAttribute HospitalRequestDto hospitalRequestDto) {
         log.info("regist hospital : {}, Category {}", hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
 
         hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
