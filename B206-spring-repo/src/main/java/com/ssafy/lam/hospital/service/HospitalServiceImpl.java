@@ -43,6 +43,7 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
 
         userService.createUser(user);
+
         Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
@@ -55,11 +56,11 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
 
         return hospitalRepository.save(hospital);
-    }  
+    }
 
     @Override
     public HospitalDto getHospital(long userId) {
-        Optional<com.ssafy.lam.hospital.domain.Hospital> hospitalOptional = hospitalRepository.findById(userId);
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
             com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
 
@@ -127,6 +128,7 @@ public class HospitalServiceImpl implements HospitalService {
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
         if (hospitalOptional.isPresent()) {
             Hospital hospital = hospitalOptional.get();
+            double avgScore = hospitalRepository.findAvgByHospitalSeq(hospitalSeq).orElse(0.0);
             HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
                     .hospitalInfo_seq(hospitalSeq)
                     .hospitalInfo_name(hospital.getUser().getName())
@@ -137,6 +139,8 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_close(hospital.getCloseTime())
                     .hospitalInfo_url(hospital.getUrl())
                     .userSeq(hospital.getUser().getUserSeq())
+                    .hospitalInfo_avgScore(avgScore)
+                    .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
                     .build();
             return hospitalDetailDto;
         } else {
