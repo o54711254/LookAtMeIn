@@ -39,7 +39,6 @@ function ReviewList() {
 
   return (
     <div>
-      <div>작성한 글 갯수 : {reviewBoardList.length}</div>
       {reviewBoardList.length >= 0 ? (
         <div>
           {reviewBoardList.map((board) => (
