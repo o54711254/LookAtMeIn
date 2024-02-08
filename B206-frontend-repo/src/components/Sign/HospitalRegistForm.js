@@ -9,7 +9,7 @@ import axiosAPi from "../../api/axiosApi";
 import "react-toastify/dist/ReactToastify.css";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
-import styles from "./HospitalRegistForm.module.css"
+import styles from "./HospitalRegistForm.module.css";
 import logo from "../../assets/logo.png";
 
 //회원가입 시 입력하는 정보 유효성 검사
@@ -45,25 +45,26 @@ function HospitalRegistForm() {
   //아이디 중복체크
   const checkDuplicateId = (e) => {
     e.preventDefault();
-    axiosAPi.get(`/api/user/regist/idcheck/${formik.values.id}`).then((response) => {
-      console.log(response.data);
-      if (response.data === true) {
-        //alert("사용 불가한 아이디입니다."); //이미 사용중인 아이디
-        setUseable(false);
-      } else if (response.data === false) {
-        //alert("사용 가능한 아이디입니다.");
-        setUseable(true);
-      } else {
-        // alert("사용 불가한 아이디입니다.");
-      }
-    });
+    axiosAPi
+      .get(`/api/user/regist/idcheck/${formik.values.id}`)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data === true) {
+          //alert("사용 불가한 아이디입니다."); //이미 사용중인 아이디
+          setUseable(false);
+        } else if (response.data === false) {
+          //alert("사용 가능한 아이디입니다.");
+          setUseable(true);
+        } else {
+          // alert("사용 불가한 아이디입니다.");
+        }
+      });
   };
 
   // 사업자 등록증
   const [businessRegistrationCertificate, setBusinessRegistrationCertificate] =
     useState(null);
 
-    
   // 파일 업로드 핸들러
   const handleFileChange = (e) => {
     setBusinessRegistrationCertificate(e.target.files[0]);
@@ -167,7 +168,7 @@ function HospitalRegistForm() {
   return (
     <div className={styles.container}>
       <div className={styles.HospitalRegistForm}>
-        <img src={logo} alt="로고" id={styles.logo}/>
+        <img src={logo} alt="로고" id={styles.logo} />
         <form onSubmit={formik.handleSubmit}>
           <div className="inputText">
             <h3 className={styles.text}>아이디</h3>
@@ -180,7 +181,9 @@ function HospitalRegistForm() {
               onChange={formik.handleChange}
               className={formik.touched.id && formik.errors.id ? "error" : ""}
             />
-              <button onClick={checkDuplicateId} className={styles.button}>중복확인</button>
+            <button onClick={checkDuplicateId} className={styles.button}>
+              중복확인
+            </button>
             {formik.touched.id && formik.errors.id && (
               <div className="helperText">{formik.errors.id}</div>
             )}
@@ -369,24 +372,29 @@ function HospitalRegistForm() {
             />
           </div>
           {/* 사업자 등록증 파일 업로드 */}
-          <div className="inputText">
+          {/* `${styles.fileup} ${styles.inputText}` */}
+          <div className={styles.inputText}>
             <h3 className={styles.text}>사업자 등록증</h3>
-            <input
-              type="file"
-              name="businessRegistrationCertificate"
-              className={styles.fileup}
-              onChange={handleFileChange}
-              style={{ display: 'hidden' }} // 실제 파일 입력 필드는 숨김
-            />
+            <div className={styles.fileup}>
+              {/* <span>파일 선택</span> */}
+              <input
+                type="file"
+                name="businessRegistrationCertificate"
+                className={styles.FileInput_hidden_overlay}
+                onChange={handleFileChange}
+                placeholder="파일 선택"
+              />
+            </div>
           </div>
-
           {/* 회원가입 버튼 */}
           <div className="RegistButton">
-            <button type="submit" className={styles.RegistButton}>회원가입</button>
+            <button type="submit" className={styles.RegistButton}>
+              회원가입
+            </button>
           </div>
         </form>
       </div>
-      </div>
+    </div>
   );
 }
 export default HospitalRegistForm;
