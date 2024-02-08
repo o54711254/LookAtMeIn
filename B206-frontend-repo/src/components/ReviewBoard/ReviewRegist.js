@@ -43,14 +43,18 @@ function ReviewRegist() {
   };
 
   // 폼 제출 핸들러
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
 
+    const reviewBoardData = {};
+
     // reviewData의 키와 값을 FormData에 추가
     Object.keys(reviewData).forEach((key) => {
-      formData.append(key, reviewData[key]);
+      // formData.append(key, reviewData[key]);
+      reviewBoardData[key] = reviewData[key];
     });
+    formData.append("reviewBoardData", JSON.stringify(reviewBoardData));
 
     // 이미지 파일 추가
     if (reviewImage) {
@@ -58,16 +62,18 @@ function ReviewRegist() {
     }
 
     // API 호출
-    axiosApi.post("/api/reviewBoard/regist", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })
-    .then((res) => {
-      console.log("리뷰 등록 성공", res.data);
-      navigate("/reviewList"); // 성공 후 리뷰 목록 페이지로 이동
-    })
-    .catch((error) => {
-      console.error("리뷰 등록 실패", error);
-    });
+    axiosApi
+      .post("/api/reviewBoard/regist", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        console.log("리뷰 등록 성공", res.data);
+
+        navigate("/reviewList"); // 성공 후 리뷰 목록 페이지로 이동
+      })
+      .catch((error) => {
+        console.error("리뷰 등록 실패", error);
+      });
   };
 
   return (
@@ -138,13 +144,22 @@ function ReviewRegist() {
         />
         <StarRating
           value={reviewData.reviewBoard_score}
-          onChange={(value) => setReviewData({ ...reviewData, reviewBoard_score: value })}
+          onChange={(value) =>
+            setReviewData({ ...reviewData, reviewBoard_score: value })
+          }
         />
         <IconButton color="primary" component="label">
-          <input hidden accept="image/*" type="file" onChange={handleImageChange} />
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={handleImageChange}
+          />
           <PhotoCamera />
         </IconButton>
-        <Button type="submit" variant="contained" color="primary">등록하기</Button>
+        <Button type="submit" variant="contained" color="primary">
+          등록하기
+        </Button>
       </form>
     </div>
   );

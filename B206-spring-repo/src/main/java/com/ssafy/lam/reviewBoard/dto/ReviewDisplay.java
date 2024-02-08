@@ -20,12 +20,11 @@ public class ReviewDisplay {
     private int reviewBoard_expected_price; // 견적 가격
     private int reviewBoard_surgery_price; // 시술 가격
     private int reviewBoard_cnt; // 조회수
+    private String base64;
+    private String imageType;
 
     @Builder
-    public ReviewDisplay(long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content,
-                         double reviewBoard_score, String customer_name, String reviewBoard_doctor,
-                         String reviewBoard_region, String reviewBoard_surgery, String reviewBoard_hospital,
-                         int reviewBoard_expected_price, int reviewBoard_surgery_price, int reviewBoard_cnt) {
+    public ReviewDisplay(Long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content, double reviewBoard_score, String customer_name, String reviewBoard_doctor, String reviewBoard_region, String reviewBoard_surgery, String reviewBoard_hospital, int reviewBoard_expected_price, int reviewBoard_surgery_price, int reviewBoard_cnt, String base64, String imageType) {
         this.reviewBoard_seq = reviewBoard_seq;
         this.reviewBoard_title = reviewBoard_title;
         this.reviewBoard_content = reviewBoard_content;
@@ -38,5 +37,7 @@ public class ReviewDisplay {
         this.reviewBoard_expected_price = reviewBoard_expected_price;
         this.reviewBoard_surgery_price = reviewBoard_surgery_price;
         this.reviewBoard_cnt = reviewBoard_cnt;
+        this.base64 = base64;
+        this.imageType = imageType;
     }
 }

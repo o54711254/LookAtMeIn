@@ -3,11 +3,12 @@ package com.ssafy.lam.hospital.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Entity
 @Getter
 @NoArgsConstructor
 @ToString
-public class Category {
+public class DoctorCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="category_seq")
@@ -16,11 +17,13 @@ public class Category {
     @Column(name="part")
     private String part;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="doc_seq")
     private Doctor doctor;
 
     @Builder
-    public Category(Long categorySeq, String part, Doctor doctor) {
+    public DoctorCategory(Long categorySeq, String part, Doctor doctor) {
         this.categorySeq = categorySeq;
         this.part = part;
         this.doctor = doctor;

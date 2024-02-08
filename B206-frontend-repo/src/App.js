@@ -36,8 +36,8 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
-import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
-import HospitalDetail from "./pages/HospitalDetail.js";
+// import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
+// import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
 
@@ -102,10 +102,10 @@ function App() {
 
                   {/*병원 게시판*/}
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
-                  <Route
+                  {/* <Route
                     path="/hospital-info/detail/:hospital_seq"
                     element={<HospitalDetail />}
-                  />
+                  /> */}
 
                   {/*이상향 월드컵*/}
                   <Route path="/worldcup/*" element={<Worldcup />} />
@@ -116,7 +116,7 @@ function App() {
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
-                  <Route path="/reviewregist" element={<ReviewRegist/> }/>
+                  <Route path="/reviewregist" element={<ReviewRegist />} />
                 </Routes>
               </div>
             </div>

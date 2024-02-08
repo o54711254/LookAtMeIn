@@ -2,6 +2,8 @@ package com.ssafy.lam.reviewBoard.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor

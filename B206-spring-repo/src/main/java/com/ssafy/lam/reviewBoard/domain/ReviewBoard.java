@@ -1,5 +1,7 @@
 package com.ssafy.lam.reviewBoard.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -40,9 +42,9 @@ public class ReviewBoard {
     @Column(name = "review_board_score")
     private double score; // 별점
     @Column(name = "review_board_expected_price")
-    private int expectedPrice; // 견적 가격
+    private Integer expectedPrice; // 견적 가격
     @Column(name = "review_board_surgery_price")
-    private int surgeryPrice; // 시술 가격
+    private Integer surgeryPrice; // 시술 가격
     @Column(name = "review_board_regdate")
     private long regdate; // 작성시간
 
@@ -56,12 +58,16 @@ public class ReviewBoard {
     private int cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user; // 고객 seq
 
+    @OneToOne
+    @JoinColumn(name = "upload_file_seq")
+    private UploadFile uploadFile;
+
+
     @Builder
-    public ReviewBoard(long seq, String title, String content, String hospital, String doctor, String surgery,
-                       String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain,
-                       boolean isdeleted, int cnt, User user) {
+    public ReviewBoard(long seq, String title, String content, String hospital, String doctor, String surgery, String region, double score, Integer expectedPrice, Integer surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, User user, UploadFile uploadFile) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -77,29 +83,12 @@ public class ReviewBoard {
         this.isdeleted = isdeleted;
         this.cnt = cnt;
         this.user = user;
+        this.uploadFile = uploadFile;
     }
 
-    public ReviewBoard toEntity(long seq, String title, String content, String hospital, String doctor, String surgery,
-                                String region, double score, int expectedPrice, int surgeryPrice, long regdate,
-                                boolean complain, boolean isdeleted, int cnt, User user) {
-        return ReviewBoard.builder()
-                .seq(seq)
-                .title(title)
-                .content(content)
-                .hospital(hospital)
-                .doctor(doctor)
-                .surgery(surgery)
-                .region(region)
-                .score(score)
-                .expectedPrice(expectedPrice)
-                .surgeryPrice(surgeryPrice)
-                .regdate(regdate)
-                .complain(complain)
-                .isdeleted(isdeleted)
-                .cnt(cnt)
-                .user(user)
-                .build();
 
-    }
+
+
+
 
 }
