@@ -1,6 +1,7 @@
 package com.ssafy.lam.hospital.service;
 
 import com.ssafy.lam.hospital.domain.*;
+import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,21 @@ public class DoctorServiceImpl implements DoctorService{
     @Override
     public List<Career> getCareer(Long doctorSeq) {
         return careerRepository.findAllByDoctorDocInfoSeq(doctorSeq);
+    }
+
+    @Override
+    public List<ReviewBoard> getReviewsByDoctor(Long doctorSeq) {
+        return doctorRepository.findReviewsByDoctorSeq(doctorSeq);
+    }
+
+    @Override
+    public double getAvgScore(Long doctorSeq) {
+        return doctorRepository.findAvgByDoctorSeq(doctorSeq).orElse(0.0);
+    }
+
+    @Override
+    public int getCntReviews(Long doctorSeq) {
+        return doctorRepository.countByDoctorSeq(doctorSeq);
     }
 
 }

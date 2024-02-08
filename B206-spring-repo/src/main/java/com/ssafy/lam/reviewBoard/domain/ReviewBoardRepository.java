@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ReviewBoardRepository extends JpaRepository<ReviewBoard, Long>, ReviewBoardCustomRepository {
+public interface ReviewBoardRepository extends JpaRepository<ReviewBoard, Long> {
     List<ReviewBoard> findByIsdeletedFalse();
     List<ReviewBoard> findByComplainTrue();
     public List<ReviewBoard> findByUserUserSeqAndIsdeletedFalse(Long userSeq);

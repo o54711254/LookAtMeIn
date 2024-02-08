@@ -3,11 +3,12 @@ package com.ssafy.lam.hospital.controller;
 import com.ssafy.lam.hospital.domain.Career;
 import com.ssafy.lam.hospital.domain.Category;
 import com.ssafy.lam.hospital.domain.Doctor;
-import com.ssafy.lam.hospital.domain.DoctorRepository;
 import com.ssafy.lam.hospital.dto.CareerDto;
 import com.ssafy.lam.hospital.dto.CategoryDto;
 import com.ssafy.lam.hospital.dto.DoctorDto;
 import com.ssafy.lam.hospital.service.DoctorService;
+import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
+import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,8 +50,23 @@ public class DoctorController {
                 .doc_info_name(doctor.getDocInfoName())
                 .doc_info_category(categoryDto)
                 .doc_info_career(careerDto)
+                .doc_info_avgScore(doctorService.getAvgScore(doctor_seq))
+                .doc_info_cntReviews(doctorService.getCntReviews(doctor_seq))
                 .build();
         return new ResponseEntity<>(doctorDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/reviews/{doctor_seq}")
+    @Operation(summary = "고객이 해당 의사의 후기 목록을 조회")
+    public ResponseEntity<List<ReviewListDisplay>> getDoctorReview(@PathVariable Long doctor_seq) {
+        List<ReviewBoard> reviews = doctorService.getReviewsByDoctor(doctor_seq);
+        List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
+        for(ReviewBoard r : reviews) {
+            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
+                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
+                    r.getExpectedPrice(), r.getSurgeryPrice()));
+        }
+        return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
 
 }
