@@ -69,6 +69,7 @@ const HospitalList = () => {
         <div className={styles.headtext}>
           <p>룩앳미인에서 다양한 병원 정보를 알아보세요</p>
         </div>
+        </div>
         <div>
           {hospitalInfo.map((hospital) => (
             <li
@@ -98,7 +99,7 @@ const HospitalList = () => {
               </div>
             </li>
           ))}
-        </div>
+        
       </div>
     </>
   );
