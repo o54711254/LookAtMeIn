@@ -87,16 +87,4 @@ public class ReviewBoardController {
         return ResponseEntity.ok().build();
     }
 
-//    @GetMapping("/avg/{seq}")
-//    @Operation(summary = "평균")
-//    public double avgScore(@PathVariable long seq) {
-//        return reviewBoardService.avgScore(seq);
-//    }
-//
-//    @GetMapping("/cnt/{seq}")
-//    @Operation(summary = "개수")
-//    public double cntReviews(@PathVariable long seq) {
-//        return reviewBoardService.cntReviews(seq);
-//    }
-
 }

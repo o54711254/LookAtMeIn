@@ -27,9 +27,5 @@ public interface ReviewBoardService {
     // 게시글 신고
     void reportReview(Long seq);
 
-//    double avgScore(long seq);
-//    int cntReviews(long seq);
 
-
-    List<ReviewBoard> getReviewByUserSeq(Long userSeq);
 }

@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 public class ReviewDisplay {
 
-    private Long reviewBoard_seq; // 리뷰 게시판 번호
+    private long reviewBoard_seq; // 게시글 번호
     private String reviewBoard_title; // 제목
     private String reviewBoard_content; // 내용
     private double reviewBoard_score; // 별점
@@ -20,6 +20,8 @@ public class ReviewDisplay {
     private int reviewBoard_expected_price; // 견적 가격
     private int reviewBoard_surgery_price; // 시술 가격
     private int reviewBoard_cnt; // 조회수
+    private long hospital_seq; //
+    private long doctor_seq; //
 
     @Builder
     public ReviewDisplay(long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content,

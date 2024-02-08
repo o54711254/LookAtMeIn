@@ -1,11 +1,9 @@
 package com.ssafy.lam.reviewBoard.service;
 
-import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
-import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,8 +43,10 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
-                .hospital(reviewBoardRegister.getReviewBoard_hospital())
-                .doctor(reviewBoardRegister.getReviewBoard_doctor())
+                .hospital(reviewBoardRepository.findHospitalNameByHospitalSeq(reviewBoardRegister.getHospital_seq()))
+                .hospital_seq(reviewBoardRegister.getHospital_seq())
+                .doctor(reviewBoardRepository.findDoctorNameByDoctorSeq(reviewBoardRegister.getDoctor_seq()))
+                .doctor_seq(reviewBoardRegister.getDoctor_seq())
                 .surgery(reviewBoardRegister.getReviewBoard_surgery())
                 .region(reviewBoardRegister.getReviewBoard_region())
                 .score(reviewBoardRegister.getReviewBoard_score())
@@ -64,13 +64,14 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
         if(reviewBoard!=null) {
             reviewBoard.setTitle(reviewBoardUpdate.getReviewBoard_title());
             reviewBoard.setContent(reviewBoardUpdate.getReviewBoard_content());
-            reviewBoard.setHospital(reviewBoardUpdate.getReviewBoard_hospital());
-            reviewBoard.setDoctor(reviewBoardUpdate.getReviewBoard_doctor());
-            reviewBoard.setSurgery(reviewBoardUpdate.getReviewBoard_surgery());
+            reviewBoard.setHospital(reviewBoardRepository.findHospitalNameByHospitalSeq(reviewBoardUpdate.getHospital_seq()));
+            reviewBoard.setDoctor(reviewBoardRepository.findDoctorNameByDoctorSeq(reviewBoardUpdate.getDoctor_seq()));
             reviewBoard.setRegion(reviewBoardUpdate.getReviewBoard_region());
             reviewBoard.setScore(reviewBoardUpdate.getReviewBoard_score());
             reviewBoard.setExpectedPrice(reviewBoardUpdate.getReviewBoard_expected_price());
             reviewBoard.setSurgeryPrice(reviewBoardUpdate.getReviewBoard_surgery_price());
+            reviewBoard.setHospital_seq(reviewBoardUpdate.getHospital_seq());
+            reviewBoard.setDoctor_seq(reviewBoardUpdate.getDoctor_seq());
             reviewBoardRepository.save(reviewBoard);
         }
     }
@@ -95,8 +96,4 @@ public class ReviewBoardServiceImpl implements ReviewBoardService{
         }
     }
 
-    public List<ReviewBoard> getReviewByUserSeq(Long userSeq) {
-        List<ReviewBoard> reviewBoards = reviewBoardRepository.findByUserUserSeqAndIsdeletedFalse(userSeq);
-        return reviewBoards;
-    }
 }
