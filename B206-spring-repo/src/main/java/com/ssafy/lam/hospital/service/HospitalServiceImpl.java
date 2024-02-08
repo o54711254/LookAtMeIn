@@ -62,7 +62,7 @@ public class HospitalServiceImpl implements HospitalService {
     public HospitalDto getHospital(long userId) {
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
-            Hospital hospital = hospitalOptional.get();
+            com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
 
             HospitalDto dto = HospitalDto.builder()
                     .hospitalInfo_id(hospital.getUser().getUserId())

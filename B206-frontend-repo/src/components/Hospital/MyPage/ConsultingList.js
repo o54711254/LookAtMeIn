@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axiosAPi from "../../../../api/axiosApi";
+import axiosAPi from "../../../api/axiosApi";
 
 function ConsultingList() {
   const [postList, setPostList] = useState([]);
@@ -25,7 +25,7 @@ function ConsultingList() {
           })}
         </ul>
       ) : (
-        <div>상담내역이 없습니다.</div>
+        <div>병원상담내역이 없습니다.</div>
       )}
     </div>
   );

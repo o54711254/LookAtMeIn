@@ -24,8 +24,8 @@ export default function ResponsiveModal() {
                      .filter(hour => hour !== 12) // 12시를 제외합니다.
                      .map(hour => `${hour}:00 ${hour >= 12 ? 'PM' : 'AM'}`);
 
-  const customerInfoSeq = useSelector(state => state.user.userSeq);
-  // const hospitalInfoSeq = useSelector(state => state.hospital.hospitalSeq);
+  const customerUserSeq = useSelector(state => state.user.userSeq);
+  const hospitalUserSeq = useSelector(state => state.hospital.hospitalSeq);
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
@@ -37,17 +37,17 @@ export default function ResponsiveModal() {
   };
 
   const handleConfirm = async () => {
-    const year = format(date, 'yyyy');
-    const month = format(date, 'MM');
-    const day = format(date, 'dd');
+    const year = +format(date, 'yyyy'); // 문자열을 숫자로 변환
+    const month = +format(date, 'MM'); // 문자열을 숫자로 변환
+    const day = +format(date, 'dd'); // 문자열을 숫자로 변환
     const dayOfWeek = format(date, 'EEEE', { locale: ko });
     const time = selectedTime.match(/^\d+/)[0]; // "9:00 AM"에서 "9"만 추출
     const isPM = selectedTime.includes('PM');
     const hourInt = isPM ? parseInt(time) % 12 + 12 : parseInt(time); // PM이면 12를 더해 24시간 형태로 변환
 
     const reservationData = {
-      customerInfoSeq,
-      // hospitalInfoSeq,
+      customerUserSeq,
+      hospitalUserSeq,
       year,
       month,
       day,

@@ -7,7 +7,7 @@ function HospitalList() {
 
   useEffect(() => {
     const listURl =
-      listType === "all" ? `/admin/hoslist` : `/admin/hoslist/reject`;
+      listType === "all" ? `/api/admin/approveHos` : `/api/admin/unapproveHos`;
 
     axiosApi
       .get(listURl)
@@ -18,9 +18,9 @@ function HospitalList() {
         console.log("병원 목록을 가져오는데 실패했습니다.", error);
       });
   }, [listType]); // listType이 변경될 때마다 useEffect 실행
-  const handleApprove = (hos_seq) => {
+  const handleApprove = (userSeq) => {
     axiosApi
-      .patch(`/admin/hos/approve/${hos_seq}`)
+      .patch(`/api/admin/approveHos/${userSeq}`)
       .then((res) => {
         console.log("승인 성공");
         setListType("all");
@@ -29,9 +29,9 @@ function HospitalList() {
         console.log("승인 실패", error);
       });
   };
-  const handleReject = (hos_seq) => {
+  const handleReject = (userSeq) => {
     axiosApi
-      .patch(`/admin/hos/approve/${hos_seq}`)
+      .patch(`/api/admin/approveHos/${userSeq}`)
       .then((res) => {
         console.log("승인 성공");
         setListType("all");
@@ -49,14 +49,14 @@ function HospitalList() {
         <ul>
           {postList.map((post, index) => (
             <li key={index}>
-              <div>{post.hospital_name}</div>
-              <div>승인 상태: {post.approve ? "승인됨" : "미승인"}</div>
+              <div>{post.hospitalInfo_name}</div>
+              <div>승인 상태: {post.approved ? "승인됨" : "미승인"}</div>
               {!post.approve && (
                 <div>
-                  <button onClick={() => handleApprove(post.hos_seq)}>
+                  <button onClick={() => handleApprove(post.userSeq)}>
                     승인
                   </button>
-                  <button onClick={() => handleReject(post.hos_seq)}>
+                  <button onClick={() => handleReject(post.userSeq)}>
                     반려
                   </button>
                 </div>

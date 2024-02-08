@@ -1,4 +1,4 @@
 function Doctor() {
-  return <div></div>;
+  return <div>의사!!</div>;
 }
 export default Doctor;

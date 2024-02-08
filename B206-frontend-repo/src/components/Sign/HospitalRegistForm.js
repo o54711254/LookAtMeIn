@@ -5,11 +5,12 @@ import axiosApi from "axios";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import logo from "../../assets/lab_logo.png";
 import axiosAPi from "../../api/axiosApi";
 import "react-toastify/dist/ReactToastify.css";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
+import styles from "./HospitalRegistForm.module.css"
+import logo from "../../assets/logo.png";
 
 //회원가입 시 입력하는 정보 유효성 검사
 const validationSchema = yup.object({
@@ -62,6 +63,7 @@ function HospitalRegistForm() {
   const [businessRegistrationCertificate, setBusinessRegistrationCertificate] =
     useState(null);
 
+    
   // 파일 업로드 핸들러
   const handleFileChange = (e) => {
     setBusinessRegistrationCertificate(e.target.files[0]);
@@ -73,7 +75,7 @@ function HospitalRegistForm() {
       password: "",
       confirmPassword: "",
       name: "", // 병원명->밑에 이름 다 바꿔!!
-      addresss: "",
+      address: "",
       url: "", //병원 홈페이지 주소
       email: "",
       phoneNumber: "", //병원 전화번호
@@ -88,13 +90,13 @@ function HospitalRegistForm() {
       formData.append("hospitalInfo_id", values.id);
       formData.append("hospitalInfo_password", values.password);
       formData.append("hospitalInfo_name", values.name);
-      formData.append("hospitalInfo_address", values.addresss);
+      formData.append("hospitalInfo_address", values.address);
       formData.append("hospitalInfo_url", values.url);
       formData.append("hospitalInfo_email", values.email);
       formData.append("hospitalInfo_phoneNumber", values.phoneNumber);
       formData.append("category", values.part);
       formData.append(
-        "businessRegistrationCertificate",
+        "uploadFile",
         businessRegistrationCertificate
       ); //여기까지는 필수 입력 사항
       //여기부터는 선택적으로 입력하는 사항
@@ -163,27 +165,26 @@ function HospitalRegistForm() {
   };
 
   return (
-    <>
-      <div className="hospitalRegistForm">
-        <div>
-          <h1>룩앳미인</h1>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.HospitalRegistForm}>
+        <img src={logo} alt="로고" id={styles.logo}/>
         <form onSubmit={formik.handleSubmit}>
           <div className="inputText">
-            <h3>아이디</h3>
+            <h3 className={styles.text}>아이디</h3>
             <input
               type="text"
               placeholder="abcd1234"
               name="id"
               value={formik.values.id}
+              id={styles.inputB}
               onChange={formik.handleChange}
               className={formik.touched.id && formik.errors.id ? "error" : ""}
             />
+              <button onClick={checkDuplicateId} className={styles.button}>중복확인</button>
             {formik.touched.id && formik.errors.id && (
               <div className="helperText">{formik.errors.id}</div>
             )}
 
-            <button onClick={checkDuplicateId}>중복확인</button>
             {useable === null ? (
               ""
             ) : useable ? (
@@ -193,13 +194,14 @@ function HospitalRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>비밀번호</h3>
+            <h3 className={styles.text}>비밀번호</h3>
             <input
               name="password"
               type="password"
               onChange={formik.handleChange}
               placeholder="영문, 숫자, 특수문자 조합 8~16자를 입력하세요"
               value={formik.values.password}
+              id={styles.input}
               className={
                 formik.touched.password && formik.errors.password ? "error" : ""
               }
@@ -209,12 +211,13 @@ function HospitalRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>비밀번호 확인</h3>
+            <h3 className={styles.text}>비밀번호 확인</h3>
             <input
               type="password"
               name="confirmPassword"
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
+              id={styles.input}
               placeholder="비밀번호 확인"
               style={{ color: isPasswordMatch ? "green" : "inherit" }} // 조건부 스타일 적용
             />
@@ -223,12 +226,13 @@ function HospitalRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>병원명</h3>
+            <h3 className={styles.text}>병원명</h3>
             <input
               type="text"
               placeholder="병원 이름"
               name="name"
               value={formik.values.hospitalInfo_name}
+              id={styles.input}
               onChange={formik.handleChange}
               className={
                 formik.touched.hospitalInfo_name &&
@@ -245,15 +249,16 @@ function HospitalRegistForm() {
               )}
           </div>
           <div className="inputText">
-            <h3>주소</h3>
+            <h3 className={styles.text}>주소</h3>
             <input
               type="text"
               name="address"
               value={formik.values.address}
               onChange={formik.handleChange}
+              id={styles.inputB}
               readOnly
             />
-            <button type="button" onClick={showModal}>
+            <button type="button" onClick={showModal} className={styles.button}>
               주소 입력
             </button>
             <Modal
@@ -267,13 +272,14 @@ function HospitalRegistForm() {
           </div>
 
           <div className="inputText">
-            <h3>홈페이지</h3>
+            <h3 className={styles.text}>홈페이지</h3>
             <input
               type="text"
               name="url"
               placeholder="홈페이지 URL"
               value={formik.values.url}
               onChange={formik.handleChange}
+              id={styles.input}
               className={formik.touched.url && formik.errors.url ? "error" : ""}
             />
             {formik.touched.url && formik.errors.url && (
@@ -282,13 +288,14 @@ function HospitalRegistForm() {
           </div>
 
           <div className="inputText">
-            <h3>이메일</h3>
+            <h3 className={styles.text}>이메일</h3>
             <input
               type="text"
               name="email"
               placeholder="이메일"
               value={formik.values.email}
               onChange={formik.handleChange}
+              id={styles.input}
               className={
                 formik.touched.email && formik.errors.email ? "error" : ""
               }
@@ -298,13 +305,14 @@ function HospitalRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>병원 Tel</h3>
+            <h3 className={styles.text}>병원 Tel</h3>
             <input
               type="text"
               name="phoneNumber"
               placeholder="전화번호"
               value={formik.values.phoneNumber}
               onChange={formik.handleChange}
+              id={styles.input}
               className={
                 formik.touched.phoneNumber && formik.errors.phoneNumber
                   ? "error"
@@ -316,63 +324,69 @@ function HospitalRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>해시태그</h3>
+            <h3 className={styles.text}>해시태그</h3>
             <input
               type="text"
-              name="hashtag"
+              name="part"
               placeholder="해시태그"
-              value={formik.values.hashtag}
+              value={formik.values.part}
+              id={styles.input}
               onChange={formik.handleChange}
             />
           </div>
           {/* 선택적 필드: 병원 소개, 오픈 시간, 닫는 시간 */}
           <div className="inputText">
-            <h3>병원 소개 (선택 사항)</h3>
+            <h3 className={styles.text}>병원 소개 (선택 사항)</h3>
             <input
               type="text"
               name="info"
               placeholder="병원 소개"
               value={formik.values.info}
+              id={styles.input}
               onChange={formik.handleChange}
             />
           </div>
           <div className="inputText">
-            <h3>오픈 시간 (선택 사항)</h3>
+            <h3 className={styles.text}>오픈 시간 (선택 사항)</h3>
             <input
               type="text"
               name="open"
               placeholder="오픈 시간"
               value={formik.values.open}
+              id={styles.input}
               onChange={formik.handleChange}
             />
           </div>
           <div className="inputText">
-            <h3>닫는 시간 (선택 사항)</h3>
+            <h3 className={styles.text}>닫는 시간 (선택 사항)</h3>
             <input
               type="text"
               name="close"
               placeholder="닫는 시간"
               value={formik.values.close}
+              id={styles.input}
               onChange={formik.handleChange}
             />
           </div>
           {/* 사업자 등록증 파일 업로드 */}
           <div className="inputText">
-            <h3>사업자 등록증</h3>
+            <h3 className={styles.text}>사업자 등록증</h3>
             <input
               type="file"
               name="businessRegistrationCertificate"
+              className={styles.fileup}
               onChange={handleFileChange}
+              style={{ display: 'hidden' }} // 실제 파일 입력 필드는 숨김
             />
           </div>
 
           {/* 회원가입 버튼 */}
           <div className="RegistButton">
-            <button type="submit">회원가입</button>
+            <button type="submit" className={styles.RegistButton}>회원가입</button>
           </div>
         </form>
       </div>
-    </>
+      </div>
   );
 }
 export default HospitalRegistForm;

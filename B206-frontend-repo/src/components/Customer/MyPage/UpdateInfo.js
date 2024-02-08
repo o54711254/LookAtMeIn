@@ -1,4 +1,7 @@
-function UpdateInfo() {
-  return <div></div>;
+function UpdateInfo(customer) {
+  return 
+  <div>
+    
+  </div>;
 }
 export default UpdateInfo;
