@@ -75,7 +75,7 @@ function HospitalRegistForm() {
       password: "",
       confirmPassword: "",
       name: "", // 병원명->밑에 이름 다 바꿔!!
-      addresss: "",
+      address: "",
       url: "", //병원 홈페이지 주소
       email: "",
       phoneNumber: "", //병원 전화번호
@@ -90,13 +90,13 @@ function HospitalRegistForm() {
       formData.append("hospitalInfo_id", values.id);
       formData.append("hospitalInfo_password", values.password);
       formData.append("hospitalInfo_name", values.name);
-      formData.append("hospitalInfo_address", values.addresss);
+      formData.append("hospitalInfo_address", values.address);
       formData.append("hospitalInfo_url", values.url);
       formData.append("hospitalInfo_email", values.email);
       formData.append("hospitalInfo_phoneNumber", values.phoneNumber);
       formData.append("category", values.part);
       formData.append(
-        "businessRegistrationCertificate",
+        "uploadFile",
         businessRegistrationCertificate
       ); //여기까지는 필수 입력 사항
       //여기부터는 선택적으로 입력하는 사항
@@ -327,9 +327,9 @@ function HospitalRegistForm() {
             <h3 className={styles.text}>해시태그</h3>
             <input
               type="text"
-              name="hashtag"
+              name="part"
               placeholder="해시태그"
-              value={formik.values.hashtag}
+              value={formik.values.part}
               id={styles.input}
               onChange={formik.handleChange}
             />

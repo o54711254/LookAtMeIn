@@ -2,6 +2,7 @@ package com.ssafy.lam.questionnaire.domain;
 
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,4 +28,15 @@ public class Questionnaire {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="hospital_seq")
     User hospital;
+
+    @Builder
+    public Questionnaire(Long seq, String blood, String remark, String title, String content, User customer, User hospital) {
+        this.seq = seq;
+        this.blood = blood;
+        this.remark = remark;
+        this.title = title;
+        this.content = content;
+        this.customer = customer;
+        this.hospital = hospital;
+    }
 }
