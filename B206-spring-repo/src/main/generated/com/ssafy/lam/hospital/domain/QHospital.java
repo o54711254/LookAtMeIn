@@ -40,6 +40,10 @@ public class QHospital extends EntityPathBase<Hospital> {
 
     public final StringPath openTime = createString("openTime");
 
+    public final com.ssafy.lam.file.domain.QUploadFile profileFile;
+
+    public final com.ssafy.lam.file.domain.QUploadFile registrationFile;
+
     public final StringPath tel = createString("tel");
 
     public final StringPath url = createString("url");
@@ -64,6 +68,8 @@ public class QHospital extends EntityPathBase<Hospital> {
 
     public QHospital(Class<? extends Hospital> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.profileFile = inits.isInitialized("profileFile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("profileFile")) : null;
+        this.registrationFile = inits.isInitialized("registrationFile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("registrationFile")) : null;
         this.user = inits.isInitialized("user") ? new com.ssafy.lam.user.domain.QUser(forProperty("user")) : null;
     }
 

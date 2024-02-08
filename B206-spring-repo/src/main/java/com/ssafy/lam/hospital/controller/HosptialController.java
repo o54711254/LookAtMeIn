@@ -31,13 +31,11 @@ public class HosptialController {
 
     @PostMapping("/regist")
     @Operation(summary = "병원 정보를 등록한다.")
-    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam("UploadFile") MultipartFile file) {
+    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam("registrationFile") MultipartFile registrationFile) {
         try{
-            log.info("regist hospitalDto :{}", hospital);
             HospitalRequestDto hospitalRequestDto = new ObjectMapper().readValue(hospital, HospitalRequestDto.class);
-//        log.info("regist hospital : {}, Category {}", hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
 
-            hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
+            hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList(), registrationFile);
             return ResponseEntity.ok().build();
 
         }catch (Exception e){
@@ -45,6 +43,9 @@ public class HosptialController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+//    @PutMapping
+
     
     // 병원에서 의사 정보 추가
 //    @PostMapping("/{hospital_seq}/doctors/regist")

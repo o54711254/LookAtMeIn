@@ -72,9 +72,5 @@ public class QuestionnaireController {
 
     }
 
-    private String encodeFileToBase64(Path path) throws IOException {
-        byte[] fileContent = Files.readAllBytes(path);
-        return Base64.getEncoder().encodeToString(fileContent);
-    }
 
 }

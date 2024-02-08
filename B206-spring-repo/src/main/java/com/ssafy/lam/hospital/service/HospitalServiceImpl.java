@@ -1,5 +1,7 @@
 package com.ssafy.lam.hospital.service;
 
+import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hospital.domain.*;
 import com.ssafy.lam.hospital.dto.CategoryDto;
 import com.ssafy.lam.hospital.dto.HospitalDetailDto;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +28,12 @@ public class HospitalServiceImpl implements HospitalService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final CategoryRepository categoryRepository;
+    private final UploadFileService uploadFileService;
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
     @Override
-    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
+    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto, MultipartFile registrationFile) {
         log.info("createHospital : {}", hospitalDto);
         List<String> roles = new ArrayList<>();
         roles.add("HOSPITAL");
@@ -52,6 +56,10 @@ public class HospitalServiceImpl implements HospitalService {
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
+        UploadFile uploadFile = uploadFileService.store(registrationFile);
+        hospital.setRegistrationFile(uploadFile);
+
+
         hospital = hospitalRepository.save(hospital);
         for (CategoryDto category : categoryDto) {
             log.info("category : {}", category);

@@ -130,7 +130,7 @@ function HospitalRegistForm() {
       hospitalDto["categoryList"] = categoryList;
 
       formData.append("hospital", JSON.stringify(hospitalDto));
-      formData.append("UploadFile", businessRegistrationCertificate);
+      formData.append("registrationFile", businessRegistrationCertificate);
 
 
 

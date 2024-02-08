@@ -1,5 +1,8 @@
 package com.ssafy.lam.hospital.controller;
 
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.HospitalDetailDto;
@@ -17,6 +20,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,20 +32,44 @@ public class HospitalInfoController {
     private final HospitalService hospitalService;
     private Logger log = LoggerFactory.getLogger(HosptialController.class);
 
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+
     @Autowired
     public HospitalInfoController(HospitalService hospitalService) {
         this.hospitalService = hospitalService;
     }
+
 
     @GetMapping("/list")
     @Operation(summary = "고객이 병원 전체 목록을 조회한다.")
     public ResponseEntity<List<HospitalDetailDto>> getAllHospital() {
         List<Hospital> hospitalList = hospitalService.getAllHospitalInfo();
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
-        for(Hospital h : hospitalList) {
-            hospitalDetailDtoList.add(new HospitalDetailDto(h.getHospitalSeq(), h.getUser().getName(), h.getTel(),
-                    h.getIntro(), h.getAddress(), h.getOpenTime(), h.getCloseTime(), h.getUrl(),
-                    h.getUser().getUserSeq()));
+        try{
+            for(Hospital h : hospitalList) {
+                HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
+                        .hospitalInfo_seq(h.getHospitalSeq())
+                        .hospitalInfo_name(h.getUser().getName())
+                        .hospitalInfo_phoneNumber(h.getTel())
+                        .hospitalInfo_introduce(h.getIntro())
+                        .hospitalInfo_address(h.getAddress())
+                        .hospitalInfo_open(h.getOpenTime())
+                        .hospitalInfo_close(h.getCloseTime())
+                        .hospitalInfo_url(h.getUrl())
+                        .userSeq(h.getUser().getUserSeq())
+                        .build();
+
+                // 병원 프로필 사진 base64로 인코딩해서 보내줘야함
+                Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
+                String profileBase64 = EncodeFile.encodeFileToBase64(path);
+
+                hospitalDetailDto.setProfileBase64(profileBase64);
+
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
