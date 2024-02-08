@@ -8,13 +8,28 @@ function MyPost() {
   return (
     <div className={styles.postContainer}>
       <div className={styles.postButton}>
-        <NavLink to="free" className={styles.button}>
+        <NavLink
+          to="free"
+          className={({ isActive }) =>
+            isActive ? `${styles.button} ${styles.active}` : styles.button
+          }
+        >
           자유게시판
         </NavLink>
-        <NavLink to="review" className={styles.button}>
+        <NavLink
+          to="review"
+          className={({ isActive }) =>
+            isActive ? `${styles.button} ${styles.active}` : styles.button
+          }
+        >
           후기게시판
         </NavLink>
-        <NavLink to="request" className={styles.button}>
+        <NavLink
+          to="request"
+          className={({ isActive }) =>
+            isActive ? `${styles.button} ${styles.active}` : styles.button
+          }
+        >
           상담요청게시판
         </NavLink>
       </div>

@@ -1,86 +1,74 @@
-.loginform {
-  margin: 0 auto;
-  width: 725px;
-  height: 700px;
+.loginFormContainer{
   display: flex;
-  background-color: #fffaf4;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: rgba(239, 232, 222, 0.2);
+  padding: 40px;
   margin-bottom: 50px;
   border-radius: 15px;
+}
+.logo{
+  display: flex;
+  width: 100%;
   justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  
 }
-
-#loginheader {
-  display: flex;
-  justify-content: center;  
+.logoIcon{
+  width: 45%;
 }
-
-#radio {
+.submitBox{
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 50%;
   justify-content: center;
-  margin-bottom: 30px; 
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-bottom: 40px;
 }
-
-.loginButton{
-  left: 31.88%;
-  right: 31.6%;
-  top: 61.33%;
-  bottom: 32.23%;
-  background: rgba(254, 202, 171, 0.76);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 15px;
-  width: 520px;
-  height: 60px;
-  border-style: none;
-  font-size: 30px;
-  font-weight: bold;
-  margin-top: 50px;
-}
-
-.loginButton:hover {
-  cursor: pointer;
-}
-
-#userinput {
-  font-size: large;
-  margin-top: 10px;
-}
-
-#input  {
-    background-color: transparent;
-    border: none;
-    border-bottom: 1px solid #fbd3d3;
-    color: #555;
-    box-sizing: border-box;
-    font-family: 'Arvo';
-    font-size: 18px;
-    height: 50px;
-    padding: 10px 0px;
-    position: relative;
-    top: 50%;
-    width: 520px;
-  
-    &:focus {
-      outline: none;
-    }
-}
-
-.logo {
-  width: 150px;
-  margin-bottom: 30px;
-}
-
-.selectBox {
-  margin-top: 30px;
+.inputBox{
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  margin-bottom: 40px;
 }
-
-.select {
-  text-decoration-line: none;
+.inputTitle{
   font-size: 20px;
-  color : black;
-  font-weight: bold;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+#input{
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #d1d0d0;
+  background-color: transparent;
+  padding: 10px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.buttonBox{
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+}
+.button{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  background-color: #ffdbc6;
+  width: 300px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  font-size: 23px;
+  font-weight: 600;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
+}
+.button:hover {
+  background-color: #f8b195; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+  text-decoration: none;
 }
