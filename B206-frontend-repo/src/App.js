@@ -36,7 +36,8 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
-import HospitalDetail from "./components/HospitalBoard/HospitalDetail.js";
+import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
+import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js"
 
