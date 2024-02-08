@@ -1,15 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import axiosApi from "axios";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import axiosAPi from "../../api/axiosApi";
+import axiosApi from "../../api/axiosApi";
 import "react-toastify/dist/ReactToastify.css";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
-import styles from "./HospitalRegistForm.module.css"
+import styles from "./HospitalRegistForm.module.css";
 import logo from "../../assets/logo.png";
 
 //회원가입 시 입력하는 정보 유효성 검사
@@ -26,11 +25,11 @@ const validationSchema = yup.object({
     .string()
     .oneOf([yup.ref("password"), null], "비밀번호가 일치하지 않습니다.")
     .required("비밀번호를 다시 입력하세요."),
-  hospitalInfo_email: yup
+  email: yup
     .string()
     .email("올바른 이메일 형식을 입력하세요.")
     .required("이메일을 입력하세요."),
-  hospitalInfo_phoneNumber: yup
+  phoneNumber: yup
     .string()
     .matches(/^[0-9]+$/, "숫자만 입력하세요.")
     .required("전화번호를 입력하세요."),
@@ -41,29 +40,32 @@ function HospitalRegistForm() {
 
   //사용 가능한 정보인지 검사
   const [useable, setUseable] = useState(null);
+  const [tag, setTag] = useState(''); // 사용자 입력을 관리하는 로컬 상태
+
 
   //아이디 중복체크
   const checkDuplicateId = (e) => {
     e.preventDefault();
-    axiosAPi.get(`/api/user/regist/idcheck/${formik.values.id}`).then((response) => {
-      console.log(response.data);
-      if (response.data === true) {
-        //alert("사용 불가한 아이디입니다."); //이미 사용중인 아이디
-        setUseable(false);
-      } else if (response.data === false) {
-        //alert("사용 가능한 아이디입니다.");
-        setUseable(true);
-      } else {
-        // alert("사용 불가한 아이디입니다.");
-      }
-    });
+    axiosApi
+      .get(`/api/user/regist/idcheck/${formik.values.id}`)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data === true) {
+          //alert("사용 불가한 아이디입니다."); //이미 사용중인 아이디
+          setUseable(false);
+        } else if (response.data === false) {
+          //alert("사용 가능한 아이디입니다.");
+          setUseable(true);
+        } else {
+          // alert("사용 불가한 아이디입니다.");
+        }
+      });
   };
 
   // 사업자 등록증
   const [businessRegistrationCertificate, setBusinessRegistrationCertificate] =
     useState(null);
 
-    
   // 파일 업로드 핸들러
   const handleFileChange = (e) => {
     setBusinessRegistrationCertificate(e.target.files[0]);
@@ -79,7 +81,7 @@ function HospitalRegistForm() {
       url: "", //병원 홈페이지 주소
       email: "",
       phoneNumber: "", //병원 전화번호
-      part: "", // 병원 전문 분야
+      categoryList: [],
       info: "", // 병원 소개 멘트
       open: "", // 오픈 시간
       close: "", // 닫는 시간
@@ -87,42 +89,69 @@ function HospitalRegistForm() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
-      formData.append("hospitalInfo_id", values.id);
-      formData.append("hospitalInfo_password", values.password);
-      formData.append("hospitalInfo_name", values.name);
-      formData.append("hospitalInfo_address", values.address);
-      formData.append("hospitalInfo_url", values.url);
-      formData.append("hospitalInfo_email", values.email);
-      formData.append("hospitalInfo_phoneNumber", values.phoneNumber);
-      formData.append("category", values.part);
-      formData.append(
-        "uploadFile",
-        businessRegistrationCertificate
-      ); //여기까지는 필수 입력 사항
-      //여기부터는 선택적으로 입력하는 사항
-      if (values.info) {
-        formData.append("hospitalInfo_introduce", values.info);
-      }
-      if (values.open) {
-        formData.append("hospitalInfo_open", values.open);
-      }
-      if (values.close) {
-        formData.append("hospitalInfo_close", values.close);
+      // Hospital 정보를 "hospital" 객체 내부에 넣어서 추가
+
+      const hospital ={
+        hospitalInfo_id: values.id,
+        hospitalInfo_password: values.password,
+        hospitalInfo_name: values.name,
+        hospitalInfo_address: values.address,
+        hospitalInfo_url: values.url,
+        hospitalInfo_email: values.email,
+        hospitalInfo_phoneNumber: values.phoneNumber,
       }
 
+      if(values.info){
+        hospital["hospitalInfo_introduce"] = values.info;
+      }
+
+      if(values.open){
+        hospital["hospitalInfo_open"] = values.open;
+      }
+
+      if(values.close){
+        hospital["hospitalInfo_close"] = values.close;
+      }
+      // 비즈니스 등록증 파일 추가
+      // hospital["businessRegistrationCertificate"] = businessRegistrationCertificate; 
+
+      // formData.append("hospital", JSON.stringify(hospital));
+
+      // 카테고리 정보를 추가
+      const categoryList = []
+
+      // CategoryList 배열 정보를 추가
+      values.categoryList.forEach((category, index) => {
+        categoryList.push({part: category});
+      });
+
+      const hospitalDto = {}
+      hospitalDto["hospital"] = hospital;
+      hospitalDto["categoryList"] = categoryList;
+
+      formData.append("hospital", JSON.stringify(hospitalDto));
+      formData.append("UploadFile", businessRegistrationCertificate);
+
+
+
+      for (let key of formData.keys()) {
+        console.log(key, ":", formData.get(key));
+     }
+      
       try {
         await axiosApi.post("/api/hospital/regist", formData, {
-          //서버에게 클라이언트가 보내는 데이터의 유형을 알려주는 것.
+          // 서버에게 클라이언트가 보내는 데이터의 유형을 알려주는 것.
           headers: {
             "Content-Type": "multipart/form-data", //multipart/form-data는 폼 데이터가 파일이나 이미지와 같은 바이너리 데이터를 포함할 수 있음을 나타냄
           },
         });
+        
         window.alert("회원가입이 완료되었습니다. 승인을 대기해주세요");
         setTimeout(() => {
           navigate("/");
         }, 2000);
       } catch (e) {
-        console.log(e.response.data.message);
+        console.log(e.message);
       }
     },
   });
@@ -164,10 +193,19 @@ function HospitalRegistForm() {
     setModalVisible(false);
   };
 
+  const addTag = () => {
+    // 입력된 태그가 비어있지 않은 경우에만 추가
+    if (tag) {
+      const newTags = [...formik.values.categoryList, tag];
+      formik.setFieldValue('categoryList', newTags);
+      setTag(''); // 입력 필드 초기화
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.HospitalRegistForm}>
-        <img src={logo} alt="로고" id={styles.logo}/>
+        <img src={logo} alt="로고" id={styles.logo} />
         <form onSubmit={formik.handleSubmit}>
           <div className="inputText">
             <h3 className={styles.text}>아이디</h3>
@@ -180,7 +218,9 @@ function HospitalRegistForm() {
               onChange={formik.handleChange}
               className={formik.touched.id && formik.errors.id ? "error" : ""}
             />
-              <button onClick={checkDuplicateId} className={styles.button}>중복확인</button>
+            <button onClick={checkDuplicateId} className={styles.button}>
+              중복확인
+            </button>
             {formik.touched.id && formik.errors.id && (
               <div className="helperText">{formik.errors.id}</div>
             )}
@@ -231,20 +271,20 @@ function HospitalRegistForm() {
               type="text"
               placeholder="병원 이름"
               name="name"
-              value={formik.values.hospitalInfo_name}
+              value={formik.values.name}
               id={styles.input}
               onChange={formik.handleChange}
               className={
-                formik.touched.hospitalInfo_name &&
-                formik.errors.hospitalInfo_name
+                formik.touched.name &&
+                formik.errors.name
                   ? "error"
                   : ""
               }
             />
-            {formik.touched.hospitalInfo_name &&
-              formik.errors.hospitalInfo_name && (
+            {formik.touched.name &&
+              formik.errors.name && (
                 <div className="helperText">
-                  {formik.errors.hospitalInfo_name}
+                  {formik.errors.name}
                 </div>
               )}
           </div>
@@ -324,16 +364,21 @@ function HospitalRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3 className={styles.text}>해시태그</h3>
-            <input
-              type="text"
-              name="part"
-              placeholder="해시태그"
-              value={formik.values.part}
-              id={styles.input}
-              onChange={formik.handleChange}
-            />
-          </div>
+      <h3 className={styles.text}>해시태그</h3>
+      <input
+        type="text"
+        name="tag"
+        placeholder="해시태그 입력 후 추가 버튼 클릭"
+        value={tag}
+        onChange={(e) => setTag(e.target.value)}
+        id={styles.input}
+      />
+      <button type="button" onClick={addTag}>추가</button>
+      {/* 이미 추가된 해시태그 목록을 보여줌 */}
+      {formik.values.categoryList.map((category, index) => (
+        <div key={index}>{category}</div>
+      ))}
+    </div>
           {/* 선택적 필드: 병원 소개, 오픈 시간, 닫는 시간 */}
           <div className="inputText">
             <h3 className={styles.text}>병원 소개 (선택 사항)</h3>
@@ -369,24 +414,29 @@ function HospitalRegistForm() {
             />
           </div>
           {/* 사업자 등록증 파일 업로드 */}
-          <div className="inputText">
+          {/* `${styles.fileup} ${styles.inputText}` */}
+          <div className={styles.inputText}>
             <h3 className={styles.text}>사업자 등록증</h3>
-            <input
-              type="file"
-              name="businessRegistrationCertificate"
-              className={styles.fileup}
-              onChange={handleFileChange}
-              style={{ display: 'hidden' }} // 실제 파일 입력 필드는 숨김
-            />
+            <div className={styles.fileup}>
+              {/* <span>파일 선택</span> */}
+              <input
+                type="file"
+                name="businessRegistrationCertificate"
+                className={styles.FileInput_hidden_overlay}
+                onChange={handleFileChange}
+                placeholder="파일 선택"
+              />
+            </div>
           </div>
-
           {/* 회원가입 버튼 */}
           <div className="RegistButton">
-            <button type="submit" className={styles.RegistButton}>회원가입</button>
+            <button type="submit" className={styles.RegistButton}>
+              회원가입
+            </button>
           </div>
         </form>
       </div>
-      </div>
+    </div>
   );
 }
 export default HospitalRegistForm;

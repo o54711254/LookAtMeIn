@@ -26,15 +26,13 @@ public class QQuestionnaire extends EntityPathBase<Questionnaire> {
 
     public final StringPath content = createString("content");
 
-    public final com.ssafy.lam.user.domain.QUser customer;
-
-    public final com.ssafy.lam.user.domain.QUser hospital;
-
     public final StringPath remark = createString("remark");
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 
     public final StringPath title = createString("title");
+
+    public final com.ssafy.lam.file.domain.QUploadFile uploadFile;
 
     public QQuestionnaire(String variable) {
         this(Questionnaire.class, forVariable(variable), INITS);
@@ -54,8 +52,7 @@ public class QQuestionnaire extends EntityPathBase<Questionnaire> {
 
     public QQuestionnaire(Class<? extends Questionnaire> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.customer = inits.isInitialized("customer") ? new com.ssafy.lam.user.domain.QUser(forProperty("customer")) : null;
-        this.hospital = inits.isInitialized("hospital") ? new com.ssafy.lam.user.domain.QUser(forProperty("hospital")) : null;
+        this.uploadFile = inits.isInitialized("uploadFile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("uploadFile")) : null;
     }
 
 }

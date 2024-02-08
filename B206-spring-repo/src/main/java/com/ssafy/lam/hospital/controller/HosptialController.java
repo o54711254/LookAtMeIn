@@ -1,6 +1,7 @@
 package com.ssafy.lam.hospital.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.dto.HospitalDetailDto;
 import com.ssafy.lam.hospital.dto.HospitalDto;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,11 +31,19 @@ public class HosptialController {
 
     @PostMapping("/regist")
     @Operation(summary = "병원 정보를 등록한다.")
-    public ResponseEntity<Void> regist(@RequestBody HospitalRequestDto hospitalRequestDto) {
-        log.info("regist hospital : {}, Category {}", hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
+    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam("UploadFile") MultipartFile file) {
+        try{
+            log.info("regist hospitalDto :{}", hospital);
+            HospitalRequestDto hospitalRequestDto = new ObjectMapper().readValue(hospital, HospitalRequestDto.class);
+//        log.info("regist hospital : {}, Category {}", hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
 
-        hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
-        return ResponseEntity.ok().build();
+            hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
+            return ResponseEntity.ok().build();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
     
     // 병원에서 의사 정보 추가
