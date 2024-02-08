@@ -116,6 +116,7 @@ function App() {
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
+                  <Route path="/reviewregist" element={<ReviewRegist/> }/>
                 </Routes>
               </div>
             </div>

@@ -88,7 +88,7 @@ const HospitalInfo = () => {
       .catch((error) => {
         console.log("의사 목록 불러오기 실패 : ", error);
       });
-  });
+  }, []);
 
   const week = ["월", "화", "수", "목", "금", "토", "일"];
   return (
