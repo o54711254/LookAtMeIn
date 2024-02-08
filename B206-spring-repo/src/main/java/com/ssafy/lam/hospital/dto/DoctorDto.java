@@ -1,7 +1,5 @@
 package com.ssafy.lam.hospital.dto;
 
-import com.ssafy.lam.hospital.domain.Career;
-import com.ssafy.lam.hospital.domain.Category;
 import lombok.*;
 
 import java.util.List;

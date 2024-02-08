@@ -30,6 +30,11 @@ export default function FormDialog() {
 
   const handleRegist = () => {
     const formData = new FormData();
+    formData.append("customer_seq", 1);
+    formData.append("hospital_seq", 2);
+
+    // const 
+
     if (image) {
       formData.append('image', image); // 서버에서 사용하는 필드명('image' 등)으로 교체 가능
     }

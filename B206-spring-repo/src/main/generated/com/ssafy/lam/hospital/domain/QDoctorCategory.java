@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QCategory is a Querydsl query type for Category
+ * QDoctorCategory is a Querydsl query type for DoctorCategory
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QCategory extends EntityPathBase<Category> {
+public class QDoctorCategory extends EntityPathBase<DoctorCategory> {
 
-    private static final long serialVersionUID = -1757698159L;
+    private static final long serialVersionUID = 1821021072L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QCategory category = new QCategory("category");
+    public static final QDoctorCategory doctorCategory = new QDoctorCategory("doctorCategory");
 
     public final NumberPath<Long> categorySeq = createNumber("categorySeq", Long.class);
 
@@ -28,23 +28,23 @@ public class QCategory extends EntityPathBase<Category> {
 
     public final StringPath part = createString("part");
 
-    public QCategory(String variable) {
-        this(Category.class, forVariable(variable), INITS);
+    public QDoctorCategory(String variable) {
+        this(DoctorCategory.class, forVariable(variable), INITS);
     }
 
-    public QCategory(Path<? extends Category> path) {
+    public QDoctorCategory(Path<? extends DoctorCategory> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QCategory(PathMetadata metadata) {
+    public QDoctorCategory(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QCategory(PathMetadata metadata, PathInits inits) {
-        this(Category.class, metadata, inits);
+    public QDoctorCategory(PathMetadata metadata, PathInits inits) {
+        this(DoctorCategory.class, metadata, inits);
     }
 
-    public QCategory(Class<? extends Category> type, PathMetadata metadata, PathInits inits) {
+    public QDoctorCategory(Class<? extends DoctorCategory> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.doctor = inits.isInitialized("doctor") ? new QDoctor(forProperty("doctor"), inits.get("doctor")) : null;
     }

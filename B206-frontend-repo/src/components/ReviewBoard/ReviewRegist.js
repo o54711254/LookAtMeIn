@@ -43,19 +43,26 @@ function ReviewRegist() {
   };
 
   // 폼 제출 핸들러
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     const formData = new FormData();
 
+    const reviewBoardData ={}
+    
+
     // reviewData의 키와 값을 FormData에 추가
     Object.keys(reviewData).forEach((key) => {
-      formData.append(key, reviewData[key]);
+      // formData.append(key, reviewData[key]);
+      reviewBoardData[key] = reviewData[key];
     });
+    formData.append("reviewBoardData", JSON.stringify(reviewBoardData));
 
     // 이미지 파일 추가
     if (reviewImage) {
       formData.append("uploadfile", reviewImage);
     }
+
+
 
     // API 호출
     axiosApi.post("/api/reviewBoard/regist", formData, {
@@ -63,6 +70,8 @@ function ReviewRegist() {
     })
     .then((res) => {
       console.log("리뷰 등록 성공", res.data);
+      
+
       navigate("/reviewList"); // 성공 후 리뷰 목록 페이지로 이동
     })
     .catch((error) => {
