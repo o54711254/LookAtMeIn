@@ -6,7 +6,7 @@ import Regist from "./components/Sign/Regist";
 import UserRegistForm from "./components/Sign/UserRegistForm";
 import HospitalRegistForm from "./components/Sign/HospitalRegistForm";
 import Nav from "./components/Nav.js";
-import Home from "./components/Home.js";
+import Home from "./pages/Home";
 import HospitalBoardList from "./components/HospitalBoard/HospitalList.js";
 import ReviewBoardList from "./components/ReviewBoard/ReviewList";
 import ReviewDetail from "./components/ReviewBoard/ReviewDetail";
@@ -39,7 +39,7 @@ import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
 import HospitalDetail from "./pages/HospitalDetail.js";
 
-import Search from "./components/Search/SearchInput.js"
+import Search from "./components/Search/SearchInput.js";
 
 function App() {
   return (
@@ -71,7 +71,6 @@ function App() {
                   {/* 마이페이지 */}
                   <Route path="/mypage/*" element={<CustomerMyPage />} />
                   <Route path="/hospital-mypage/*" element={<HosMyPage />} />
-
                   <Route path="/admin-mypage/*" element={<AdminMyPage />} />
 
                   {/* 리뷰 게시판 */}
@@ -113,9 +112,10 @@ function App() {
 
                   <Route path="/face" element={<FacialAsy />} />
 
+                  {/*검색*/}
                   <Route path="/search/*" element={<Search />} />
-                  {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
                   <Route path="/search/:query" element={<SearchList />} />
+                  {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
                 </Routes>
               </div>
             </div>

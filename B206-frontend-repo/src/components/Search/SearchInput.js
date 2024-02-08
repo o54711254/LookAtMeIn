@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./SearchInput.module.css";
+import searchIcon from "../../assets/search.png";
 
 function SearchInput() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -10,14 +12,20 @@ function SearchInput() {
   }
 
   return (
-    <div>
+    <div className={styles.searchInputContainer}>
       <input
+        className={styles.searchInput}
         type="text"
-        placeholder="검색하세요"
+        placeholder="원하는 정보를 검색하세요.."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <button onClick={handleSearch}>검색</button>
+      <img
+        src={searchIcon}
+        className={styles.searchIcon}
+        alt="searchIcon"
+        onClick={handleSearch}
+      />
     </div>
   );
 }
