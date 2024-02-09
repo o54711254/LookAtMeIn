@@ -35,6 +35,8 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
+import WorldcupMan from "./components/WorldCup/WorldcupMan";
+import WorldcupWoman from "./components/WorldCup/WorldcupWoman";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 // import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
 // import HospitalDetail from "./pages/HospitalDetail.js";
@@ -109,6 +111,12 @@ function App() {
 
                   {/*이상향 월드컵*/}
                   <Route path="/worldcup/*" element={<Worldcup />} />
+
+                  <Route path="/worldcup/man" element={<WorldcupMan />}></Route>
+                  <Route
+                    path="/worldcup/woman"
+                    element={<WorldcupWoman />}
+                  ></Route>
                   <Route path="/face" element={<FacialAsy />} />
 
                   {/*검색*/}
