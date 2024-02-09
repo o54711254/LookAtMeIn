@@ -87,7 +87,6 @@ function MyPage() {
               나의 이상향
             </NavLink>
           </div>
-          <div className={styles.horizon}></div>
         </nav>
       </div>
       <div className={styles.contents}>

@@ -109,7 +109,6 @@ function App() {
 
                   {/*이상향 월드컵*/}
                   <Route path="/worldcup/*" element={<Worldcup />} />
-
                   <Route path="/face" element={<FacialAsy />} />
 
                   {/*검색*/}
