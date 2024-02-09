@@ -25,8 +25,8 @@ const WorldcupChampion = () => {
         />
       </div>
       <div className={styles.buttons}>
-        <button className={styles.button}>저장</button>
-        <button className={styles.button}>합성</button>
+        <button className={styles.button}>결과 저장</button>
+        <button className={styles.button}>얼굴 합성</button>
       </div>
     </div>
   );
