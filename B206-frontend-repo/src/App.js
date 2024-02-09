@@ -42,6 +42,7 @@ import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 // import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
+import WorldcupChampion from "./components/WorldCup/WorldcupChampion";
 
 function App() {
   return (
@@ -117,6 +118,10 @@ function App() {
                     path="/worldcup/woman"
                     element={<WorldcupWoman />}
                   ></Route>
+                  <Route
+                    path="/worldcup/champion"
+                    element={<WorldcupChampion />}
+                  />
                   <Route path="/face" element={<FacialAsy />} />
 
                   {/*검색*/}
