@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosApi from "../../../../api/axiosApi";
 import StarResult from "../../../ReviewBoard/StarRating/StarResult";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import profile from "../../../../assets/gun.png";
 import AOS from "aos";
@@ -9,7 +8,6 @@ import styles from "./ReportedReview.module.css";
 
 function ReportedReview() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
-  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,7 +16,6 @@ function ReportedReview() {
       .then((res) => {
         console.log(res.data);
         setReviewBoardList(res.data);
-        console(reviewBoardList);
       })
       .catch((error) => {
         console.log("시술 후기 데이터를 가져오는데 실패했습니다.", error);
