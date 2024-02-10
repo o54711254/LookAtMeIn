@@ -28,15 +28,15 @@ public class PastReserve {
     private String pContent;
 
     @Column(name = "past_reserve_price")
-    private int pPrice;
+    private Integer pPrice;
 
-    private int year;
-    private int month;
-    private int day;
+    private Integer year;
+    private Integer month;
+    private Integer day;
     private String dayofweek;
-    private int time;
+    private Integer time;
 
-    private int img;
+    private Integer img;
 
     @Builder
     public PastReserve(User customer, User hospital, String pContent, int pPrice, int year, int month, int day, String dayofweek, int time, int img) {

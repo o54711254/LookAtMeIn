@@ -27,7 +27,7 @@ public class ChatMessage {
     private User user;
     private String message;
 
-    boolean deleted;
+    Boolean deleted;
 
 
     @Builder
