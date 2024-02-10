@@ -5,6 +5,7 @@ import ReviewBoardComponent from "./ReviewBoard/ReviewBoardSearch";
 import FreeBoardComponent from "./FreeBoard/FreeBoardSearch";
 import HospitalComponent from "./HospitalBoard/HospitalBoardSearch";
 import SearchInput from "./SearchInput";
+import styles from "./SearchList.module.css";
 
 function SearchList() {
   const { query } = useParams();
@@ -16,7 +17,9 @@ function SearchList() {
     const searchResults = async () => {
       setIsLoading(true);
       try {
-        const response = await axiosApi.get(`/search?keyword=${query}&category=${activeTab}`);
+        const response = await axiosApi.get(
+          `/search?keyword=${query}&category=${activeTab}`
+        );
         setResults(response.data);
       } catch (error) {
         console.log("검색 중 오류 발생", query, error);
@@ -43,19 +46,36 @@ function SearchList() {
   return (
     <div>
       <div>
-        <SearchInput/>
-    </div>
-      <div>
-        <button onClick={() => setActiveTab("reviewBoard")} className={activeTab === "reviewBoard" ? "active" : ""}>후기게시판</button>
-        <button onClick={() => setActiveTab("freeboard")} className={activeTab === "freeboard" ? "active" : ""}>자유게시판</button>
-        <button onClick={() => setActiveTab("hospital")} className={activeTab === "hospital" ? "active" : ""}>병원게시판</button>
+        <SearchInput initialQuery={query} />
+      </div>
+      <div className={styles.searchListContainer}>
+        <button
+          onClick={() => setActiveTab("reviewBoard")}
+          className={`${styles.button} ${
+            activeTab === "reviewBoard" ? styles.active : ""
+          }`}
+        >
+          후기게시판
+        </button>
+        <button
+          onClick={() => setActiveTab("freeboard")}
+          className={`${styles.button} ${
+            activeTab === "freeboard" ? styles.active : ""
+          }`}
+        >
+          자유게시판
+        </button>
+        <button
+          onClick={() => setActiveTab("hospital")}
+          className={`${styles.button} ${
+            activeTab === "hospital" ? styles.active : ""
+          }`}
+        >
+          병원게시판
+        </button>
       </div>
 
-      {isLoading ? (
-        <div>검색 중...</div>
-      ) : (
-        renderComponent()
-      )}
+      {isLoading ? <div>검색 중...</div> : renderComponent()}
     </div>
   );
 }
