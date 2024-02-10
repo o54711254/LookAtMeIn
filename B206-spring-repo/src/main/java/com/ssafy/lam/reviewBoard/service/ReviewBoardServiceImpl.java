@@ -1,5 +1,8 @@
 package com.ssafy.lam.reviewBoard.service;
 
+import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
@@ -8,6 +11,7 @@ import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +23,11 @@ import java.util.stream.Collectors;
 public class ReviewBoardServiceImpl implements ReviewBoardService {
 
     private final ReviewBoardRepository reviewBoardRepository;
+    MultipartConfig multipartConfig = new MultipartConfig();
+
+    // 파일이 업로드될 디렉토리 경로
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+    private final UploadFileService uploadFileService;
 
     @Override
     public List<ReviewBoard> getAllReviews() {
@@ -33,15 +42,22 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
             return null;
         addview += review.getCnt();
         review.setCnt(addview);
-        reviewBoardRepository.save(review);
-        return reviewBoardRepository.findById(seq).orElse(null);
+        return reviewBoardRepository.save(review);
+//        return reviewBoardRepository.findById(seq).orElse(null);
     }
 
     @Override
-    public ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister) {
-        User user = User.builder().name(reviewBoardRegister.getUsername()).userSeq(reviewBoardRegister.getUser_seq()).build();
+    public ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister, MultipartFile file) {
+        User user = User.builder()
+                .name(reviewBoardRegister.getUsername())
+                .userSeq(reviewBoardRegister.getUser_seq())
+                .build();
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
+
+
+        UploadFile uploadFile = uploadFileService.store(file);
+
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
@@ -54,6 +70,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .expectedPrice(reviewBoardRegister.getReviewBoard_expected_price())
                 .surgeryPrice(reviewBoardRegister.getReviewBoard_surgery_price())
                 .regdate(date)
+                .uploadFile(uploadFile)
                 .build();
         return reviewBoardRepository.save(reviewBoard);
     }

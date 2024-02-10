@@ -50,6 +50,8 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public final StringPath title = createString("title");
 
+    public final com.ssafy.lam.file.domain.QUploadFile uploadFile;
+
     public final com.ssafy.lam.user.domain.QUser user;
 
     public QReviewBoard(String variable) {
@@ -70,6 +72,7 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public QReviewBoard(Class<? extends ReviewBoard> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.uploadFile = inits.isInitialized("uploadFile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("uploadFile")) : null;
         this.user = inits.isInitialized("user") ? new com.ssafy.lam.user.domain.QUser(forProperty("user")) : null;
     }
 

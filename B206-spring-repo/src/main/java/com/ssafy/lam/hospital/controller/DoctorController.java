@@ -1,7 +1,8 @@
 package com.ssafy.lam.hospital.controller;
 
 import com.ssafy.lam.hospital.domain.Career;
-import com.ssafy.lam.hospital.domain.Category;
+import com.ssafy.lam.hospital.domain.DoctorCategory;
+import com.ssafy.lam.hospital.domain.HospitalCategory;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.dto.CareerDto;
 import com.ssafy.lam.hospital.dto.CategoryDto;
@@ -32,9 +33,9 @@ public class DoctorController {
     @GetMapping("/{doctor_seq}")
     @Operation(summary = "의사 정보를 조회한다.")
     public ResponseEntity<DoctorDto> getDoctor(@PathVariable Long doctor_seq) {
-        List<Category> category = doctorService.getCategory(doctor_seq);
+        List<DoctorCategory> doctorCategories = doctorService.getCategory(doctor_seq);
         List<CategoryDto> categoryDto = new ArrayList<>();
-        for(Category c : category) {
+        for(DoctorCategory c : doctorCategories) {
             categoryDto.add(new CategoryDto(c.getPart()));
         }
 

@@ -29,10 +29,10 @@ public class Comment {
     private LocalDateTime regdate;
 
     @Column(name="comment_complain")
-    private boolean complain;
+    private Boolean complain;
 
     @Column(name="comment_isdeleted")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "free_board_seq")
@@ -40,7 +40,7 @@ public class Comment {
 
     @Builder
 
-    public Comment(Long seq, String content, String userId, LocalDateTime regdate, boolean complain, boolean isDeleted, Freeboard freeboard) {
+    public Comment(Long seq, String content, String userId, LocalDateTime regdate, Boolean complain, Boolean isDeleted, Freeboard freeboard) {
         this.seq = seq;
         this.content = content;
         this.userId = userId;

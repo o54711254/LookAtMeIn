@@ -2,23 +2,21 @@ package com.ssafy.lam.hospital.service;
 
 import com.ssafy.lam.hospital.domain.*;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService{
 
     private final DoctorRepository doctorRepository;
     private final CareerRepository careerRepository;
-    private final CategoryRepository categoryRepository;
+    private final HospitalCategoryRepository hospitalCategoryRepository;
 
-    public DoctorServiceImpl(DoctorRepository doctorRepository, CareerRepository careerRepository,
-                             CategoryRepository categoryRepository) {
-        this.doctorRepository = doctorRepository;
-        this.careerRepository = careerRepository;
-        this.categoryRepository = categoryRepository;
-    }
+    private final DoctorCategoryRepository doctorCategoryRepository;
+
 
     @Override
     public Doctor getDoctor(Long doctorSeq) {
@@ -26,8 +24,8 @@ public class DoctorServiceImpl implements DoctorService{
     }
 
     @Override
-    public List<Category> getCategory(Long doctorSeq) {
-        return categoryRepository.findAllByDoctorDocInfoSeq(doctorSeq);
+    public List<DoctorCategory> getCategory(Long doctorSeq) {
+        return doctorCategoryRepository.findAllByDoctorDocInfoSeq(doctorSeq);
     }
 
     @Override
