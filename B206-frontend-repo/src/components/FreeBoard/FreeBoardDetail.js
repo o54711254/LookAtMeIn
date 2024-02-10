@@ -6,6 +6,8 @@ import FreeBoardDelete from "./FreeBoardDelete";
 import FreeBoardUpdate from "./FreeBoardUpdate";
 import Comment from "../Comment/Comment";
 import downloadApi from "../../api/downloadApi";
+import styles from "./FreeBoardDetail.module.css";
+import profile from "../../assets/man/유승호.jpg";
 
 function FreeBoardDetail() {
   const [post, setPost] = useState(null);
@@ -46,17 +48,14 @@ function FreeBoardDetail() {
         setPost(response.data); // 먼저 게시글 정보를 설정
 
         setPost(response.data);
-        console.log(response.data);
-        const imgResponse = await axiosApi.get(
-          response.data.fileUrl
-        )
+        console.log("데이터 정보", response.data);
+        const imgResponse = await axiosApi.get(response.data.fileUrl);
         console.log("response2: ", imgResponse);
         const base64 = imgResponse.data.base64;
         const type = imgResponse.data.type;
 
-        const data =`data:${type};base64,${base64}`;
+        const data = `data:${type};base64,${base64}`;
         setImg(data);
-
       } catch (error) {
         console.log("자유게시판 상세 불러오기 실패: ", error);
       }
@@ -72,25 +71,42 @@ function FreeBoardDetail() {
   }
 
   return (
-    <>
-      <h3>자유 게시판 상세</h3>
-      <div>작성자 아이디: {post.userId}</div>
-      <div>작성자 이메일: {post.userEmail}</div>
-      <div>작성 날짜: {post.freeboardRegisterdate}</div>
-      {/* <img src={img} alt="게시글 이미지" /> */}
-      {img ? <img src={img} alt="게시글 이미지" /> : <div>이미지 없음</div>}
-      <div>글 내용: {post.freeboardContent}</div>
-      <div>글 제목: {post.freeboardTitle}</div>
+    <div className={styles.FreeBoardContainer}>
+      <div className={styles.Head}>
+        <img src={profile} className={styles.profileImg} />
+        <div className={styles.headBox}>
+          <div className={styles.headInfo1}>
+            <div className={styles.userId}>{post.userId}</div>
+            <div className={styles.buttons}>
+              <FreeBoardUpdate
+                freeboardContent={post.freeboardContent}
+                freeboardTitle={post.freeboardTitle}
+                freeboardSeq={post.freeboardSeq}
+              />
+              <FreeBoardDelete freeBoardSeq={freeboardSeq} />
+            </div>
+          </div>
+          <div className={styles.headInfo2}>
+            <div>{post.userEmail}</div>
+            <div>작성 날짜: {post.freeboardRegisterdate}</div>
+          </div>
+        </div>
+      </div>
+      <div className={styles.title}>{post.freeboardTitle}</div>
+      <div className={styles.contents}>
+        {/* <img src={img} alt="게시글 이미지" /> */}
+        {img && (
+          <img src={img} alt="게시글 이미지" className={styles.contentImg} />
+        )}
+        <div className={styles.horizon} />
+        <div className={styles.contentText}>
+          <div>{post.freeboardContent}</div>
+        </div>
+      </div>
       {/* <div>해시태그: {post.hashTag}</div> */}
-      <FreeBoardDelete freeBoardSeq={freeboardSeq} />
-      <FreeBoardUpdate
-        freeboardContent={post.freeboardContent}
-        freeboardTitle={post.freeboardTitle}
-        freeboardSeq={post.freeboardSeq}
-      />
 
       <Comment comments={post.comments} freeboardSeq={post.freeboardSeq} />
-    </>
+    </div>
   );
 }
 export default FreeBoardDetail;
