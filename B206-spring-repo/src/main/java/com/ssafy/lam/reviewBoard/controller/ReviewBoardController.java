@@ -85,8 +85,6 @@ public class ReviewBoardController {
                     detailReview.setBase64(base64);
                     detailReview.setImageType(imageType);
                 }
-
-
             }catch(Exception e){
                 e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -97,11 +95,12 @@ public class ReviewBoardController {
 
     @PostMapping("/regist")
     @Operation(summary = "새로운 후기 정보를 생성한다.")
-    public ResponseEntity<Void> createReview(@RequestParam("reviewBoardData") String reviewBoardData,
-                                             @RequestParam("uploadfile")MultipartFile file){
+    public ResponseEntity<Void> createReview(@RequestParam("reviewBoardData") String reviewBoardData, @RequestParam(value = "uploadFile", required = false) MultipartFile file){
+        log.info("reviewBoardData:{}", reviewBoardData);
+        log.info("uploadfile:{}" , file);
         try{
             ReviewBoardRegister reviewBoardRegister = new ObjectMapper().readValue(reviewBoardData, ReviewBoardRegister.class);
-            reviewBoardService.createReview(reviewBoardRegister, file);
+            reviewBoardService.createReview(reviewBoardRegister, null);
             return ResponseEntity.ok().build();
 
         }catch (Exception e){

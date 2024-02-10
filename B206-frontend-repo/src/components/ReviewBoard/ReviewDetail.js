@@ -29,7 +29,8 @@ function ReviewDetail() {
         const type = res.data.type;
 
         const data = `data:${type};base64,${base64}`;
-        setImgURL(data);
+        if(base64 != null)
+          setImgURL(data);
 
         setReviewDetail(res.data);
       })
@@ -74,7 +75,9 @@ function ReviewDetail() {
           <div>지역: {reviewDetail.reviewBoard_region}</div>
         </div>
         <div className={styles.maincenter}>
-         <div className={styles.imgcon}><img src={imgURL} alt="글 사진"/></div>
+         <div className={styles.imgcon}>
+          {imgURL ? <img src={imgURL} alt="글 사진"/> : <div>이미지 없음</div>}
+          </div>
          <div>내용: {reviewDetail.reviewBoard_content}</div>
          <div className={styles.star}><StarResult score={reviewDetail.reviewBoard_score}/></div>
        </div>

@@ -16,17 +16,16 @@ public class QuestionnaireRequestDto {
     private String questionnaire_remark;
     private String questionnaire_title;
     private String questionnaire_content;
-    private MultipartFile image;
+
 
     @Builder
 
-    public QuestionnaireRequestDto(Long cusomter_seq, Long hospital_seq, String questionnaire_blood, String questionnaire_remark, String questionnaire_title, String questionnaire_content, MultipartFile image) {
+    public QuestionnaireRequestDto(Long cusomter_seq, Long hospital_seq, String questionnaire_blood, String questionnaire_remark, String questionnaire_title, String questionnaire_content) {
         this.cusomter_seq = cusomter_seq;
         this.hospital_seq = hospital_seq;
         this.questionnaire_blood = questionnaire_blood;
         this.questionnaire_remark = questionnaire_remark;
         this.questionnaire_title = questionnaire_title;
         this.questionnaire_content = questionnaire_content;
-        this.image = image;
     }
 }

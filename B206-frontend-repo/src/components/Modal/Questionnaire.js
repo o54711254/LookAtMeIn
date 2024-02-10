@@ -35,14 +35,22 @@ export default function FormDialog() {
 
     // const 
 
+    const questionnaireData = {}
+
+
+
+    // 기존 questionnaire 데이터를 FormData에 추가
+    Object.keys(questionnaire).forEach(key => {
+      // formData.append(key, questionnaire[key]);
+      questionnaireData[key] = questionnaire[key];
+    });
+
+    formData.append("questionnaireData", JSON.stringify(questionnaireData));
+    
     if (image) {
       formData.append('image', image); // 서버에서 사용하는 필드명('image' 등)으로 교체 가능
     }
 
-    // 기존 questionnaire 데이터를 FormData에 추가
-    Object.keys(questionnaire).forEach(key => {
-      formData.append(key, questionnaire[key]);
-    });
 
     axiosApi.post('/api/questionnaire/regist', formData, {
       headers: {

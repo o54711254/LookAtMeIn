@@ -66,9 +66,10 @@ public class ReviewBoard {
     private UploadFile uploadFile;
 
 
+
     @Builder
 
-    public ReviewBoard(Long seq, String title, String content, String hospital, String doctor, String surgery, String region, double score, Integer expectedPrice, Integer surgeryPrice, Long regdate, Boolean complain, Boolean isdeleted, Integer cnt, User user, UploadFile uploadFile) {
+    public ReviewBoard(Long seq, String title, String content, String hospital, String doctor, String surgery, String region, double score, Integer expectedPrice, Integer surgeryPrice, Long regdate, boolean complain, boolean isdeleted, int cnt, User user, UploadFile uploadFile) {
         this.seq = seq;
         this.title = title;
         this.content = content;

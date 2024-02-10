@@ -29,7 +29,7 @@ public class HosptialController {
 
     @PostMapping("/regist")
     @Operation(summary = "병원 정보를 등록한다.")
-    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam("registrationFile") MultipartFile registrationFile) {
+    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam(value = "registrationFile", required = false) MultipartFile registrationFile) {
         try{
             HospitalRequestDto hospitalRequestDto = new ObjectMapper().readValue(hospital, HospitalRequestDto.class);
 

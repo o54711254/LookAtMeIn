@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +17,7 @@ public class QuestionnaireService {
     private QuesionnareRepository quesionnareRepository;
 
 
-    public Questionnaire createQuestionnaire(QuestionnaireRequestDto questionRequestDto) {
+    public Questionnaire createQuestionnaire(QuestionnaireRequestDto questionRequestDto, MultipartFile file) {
         User customer = User.builder().userSeq(questionRequestDto.getCusomter_seq()).build();
         User hospital = User.builder().userSeq(questionRequestDto.getHospital_seq()).build();
 

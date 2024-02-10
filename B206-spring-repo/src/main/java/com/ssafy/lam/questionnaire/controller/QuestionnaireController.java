@@ -1,6 +1,7 @@
 package com.ssafy.lam.questionnaire.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.file.domain.UploadFile;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,12 +34,15 @@ public class QuestionnaireController {
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
     @PostMapping("/regist")
     @Operation(summary = "문진서 등록")
-    public void registQuestionnaire(@ModelAttribute QuestionnaireRequestDto questionRequestDto) {
-        log.info("문진서 등록 정보 : {}", questionRequestDto);
+    public void registQuestionnaire(@RequestParam("questionnaireData") String questionnarieData, @RequestParam("image") MultipartFile file){
+        log.info("문진서 등록 정보 : {}", questionnarieData);
+        try{
+            QuestionnaireRequestDto questionRequestDto = new ObjectMapper().readValue(questionnarieData, QuestionnaireRequestDto.class);
+            questionnaireService.createQuestionnaire(questionRequestDto, file);
 
-        questionnaireService.createQuestionnaire(questionRequestDto);
-
-
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @GetMapping("/detail/{questionSeq}")

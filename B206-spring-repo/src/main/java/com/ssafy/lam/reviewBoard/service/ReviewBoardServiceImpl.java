@@ -55,9 +55,6 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
 
-
-        UploadFile uploadFile = uploadFileService.store(file);
-
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
@@ -70,8 +67,13 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .expectedPrice(reviewBoardRegister.getReviewBoard_expected_price())
                 .surgeryPrice(reviewBoardRegister.getReviewBoard_surgery_price())
                 .regdate(date)
-                .uploadFile(uploadFile)
+
                 .build();
+        UploadFile uploadFile = null;
+        if(file != null)
+            uploadFile = uploadFileService.store(file);
+        reviewBoard.setUploadFile(uploadFile);
+
         return reviewBoardRepository.save(reviewBoard);
     }
 
