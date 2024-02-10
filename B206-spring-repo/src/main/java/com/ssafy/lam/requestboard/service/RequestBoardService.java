@@ -1,13 +1,7 @@
 package com.ssafy.lam.requestboard.service;
 
-import com.ssafy.lam.requestboard.domain.Requestboard;
-import com.ssafy.lam.requestboard.domain.RequestboardRepository;
-import com.ssafy.lam.requestboard.domain.Surgery;
-import com.ssafy.lam.requestboard.domain.SurgeryRepository;
-import com.ssafy.lam.requestboard.dto.RequestDto;
-import com.ssafy.lam.requestboard.dto.RequestSaveDto;
-import com.ssafy.lam.requestboard.dto.RequestUpdateDto;
-import com.ssafy.lam.requestboard.dto.SurgeryDto;
+import com.ssafy.lam.requestboard.domain.*;
+import com.ssafy.lam.requestboard.dto.*;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +18,8 @@ public class RequestBoardService {
     private final RequestboardRepository requestboardRepository;
     private final UserRepository userRepository;
     private final SurgeryRepository surgeryRepository;
+    private final ResponseRepository responseRepository;
+    private final NotificationRepository notificationRepository;
 
     //등록기능
     public Long saveRequestboard(RequestSaveDto requestSaveDto) {
@@ -104,46 +100,55 @@ public class RequestBoardService {
         requestboard.setDeleted(true);
         requestboardRepository.save(requestboard);
     }
-//수정기능
-@Transactional
-public RequestUpdateDto updateRequestboard(Long requestSeq, RequestUpdateDto requestUpdateDto) {
-    Requestboard requestboard = requestboardRepository.findById(requestSeq)
-            .orElseThrow(() -> new IllegalArgumentException("없는 게시물입니다 : " + requestSeq));
 
-    if (requestUpdateDto.getTitle() != null) requestboard.setTitle(requestUpdateDto.getTitle());
-    if (requestUpdateDto.getContent() != null) requestboard.setContent(requestUpdateDto.getContent());
-    requestboard.setDeleted(requestUpdateDto.isDeleted());
+    //수정기능
+    @Transactional
+    public RequestUpdateDto updateRequestboard(Long requestSeq, RequestUpdateDto requestUpdateDto) {
+        Requestboard requestboard = requestboardRepository.findById(requestSeq)
+                .orElseThrow(() -> new IllegalArgumentException("없는 게시물입니다 : " + requestSeq));
 
-    Requestboard updatedRequestboard = requestboardRepository.save(requestboard);
+        if (requestUpdateDto.getTitle() != null) requestboard.setTitle(requestUpdateDto.getTitle());
+        if (requestUpdateDto.getContent() != null) requestboard.setContent(requestUpdateDto.getContent());
+        requestboard.setDeleted(requestUpdateDto.isDeleted());
 
-    return RequestUpdateDto.builder()
-            .seq(requestUpdateDto.getSeq())
-            .title(requestUpdateDto.getTitle())
-            .content(requestboard.getContent())
-            .isDeleted(requestUpdateDto.isDeleted())
-            .surgeries(requestboard.getSurgeries().stream().map(surgery -> SurgeryDto.builder()
-                            .seq(surgery.getSeq())
-                            .part(surgery.getPart())
-                            .type(surgery.getType())
-                            .regDate(surgery.getRegDate())
-                            .isDeleted(surgery.isDeleted())
-                            .build())
-                    .collect(Collectors.toList()))
-            .build();
-}
+        Requestboard updatedRequestboard = requestboardRepository.save(requestboard);
 
-    private RequestDto convertToDto(Requestboard requestboard) {
-        // Requestboard 엔티티를 RequestDto로 변환하는 메서드 구현
-        return RequestDto.builder()
-                .seq(requestboard.getSeq())
-                .title(requestboard.getTitle())
-                .userName(requestboard.getUser().getName()) // userName을 적절히 처리해야 합니다.
-                .regDate(requestboard.getRegDate())
-                .requestCnt(requestboard.getRequestCnt())
-                .cnt(requestboard.getCnt())
-                .isDeleted(requestboard.isDeleted())
-                // Surgeries 리스트 변환 로직은 생략
+        return RequestUpdateDto.builder()
+                .seq(requestUpdateDto.getSeq())
+                .title(requestUpdateDto.getTitle())
+                .content(requestboard.getContent())
+                .isDeleted(requestUpdateDto.isDeleted())
+                .surgeries(requestboard.getSurgeries().stream().map(surgery -> SurgeryDto.builder()
+                                .seq(surgery.getSeq())
+                                .part(surgery.getPart())
+                                .type(surgery.getType())
+                                .regDate(surgery.getRegDate())
+                                .isDeleted(surgery.isDeleted())
+                                .build())
+                        .collect(Collectors.toList()))
                 .build();
     }
 
+    public void createResponse(Long requestSeq, ResponseDto responseDto) {
+        Requestboard requestboard = requestboardRepository.findById(requestSeq)
+                .orElseThrow(() -> new IllegalArgumentException("요청게시판을 찾을 수 없음 : " + requestSeq));
+        User user = userRepository.findById(responseDto.getUserSeq())
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없음 : " + responseDto.getUserSeq()));
+
+        Response response = Response.builder()
+                .requestboard(requestboard)
+                .user(user)
+                .message(responseDto.getMessage())
+                .build();
+        responseRepository.save(response);
+
+        // 알림 생성 로직 호출
+        createNotification(requestboard.getUser(), user, response.getMessage());
+    }
+
+    public void createNotification(User recipient, User sender, String message) {
+        String notificationMessage = String.format("%s hospital responded: %s", sender.getName(), message);
+        Notification notification = new Notification(recipient, notificationMessage, false);
+        notificationRepository.save(notification);
+    }
 }

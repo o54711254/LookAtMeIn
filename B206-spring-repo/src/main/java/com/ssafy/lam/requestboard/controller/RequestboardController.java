@@ -1,9 +1,11 @@
 package com.ssafy.lam.requestboard.controller;
 
-import com.ssafy.lam.requestboard.domain.Requestboard;
+import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
+import com.ssafy.lam.chat.service.ChatService;
 import com.ssafy.lam.requestboard.dto.RequestDto;
 import com.ssafy.lam.requestboard.dto.RequestSaveDto;
 import com.ssafy.lam.requestboard.dto.RequestUpdateDto;
+import com.ssafy.lam.requestboard.dto.ResponseDto;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import java.util.List;
 public class RequestboardController {
 
     private final RequestBoardService requestboardService;
+    private final ChatService chatService;
 
 
     @PostMapping("/register")
@@ -56,4 +59,20 @@ public class RequestboardController {
         RequestUpdateDto updatedRequestDto = requestboardService.updateRequestboard(requestSeq, requestUpdateDto);
         return ResponseEntity.ok(updatedRequestDto);
     }
+
+    @PostMapping("/response/{requestSeq}")
+    @Operation(summary = "게시물 올린 고객에게 제안하기")
+    public ResponseEntity<Void> createResponse(@PathVariable Long requestSeq, @RequestBody ResponseDto responseDto) {
+        requestboardService.createResponse(requestSeq, responseDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/accept-response/{responseId}")
+    @Operation(summary = "제안에 대한 수락")
+    public ResponseEntity<ChatRoomResponseDto> acceptResponse(@PathVariable Long responseId) {
+        ChatRoomResponseDto chatRoomResponseDto = chatService.acceptAndCreateChatRoom(responseId);
+        return ResponseEntity.ok(chatRoomResponseDto);
+    }
+
+
 }
