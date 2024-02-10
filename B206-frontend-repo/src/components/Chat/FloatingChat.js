@@ -5,6 +5,13 @@ import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import { Link, Routes, Route, BrowserRouter } from "react-router-dom"; // Link 컴포넌트 추가
 import ChatApp from "./ChatApp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./FloatingChat.module.css";
+
+import {
+  faCommentDots,
+  faCommentSlash,
+} from "@fortawesome/free-solid-svg-icons";
 function FloatingChat() {
   const [open, setOpen] = useState(false);
   const [chatRooms, setChatRooms] = useState([]); // 채팅방 목록 상태
@@ -32,7 +39,13 @@ function FloatingChat() {
         <Paper
           style={{ position: "fixed", bottom: 10, right: 10, zIndex: 1000 }}
         >
-          <Button onClick={handleToggleChat}>{open ? "숨기기" : "채팅"}</Button>
+          <Button onClick={handleToggleChat}>
+            {open ? (
+              <FontAwesomeIcon icon={faCommentSlash} className={styles.icon} />
+            ) : (
+              <FontAwesomeIcon icon={faCommentDots} className={styles.icon} />
+            )}
+          </Button>
           {open && (
             <Box sx={{ p: 10, maxWidth: 300 }}>
               <div>
