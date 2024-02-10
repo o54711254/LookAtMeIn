@@ -19,12 +19,8 @@ public class ReviewBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_board_seq")
-<<<<<<< HEAD
-    private long seq;
-=======
     private Long seq;
 
->>>>>>> 0ed0587268a376e13877834cf223d62f3d220767
     @Column(name = "review_board_title")
     private String title; // 제목
     @Column(name = "review_board_content")
@@ -48,13 +44,6 @@ public class ReviewBoard {
     @Column(name = "review_board_surgery_price")
     private Integer surgeryPrice; // 시술 가격
     @Column(name = "review_board_regdate")
-<<<<<<< HEAD
-    private long regdate; // 작성시간
-    @Column(name = "review_board_complain")
-    private boolean complain; // 신고여부
-    @Column(name = "review_board_isdeleted")
-    private boolean isdeleted; // 삭제여부
-=======
     private Long regdate; // 작성시간
 
     @Column(name = "review_board_complain")
@@ -63,7 +52,6 @@ public class ReviewBoard {
     @Column(name = "review_board_isdeleted")
     private Boolean isdeleted; // 삭제여부
 
->>>>>>> 0ed0587268a376e13877834cf223d62f3d220767
     @Column(name = "review_board_cnt")
     private Integer cnt = 0; // 조회수
 
@@ -83,14 +71,8 @@ public class ReviewBoard {
 
 
     @Builder
-<<<<<<< HEAD
-    public ReviewBoard(long seq, String title, String content, String surgery, String region, double score,
-                       int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted,
-                       int cnt, Hospital hospital, Doctor doctor, User user) {
-=======
 
     public ReviewBoard(Long seq, String title, String content, String hospital, String doctor, String surgery, String region, double score, Integer expectedPrice, Integer surgeryPrice, Long regdate, Boolean complain, Boolean isdeleted, Integer cnt, User user, UploadFile uploadFile) {
->>>>>>> 0ed0587268a376e13877834cf223d62f3d220767
         this.seq = seq;
         this.title = title;
         this.content = content;
