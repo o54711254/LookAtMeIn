@@ -89,7 +89,7 @@ public class SearchService {
                 .where(reviewBoard.title.contains(keyword)
                         .or(reviewBoard.content.contains(keyword))
                         .or(reviewBoard.region.contains(keyword))
-                        .or(reviewBoard.doctor.contains(keyword))
+                        .or(reviewBoard.doctor.docInfoName.contains(keyword))
                         .or(reviewBoard.surgery.contains(keyword)))
                 .fetch();
 
@@ -98,44 +98,13 @@ public class SearchService {
                 .reviewBoard_title(result.getTitle())
                 .reviewBoard_content(result.getContent())
                 .reviewBoard_score(result.getScore())
-                .customer_name(reviewBoardRepository.findById(result.getSeq()).get().getHospital())
-                .reviewBoard_doctor(result.getDoctor())
+                .customer_name(reviewBoardRepository.findById(result.getSeq()).get().getUser().getName())
+                .reviewBoard_doctor(result.getDoctor().getDocInfoName())
                 .reviewBoard_region(result.getRegion())
                 .reviewBoard_surgery(result.getSurgery())
-                .reviewBoard_hospital(result.getHospital())
+                .reviewBoard_hospital(result.getHospital().getUser().getName())
                 .reviewBoard_cnt(result.getCnt())
                 .reviewBoard_score(result.getScore())
                 .build()).collect(Collectors.toList());
     }
-
-
-
-//    private List<Hospital> searchInHospital(String keyword) {
-//        QHospital hospital = QHospital.hospital;
-//        return queryFactory.selectFrom(hospital)
-//                .where(hospital.user.name.contains(keyword)
-//                        .or(hospital.address.contains(keyword))
-//                        .or(hospital.email.contains(keyword)))
-//                .fetch();
-//    }
-//
-//
-//    private List<Freeboard> searchInFreeboard(String keyword) {
-//        QFreeboard freeboard = QFreeboard.freeboard;
-//        return queryFactory.selectFrom(freeboard)
-//                .where(freeboard.title.contains(keyword)
-//                        .or(freeboard.content.contains(keyword)))
-//                .fetch();
-//    }
-//
-//    private List<ReviewBoard> searchInReviewBoard(String keyword) {
-//        QReviewBoard reviewBoard = QReviewBoard.reviewBoard;
-//        return queryFactory.selectFrom(reviewBoard)
-//                .where(reviewBoard.title.contains(keyword)
-//                        .or(reviewBoard.content.contains(keyword))
-//                        .or(reviewBoard.region.contains(keyword))
-//                        .or(reviewBoard.doctor.contains(keyword))
-//                        .or(reviewBoard.surgery.contains(keyword)))
-//                .fetch();
-//    }
 }
