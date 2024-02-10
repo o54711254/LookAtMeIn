@@ -63,19 +63,9 @@ public class DoctorController {
         List<ReviewBoard> reviews = doctorService.getReviewsByDoctor(doctor_seq);
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
         for(ReviewBoard r : reviews) {
-            reviewDisplay.add(ReviewListDisplay.builder()
-                            .reviewBoard_seq(r.getSeq())
-                            .customer_name(r.getUser().getName())
-                            .reviewBoard_title(r.getTitle())
-                            .reviewBoard_regDate(r.getRegdate())
-                            .reviewBoard_score(r.getScore())
-                            .reviewBoard_doctor(r.getDoctor().getDocInfoName())
-                            .reviewBoard_region(r.getRegion())
-                            .reviewBoard_surgery(r.getSurgery())
-                            .reviewBoard_hospital(r.getHospital().getUser().getName())
-                            .reviewBoard_expected_price(r.getExpectedPrice())
-                            .reviewBoard_surgery_price(r.getSurgeryPrice())
-                    .build());
+            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
+                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
+                    r.getExpectedPrice(), r.getSurgeryPrice()));
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }

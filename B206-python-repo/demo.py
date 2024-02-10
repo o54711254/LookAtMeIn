@@ -98,11 +98,11 @@ class Ex(QWidget, Ui_Form):
             # blackpen = QPen(Qt.black)
             # blackpen.setWidth(5)
             self.image = image.scaled(self.graphicsView.size(), Qt.IgnoreAspectRatio)
-            mat_img = cv2.resize(mat_img, (256, 256), interpolation=cv2.INTER_CUBIC)
+            mat_img = cv2.resize(mat_img, (512, 512), interpolation=cv2.INTER_CUBIC)
             self.mat_img = Image.fromarray(cv2.cvtColor(mat_img, cv2.COLOR_BGR2RGB))
 
             # arrange
-            mat_img_2 = cv2.resize(mat_img_2, (256, 256), interpolation=cv2.INTER_CUBIC)
+            mat_img_2 = cv2.resize(mat_img_2, (512, 512), interpolation=cv2.INTER_CUBIC)
             mat_img_2 = mat_img_2 / 127.5 - 1
             self.mat_img_2 = np.expand_dims(mat_img_2, axis=0)
 
@@ -147,12 +147,15 @@ class Ex(QWidget, Ui_Form):
 
         
         sketch = self.make_sketch(self.scene.sketch_points)
+       
+        print("sketch_points: ", self.scene.sketch_points)
         
-        # print("sketch_points: ", self.scene.sketch_points)
-        # print("sketch: ",self.scene.sketch_points)
         
         stroke, stroke_down = self.make_stroke(self.scene.stroke_points)
+        print("stroke_points: ", self.scene.stroke_points)
         mask = self.make_mask(self.scene.mask_points)
+        print("mask_points: ", self.scene.mask_points)
+        print("mask1: ", mask.shape)
 
 
         stroke_down = np.concatenate([stroke_down[:, :, 2:3], stroke_down[:, :, 1:2], stroke_down[:, :, :1]], axis=2)
@@ -220,28 +223,28 @@ class Ex(QWidget, Ui_Form):
 
     def make_mask(self, pts):
         if len(pts) > 0:
-            mask = np.zeros((256, 256, 3))
+            mask = np.zeros((512, 512, 3))
             for pt in pts:
                 cv2.line(mask, pt['prev'], pt['curr'], (255, 255, 255), 12)
         else:
-            mask = np.zeros((256, 256, 3))
+            mask = np.zeros((512, 512, 3))
         return mask
 
     def make_sketch(self, pts):
         if len(pts) > 0:
-            sketch = np.ones((256, 256, 3)) * 255
+            sketch = np.ones((512, 512, 3)) * 255
             for pt in pts:
                 # print("pt: ", pt)
                 # print("pt type: ", type(pt))
                 cv2.line(sketch, pt['prev'], pt['curr'], (0, 0, 0), 2)
         else:
-            sketch = np.ones((256, 256, 3)) * 255
+            sketch = np.ones((512, 512, 3)) * 255
         return sketch
 
     def make_stroke(self, pts):
         if len(pts) > 0:
-            stroke = np.ones((256, 256, 3)) * 127.5
-            stroke_down = np.ones((256, 256, 3)) * 255.0
+            stroke = np.ones((512, 512, 3)) * 127.5
+            stroke_down = np.ones((512, 512, 3)) * 255.0
             for pt in pts:
                 c = pt['color'].lstrip('#')
                 color = tuple(int(c[i:i + 2], 16) for i in (0, 2, 4))
@@ -249,8 +252,8 @@ class Ex(QWidget, Ui_Form):
                 cv2.line(stroke, pt['prev'], pt['curr'], color, 4)
                 cv2.line(stroke_down, pt['prev'], pt['curr'], color, 4)
         else:
-            stroke = np.ones((256, 256, 3)) * 127.5
-            stroke_down = np.ones((256, 256, 3)) * 255.0
+            stroke = np.ones((512, 512, 3)) * 127.5
+            stroke_down = np.ones((512, 512, 3)) * 255.0
         return stroke, stroke_down
 
     def arrange(self):

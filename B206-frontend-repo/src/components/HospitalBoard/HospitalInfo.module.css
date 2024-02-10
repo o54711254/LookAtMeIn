@@ -1,0 +1,143 @@
+.profile {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.profile img {
+  border-radius: 15%; /* 프로필 이미지를 원형으로 */
+  width: 100px; /* 프로필 이미지 크기 */
+  height: 100px; /* 프로필 이미지 크기 */
+  object-fit: cover; /* 이미지 비율 유지 */
+  margin-right: 20px;
+  /* 이미지와 제목 사이의 여백 */
+}
+
+.imgTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* 세로 방향 중앙 정렬 */
+  margin-top: 20px; /* 상단 여백 */
+}
+
+.title {
+  font-size: 20px; /* 제목의 글자 크기 */
+  font-weight: bold; /* 글자 굵기 */
+  color: #333; /* 글자 색상 */
+  margin: 20px 0;
+  /* 위아래 여백 */
+  /* text-align: center; 가운데 정렬 */
+}
+.container {
+  background-color: #fff; /* 배경색 */
+  border-radius: 10px; /* 모서리 둥글기 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  padding: 2%;
+}
+.address,
+.url,
+.time,
+.Number,
+.info {
+  /* background-color: #fff; 배경색 */
+  padding: 15px; /* 내부 여백 */
+  margin: 10px 0; /* 요소들 사이의 위아래 여백 */
+  /* border-radius: 10px; 모서리 둥글기 */
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  /* 그림자 효과 */
+  display: flex;
+  flex-direction: column; /* 내부 요소를 세로로 쌓기 */
+  align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.url {
+  color: #0077cc; /* 링크 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.url:hover {
+  text-decoration: underline; /* 마우스 오버시 밑줄 */
+  color: #0077cc; /* 링크 색상 */
+}
+
+.time div,
+.Number,
+.info {
+  margin-bottom: 5px; /* 요소들 사이의 하단 여백 */
+}
+
+.time div:first-child,
+.Number:first-child,
+.info:first-child {
+  font-weight: bold; /* 섹션 제목에 대한 글자 굵기 */
+  margin-bottom: 10px; /* 섹션 제목 하단 여백 */
+}
+
+/* 진료시간이 표시되는 요소에 대한 스타일 */
+.time div:not(:first-child) {
+  padding-left: 20px; /* 왼쪽 여백 */
+}
+
+/* 병원 소개 텍스트에 대한 스타일 */
+.info {
+  font-size: 16px; /* 글자 크기 */
+  line-height: 1.5; /* 줄 간격 */
+}
+
+/* 전화번호 텍스트에 대한 스타일 */
+.Number {
+  font-size: 16px;
+  color: #333; /* 글자 색상 */
+}
+
+/* 링크 스타일 */
+a {
+  color: inherit; /* 상위 요소로부터 글자 색상을 상속받음 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+a:hover {
+  text-decoration: underline; /* 마우스 오버시 밑줄 */
+}
+
+.reviewItem {
+  border: 1px solid #ddd; /* 테두리 */
+  padding: 10px; /* 내부 여백 */
+  margin-bottom: 10px; /* 하단 마진 */
+  list-style-type: none; /* 기본 목록 스타일 제거 */
+  background: rgba(239, 232, 222, 0.2);
+  border: 1px solid #efe8de;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.reviewItem:hover {
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.profile {
+  border-radius: 30px;
+  width: 50px;
+}
+
+.writer {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.writer > div {
+  margin-top: 10px;
+}
+
+.title {
+  margin-left: 70px;
+}
+
+.price {
+  margin-left: auto;
+  margin-right: 30px;
+}

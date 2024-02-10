@@ -36,10 +36,11 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
-// import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
-// import HospitalDetail from "./pages/HospitalDetail.js";
+import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
+import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
+import Canvas from "./components/Canvas/canvas.js";
 
 function App() {
   return (
@@ -117,6 +118,7 @@ function App() {
                   <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
                   <Route path="/reviewregist" element={<ReviewRegist/> }/>
+                  <Route path="/canvas" element={<Canvas />} />
                 </Routes>
               </div>
             </div>

@@ -29,7 +29,7 @@ public class Freeboard {
 
     @Column(name = "free_board_regdate")
     private LocalDateTime registerDate;
-    ;
+
 
     @Column(name = "free_board_complain")
     private Boolean complain;

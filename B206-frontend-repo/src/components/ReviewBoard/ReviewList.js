@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./ReviewList.module.css";
 import profile from "../../assets/gun.png";
 
-// axios 완료
+// axios 완료d
 
 function ReviewList() {
   const [reviewBoardList, setReviewBoardList] = useState([]);
@@ -52,7 +52,7 @@ function ReviewList() {
               <div>{board.reviewBoard_title}</div>
             </div>
             <div className={styles.price}>
-              시술가 : {board.reviewBoard_price} 원
+              {/* 시술가 : {board.reviewBoard_price} 원 */}
             </div>
           </li>
         ))}

@@ -18,14 +18,12 @@ public class ReviewBoardUpdate {
     private String reviewBoard_hospital; // 병원 이름
     private int reviewBoard_expected_price; // 견적 가격
     private int reviewBoard_surgery_price; // 시술 가격
-    private long hospital_seq; // 병원 시퀀스
-    private long doctor_seq; // 의사 시퀀스
 
     @Builder
     public ReviewBoardUpdate(long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content,
-                             double reviewBoard_score, String reviewBoard_doctor, String reviewBoard_region,
-                             String reviewBoard_surgery, String reviewBoard_hospital, int reviewBoard_expected_price,
-                             int reviewBoard_surgery_price, long hospital_seq, long doctor_seq) {
+                               double reviewBoard_score, String reviewBoard_doctor, String reviewBoard_region,
+                               String reviewBoard_surgery, String reviewBoard_hospital, int reviewBoard_expected_price,
+                             int reviewBoard_surgery_price) {
         this.reviewBoard_seq = reviewBoard_seq;
         this.reviewBoard_title = reviewBoard_title;
         this.reviewBoard_content = reviewBoard_content;
@@ -36,7 +34,7 @@ public class ReviewBoardUpdate {
         this.reviewBoard_hospital = reviewBoard_hospital;
         this.reviewBoard_expected_price = reviewBoard_expected_price;
         this.reviewBoard_surgery_price = reviewBoard_surgery_price;
-        this.hospital_seq = hospital_seq;
-        this.doctor_seq = doctor_seq;
     }
+
+
 }
