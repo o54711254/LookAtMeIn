@@ -25,7 +25,7 @@ span {
 .navBar a:hover,
 .navBar div:hover {
   background-color: transparent; /* 호버 시 배경색 없음 */
-  color:rgb(219, 77, 101);
+  color: rgb(219, 77, 101);
   text-decoration: none;
 }
 
@@ -106,7 +106,7 @@ span {
 .navBar a,
 .navBar div {
   color: #2a2a2a; /* 글씨 색 */
-  padding: 10px 15px; /* 패딩 */
+  padding: 10px 30px; /* 패딩 */
   text-decoration: none; /* 링크 밑줄 제거 */
   font-weight: bold; /* 글씨 굵게 */
   border-radius: 5px; /* 둥근 모서리 */
@@ -114,4 +114,5 @@ span {
 }
 .menu:hover {
   background-color: #ddd; /* 마우스 오버 시 배경색 설정 */
+  cursor: pointer;
 }

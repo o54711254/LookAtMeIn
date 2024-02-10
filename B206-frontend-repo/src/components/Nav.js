@@ -112,8 +112,8 @@ className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ""}`}
               <Link to="/face" className={styles.menu}>
                 얼굴 비대칭
               </Link>
-              <Link to="/face" className={styles.menu}>
-                얼굴 비대칭
+              <Link to="/worldcup" className={styles.menu}>
+                이상향 월드컵
               </Link>
             </div>
           )}

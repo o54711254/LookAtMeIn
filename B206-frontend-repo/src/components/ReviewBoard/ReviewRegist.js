@@ -1,106 +1,165 @@
-// ReviewBoardForm.js
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import StarRating from "./StarRating/StarRating";
 import { useNavigate } from "react-router-dom";
-// axios 완료
+import IconButton from "@mui/material/IconButton";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
-function ReviewRegist({ consultingSeq }) {
+function ReviewRegist() {
   const navigate = useNavigate();
-  const userSeq = useSelector((store) => store.user.userSeq);
-  const [consulting, setConsulting] = useState([]);
+  const userSeq = useSelector((store) => store.user.userSeq); // 사용자 ID 추출
+  const userName = useSelector((store) => store.user.userName); // 사용자 ID 추출
+  const [reviewImage, setReviewImage] = useState(null); // 리뷰 이미지 상태
 
-  useEffect(() => {
-    axiosApi
-      .get(`/api/customer/${userSeq}/consulting/list/${consultingSeq}`)
-      .then((res) => {
-        setConsulting(res.data);
-      })
-      .catch((error) => {
-        console.log("데이터를 불러오는데 실패했습니다.", error);
-      });
-  }, []);
-
-  // 지역, 의사, 병원 추가 필요 & reviewBoard 에서 가격 표시하려면 dto 추가 필요
+  // 리뷰 데이터 상태 초기화
   const [reviewData, setReviewData] = useState({
     user_seq: userSeq,
-    reviewBoard_title: "string",
-    reviewBoard_content: "string",
+    reviewBoard_title: "",
+    reviewBoard_content: "",
     reviewBoard_score: 0,
-    username: "string",
-    reviewBoard_doctor: "string",
-    reviewBoard_region: "string",
-    reviewBoard_surgery: "string",
-    reviewBoard_hospital: "string",
-    reviewBoard_price: 0,
+    username: userName,
+    reviewBoard_doctor: "",
+    reviewBoard_region: "",
+    reviewBoard_surgery: "",
+    reviewBoard_hospital: "",
+    reviewBoard_expected_price: 0,
+    reviewBoard_surgery_price: 0,
   });
 
+  // 입력 필드 변경 핸들러
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setReviewData({ ...reviewData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axiosApi
-      .post("/api/reviewBoard/regist", reviewData)
-      .then((res) => {
-        console.log(res);
-        navigate(`/reviewList`);
-      })
-      .catch((error) => {
-        console.error("Error adding review:", error);
-      });
+  // 이미지 변경 핸들러
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      setReviewImage(e.target.files[0]);
+    }
   };
 
-  const handleRatingChange = (value) => {
-    setReviewData({ ...reviewData, reviewBoard_score: value });
+  // 폼 제출 핸들러
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    const reviewBoardData = {};
+
+    // reviewData의 키와 값을 FormData에 추가
+    Object.keys(reviewData).forEach((key) => {
+      // formData.append(key, reviewData[key]);
+      reviewBoardData[key] = reviewData[key];
+    });
+    formData.append("reviewBoardData", JSON.stringify(reviewBoardData));
+
+    // 이미지 파일 추가
+    if (reviewImage) {
+      formData.append("uploadfile", reviewImage);
+    }
+
+    // API 호출
+    axiosApi
+      .post("/api/reviewBoard/regist", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then((res) => {
+        console.log("리뷰 등록 성공", res.data);
+
+        navigate("/reviewList"); // 성공 후 리뷰 목록 페이지로 이동
+      })
+      .catch((error) => {
+        console.error("리뷰 등록 실패", error);
+      });
   };
 
   return (
     <div>
       <h1>리뷰 등록</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="reviewBoard_title">제목:</label>
+        <TextField
+          label="제목"
+          name="reviewBoard_title"
+          value={reviewData.reviewBoard_title}
+          onChange={handleInputChange}
+          fullWidth
+          margin="normal"
+        />
+        <TextField
+          label="내용"
+          name="reviewBoard_content"
+          value={reviewData.reviewBoard_content}
+          onChange={handleInputChange}
+          fullWidth
+          multiline
+          rows={4}
+          margin="normal"
+        />
+        <TextField
+          label="의사 이름"
+          name="reviewBoard_doctor"
+          value={reviewData.reviewBoard_doctor}
+          onChange={handleInputChange}
+          fullWidth
+        />
+        <TextField
+          label="지역"
+          name="reviewBoard_region"
+          value={reviewData.reviewBoard_region}
+          onChange={handleInputChange}
+          fullWidth
+        />
+        <TextField
+          label="수술명"
+          name="reviewBoard_surgery"
+          value={reviewData.reviewBoard_surgery}
+          onChange={handleInputChange}
+          fullWidth
+        />
+        <TextField
+          label="병원명"
+          name="reviewBoard_hospital"
+          value={reviewData.reviewBoard_hospital}
+          onChange={handleInputChange}
+          fullWidth
+        />
+        <TextField
+          label="예상 가격"
+          name="reviewBoard_expected_price"
+          type="number"
+          value={reviewData.reviewBoard_expected_price}
+          onChange={handleInputChange}
+          fullWidth
+        />
+        <TextField
+          label="수술 가격"
+          name="reviewBoard_surgery_price"
+          type="number"
+          value={reviewData.reviewBoard_surgery_price}
+          onChange={handleInputChange}
+          fullWidth
+        />
+        <StarRating
+          value={reviewData.reviewBoard_score}
+          onChange={(value) =>
+            setReviewData({ ...reviewData, reviewBoard_score: value })
+          }
+        />
+        <IconButton color="primary" component="label">
           <input
-            type="text"
-            id="reviewBoard_title"
-            name="reviewBoard_title"
-            value={reviewData.reviewBoard_title}
-            onChange={handleInputChange}
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={handleImageChange}
           />
-        </div>
-        <div>
-          <label htmlFor="reviewBoard_content">내용:</label>
-          <textarea
-            id="reviewBoard_content"
-            name="reviewBoard_content"
-            value={reviewData.reviewBoard_content}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="reviewBoard_price">가격:</label>
-          <input
-            type="number"
-            id="reviewBoard_price"
-            name="reviewBoard_price"
-            value={reviewData.reviewBoard_price}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="reviewBoard_score">별점:</label>
-          {/* 별점 입력 컴포넌트를 렌더링합니다. */}
-          <StarRating
-            value={reviewData.reviewBoard_score}
-            onChange={handleRatingChange}
-          />
-        </div>
-        <button type="submit">등록</button>
+          <PhotoCamera />
+        </IconButton>
+        <Button type="submit" variant="contained" color="primary">
+          등록하기
+        </Button>
       </form>
     </div>
   );

@@ -17,6 +17,8 @@
     color: #2A2A2A;
     padding-left: 20px;
     border: 10px solid  rgba(254, 202, 171, 0.38);
+    border-left: 15px solid rgba(254, 202, 171, 0.38);
+    border-right: 15px solid rgba(254, 202, 171, 0.38);
     border-radius: 18px;
   }
   .searchInput::placeholder{

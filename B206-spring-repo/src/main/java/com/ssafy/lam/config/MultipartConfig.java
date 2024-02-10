@@ -28,7 +28,7 @@ public class MultipartConfig {
     public MultipartConfigElement multipartConfigElement() {
         String uploadDir = System.getProperty("user.dir");
 
-        System.out.println("uploadDir = " + uploadDir);
+//        System.out.println("uploadDir = " + uploadDir);
         MultipartConfigFactory factory = new MultipartConfigFactory();
         String location = uploadDir + File.separator + "images";
 //        String location = "/images";

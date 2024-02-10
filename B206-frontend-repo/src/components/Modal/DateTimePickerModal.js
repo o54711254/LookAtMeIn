@@ -80,11 +80,11 @@ export default function ResponsiveModal() {
         <ModalDialog
           aria-labelledby="nested-modal-title"
           aria-describedby="nested-modal-description"
-          sx={{ width: "auto" }} // 모달 너비를 자동으로 설정합니다.
+          sx={{ width: "auto", backgroundColor: "#rgb(246, 246, 246);" }} // 모달 너비를 자동으로 설정합니다.
         >
-          <Typography className={styles.title}>
+          <div id="nested-modal-title" className={styles.title}>
             <h2>날짜와 시간을 선택하세요.</h2>
-          </Typography>
+          </div>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Date"
@@ -92,7 +92,11 @@ export default function ResponsiveModal() {
               onChange={setDate}
               renderInput={(params) => <TextField {...params} />}
               shouldDisableDate={disablePastDate}
-              sx={{ mb: 2 }}
+              sx={{
+                mb: 2,
+                backgroundColor: "rgba(254, 202, 171, 0.38);",
+                ":hover": { borderColor: "rgb(174, 174, 174);" },
+              }}
             />
           </LocalizationProvider>
           <Box
@@ -114,20 +118,14 @@ export default function ResponsiveModal() {
               </Button>
             ))}
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: 2,
-            }}
-          >
-            <Button variant="outlined" color="danger" onClick={handleClose}>
+          <div className={styles.btns}>
+            <button onClick={handleClose} className={styles.btn}>
               취소
-            </Button>
-            <Button variant="solid" color="success" onClick={handleConfirm}>
+            </button>
+            <button onClick={handleConfirm} className={styles.btn}>
               예약하기
-            </Button>
-          </Box>
+            </button>
+          </div>
         </ModalDialog>
       </Modal>
     </React.Fragment>

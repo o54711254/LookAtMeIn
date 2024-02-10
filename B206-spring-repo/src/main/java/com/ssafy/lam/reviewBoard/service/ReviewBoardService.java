@@ -4,6 +4,7 @@ import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface ReviewBoardService {
     ReviewBoard getReview(long seq);
 
     // 게시판 작성
-    ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister);
+    ReviewBoard createReview(ReviewBoardRegister reviewBoardRegister, MultipartFile file);
 
     // 게시판 수정
     void updateReview(ReviewBoardUpdate reviewBoardUpdate);
@@ -27,8 +28,6 @@ public interface ReviewBoardService {
     // 게시글 신고
     void reportReview(Long seq);
 
-//    double avgScore(long seq);
-//    int cntReviews(long seq);
 
 
     List<ReviewListDisplay> getReviewByUserSeq(Long userSeq);

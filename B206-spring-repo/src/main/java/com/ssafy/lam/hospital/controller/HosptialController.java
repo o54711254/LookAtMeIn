@@ -1,6 +1,7 @@
 package com.ssafy.lam.hospital.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.dto.*;
 import com.ssafy.lam.hospital.service.HospitalService;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,26 +29,35 @@ public class HosptialController {
 
     @PostMapping("/regist")
     @Operation(summary = "병원 정보를 등록한다.")
-    public ResponseEntity<Void> regist(@ModelAttribute HospitalRequestDto hospitalRequestDto) {
-        log.info("regist hospital : {}, Category {}", hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
+    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam("registrationFile") MultipartFile registrationFile) {
+        try{
+            HospitalRequestDto hospitalRequestDto = new ObjectMapper().readValue(hospital, HospitalRequestDto.class);
 
-        hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList());
-        return ResponseEntity.ok().build();
+            hospitalService.createHospital(hospitalRequestDto.getHospital(), hospitalRequestDto.getCategoryList(), registrationFile);
+            return ResponseEntity.ok().build();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
+
+//    @PutMapping
+
     
     // 병원에서 의사 정보 추가
-    @PostMapping("/{hospital_seq}/doctors/regist")
+    @PostMapping("/{user_seq}/doctors/regist")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가")
-    public ResponseEntity<Void> createDoctor(@PathVariable Long hospital_seq, @RequestBody DoctorDto doctorDto) {
-        hospitalService.createDoctor(hospital_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career());
+    public ResponseEntity<Void> createDoctor(@PathVariable Long user_seq, @RequestBody DoctorDto doctorDto) {
+        hospitalService.createDoctor(user_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career());
         return ResponseEntity.ok().build();
     }
     
     // 병원에서 의사 목록 조회
-    @GetMapping("/{hospital_seq}/doctors")
+    @GetMapping("/{user_seq}/doctors")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사 목록 조회")
-    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
-        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
+    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long user_seq) {
+        List<Doctor> doctors = hospitalService.getHospitalDoctorList(user_seq);
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 

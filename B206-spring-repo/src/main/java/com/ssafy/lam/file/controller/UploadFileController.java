@@ -1,5 +1,6 @@
 package com.ssafy.lam.file.controller;
 
+import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.dto.FileResponseDto;
@@ -57,7 +58,7 @@ public class UploadFileController {
 
             // 파일을 base64로 인코딩해서 보내줘야함
             // 프론트에서 파일을 볼 때는 항상 base64로 인코딩해서 보내야함
-            String encodeFile = encodeFileToBase64(path);
+            String encodeFile = EncodeFile.encodeFileToBase64(path);
             Resource resource = new UrlResource(path.toUri());
 
             if(resource.exists() || resource.isReadable()){
@@ -78,11 +79,6 @@ public class UploadFileController {
         }catch (Exception e){
             return ResponseEntity.notFound().build();
         }
-    }
-
-    private String encodeFileToBase64(Path path) throws IOException {
-        byte[] fileContent = Files.readAllBytes(path);
-        return Base64.getEncoder().encodeToString(fileContent);
     }
 
 }

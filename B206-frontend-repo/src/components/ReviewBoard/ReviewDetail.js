@@ -9,7 +9,8 @@ import profile from "../../assets/gun.png";
 
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);
-  const { reviewBoard_seq } = useParams();
+  const { reviewBoard_seq } = useParams(); // URL 파라미터에서 reviewBoard_seq를 가져옴
+  const [imgURL, setImgURL] = useState("");
   const navigate = useNavigate();
   const [showButton, setShowButton] = useState(true);
   // 예제를 위한 현재 사용자 정보 (실제로는 로그인 데이터 등을 통해 설정해야 함)
@@ -24,6 +25,12 @@ function ReviewDetail() {
       .get(`/api/reviewBoard/${reviewBoard_seq}`)
       .then((res) => {
         console.log(res.data);
+        const base64 = res.data.base64;
+        const type = res.data.type;
+
+        const data = `data:${type};base64,${base64}`;
+        setImgURL(data);
+
         setReviewDetail(res.data);
       })
       .catch((error) => {
@@ -40,7 +47,9 @@ function ReviewDetail() {
   };
 
   // 현재 사용자가 글쓴이와 같거나 관리자인지 확인
-  const canEditOrDelete = currentUser.name === reviewDetail.customer_name || currentUser.role === "admin";
+  const canEditOrDelete =
+    currentUser.name === reviewDetail.customer_name ||
+    currentUser.role === "admin";
 
   return (
     <div className={styles.container}>
@@ -49,12 +58,17 @@ function ReviewDetail() {
           <img src={profile} alt="프로필" className={styles.profile}></img>
           <p>{reviewDetail.customer_name}</p>
         </div>
-        <div className={styles.title}><p>{reviewDetail.reviewBoard_title}</p></div>
+        <div className={styles.title}>
+          <p>{reviewDetail.reviewBoard_title}</p>
+        </div>
         <div className={styles.buttonbox}>
           {showButton && canEditOrDelete && (
             <>
               <Button onClick={onReviewUpdate}>수정</Button>
-              <ReviewDelete reviewBoard_seq={reviewBoard_seq} onUpdated={onReviewDeleted}></ReviewDelete>
+              <ReviewDelete
+                reviewBoard_seq={reviewBoard_seq}
+                onUpdated={onReviewDeleted}
+              ></ReviewDelete>
             </>
           )}
         </div>
@@ -67,9 +81,13 @@ function ReviewDetail() {
           <div>지역: {reviewDetail.reviewBoard_region}</div>
         </div>
         <div className={styles.maincenter}>
-          <div className={styles.imgcon}><img src={profile} alt="글 사진"/></div>
+          <div className={styles.imgcon}>
+            <img src={imgURL} alt="글 사진" />
+          </div>
           <div>내용: {reviewDetail.reviewBoard_content}</div>
-          <div className={styles.star}><StarResult score={reviewDetail.reviewBoard_score}/></div>
+          <div className={styles.star}>
+            <StarResult score={reviewDetail.reviewBoard_score} />
+          </div>
         </div>
         <div className={styles.mainright}>
           <p>의사 정보 들어갈 공간</p>

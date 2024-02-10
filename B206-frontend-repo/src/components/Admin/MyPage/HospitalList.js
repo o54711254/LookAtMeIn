@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosApi from "../../../api/axiosApi";
+import styles from "./HospitalList.module.css";
 
 function HospitalList() {
   const [postList, setPostList] = useState([]);
@@ -42,9 +43,15 @@ function HospitalList() {
   };
 
   return (
-    <div>
-      <button onClick={() => setListType("all")}>전체 병원 목록</button>
-      <button onClick={() => setListType("reject")}>미승인 병원 목록</button>
+    <div className={styles.hospitalContainer}>
+      <div className={styles.hospitalButton}>
+        <button className={styles.button} onClick={() => setListType("all")}>
+          전체 병원 목록
+        </button>
+        <button className={styles.button} onClick={() => setListType("reject")}>
+          미승인 병원 목록
+        </button>
+      </div>
       {postList.length > 0 ? (
         <ul>
           {postList.map((post, index) => (
