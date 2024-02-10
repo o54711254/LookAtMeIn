@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper";
 import Banner1 from "./Banner/Banner1";
+import styles from "./ImageSlider.module.css";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -8,7 +9,7 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 function ImageSlider() {
   return (
-    <div>
+    <div className={styles.container}>
       <Swiper
         modules={[Navigation, Pagination, Autoplay]} // 이 줄 추가
         className="banner"
