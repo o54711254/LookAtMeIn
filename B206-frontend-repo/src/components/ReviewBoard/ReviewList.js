@@ -51,7 +51,9 @@ function ReviewList() {
             <div className={styles.title}>
               <div>{board.reviewBoard_title}</div>
             </div>
-            <div className={styles.price}>시술가 : 원</div>
+            <div className={styles.price}>
+              {/* 시술가 : {board.reviewBoard_price} 원 */}
+            </div>
           </li>
         ))}
       </div>

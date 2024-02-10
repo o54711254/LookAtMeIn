@@ -38,8 +38,8 @@ import Worldcup from "./components/WorldCup/Worldcup.js";
 import WorldcupMan from "./components/WorldCup/WorldcupMan";
 import WorldcupWoman from "./components/WorldCup/WorldcupWoman";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
-// import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
-// import HospitalDetail from "./pages/HospitalDetail.js";
+import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
+import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion";
