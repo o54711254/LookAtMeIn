@@ -2,12 +2,13 @@ import React from "react";
 import axios from "axios";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import axiosApi from "../../api/axiosApi";
 
 const FreeBoardDelete = ({ freeBoardSeq }) => {
   const navigate = useNavigate();
 
   const handleUpdate = () => {
-    axios
+    axiosApi
       .put(`/api/freeBoard/delete/${freeBoardSeq}`, {
         freeBoard_complain: true,
       })

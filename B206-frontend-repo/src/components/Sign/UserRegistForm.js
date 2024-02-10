@@ -4,10 +4,14 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import axiosAPi from "../../api/axiosApi";
-import logo from "../../assets/lab_logo.png";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
+
+import styles from "./UserRegistForm.module.css"
+
 // import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // axios test 완료
@@ -149,28 +153,26 @@ function UserRegistForm() {
   };
 
   return (
-    <>
-      <div className="UserRegistForm">
-        <div>
-          <img src={logo} alt="로고사진" />
-          <h1>룩앳미인</h1>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.UserRegistForm}>
+        <img src={logo} alt="로고" id={styles.logo}/>
         <form onSubmit={formik.handleSubmit}>
           <div className="inputText">
-            <h3>아이디</h3>
+            <h3 className={styles.text}>아이디</h3>
             <input
               type="text"
               placeholder="abcd1234"
               name="id"
               value={formik.values.id}
               onChange={formik.handleChange}
+              id={styles.inputB}
               className={formik.touched.id && formik.errors.id ? "error" : ""}
             />
+              <button onClick={checkDuplicateId} className={styles.button}>중복확인</button>
             {formik.touched.id && formik.errors.id && (
               <div className="helperText">{formik.errors.id}</div>
             )}
 
-            <button onClick={checkDuplicateId}>중복확인</button>
             {useable === null ? (
               ""
             ) : useable ? (
@@ -179,13 +181,14 @@ function UserRegistForm() {
               <span>이미 사용중인 아이디 입니다.</span>
             )}
           </div>
-          <div className="inputText">
-            <h3>비밀번호</h3>
+          <div className={styles.inputText}>
+            <h3 className={styles.text}>비밀번호</h3>
             <input
               name="password"
               type="password"
               onChange={formik.handleChange}
               placeholder="영문, 숫자, 특수문자 조합 8~16자를 입력하세요"
+              id={styles.input}
               value={formik.values.password}
               className={
                 formik.touched.password && formik.errors.password ? "error" : ""
@@ -196,12 +199,13 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>비밀번호 확인</h3>
+            <h3 className={styles.text}>비밀번호 확인</h3>
             <input
               type="password"
               name="confirmPassword"
               value={formik.values.confirmPassword}
               onChange={formik.handleChange}
+              id={styles.input}
               placeholder="비밀번호 확인"
               style={{ color: isPasswordMatch ? "green" : "inherit" }} // 조건부 스타일 적용
             />
@@ -210,13 +214,14 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>이름</h3>
+            <h3 className={styles.text}>이름</h3>
             <input
               type="text"
               placeholder="한글 이름"
               name="name"
               value={formik.values.name}
               onChange={formik.handleChange}
+              id={styles.input}
               className={
                 formik.touched.name && formik.errors.name ? "error" : ""
               }
@@ -225,7 +230,20 @@ function UserRegistForm() {
               <div className="helperText">{formik.errors.name}</div>
             )}
           </div>
-          <div className="inputText">
+          <FormControl component="fieldset">
+      <FormLabel component="legend"><h3 className={styles.text}>성별</h3></FormLabel>
+      <RadioGroup
+        row
+        aria-label="gender"
+        name="gender"
+        value={formik.values.gender}
+        onChange={formik.handleChange}
+      >
+        <FormControlLabel value="남" control={<Radio />} label="남" />
+        <FormControlLabel value="여" control={<Radio />} label="여" />
+      </RadioGroup>
+    </FormControl>
+          {/* <div className="inputText" id={styles.gender}>
             <h3>성별</h3>
             <div>
               <label>
@@ -254,14 +272,15 @@ function UserRegistForm() {
             {formik.touched.gender && formik.errors.gender && (
               <div className="helperText">{formik.errors.gender}</div>
             )}
-          </div>
+          </div> */}
           <div className="inputText">
-            <h3>생년월일</h3>
+            <h3 className={styles.text}>생년월일</h3>
             <input
               type="text"
               placeholder="YYYY.MM.DD"
               name="birth"
               value={formik.values.birth}
+              id={styles.input}
               onChange={formik.handleChange}
               className={
                 formik.touched.birth && formik.errors.birth ? "error" : ""
@@ -272,12 +291,13 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>전화번호</h3>
+            <h3 className={styles.text}>전화번호</h3>
             <input
               type="text"
               placeholder="01000000000"
               name="phoneNumber"
               value={formik.values.phoneNumber}
+              id={styles.input}
               onChange={formik.handleChange}
               className={
                 formik.touched.phoneNumber && formik.errors.phoneNumber
@@ -290,15 +310,16 @@ function UserRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3>주소</h3>
+            <h3 className={styles.text}>주소</h3>
             <input
               type="text"
               name="address"
               value={formik.values.address}
               onChange={formik.handleChange}
+              id={styles.inputB}
               readOnly
             />
-            <button type="button" onClick={showModal}>
+            <button type="button" onClick={showModal} className={styles.button}>
               주소 입력
             </button>
 
@@ -312,13 +333,14 @@ function UserRegistForm() {
             </Modal>
           </div>
           <div className="inputText">
-            <h3>이메일</h3>
+            <h3 className={styles.text}>이메일</h3>
             <input
               type="text"
               placeholder="abcdef@ssafy.com"
               name="email"
               value={formik.values.email}
               onChange={formik.handleChange}
+              id={styles.input}
               className={
                 formik.touched.email && formik.errors.email ? "error" : ""
               }
@@ -327,12 +349,12 @@ function UserRegistForm() {
               <div className="helperText">{formik.errors.email}</div>
             )}
           </div>
-          <div className="RegistButton">
-            <button type="submit">회원가입</button>
+          <div>
+            <button className={styles.RegistButton} type="submit">회원가입</button>
           </div>
         </form>
       </div>
-    </>
+      </div>
   );
 }
 export default UserRegistForm;

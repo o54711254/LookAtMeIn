@@ -5,11 +5,12 @@ import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.*;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface HospitalService {
-    Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> caregoryDtoList);
+    Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> caregoryDtoList, MultipartFile registrationFile);
 
     HospitalDto getHospital(long userId);
 

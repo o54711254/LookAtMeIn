@@ -19,10 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +64,6 @@ public class FreeboardServiceImpl implements FreeboardService {
     @Override
     public List<Freeboard> getAllFreeboards() {
         List<Freeboard> freeboardList = freeboardRepository.findByIsDeletedFalse();
-    
         return freeboardList;
     }
 
@@ -124,7 +123,7 @@ public class FreeboardServiceImpl implements FreeboardService {
         Freeboard freeboard = freeboardRepository.findById(freeboardSeq)
                 .orElseThrow(() -> new NoArticleExeption("해당 게시글이 없습니다."));
 
-        if(!freeboard.getUser().getUserSeq().equals(updateFreeboardRequestDto.getUser_seq())){
+        if (!freeboard.getUser().getUserSeq().equals(updateFreeboardRequestDto.getUser_seq())) {
             throw new IllegalArgumentException("해당 게시글을 수정할 권한이 없습니다.");
         }
 
@@ -149,12 +148,11 @@ public class FreeboardServiceImpl implements FreeboardService {
         log.info("게시글 삭제 전 정보: {}", freeboard);
         freeboard.setDeleted(true);
         freeboardRepository.save(freeboard);
-        for(Comment comment : commentList){
+        for (Comment comment : commentList) {
             commentService.deleteComment(comment.getSeq());
         }
 
         log.info("게시글 삭제 후 정보: {}", freeboard);
-
 
 
         return freeboard;
@@ -162,8 +160,26 @@ public class FreeboardServiceImpl implements FreeboardService {
     }
 
     @Override
-    public List<Freeboard> getFreeboardByUserSeq(Long userSeq) {
+    public List<FreeboardResponseDto> getFreeboardByUserSeq(Long userSeq) {
+        // userSeq를 사용하여 삭제되지 않은 게시글 목록을 조회합니다.
         List<Freeboard> freeboards = freeboardRepository.findByUserUserSeqAndIsDeletedFalse(userSeq);
-        return freeboards;
+        Customer customer = customerRepository.findByUserUserSeq(userSeq).get();
+
+        // 조회된 Freeboard 엔티티 리스트를 FreeboardResponseDto 리스트로 변환합니다.
+        return freeboards.stream().map(freeboard -> {
+            // 각 Freeboard 엔티티를 FreeboardResponseDto로 매핑합니다.
+            // 여기서는 CommentRequestDto 리스트를 빈 리스트로 설정합니다. 필요하다면, 실제 댓글 데이터를 조회하여 설정할 수 있습니다.
+            return FreeboardResponseDto.builder()
+                    .freeboardSeq(freeboard.getFreeboardSeq())
+                    .userId(freeboard.getUser().getUserId())
+                    .userEmail(customer.getEmail())
+                    .freeboardTitle(freeboard.getTitle())
+                    .freeboardCnt(freeboard.getCnt())
+                    .freeboardRegisterdate(freeboard.getRegisterDate())
+                    .freeboardContent(freeboard.getContent())
+                    .comments(new ArrayList<>()) // 실제 댓글 데이터가 필요한 경우 여기를 수정
+                    .build();
+        }).collect(Collectors.toList());
     }
+
 }

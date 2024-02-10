@@ -6,6 +6,9 @@ import com.ssafy.lam.hospital.dto.DoctorListDto;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.hospital.service.DoctorService;
 import com.ssafy.lam.hospital.service.HospitalService;
+import com.fasterxml.jackson.databind.ObjectMapper; 
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
@@ -19,7 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +36,11 @@ import java.util.Map;
 public class ReviewBoardController {
 
     private Logger log = LoggerFactory.getLogger(ReviewBoardController.class);
+
+    MultipartConfig multipartConfig = new MultipartConfig();
+
+    // 파일이 업로드될 디렉토리 경로
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @Autowired
     private final ReviewBoardService reviewBoardService;
@@ -80,31 +91,49 @@ public class ReviewBoardController {
         Doctor doctor = doctorService.getDoctor(review.getDoctor().getDocInfoSeq());
         ReviewDisplay detailReview = null;
         if(review!=null) {
-            detailReview = ReviewDisplay.builder()
-                    .reviewBoard_seq(seq)
-                    .reviewBoard_title(review.getTitle())
-                    .reviewBoard_content(review.getContent())
-                    .reviewBoard_score(review.getScore())
-                    .customer_name(review.getUser().getName())
-                    .reviewBoard_doctor(review.getDoctor().getDocInfoName())
-                    .reviewBoard_region(review.getRegion())
-                    .reviewBoard_surgery(review.getSurgery())
-                    .reviewBoard_hospital(hospitalDto.getHospitalInfo_name())
-                    .reviewBoard_expected_price(review.getExpectedPrice())
-                    .reviewBoard_surgery_price(review.getSurgeryPrice())
-                    .reviewBoard_cnt(review.getCnt())
-                    .hospital_seq(review.getHospital().getHospitalSeq())
-                    .doctor_seq(review.getDoctor().getDocInfoSeq())
-                    .build();
+            try{
+                Path path = Paths.get(uploadPath + "/"+review.getUploadFile().getName());
+                String base64 = EncodeFile.encodeFileToBase64(path);
+                String imageType = review.getUploadFile().getType(); 
+
+                detailReview = ReviewDisplay.builder()
+                        .reviewBoard_seq(review.getSeq())
+                        .reviewBoard_title(review.getTitle())
+                        .reviewBoard_content(review.getContent())
+                        .reviewBoard_score(review.getScore())
+                        .customer_name(review.getUser().getName())
+                        .reviewBoard_doctor(review.getDoctor().getDocInfoName())
+                        .reviewBoard_region(review.getRegion())
+                        .reviewBoard_surgery(review.getSurgery())
+                        .reviewBoard_hospital(review.getHospital().getUser().getName())
+                        .reviewBoard_expected_price(review.getExpectedPrice())
+                        .reviewBoard_surgery_price(review.getSurgeryPrice())
+                        .reviewBoard_cnt(review.getCnt())
+                        .base64(base64)
+                        .imageType(imageType)
+                        .build();
+
+            }catch(Exception e){
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
         return new ResponseEntity<>(detailReview, HttpStatus.OK);
     }
 
     @PostMapping("/regist")
     @Operation(summary = "새로운 후기 정보를 생성한다.")
-    public ResponseEntity<Void> createReview(@RequestBody ReviewBoardRegister reviewBoardRegister) {
-        reviewBoardService.createReview(reviewBoardRegister);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> createReview(@RequestParam("reviewBoardData") String reviewBoardData,
+                                             @RequestParam("uploadfile")MultipartFile file){
+        try{
+            ReviewBoardRegister reviewBoardRegister = new ObjectMapper().readValue(reviewBoardData, ReviewBoardRegister.class);
+            reviewBoardService.createReview(reviewBoardRegister, file);
+            return ResponseEntity.ok().build();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/update")

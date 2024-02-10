@@ -45,8 +45,8 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
 
     try {
       //희수오빠가 freeboradseq 넘겨주면 뒤에 추가하기
-      const response = await axiosApi.post(
-        `api/freeBoard/update/${freeboardSeq}`,
+      const response = await axiosApi.put(
+        `/api/freeBoard/update/${freeboardSeq}`,
         formData,
         {
           headers: {
@@ -65,6 +65,8 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
       setImage(null);
       window.location.reload();
     } catch (error) {
+      console.log(post);
+      console.log(formData);
       console.log("자게 글 작성 에러남 : ", error);
     }
   };

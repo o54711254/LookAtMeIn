@@ -1,7 +1,11 @@
 package com.ssafy.lam.config;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -11,11 +15,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages = { "com.ssafy.lam" })
+@ComponentScan(basePackages = {"com.ssafy.lam"})
 public class AppConfig implements WebMvcConfigurer {
 
     private final Logger logger = LoggerFactory.getLogger(AppConfig.class);
-
 
 
     @Override
@@ -30,6 +33,11 @@ public class AppConfig implements WebMvcConfigurer {
 //		.allowCredentials(true)
 //		.exposedHeaders("*")
                 .maxAge(1800); // Pre-flight Caching
+    }
+
+    @Bean
+    public JPAQueryFactory jpaQueryFactory(EntityManager em) {
+        return new JPAQueryFactory(em);
     }
 
 }

@@ -6,6 +6,7 @@ import {
 import userReducer from "./user";
 import tokenReducer from "./auth";
 import requestBoardReducer from "./requestBoard";
+import hospitalReducer from "./hospital"
 
 // persist-reducer 및 persistStore 관련
 import storage from "redux-persist/lib/storage";
@@ -15,12 +16,13 @@ const reducers = combineReducers({
   user: userReducer,
   auth: tokenReducer,
   requestBoard: requestBoardReducer,
+  hospital: hospitalReducer
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "auth", "requestBoard"],
+  whitelist: ["user", "auth", "requestBoard", "hospital"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

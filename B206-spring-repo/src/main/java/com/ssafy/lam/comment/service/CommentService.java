@@ -48,7 +48,7 @@ public class CommentService {
 
     public Comment deleteComment(Long comment_seq) {
         Comment comment = commentRepository.findById(comment_seq).get();
-        comment.setDeleted(true);
+        comment.setIsDeleted(true);
         return commentRepository.save(comment);
     }
 

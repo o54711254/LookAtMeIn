@@ -1,5 +1,7 @@
 package com.ssafy.lam.hospital.service;
 
+import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hospital.domain.*;
 import com.ssafy.lam.hospital.dto.*;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +27,15 @@ public class HospitalServiceImpl implements HospitalService {
     private final UserService userService;
     private final DoctorRepository doctorRepository;
     private final CareerRepository careerRepository;
-    private final CategoryRepository categoryRepository;
+    private final HospitalCategoryRepository hospitalCategoryRepository;
+    private final UploadFileService uploadFileService;
 
+    private final DoctorCategoryRepository doctorCategoryRepository;
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
 
     @Override
-    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto) {
+    public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto, MultipartFile registrationFile) {
         log.info("createHospital : {}", hospitalDto);
         List<String> roles = new ArrayList<>();
         roles.add("HOSPITAL");
@@ -54,15 +59,28 @@ public class HospitalServiceImpl implements HospitalService {
                 .closeTime(hospitalDto.getHospitalInfo_close())
                 .url(hospitalDto.getHospitalInfo_url())
                 .build();
+        UploadFile uploadFile = uploadFileService.store(registrationFile);
+        hospital.setRegistrationFile(uploadFile);
 
-        return hospitalRepository.save(hospital);
+
+        hospital = hospitalRepository.save(hospital);
+        for (CategoryDto category : categoryDto) {
+            log.info("category : {}", category);
+            HospitalCategory hospitalCategoryEntity = HospitalCategory.builder()
+                    .part(category.getPart())
+                    .hospital(hospital)
+                    .build();
+            hospitalCategoryRepository.save(hospitalCategoryEntity);
+        }
+
+        return hospital;
     }
 
     @Override
     public HospitalDto getHospital(long userId) {
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
-            Hospital hospital = hospitalOptional.get();
+            com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
 
             HospitalDto dto = HospitalDto.builder()
                     .hospitalInfo_id(hospital.getUser().getUserId())
@@ -116,8 +134,11 @@ public class HospitalServiceImpl implements HospitalService {
                 .hospital(hospital).build();
         doctorRepository.save(doctor);
         for(CategoryDto c : categoryDtoList) {
-            Category category = Category.builder().part(c.getPart()).doctor(doctor).build();
-            categoryRepository.save(category);
+            DoctorCategory doctorCategory = DoctorCategory.builder()
+                    .part(c.getPart())
+                    .doctor(doctor)
+                    .build();
+            doctorCategoryRepository.save(doctorCategory);
         }
         for(CareerDto c : careerDtoList) {
             Career career = Career.builder().careerStart(c.getCareer_start()).careerEnd(c.getCareer_end())

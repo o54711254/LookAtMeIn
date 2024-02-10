@@ -1,5 +1,6 @@
 package com.ssafy.lam.hospital.domain;
 import com.ssafy.lam.coordinator.domain.Coordinator;
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -51,18 +52,25 @@ public class Hospital {
     private boolean isApproved;
 
     @Column(name = "hos_info_bookmark")
-    private int bookmark;
+    private Integer bookmark;
 
     @Column(name = "hos_info_url")
     private String url;
 
+    @OneToOne
+    @JoinColumn(name = "registration_file_seq")
+    private UploadFile registrationFile;
+
+    @OneToOne
+    @JoinColumn(name = "profile_file_seq")
+    private UploadFile profileFile;
     public void approve() {
         this.isApproved = true;
     }
 
     @Builder
-    public Hospital(Long hospitalSeq, User user, List<Coordinator> coordinators, String tel, String email, String address, String openTime,
-                    String closeTime, String intro, boolean isApproved, int bookmark, String url) {
+
+    public Hospital(Long hospitalSeq, User user, List<Coordinator> coordinators, String tel, String email, String address, String openTime, String closeTime, String intro, boolean isApproved, Integer bookmark, String url, UploadFile registrationFile, UploadFile profileFile) {
         this.hospitalSeq = hospitalSeq;
         this.user = user;
         this.coordinators = coordinators;
@@ -75,6 +83,7 @@ public class Hospital {
         this.isApproved = isApproved;
         this.bookmark = bookmark;
         this.url = url;
+        this.registrationFile = registrationFile;
+        this.profileFile = profileFile;
     }
-
 }
