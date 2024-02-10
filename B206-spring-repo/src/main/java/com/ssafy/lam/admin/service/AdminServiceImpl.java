@@ -41,8 +41,8 @@ public class AdminServiceImpl implements AdminService {
                         .userName(freeboard.getUser().getName())
                         .freeboardTitle(freeboard.getTitle())
                         .freeboardContent(freeboard.getContent())
-                        .complain(freeboard.getComplain())
-                        .isDeleted(freeboard.getIsDeleted())
+                        .complain(freeboard.isComplain())
+                        .isDeleted(freeboard.isDeleted())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -63,8 +63,8 @@ public class AdminServiceImpl implements AdminService {
                         .reviewBoard_expected_price(reviewBoard.getExpectedPrice())
                         .reviewBoard_surgery_price(reviewBoard.getSurgeryPrice())
                         .regdate(reviewBoard.getRegdate())
-                        .complain(reviewBoard.getComplain())
-                        .isdeleted(reviewBoard.getIsdeleted())
+                        .complain(reviewBoard.isComplain())
+                        .isdeleted(reviewBoard.isIsdeleted())
                         .build())
                 .collect(Collectors.toList());
     }

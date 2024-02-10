@@ -49,13 +49,13 @@ public class ReviewBoard {
     private Long regdate; // 작성시간
 
     @Column(name = "review_board_complain")
-    private Boolean complain; // 신고여부
+    private boolean complain; // 신고여부
 
     @Column(name = "review_board_isdeleted")
-    private Boolean isdeleted; // 삭제여부
+    private boolean isdeleted; // 삭제여부
 
     @Column(name = "review_board_cnt")
-    private Integer cnt = 0; // 조회수
+    private int cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore

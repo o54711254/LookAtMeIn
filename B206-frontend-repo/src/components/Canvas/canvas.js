@@ -155,19 +155,31 @@ const Canvas = ()=>{
     }
     const save= async ()=>{
         // console.log(surgeryImg)
-        const url = "http://localhost:8000/api/surgery/save"
-        
-        const formData = new FormData()
-        formData.append("before", file)
-        formData.append("after", surgeryImg)
-     
         try{
-            const response = await axios.post(url,formData,{
+            const formData = new FormData();
+            formData.append("after", file)
+            const base64 = surgeryImg.split(',')[1] 
+
+            const byteCharacters = atob(base64);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            
+            // 바이트 배열을 Blob 객체로 변환
+            const blob = new Blob([byteArray], {type: 'image/png'});
+            
+            formData.append("before", blob ,"after.png")
+
+            const response = await axios.post("http://localhost:80/api/canvas/save", formData,{
                 headers:{
                     'Content-Type': 'multipart/form-data'
                 }
             })
-            console.log(response.data)
+                      
+            
+            console.log(response)
         }catch(error){
             console.error("저장 오류: ", error)
         }

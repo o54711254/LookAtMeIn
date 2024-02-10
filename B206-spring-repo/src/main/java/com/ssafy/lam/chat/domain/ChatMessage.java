@@ -27,15 +27,15 @@ public class ChatMessage {
     private User user;
     private String message;
 
-    Boolean deleted;
-
+    boolean deleted;
 
     @Builder
-   public ChatMessage(Long messageSeq, ChatRoom chatroom, User user, String message) {
+    public ChatMessage(Long messageSeq, ChatRoom chatroom, User user, String message, boolean deleted) {
         this.messageSeq = messageSeq;
         this.chatroom = chatroom;
         this.user = user;
         this.message = message;
+        this.deleted = deleted;
     }
 
     @Override

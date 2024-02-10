@@ -64,10 +64,6 @@ public class ReviewBoardController {
         ReviewDisplay detailReview = null;
         if(review!=null) {
             try{
-                Path path = Paths.get(uploadPath + "/"+review.getUploadFile().getName());
-                String base64 = EncodeFile.encodeFileToBase64(path);
-                String imageType = review.getUploadFile().getType();
-
                 detailReview = ReviewDisplay.builder()
                         .reviewBoard_seq(review.getSeq())
                         .reviewBoard_title(review.getTitle())
@@ -81,9 +77,15 @@ public class ReviewBoardController {
                         .reviewBoard_expected_price(review.getExpectedPrice())
                         .reviewBoard_surgery_price(review.getSurgeryPrice())
                         .reviewBoard_cnt(review.getCnt())
-                        .base64(base64)
-                        .imageType(imageType)
                         .build();
+                if(review.getUploadFile() != null){
+                    Path path = Paths.get(uploadPath + "/"+review.getUploadFile().getName());
+                    String base64 = EncodeFile.encodeFileToBase64(path);
+                    String imageType = review.getUploadFile().getType();
+                    detailReview.setBase64(base64);
+                    detailReview.setImageType(imageType);
+                }
+
 
             }catch(Exception e){
                 e.printStackTrace();

@@ -47,15 +47,11 @@ function FreeBoardDetail() {
 
         setPost(response.data);
         console.log(response.data);
-        const imgResponse = await axiosApi.get(
-          response.data.fileUrl
-        )
-        console.log("response2: ", imgResponse);
-        const base64 = imgResponse.data.base64;
-        const type = imgResponse.data.type;
 
-        const data =`data:${type};base64,${base64}`;
-        setImg(data);
+        const base6t4 = response.data.base64;
+        const type = response.data.type;
+        const data = `data:${type};base64,${base6t4}`;
+        setImg(data)
 
       } catch (error) {
         console.log("자유게시판 상세 불러오기 실패: ", error);

@@ -24,7 +24,7 @@ public class ChatParticipant {
     @JoinColumn(name = "user_seq")
     private User user;
 
-    Boolean deleted;
+    boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatRoom_seq")

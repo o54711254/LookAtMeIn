@@ -38,7 +38,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     public ReviewBoard getReview(long seq) {
         int addview = 1;
         ReviewBoard review = reviewBoardRepository.findById(seq).orElse(null);
-        if (review == null || review.getIsdeleted())
+        if (review == null || review.isIsdeleted())
             return null;
         addview += review.getCnt();
         review.setCnt(addview);

@@ -27,11 +27,11 @@ public class Reserve {
 
     private Integer reserveType; // 1 : 상담예약, 2 : 병원예약
 
-    private Integer year;
-    private Integer month;
-    private Integer day;
+    private int year;
+    private int month;
+    private int day;
     private String dayofweek;
-    private Integer time;
+    private int time;
 
     @Builder
 
