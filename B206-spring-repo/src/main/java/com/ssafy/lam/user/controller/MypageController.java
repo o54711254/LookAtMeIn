@@ -61,14 +61,14 @@ public class MypageController {
     @PutMapping("/user/{userSeq}")
     @Operation(summary = "고객 정보 수정")
     public ResponseEntity<?> updateCustomer(@PathVariable long userSeq, @ModelAttribute CustomerDto customerDto) {
-        Customer customerSaveDto = customerService.updateCustomer(userSeq, customerDto);
+        Customer customerSaveDto = customerService.updateCustomer(userSeq, customerDto, null);
         return new ResponseEntity<Customer>(customerSaveDto, HttpStatus.OK);
     }
 
     @PutMapping("/hospital/{userSeq}")
     @Operation(summary = "병원 정보 수정.")
     public ResponseEntity<?> updateHospital(@PathVariable long userSeq, @ModelAttribute HospitalDto hospitalDto) {
-        Hospital hospitalSaveDto = hospitalService.updateHospital(userSeq, hospitalDto);
+        Hospital hospitalSaveDto = hospitalService.updateHospital(userSeq, hospitalDto, null);
         return new ResponseEntity<Hospital>(hospitalSaveDto, HttpStatus.OK);
     }
 

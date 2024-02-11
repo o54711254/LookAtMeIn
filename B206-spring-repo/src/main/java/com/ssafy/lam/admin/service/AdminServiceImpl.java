@@ -121,8 +121,9 @@ public class AdminServiceImpl implements AdminService {
                 if(hospital.getRegistrationFile() != null){
                     Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
                     String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
-
+                    String type = hospital.getRegistrationFile().getType();
                     hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+
                 }
 
 

@@ -14,7 +14,7 @@ public interface HospitalService {
 
     HospitalDto getHospital(long userId);
 
-    Hospital updateHospital(long userSeq, HospitalDto hospitalDto);
+    Hospital updateHospital(long userSeq, HospitalDto hospitalDto, MultipartFile profile);
 
     //////////
 

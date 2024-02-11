@@ -12,17 +12,18 @@ public class HospitalAdminDto {
     private String hospitalInfo_id;
     private String hospitalInfo_name;
     private boolean isApproved;
-    private String profileBase64;
+
     private String registrationFileBase64;
+    private String registrationFileType;
 
     @Builder
-    public HospitalAdminDto(Long hospitalSeq, Long userSeq, String hospitalInfo_id, String hospitalInfo_name, boolean isApproved, String profileBase64, String registrationFileBase64) {
+    public HospitalAdminDto(Long hospitalSeq, Long userSeq, String hospitalInfo_id, String hospitalInfo_name, boolean isApproved, String registrationFileBase64, String registrationFileType) {
         this.hospitalSeq = hospitalSeq;
         this.userSeq = userSeq;
         this.hospitalInfo_id = hospitalInfo_id;
         this.hospitalInfo_name = hospitalInfo_name;
         this.isApproved = isApproved;
-        this.profileBase64 = profileBase64;
         this.registrationFileBase64 = registrationFileBase64;
+        this.registrationFileType = registrationFileType;
     }
 }
