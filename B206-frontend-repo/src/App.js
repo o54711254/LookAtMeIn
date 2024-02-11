@@ -129,7 +129,7 @@ function App() {
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
-                  <Route path="/reviewregist" element={<ReviewRegist/> }/>
+                  <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
                 </Routes>
               </div>
@@ -141,7 +141,7 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {<Questionnaire /> }
+          {<Questionnaire />}
           <FloatingChat />
         </div>
         <Footer />

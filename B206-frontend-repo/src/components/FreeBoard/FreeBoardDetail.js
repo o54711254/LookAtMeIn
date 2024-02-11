@@ -25,8 +25,7 @@ function FreeBoardDetail() {
 
         setPost(response.data);
         console.log(response.data);
-        
-        
+
         const base64 = response.data.base64;
         const type = response.data.type;
         const data = `data:${type};base64,${base64}`;

@@ -53,7 +53,7 @@ function CommentItem({ comment }) {
       </div>
       <div className={styles.bottom}>
         {!isUpdate ? (
-          <div>댓글 내용 : {comment.comment_content}</div>
+          <div>{comment.comment_content}</div>
         ) : (
           <div>
             <input
