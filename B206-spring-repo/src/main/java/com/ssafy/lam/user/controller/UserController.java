@@ -49,13 +49,6 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-//    @PutMapping("/update/{seq}")
-//    @Operation(summary = "고객 번호에 해당하는 고객 정보를 수정한다.")
-//    public ResponseEntity<User> updateCustomer(@PathVariable long seq, @RequestBody User updatedUser) {
-//        User user = userService.updateUser(seq, updatedUser);
-//        return new ResponseEntity<>(user, HttpStatus.OK);
-//    }
-
     @DeleteMapping("/delete/{seq}")
     @Operation(summary = "고객 번호에 해당하는 고객 정보를 삭제한다.")
     public ResponseEntity<Map<String, Boolean>> deleteCustomer(@PathVariable long seq) {

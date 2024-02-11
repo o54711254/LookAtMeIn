@@ -64,7 +64,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer updateCustomer(Long userSeq, CustomerDto updatedCustomer) {
         User user = userService.getUser(userSeq);
-
+        System.out.println(user.getUserSeq());
         user.setName(updatedCustomer.getCustomerName());
         user.setPassword(updatedCustomer.getUserPassword());
         Customer customer = customerRepository.findByUserUserId(user.getUserId()).orElse(null);
@@ -75,11 +75,6 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setAddress(updatedCustomer.getCustomerAddress());
         return customerRepository.save(customer);
     }
-
-//    @Override
-//    public void deleteCustomer(long seq) {
-//
-//    }
 
     @Override
     public Customer findByCustomerId(String customerId) {
