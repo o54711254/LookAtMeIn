@@ -42,7 +42,7 @@ import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
 import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
-import WorldcupChampion from "./components/WorldCup/worldcupChampion.js";
+import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
 
 function App() {
