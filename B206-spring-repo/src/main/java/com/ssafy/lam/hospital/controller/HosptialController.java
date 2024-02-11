@@ -61,4 +61,22 @@ public class HosptialController {
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
+    @PutMapping("/mypage/modify/{userSeq}")
+    @Operation(summary = "병원 정보 수정")
+    public ResponseEntity<Void> modify(@PathVariable Long userSeq,
+                                       @RequestParam("hospitalData") String hospitalData,
+                                       @RequestParam(value = "profile", required = false) MultipartFile profile) {
+        try{
+            HospitalDto hospitalDto = new ObjectMapper().readValue(hospitalData, HospitalDto.class);
+
+            log.info("수정 정보 : {}", hospitalDto);
+            hospitalService.updateHospital(userSeq, hospitalDto, profile);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
 }
