@@ -11,6 +11,7 @@ import basicHos from "../../assets/basicHos.png";
 import profile from "../../assets/gun.png";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { useSelector } from "react-redux";
+import Wish from "./HospitalWish.js"
 
 const HospitalInfo = () => {
   const dispatch = useDispatch();
@@ -161,6 +162,7 @@ const HospitalInfo = () => {
       </div>
       <div className={styles.part2}>
         <div>리뷰 목록</div>
+        <Wish/>
         {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}
