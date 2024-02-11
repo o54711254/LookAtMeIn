@@ -25,11 +25,11 @@ public class Freeboard {
     private String content;
 
     @Column(name = "free_board_cnt")
-    private int cnt;
+    private Integer cnt;
 
     @Column(name = "free_board_regdate")
     private LocalDateTime registerDate;
-    ;
+
 
     @Column(name = "free_board_complain")
     private boolean complain;
@@ -50,12 +50,8 @@ public class Freeboard {
     private User user;
 
 
-//    @OneToMany(mappedBy = "freeboard", fetch = FetchType.LAZY)
-//    private List<Comment> comments;
-
-
     @Builder
-    public Freeboard(Long freeboardSeq, String title, String content, int cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, UploadFile uploadFile, User user) {
+    public Freeboard(Long freeboardSeq, String title, String content, Integer cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, UploadFile uploadFile, User user) {
         this.freeboardSeq = freeboardSeq;
         this.title = title;
         this.content = content;

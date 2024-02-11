@@ -3,6 +3,8 @@ package com.ssafy.lam.freeboard.service;
 import com.ssafy.lam.comment.domain.Comment;
 import com.ssafy.lam.comment.dto.CommentRequestDto;
 import com.ssafy.lam.comment.service.CommentService;
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.exception.NoArticleExeption;
@@ -20,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +38,8 @@ public class FreeboardServiceImpl implements FreeboardService {
     private final UploadFileService uploadFileService;
 
     private Logger log = LoggerFactory.getLogger(FreeboardServiceImpl.class);
-
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @Override
     public Freeboard createFreeboard(FreeboardRequestDto freeboardRequestDto) {
@@ -44,7 +49,9 @@ public class FreeboardServiceImpl implements FreeboardService {
         
         // 파일 저장
         // DTO의 MultiPartFile을 받아서 서비스로 보내서 파일 저장함
-        UploadFile uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
+        UploadFile uploadFile = null;
+        if(freeboardRequestDto.getUploadFile() != null)
+           uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
 
 
         log.info("글 등록 유저 정보: {}", user);
@@ -76,18 +83,8 @@ public class FreeboardServiceImpl implements FreeboardService {
         Customer customer = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
 
-        UploadFile uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
-
-
-        // 파일을 가져오는데 필요한 URL 생성
-        // 파일을 보여줄때 URL로 GET요청을 한번더 보낸다
-        // 따라서 이 부분은 서버에서 실행할땐 localhost를 변경되야함
-        String url = "http://localhost/api/file/" + uploadFile.getSeq();
-
         FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
                 .freeboardSeq(freeboard.getFreeboardSeq())
-                .fileSeq(freeboard.getUploadFile().getSeq())
-                .fileUrl(url) // 파일을 조회할 URL
                 .userId(freeboard.getUser().getUserId())
                 .freeboardTitle(freeboard.getTitle())
                 .freeboardContent(freeboard.getContent())
@@ -96,6 +93,17 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .build();
 
 
+        if(freeboard.getUploadFile() != null){
+            try{
+                UploadFile uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
+                Path path = Paths.get(uploadPath +"/" + uploadFile.getName());
+                String base64 = EncodeFile.encodeFileToBase64(path);
+                freeboardResponseDto.setBase64(base64);
+                freeboardResponseDto.setFileSeq(uploadFile.getSeq());
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
 
         // 현재 게시물에 달린 댓글 가져오기
         List<Comment> commentList = commentService.getAllComments(freeBoardSeq);

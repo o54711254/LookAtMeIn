@@ -86,5 +86,4 @@ public class Hospital {
         this.registrationFile = registrationFile;
         this.profileFile = profileFile;
     }
-
 }

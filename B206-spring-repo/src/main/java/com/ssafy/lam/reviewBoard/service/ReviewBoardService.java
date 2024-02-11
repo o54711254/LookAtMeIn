@@ -28,7 +28,7 @@ public interface ReviewBoardService {
     // 게시글 신고
     void reportReview(Long seq);
 
-
+ 
 
     List<ReviewListDisplay> getReviewByUserSeq(Long userSeq);
 }

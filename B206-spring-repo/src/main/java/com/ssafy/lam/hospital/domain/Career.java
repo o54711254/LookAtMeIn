@@ -14,8 +14,8 @@ public class Career {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long careerSeq;
 
-    private Integer careerStart;
-    private Integer careerEnd;
+    private int careerStart;
+    private int careerEnd;
     private String careerContent;
 
     @ManyToOne

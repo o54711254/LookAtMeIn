@@ -22,10 +22,11 @@ public class FreeboardResponseDto {
     private String freeboardContent;
     private List<CommentRequestDto> comments;
     private Long fileSeq;
-    private String fileUrl;
+    private String base64;
 
     @Builder
-    public FreeboardResponseDto(Long freeboardSeq, String userId, String userEmail, String freeboardTitle, int freeboardCnt, LocalDateTime freeboardRegisterdate, String freeboardContent, List<CommentRequestDto> comments, Long fileSeq, String fileUrl) {
+
+    public FreeboardResponseDto(Long freeboardSeq, String userId, String userEmail, String freeboardTitle, int freeboardCnt, LocalDateTime freeboardRegisterdate, String freeboardContent, List<CommentRequestDto> comments, Long fileSeq, String base64) {
         this.freeboardSeq = freeboardSeq;
         this.userId = userId;
         this.userEmail = userEmail;
@@ -35,6 +36,6 @@ public class FreeboardResponseDto {
         this.freeboardContent = freeboardContent;
         this.comments = comments;
         this.fileSeq = fileSeq;
-        this.fileUrl = fileUrl;
+        this.base64 = base64;
     }
 }
