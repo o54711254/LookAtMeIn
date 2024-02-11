@@ -143,7 +143,7 @@ public class RequestBoardService {
                     .build();
             responseRepository.save(response);
 
-            // 알림 생성 로직 호출
+            // 알림 생성 로직 호출ㅇ
             createNotification(requestboard.getUser(), user, response.getMessage());
         } else {
             new IllegalArgumentException("병원만 제안 가능 : " + responseDto.getUserSeq());
