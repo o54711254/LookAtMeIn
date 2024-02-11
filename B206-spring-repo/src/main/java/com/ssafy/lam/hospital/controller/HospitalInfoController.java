@@ -62,12 +62,13 @@ public class HospitalInfoController {
                         .hospitalInfo_url(h.getUrl())
                         .userSeq(h.getUser().getUserSeq())
                         .build();
+                if(h.getRegistrationFile() != null) {
+                    // 병원 등록증 base64로 인코딩해서 보내줘야함
+                    Path path = Paths.get(uploadPath + "/" + h.getRegistrationFile().getName());
+                    String profileBase64 = EncodeFile.encodeFileToBase64(path);
+                    hospitalDetailDto.setProfileBase64(profileBase64);
+                }
 
-                // 병원 프로필 사진 base64로 인코딩해서 보내줘야함
-                Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
-                String profileBase64 = EncodeFile.encodeFileToBase64(path);
-
-                hospitalDetailDto.setProfileBase64(profileBase64);
 
             }
         }catch (Exception e) {
