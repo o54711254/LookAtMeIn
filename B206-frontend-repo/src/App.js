@@ -42,7 +42,7 @@ import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
 import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
-import WorldcupChampion from "./components/WorldCup/worldcupChampion.js";
+import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
 
 function App() {
@@ -107,8 +107,8 @@ function App() {
                   {/*병원 게시판*/}
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
                   <Route
-                    path="/hospital-info/detail/:hospital_seq"
-                    element={<HospitalDetail />}
+                    path="/hospital-info/detail/:hospitalInfo_seq"
+                    element={<HospitalInfo />}
                   />
 
                   {/*이상향 월드컵*/}

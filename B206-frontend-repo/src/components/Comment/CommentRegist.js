@@ -30,26 +30,39 @@ function CommentRegist({ freeboardSeq }) {
     setComment({ ...comment, comment_content: e.target.value });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // 엔터키 기본 동작 방지
+      handleRegist();
+    }
+  };
+
   return (
-    <div>
+    <div className={styles.registContainer}>
       {!isRegist ? (
         <input
+          className={styles.inputBox}
           type="text"
           value={comment.comment_content}
           onFocus={startRegist}
           onChange={handleInputChange}
+          placeholder="댓글을 입력하세요..."
         ></input>
       ) : (
-        <>
+        <div className={styles.activeBox}>
           <input
+            className={styles.inputBox2}
             type="text"
             value={comment.comment_content}
             onChange={(e) =>
               setComment({ ...comment, comment_content: e.target.value })
             }
+            onKeyDown={handleKeyDown}
           ></input>
-          <button onClick={handleRegist}>댓글 작성 완료</button>
-        </>
+          <button className={styles.button} onClick={handleRegist}>
+            등록
+          </button>
+        </div>
       )}
     </div>
   );

@@ -9,8 +9,6 @@
   width: 100%;
   top: 0;
   z-index: 1000;
-
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
 }
 
 .navBar a,
@@ -20,6 +18,7 @@
 }
 span {
   color: rgb(219, 77, 101);
+  white-space: nowrap;
 }
 /* 마우스 호버 시 글자색 변경 */
 .navBar a:hover,
@@ -50,7 +49,6 @@ span {
   font-size: 18px;
   font-weight: 600;
   margin-left: 10px;
-  font-size: 18px;
   font-weight: 600;
 }
 .nav1 {
@@ -111,6 +109,9 @@ span {
   font-weight: bold; /* 글씨 굵게 */
   border-radius: 5px; /* 둥근 모서리 */
   transition: background-color 0.3s; /* 배경색 변화 효과 */
+}
+.menu {
+  white-space: nowrap;
 }
 .menu:hover {
   background-color: #ddd; /* 마우스 오버 시 배경색 설정 */

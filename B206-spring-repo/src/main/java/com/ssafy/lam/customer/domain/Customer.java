@@ -1,5 +1,6 @@
 package com.ssafy.lam.customer.domain;
 
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,6 +38,10 @@ public class Customer{
 
     @Column(name = "customer_info_report")
     private int reportCnt;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_seq")
+    private UploadFile profile;
 
 
     @Builder

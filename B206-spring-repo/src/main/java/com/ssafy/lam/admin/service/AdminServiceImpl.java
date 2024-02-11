@@ -85,10 +85,13 @@ public class AdminServiceImpl implements AdminService {
                             .isApproved(hospital.isApproved())
                             .build();
 
-//                    Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
-//                    String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
-//
-//                    hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+                    if(hospital.getRegistrationFile() != null){
+                        Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
+                        String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
+
+                        hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+                    }
+
 
                     hospitalAdminDtoList.add(hospitalAdminDto);
                 }catch (Exception e){
@@ -115,10 +118,14 @@ public class AdminServiceImpl implements AdminService {
                         .isApproved(hospital.isApproved())
                         .build();
 
-//                Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
-//                String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
-//
-//                hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+                if(hospital.getRegistrationFile() != null){
+                    Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
+                    String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String type = hospital.getRegistrationFile().getType();
+                    hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+
+                }
+
 
                 hospitalAdminDtoList.add(hospitalAdminDto);
             }catch (Exception e){
