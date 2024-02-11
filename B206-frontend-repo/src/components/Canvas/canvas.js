@@ -1,5 +1,6 @@
 import React, {useRef, useState, useEffect } from 'react';
 import axios from 'axios';
+import axiosApi from '../../api/axiosApi';
 const Canvas = ()=>{
     /**
      * 1. mask 모드(o)
@@ -138,7 +139,7 @@ const Canvas = ()=>{
         points["sketch_points"] = JSON.stringify(sketchPoints)
         formData.append("points", JSON.stringify(points))
         try{
-            const python_server_url = "http://localhost:8000/api/send/points"
+            const python_server_url = "http://118.42.90.100:8000/api/send/points"
             const response = await axios.post(python_server_url, formData,{
                 headers:{
                     'Content-Type': 'multipart/form-data'
@@ -172,11 +173,13 @@ const Canvas = ()=>{
             
             formData.append("before", blob ,"after.png")
 
-            const response = await axios.post("http://localhost:80/api/canvas/save", formData,{
+            const response = await axiosApi.post("/api/canvas/save", formData,{
                 headers:{
                     'Content-Type': 'multipart/form-data'
                 }
+            
             })
+
                       
             
             console.log(response)
