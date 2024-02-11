@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../../api/axiosApi";
 import styles from "./MyInfo.module.css";
-import profile from "../../../assets/man/유승호.jpg";
+import profile from "../../../assets/profile2.png";
 import update from "../../../assets/update.png";
 
 // axios 완료
@@ -11,12 +11,22 @@ function MyInfo() {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [infoData, setInfoData] = useState({});
+  const [profileImg, setProfileImg] = useState(null);
   useEffect(() => {
     axiosApi
       .get(`/api/mypage/${user.userSeq}`)
       .then((res) => {
         console.log(res.data);
         setInfoData(res.data);
+        const base64 = res.data.base64;
+        const type = res.data.type;
+        if (base64) {
+          const data = `data:${type};base64,${base64}`;
+          setProfileImg(data);
+        } else {
+          setProfileImg(profile);
+        }
+        console.log("이미지", profileImg);
       })
       .catch((error) => {
         console.log("데이터를 불러오는 중 에러 발생", error);
@@ -29,7 +39,7 @@ function MyInfo() {
   return (
     <div className={styles.infoContainer}>
       <div className={styles.infoTop}>
-        <img src={profile} alt="profileImg" className={styles.profileImg} />
+        <img src={profileImg} alt="profileImg" className={styles.profileImg} />
         <div className={styles.infoName}>
           {infoData.customerName} 님 반갑습니다!
           <div className={styles.infoId}>ID : {infoData.userId}</div>
