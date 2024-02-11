@@ -148,10 +148,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public HospitalDetailDto getHospitalInfo(Long userSeq) { // 고객이 병원 페이지 조회
-        Optional<Hospital> findHospital = hospitalRepository.findByUserUserSeq(userSeq);
-        if(findHospital.isEmpty()) return null;
-        Long hospitalSeq = findHospital.get().getHospitalSeq();
+    public HospitalDetailDto getHospitalInfo(Long hospitalSeq) { // 고객이 병원 페이지 조회
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
         if (hospitalOptional.isPresent()) {
             Hospital hospital = hospitalOptional.get();

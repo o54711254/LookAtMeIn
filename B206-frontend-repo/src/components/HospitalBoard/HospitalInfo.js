@@ -10,10 +10,11 @@ import styles from "./HospitalInfo.module.css";
 import basicHos from "../../assets/basicHos.png";
 import profile from "../../assets/gun.png";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
+import { useSelector } from "react-redux";
 
 const HospitalInfo = () => {
   const dispatch = useDispatch();
-  const { hospital_seq } = useParams();
+  const { hospitalInfo_seq } = useParams();
   const [hospitalData, setHospitalData] = useState({
     hospitalInfo_seq: "",
     hospitalInfo_name: "",
@@ -32,11 +33,14 @@ const HospitalInfo = () => {
   useEffect(() => {
     const getHospitalInfo = async () => {
       try {
+        console.log(hospitalInfo_seq);
+
         const response = await axiosApi.get(
-          `/api/hospital-info/detail/${hospital_seq}`
+          `/api/hospital-info/detail/${hospitalInfo_seq}`
         );
         setHospitalData(response.data);
         console.log("여기", response.data);
+        console.log(response.data.userSeq);
         // const imgResponse = await axiosApi.get(response.data.fileUrl);
         // console.log("response2: ", imgResponse);
         // const base64 = imgResponse.data.base64;
@@ -58,13 +62,15 @@ const HospitalInfo = () => {
     getHospitalInfo();
   }, []);
 
+  const userSeq = useSelector((state) => state.hospital.hospitalSeq);
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     axiosApi
-      .get(`/api/hospital-info/reviews/${hospital_seq}`)
+      .get(`/api/hospital-info/reviews/${userSeq}`)
       .then((response) => {
+        console.log(userSeq);
         console.log(response.data);
         setReviews(response.data);
       })
@@ -74,13 +80,13 @@ const HospitalInfo = () => {
   }, []);
 
   const handleClick = (reviewBoard_seq) => {
-    navigate(`api/reviewBoard/{seq}`);
+    navigate(`api/reviewBoard/${reviewBoard_seq}`);
   };
 
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     axiosApi
-      .get(`api/hospital-info/doctors/${hospital_seq}`)
+      .get(`api/hospital-info/doctors/${userSeq}`)
       .then((response) => {
         console.log(response.data);
         setDoctors(response.data);
@@ -120,7 +126,7 @@ const HospitalInfo = () => {
           <div className={styles.tt}>진료시간</div>
           <div className={styles.weeks}>
             {week.map((day) => (
-              <div>
+              <div key={day} className={styles.day}>
                 {day === "토" && (
                   <div>
                     {day} {hospitalData.hospitalInfo_open} ~ 13:00{" "}
