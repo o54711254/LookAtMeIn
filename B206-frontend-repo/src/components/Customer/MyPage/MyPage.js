@@ -23,7 +23,7 @@ function MyPage() {
         <div className={styles.profileImage} />
         <div className={styles.profileInfo}>
           <div className={styles.profileName}>{user.userName}</div>
-          <div className={styles.profileEmail}>asdfas@asdfsda.com</div>
+          <div className={styles.profileEmail}>{user.userEmail}</div>
         </div>
       </NavLink>
       <div className={styles.sidebar}>

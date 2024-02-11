@@ -4,6 +4,8 @@ import com.ssafy.lam.chat.domain.*;
 import com.ssafy.lam.chat.dto.ChatMessageDto;
 import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
 import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
+import com.ssafy.lam.requestboard.domain.Response;
+import com.ssafy.lam.requestboard.domain.ResponseRepository;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import org.slf4j.Logger;
@@ -11,7 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class ChatService {
@@ -28,6 +33,9 @@ public class ChatService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private ResponseRepository responseRepository;
+
     private Logger log = LoggerFactory.getLogger(ChatService.class);
 
     public List<Long> getChatRoomIdsByUserSeq(Long userSeq) {
@@ -35,13 +43,13 @@ public class ChatService {
         List<ChatParticipant> participants = chatParticipantRepository.findByUserUserSeqAndDeletedFalse(userSeq);
         Set<Long> uniqueIds = new HashSet<>();
         List<Long> chatRoomSeqs = new ArrayList<>();
-        for(ChatParticipant participant : participants) {
+        for (ChatParticipant participant : participants) {
             Long chatroomSeq = participant.getChatRoom().getChatroomSeq();
-            if(uniqueIds.add(chatroomSeq)){
+            if (uniqueIds.add(chatroomSeq)) {
                 chatRoomSeqs.add(chatroomSeq);
             }
         }
-        return  chatRoomSeqs;
+        return chatRoomSeqs;
     }
 
     // 특정 채팅방의 모든 메시지 조회
@@ -50,7 +58,7 @@ public class ChatService {
         return chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(chatroomSeq);
     }
 
-    public ChatMessage saveMessage(ChatMessageDto messageDto){
+    public ChatMessage saveMessage(ChatMessageDto messageDto) {
         System.out.println("messageDto = " + messageDto);
         User user = User.builder().userSeq(messageDto.getSenderSeq()).build();
         ChatRoom chatroom = ChatRoom.builder().chatroomSeq(messageDto.getChatroomSeq()).build();
@@ -67,9 +75,9 @@ public class ChatService {
 
     // 채팅방 생성
     public ChatRoomResponseDto createChatRoom(ChatRoomRequestDto chatRoomRequestDto) {
-        
+
         User hospital = userRepository.findById(chatRoomRequestDto.getHospitalSeq()).get();
-        if(!hospital.getUserType().equals("HOSPITAL")){
+        if (!hospital.getUserType().equals("HOSPITAL")) {
             throw new IllegalArgumentException("병원이 아닌 사용자는 채팅방을 생성할 수 없습니다.");
         }
 
@@ -111,13 +119,13 @@ public class ChatService {
 
 
     public void closeChatRoom(Long chatRoomSeq, Long userSeq) {
-        
+
         User user = userRepository.findById(userSeq).get();
-        if(!user.getUserType().equals("CUSTOMER")){
+        if (!user.getUserType().equals("CUSTOMER")) {
             throw new IllegalArgumentException("사용자가 아닌 병원은 채팅방을 닫을 수 없습니다.");
         }
-        
-        
+
+
         // 채팅방 삭제
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomSeq).get();
         chatRoom.setDeleted(true);
@@ -131,14 +139,28 @@ public class ChatService {
             chatParticipantRepository.save(chatParticipant);
         }
 
-        
+
         // 채팅방에 있던 메시지 삭제
         chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(chatRoomSeq).forEach(chatMessage -> {
             chatMessage.setDeleted(true);
             chatMessageRepository.save(chatMessage);
         });
-        
-        
+
+
     }
 
+    public ChatRoomResponseDto acceptAndCreateChatRoom(Long responseId) {
+        Response response = responseRepository.findById(responseId)
+                .orElseThrow(() -> new IllegalArgumentException("Response not found with id: " + responseId));
+
+        User customer = response.getRequestboard().getUser();
+        User hospital = response.getUser();
+
+        if (!hospital.getUserType().equals("HOSPITAL")) {
+            throw new IllegalArgumentException("Response not from a hospital user.");
+        }
+
+        ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(hospital.getUserSeq(), customer.getUserSeq());
+        return createChatRoom(chatRoomRequestDto);
+    }
 }

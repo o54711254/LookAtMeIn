@@ -98,7 +98,7 @@ public class SearchService {
                 .reviewBoard_title(result.getTitle())
                 .reviewBoard_content(result.getContent())
                 .reviewBoard_score(result.getScore())
-                .customer_name(reviewBoardRepository.findById(result.getSeq()).get().getHospital().getUser().getName())
+                .customer_name(reviewBoardRepository.findById(result.getSeq()).get().getUser().getName())
                 .reviewBoard_doctor(result.getDoctor().getDocInfoName())
                 .reviewBoard_region(result.getRegion())
                 .reviewBoard_surgery(result.getSurgery())
