@@ -1,5 +1,9 @@
 package com.ssafy.lam.reviewBoard.service;
 
+import com.ssafy.lam.hospital.domain.Doctor;
+import com.ssafy.lam.hospital.domain.DoctorRepository;
+import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
@@ -8,6 +12,7 @@ import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
+
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +28,8 @@ import java.util.stream.Collectors;
 public class ReviewBoardServiceImpl implements ReviewBoardService {
 
     private final ReviewBoardRepository reviewBoardRepository;
+    private final HospitalRepository hospitalRepository;
+    private final DoctorRepository doctorRepository;
     MultipartConfig multipartConfig = new MultipartConfig();
 
     // 파일이 업로드될 디렉토리 경로
@@ -38,7 +45,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     public ReviewBoard getReview(long seq) {
         int addview = 1;
         ReviewBoard review = reviewBoardRepository.findById(seq).orElse(null);
-        if (review == null || review.isIsdeleted())
+        if (review == null || review.isIsdeleted()) 
             return null;
         addview += review.getCnt();
         review.setCnt(addview);
@@ -52,22 +59,25 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .name(reviewBoardRegister.getUsername())
                 .userSeq(reviewBoardRegister.getUser_seq())
                 .build();
+
+        
+        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardRegister.getHospital_seq()).build();
+        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardRegister.getDoctor_seq()).build();
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
 
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
-                .hospital(reviewBoardRegister.getReviewBoard_hospital())
-                .doctor(reviewBoardRegister.getReviewBoard_doctor())
-                .surgery(reviewBoardRegister.getReviewBoard_surgery())
+                .surgery(reviewBoardRegister.getReviewBoard_surgery()) 
                 .region(reviewBoardRegister.getReviewBoard_region())
                 .score(reviewBoardRegister.getReviewBoard_score())
                 .user(user)
                 .expectedPrice(reviewBoardRegister.getReviewBoard_expected_price())
                 .surgeryPrice(reviewBoardRegister.getReviewBoard_surgery_price())
                 .regdate(date)
-
+                .hospital(hospital)
+                .doctor(doctor)
                 .build();
         UploadFile uploadFile = null;
         if(file != null)
@@ -80,17 +90,20 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 
     @Override
     public void updateReview(ReviewBoardUpdate reviewBoardUpdate) {
-        ReviewBoard reviewBoard = reviewBoardRepository.findById(reviewBoardUpdate.getReviewBoard_seq()).orElse(null);
-        if (reviewBoard != null) {
+        ReviewBoard reviewBoard = reviewBoardRepository.findById(reviewBoardUpdate.getReviewBoard_seq()).orElse(null);        // Hospital hospital = hospitalRepository.findById(reviewBoardUpdate.getHospital_seq()).orElse(null);
+
+        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardUpdate.getHospital_seq()).build();
+        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardUpdate.getDoctor_seq()).build();
+
+        if(reviewBoard!=null) {
             reviewBoard.setTitle(reviewBoardUpdate.getReviewBoard_title());
-            reviewBoard.setContent(reviewBoardUpdate.getReviewBoard_content());
-            reviewBoard.setHospital(reviewBoardUpdate.getReviewBoard_hospital());
-            reviewBoard.setDoctor(reviewBoardUpdate.getReviewBoard_doctor());
-            reviewBoard.setSurgery(reviewBoardUpdate.getReviewBoard_surgery());
-            reviewBoard.setRegion(reviewBoardUpdate.getReviewBoard_region());
+            reviewBoard.setContent(reviewBoardUpdate.getReviewBoard_content()); 
+            reviewBoard.setRegion(reviewBoardUpdate.getReviewBoard_region()); 
             reviewBoard.setScore(reviewBoardUpdate.getReviewBoard_score());
             reviewBoard.setExpectedPrice(reviewBoardUpdate.getReviewBoard_expected_price());
-            reviewBoard.setSurgeryPrice(reviewBoardUpdate.getReviewBoard_surgery_price());
+            reviewBoard.setSurgeryPrice(reviewBoardUpdate.getReviewBoard_surgery_price()); 
+            reviewBoard.setHospital(hospital); 
+            reviewBoard.setDoctor(doctor);
             reviewBoardRepository.save(reviewBoard);
         }
     }

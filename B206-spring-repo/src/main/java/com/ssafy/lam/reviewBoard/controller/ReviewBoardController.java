@@ -1,6 +1,7 @@
 package com.ssafy.lam.reviewBoard.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
@@ -50,9 +51,21 @@ public class ReviewBoardController {
         List<ReviewBoard> reviews = reviewBoardService.getAllReviews();
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
         for(ReviewBoard r : reviews) {
-            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
-                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-                    r.getExpectedPrice(), r.getSurgeryPrice()));
+            ReviewListDisplay reviewListDisplay = ReviewListDisplay.builder()
+            .reviewBoard_seq(r.getSeq())
+            .customer_name(r.getUser().getName())
+            .reviewBoard_title(r.getTitle())
+            .reviewBoard_cnt(r.getCnt())
+            .reviewBoard_regDate(r.getRegdate())
+            .reviewBoard_score(r.getScore())
+            .reviewBoard_doctor(r.getDoctor().getDocInfoName())
+            .reviewBoard_region(r.getRegion())
+            .reviewBoard_surgery(r.getSurgery())
+            .reviewBoard_hospital(r.getHospital().getUser().getName())
+            .reviewBoard_expected_price(r.getExpectedPrice())
+            .reviewBoard_surgery_price(r.getSurgeryPrice())
+            .build();
+            reviewDisplay.add(reviewListDisplay);
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
@@ -64,16 +77,18 @@ public class ReviewBoardController {
         ReviewDisplay detailReview = null;
         if(review!=null) {
             try{
+            
+
                 detailReview = ReviewDisplay.builder()
                         .reviewBoard_seq(review.getSeq())
                         .reviewBoard_title(review.getTitle())
                         .reviewBoard_content(review.getContent())
                         .reviewBoard_score(review.getScore())
                         .customer_name(review.getUser().getName())
-                        .reviewBoard_doctor(review.getDoctor())
+                        .reviewBoard_doctor(review.getDoctor().getDocInfoName())
                         .reviewBoard_region(review.getRegion())
                         .reviewBoard_surgery(review.getSurgery())
-                        .reviewBoard_hospital(review.getHospital())
+                        .reviewBoard_hospital(review.getHospital().getUser().getName())
                         .reviewBoard_expected_price(review.getExpectedPrice())
                         .reviewBoard_surgery_price(review.getSurgeryPrice())
                         .reviewBoard_cnt(review.getCnt())
