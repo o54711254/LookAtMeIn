@@ -1,5 +1,5 @@
 // MyPage.js
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, NavLink } from "react-router-dom";
 import WishList from "./WishList";
 import MyPost from "./Post/MyPost";
@@ -17,10 +17,13 @@ import wish from "../../../assets/mypage/wish.png";
 
 function MyPage() {
   const user = useSelector((state) => state.user);
+  useEffect(() => {
+    console.log(user);
+  });
   return (
     <div className={styles.mypageContainer}>
       <NavLink to="info" className={styles.profile}>
-        <div className={styles.profileImage} />
+        <img src={user.profileImg} className={styles.profileImage} />
         <div className={styles.profileInfo}>
           <div className={styles.profileName}>{user.userName}</div>
           <div className={styles.profileEmail}>{user.userEmail}</div>

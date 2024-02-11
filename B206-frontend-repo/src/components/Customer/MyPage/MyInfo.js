@@ -54,6 +54,7 @@ function MyInfo() {
       "customerData",
       JSON.stringify({
         userId: infoData.userId,
+        userPassword: user.userPassword,
         customerName: infoData.customerName,
         customerGender: infoData.customerGender,
         customerAddress: infoData.customerAddress,

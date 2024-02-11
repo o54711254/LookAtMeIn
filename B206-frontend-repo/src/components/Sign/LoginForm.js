@@ -1,15 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import * as yup from "yup";
-import logo from "../../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
-import axiosApi from "../../api/axiosApi.js";
-import { loginUser } from "../../redux/user.js";
+import * as yup from "yup";
+import axiosApi from "../../api/axiosApi";
+import { loginUser } from "../../redux/user";
 import { setToken } from "../../redux/auth";
 import styles from "./LoginForm.module.css";
-// axios test 완료
+import logo from "../../assets/logo.png";
+import profile from "../../assets/profile2.png"; // 기본 프로필 이미지
 
 const validationSchema = yup.object({
   userId: yup.string().required("아이디 입력해주세요."),
@@ -19,6 +18,7 @@ const validationSchema = yup.object({
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [profileImg, setProfileImg] = useState(profile); // 기본값으로 profile 설정
 
   const formik = useFormik({
     initialValues: {
@@ -26,34 +26,41 @@ function LoginForm() {
       userPassword: "",
     },
     validationSchema: validationSchema,
-
     onSubmit: async (values) => {
       try {
-        await axiosApi.post("/api/user/login", values).then((res) => {
-          console.log(values);
-          //res는 서버에서 받은 응답 객체
-          if (res.status === 200) {
-            //로그인 성공
-            dispatch(
-              loginUser({
-                userSeq: res.data.userSeq, // 사용자 일련번호
-                userId: values.userId, // 사용자 아이디
-                userName: res.data.userName, // 사용자 이름
-                userPassword: values.userPassword, // 사용자 비밀번호
-                role: res.data.userType, // 역할 업데이트
-              })
-            );
-
-            const accessToken = res.data.tokenInfo.accessToken;
-            dispatch(setToken({ accessToken: accessToken }));
-            window.alert("반갑습니다. 로그인이 완료되었습니다. ");
-            navigate("/");
-          } else {
-            window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        const loginResponse = await axiosApi.post("/api/user/login", values);
+        if (loginResponse.status === 200) {
+          const profileResponse = await axiosApi.get(
+            `/api/mypage/${loginResponse.data.userSeq}`
+          );
+          let imageData = profile; // 기본 프로필 이미지
+          if (profileResponse.data.base64 && profileResponse.data.type) {
+            const { base64, type } = profileResponse.data;
+            imageData = `data:${type};base64,${base64}`;
           }
-        });
-      } catch {
-        window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+          setProfileImg(imageData); // 상태 업데이트
+
+          dispatch(
+            loginUser({
+              userSeq: loginResponse.data.userSeq,
+              profileImg: imageData, // 업데이트된 이미지 데이터
+              userId: profileResponse.data.userId,
+              userPassword: profileResponse.data.userPassword,
+              userName: profileResponse.data.customerName,
+              userEmail: profileResponse.data.customerEmail,
+              role: loginResponse.data.userType,
+            })
+          );
+
+          const { accessToken } = loginResponse.data.tokenInfo;
+          dispatch(setToken({ accessToken }));
+          alert("반갑습니다. 로그인이 완료되었습니다.");
+          navigate("/");
+        } else {
+          alert("아이디나 비밀번호를 다시 확인해 주세요.");
+        }
+      } catch (error) {
+        alert("아이디나 비밀번호를 다시 확인해 주세요.");
       }
     },
   });
@@ -61,26 +68,28 @@ function LoginForm() {
   return (
     <div className={styles.loginFormContainer}>
       <div className={styles.logo}>
-        <img src={logo} alt="로고사진" className={styles.logoIcon} />
+        <img src={logo} alt="로고" className={styles.logoIcon} />
       </div>
       <form onSubmit={formik.handleSubmit} className={styles.submitBox}>
+        {/* 아이디 입력 */}
         <div className={styles.inputBox}>
-          <div className={styles.inputTitle}>ID</div>
           <input
             name="userId"
             placeholder="아이디를 입력해주세요"
             value={formik.values.userId}
             onChange={formik.handleChange}
             type="text"
-            className={formik.touched.id && formik.errors.id ? "error" : ""}
+            className={
+              formik.touched.userId && formik.errors.userId ? "error" : ""
+            }
             id={styles.input}
           />
-          {formik.touched.id && formik.errors.id && (
-            <div>{formik.errors.id}</div>
+          {formik.touched.userId && formik.errors.userId && (
+            <div>{formik.errors.userId}</div>
           )}
         </div>
+        {/* 비밀번호 입력 */}
         <div className={styles.inputBox}>
-          <div className={styles.inputTitle}>비밀번호</div>
           <input
             name="userPassword"
             placeholder="비밀번호를 입력해주세요"
@@ -98,6 +107,7 @@ function LoginForm() {
             <div>{formik.errors.userPassword}</div>
           )}
         </div>
+        {/* 로그인 버튼 */}
         <div className={styles.buttonBox}>
           <button type="submit" className={styles.button}>
             로그인
@@ -110,4 +120,5 @@ function LoginForm() {
     </div>
   );
 }
+
 export default LoginForm;
