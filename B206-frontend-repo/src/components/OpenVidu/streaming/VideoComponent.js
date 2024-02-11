@@ -63,7 +63,7 @@ export default class StreamComponent extends Component {
                 : this.props.isMe
                 ? "streamComponentMe"
                 : "streamComponentYou"
-            }
+            } 
           >
             <OvVideoComponent
               user={this.props.user}

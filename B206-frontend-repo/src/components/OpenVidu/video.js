@@ -26,4 +26,5 @@ function createToken(sessionId) {
       throw new Error(error.message);
     }
   }
+  export default createToken;
   

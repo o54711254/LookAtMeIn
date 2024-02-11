@@ -128,7 +128,7 @@ function App() {
                   {/*검색*/}
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
-                  {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
+                  <Route path="/meeting/*" element={<VideoRoom />} />
                   <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
                 </Routes>
