@@ -41,8 +41,8 @@ public class AdminServiceImpl implements AdminService {
                         .userName(freeboard.getUser().getName())
                         .freeboardTitle(freeboard.getTitle())
                         .freeboardContent(freeboard.getContent())
-                        .complain(freeboard.getComplain())
-                        .isDeleted(freeboard.getIsDeleted())
+                        .complain(freeboard.isComplain())
+                        .isDeleted(freeboard.isDeleted())
                         .build())
                 .collect(Collectors.toList());
     }

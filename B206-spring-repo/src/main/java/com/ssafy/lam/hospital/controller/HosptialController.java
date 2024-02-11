@@ -29,7 +29,7 @@ public class HosptialController {
 
     @PostMapping("/regist")
     @Operation(summary = "병원 정보를 등록한다.")
-    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam("registrationFile") MultipartFile registrationFile) {
+    public ResponseEntity<Void> regist(@RequestParam("hospital") String hospital, @RequestParam(value = "registrationFile", required = false) MultipartFile registrationFile) {
         try{
             HospitalRequestDto hospitalRequestDto = new ObjectMapper().readValue(hospital, HospitalRequestDto.class);
 
@@ -46,18 +46,18 @@ public class HosptialController {
 
     
     // 병원에서 의사 정보 추가
-    @PostMapping("/{user_seq}/doctors/regist")
+    @PostMapping("/{hospital_seq}/doctors/regist")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가")
-    public ResponseEntity<Void> createDoctor(@PathVariable Long user_seq, @RequestBody DoctorDto doctorDto) {
-        hospitalService.createDoctor(user_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career());
+    public ResponseEntity<Void> createDoctor(@PathVariable Long hospital_seq, @RequestBody DoctorDto doctorDto) {
+        hospitalService.createDoctor(hospital_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career());
         return ResponseEntity.ok().build();
     }
     
     // 병원에서 의사 목록 조회
-    @GetMapping("/{user_seq}/doctors")
+    @GetMapping("/{hospital_seq}/doctors")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사 목록 조회")
-    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long user_seq) {
-        List<Doctor> doctors = hospitalService.getHospitalDoctorList(user_seq);
+    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
+        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 

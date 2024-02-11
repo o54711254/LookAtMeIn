@@ -29,13 +29,13 @@ public class Freeboard {
 
     @Column(name = "free_board_regdate")
     private LocalDateTime registerDate;
-    ;
+
 
     @Column(name = "free_board_complain")
-    private Boolean complain;
+    private boolean complain;
 
     @Column(name = "free_board_isDeleted")
-    private Boolean isDeleted;
+    private boolean isDeleted;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "upload_file_seq")
@@ -50,13 +50,8 @@ public class Freeboard {
     private User user;
 
 
-//    @OneToMany(mappedBy = "freeboard", fetch = FetchType.LAZY)
-//    private List<Comment> comments;
-
-
     @Builder
-
-    public Freeboard(Long freeboardSeq, String title, String content, Integer cnt, LocalDateTime registerDate, Boolean complain, Boolean isDeleted, UploadFile uploadFile, User user) {
+    public Freeboard(Long freeboardSeq, String title, String content, Integer cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, UploadFile uploadFile, User user) {
         this.freeboardSeq = freeboardSeq;
         this.title = title;
         this.content = content;

@@ -36,11 +36,12 @@ public class Customer{
     private String address;
 
     @Column(name = "customer_info_report")
-    private Integer reportCnt;
+    private int reportCnt;
 
 
     @Builder
-    public Customer(Long customerSeq, User user, String gender, String birth, String tel, String email, String address, Integer reportCnt) {
+
+    public Customer(Long customerSeq, User user, String gender, String birth, String tel, String email, String address, int reportCnt) {
         this.customerSeq = customerSeq;
         this.user = user;
         this.gender = gender;

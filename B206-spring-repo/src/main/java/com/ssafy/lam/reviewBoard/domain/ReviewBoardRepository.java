@@ -1,6 +1,5 @@
 package com.ssafy.lam.reviewBoard.domain;
 
-import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

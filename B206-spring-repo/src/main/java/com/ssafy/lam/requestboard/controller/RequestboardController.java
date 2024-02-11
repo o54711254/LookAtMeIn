@@ -61,16 +61,16 @@ public class RequestboardController {
     }
 
     @PostMapping("/response/{requestSeq}")
-    @Operation(summary = "게시물 올린 고객에게 제안하기")
+    @Operation(summary = "고객에게 제안하기")
     public ResponseEntity<Void> createResponse(@PathVariable Long requestSeq, @RequestBody ResponseDto responseDto) {
         requestboardService.createResponse(requestSeq, responseDto);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/accept-response/{responseId}")
+    @PostMapping("/accept-response/{responseSeq}")
     @Operation(summary = "제안에 대한 수락")
-    public ResponseEntity<ChatRoomResponseDto> acceptResponse(@PathVariable Long responseId) {
-        ChatRoomResponseDto chatRoomResponseDto = chatService.acceptAndCreateChatRoom(responseId);
+    public ResponseEntity<ChatRoomResponseDto> acceptResponse(@PathVariable Long responseSeq) {
+        ChatRoomResponseDto chatRoomResponseDto = chatService.acceptAndCreateChatRoom(responseSeq);
         return ResponseEntity.ok(chatRoomResponseDto);
     }
 

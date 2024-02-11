@@ -1,0 +1,86 @@
+.infoContainer{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    border: 1px solid rgba(254, 202, 171, 0.76);
+    border-radius: 30px;
+    background-color: #ffffff;
+    padding: 30px;
+    padding-left: 50px;
+}
+.infoTop{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 80px;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 40px;
+    border: 1px solid #ebebeb;
+    border-radius: 20px;
+    padding: 10px;
+}
+.box{
+    width: 100%;
+    border: 1px solid #ebebeb;
+    border-radius: 20px;
+    padding: 20px;
+}
+.profileImg {
+    width: 170px;
+    height: 180px;
+    border-radius: 100px;
+    margin-left: 20px;
+  }
+.infoName{
+    font-size: 25px;
+    font-weight: 700;
+}
+.infoId{
+    margin-top: 15px;
+    font-size: 15px;
+    color: rgb(124, 114, 114);
+}
+.infoMiddle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid #ebebeb;
+    padding-bottom: 10px;
+    
+}
+
+.info{
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.icon{
+    width: 30px; /* 기본 너비 설정 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* 애니메이션 효과 */
+    cursor: pointer; /* 마우스 오버 시 커서 변경 */
+}
+
+.icon:hover{
+    transform: scale(1.1); /* 아이콘 크기 확대 */
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 추가 */
+}
+.infoBottom{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    gap: 15px;
+}
+.title{
+    font-size: 18px;
+    font-weight: 500;
+}
+.contents{
+    margin-left: 10px;
+    border-bottom: 1px solid #ebebeb ;
+    padding: 5px;
+    font-weight: 400;
+}

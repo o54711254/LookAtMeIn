@@ -11,7 +11,7 @@ import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
-import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay; 
+import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,13 +58,12 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .name(reviewBoardRegister.getUsername())
                 .userSeq(reviewBoardRegister.getUser_seq())
                 .build();
-        Hospital hospital = hospitalRepository.findById(reviewBoardRegister.getHospital_seq()).orElse(null);
-        Doctor doctor = doctorRepository.findById(reviewBoardRegister.getDoctor_seq()).orElse(null);
+
+        
+        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardRegister.getHospital_seq()).build();
+        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardRegister.getDoctor_seq()).build();
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
-
-
-        UploadFile uploadFile = uploadFileService.store(file);
 
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
@@ -78,17 +77,23 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .regdate(date)
                 .hospital(hospital)
                 .doctor(doctor)
-                .uploadFile(uploadFile)
                 .build();
+        UploadFile uploadFile = null;
+        if(file != null)
+            uploadFile = uploadFileService.store(file);
+        reviewBoard.setUploadFile(uploadFile);
+
         return reviewBoardRepository.save(reviewBoard);
     }
 
 
     @Override
     public void updateReview(ReviewBoardUpdate reviewBoardUpdate) {
-        ReviewBoard reviewBoard = reviewBoardRepository.findById(reviewBoardUpdate.getReviewBoard_seq()).orElse(null);
-        Hospital hospital = hospitalRepository.findById(reviewBoardUpdate.getHospital_seq()).orElse(null);
-        Doctor doctor = doctorRepository.findById(reviewBoardUpdate.getDoctor_seq()).orElse(null);
+        ReviewBoard reviewBoard = reviewBoardRepository.findById(reviewBoardUpdate.getReviewBoard_seq()).orElse(null);        // Hospital hospital = hospitalRepository.findById(reviewBoardUpdate.getHospital_seq()).orElse(null);
+
+        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardUpdate.getHospital_seq()).build();
+        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardUpdate.getDoctor_seq()).build();
+
         if(reviewBoard!=null) {
             reviewBoard.setTitle(reviewBoardUpdate.getReviewBoard_title());
             reviewBoard.setContent(reviewBoardUpdate.getReviewBoard_content()); 

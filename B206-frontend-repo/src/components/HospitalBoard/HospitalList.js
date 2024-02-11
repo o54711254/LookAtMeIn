@@ -69,36 +69,42 @@ const HospitalList = () => {
         <div className={styles.headtext}>
           <p>룩앳미인에서 다양한 병원 정보를 알아보세요</p>
         </div>
-        <div>
-          {hospitalInfo.map((hospital) => (
-            <li
-              key={hospital.hospitalInfo_seq}
+      </div>
+      <div>
+        {hospitalInfo.map((hospital) => (
+          <li key={hospital.hospitalInfo_seq} className={styles.hospitalItem}>
+            <div>
+              <img src={profile} alt="프로필" className={styles.profile} />
+            </div>
+            <div
+              className={styles.hosInfo}
               onClick={() => handleClick(hospital.hospitalInfo_seq)}
-              className={styles.reviewItem}
             >
-              <div>
-                <img src={profile} alt="프로필" className={styles.profile} />
-              </div>
-              <div className={styles.writer}>
-                <div>{hospital.hospitalInfo_name}</div>
-                <div className={styles.time}>
-                  <div>{hospital.hospitalInfo_open}</div>
-                  <div>{hospital.hospitalInfo_close}</div>
+              <div className={styles.nameStar}>
+                <div className={styles.hosName}>
+                  {hospital.hospitalInfo_name} &nbsp;
                 </div>
                 <div>
                   {/* <StarResult score={hospital.reviewBoard_score} /> */}
                   <StyledStar isHalf={false}>
-                    <FaRegStar />
+                    <FaStar />
                   </StyledStar>
                 </div>
               </div>
-              <div className={styles.title}>
-                <div>{hospital.hospitalInfo_introduce}</div>
-                <div>해시태그</div>
+              <div className={styles.hosAddress}>
+                {hospital.hospitalInfo_address}
               </div>
-            </li>
-          ))}
-        </div>
+              {/* <div className={styles.time}>
+                <div>{hospital.hospitalInfo_open}</div>
+                <div>{hospital.hospitalInfo_close}</div>
+              </div> */}
+            </div>
+            <div className={styles.intro}>
+              <div>{hospital.hospitalInfo_introduce}</div>
+              <div className={styles.hashtagButton}>해시태그</div>
+            </div>
+          </li>
+        ))}
       </div>
     </>
   );

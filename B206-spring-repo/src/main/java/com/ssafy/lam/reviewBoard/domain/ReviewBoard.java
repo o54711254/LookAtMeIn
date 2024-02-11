@@ -1,13 +1,17 @@
 package com.ssafy.lam.reviewBoard.domain;
 
-import com.ssafy.lam.customer.domain.Customer; 
+
+import com.ssafy.lam.file.domain.UploadFile;
+
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.Hospital;
-import com.fasterxml.jackson.annotation.JsonIgnore; 
-import com.ssafy.lam.file.domain.UploadFile; 
+
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -19,23 +23,22 @@ public class ReviewBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_board_seq")
-    private long seq;
+    private Long seq;
+
     @Column(name = "review_board_title")
     private String title; // 제목
+
     @Column(name = "review_board_content")
     private String content; // 내용
-//    @Column(name = "review_board_hospital")
-//    private String hospital; // 병원 이름
-//    @Column(name = "review_board_hospital_seq")
-//    private long hospital_seq; // 병원 시퀀스
-//    @Column(name = "review_board_doctor")
-//    private String doctor; // 의사 이름
-//    @Column(name = "review_board_doctor_seq")
-//    private long doctor_seq; // 의사 시퀀스
+
+    
+
     @Column(name = "review_board_surgery")
     private String surgery; // 시술부위
+
     @Column(name = "review_board_region")
     private String region; // 지역
+
     @Column(name = "review_board_score")
     private double score; // 별점
     @Column(name = "review_board_expected_price")
@@ -46,6 +49,7 @@ public class ReviewBoard {
     private long regdate; // 작성시간
     @Column(name = "review_board_complain")
     private boolean complain; // 신고여부
+
     @Column(name = "review_board_isdeleted")
     private boolean isdeleted; // 삭제여부
     @Column(name = "review_board_cnt")
@@ -72,6 +76,8 @@ public class ReviewBoard {
         this.seq = seq;
         this.title = title;
         this.content = content;
+        this.hospital = hospital;
+        this.doctor = doctor;
         this.surgery = surgery;
         this.region = region;
         this.score = score;
@@ -81,8 +87,6 @@ public class ReviewBoard {
         this.complain = complain;
         this.isdeleted = isdeleted;
         this.cnt = cnt;
-        this.hospital = hospital;
-        this.doctor = doctor;
         this.user = user;
         this.uploadFile = uploadFile;
     } 
