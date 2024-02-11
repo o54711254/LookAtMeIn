@@ -24,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 
 @RestController
-@RequestMapping("/questionnaire")
+@RequestMapping("/api/questionnaire")
 @RequiredArgsConstructor
 public class QuestionnaireController {
     private Logger log = LoggerFactory.getLogger(QuestionnaireController.class);
@@ -34,14 +34,16 @@ public class QuestionnaireController {
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
     @PostMapping("/regist")
     @Operation(summary = "문진서 등록")
-    public void registQuestionnaire(@RequestParam("questionnaireData") String questionnarieData, @RequestParam("image") MultipartFile file){
+    public ResponseEntity<Void> registQuestionnaire(@RequestParam("questionnaireData") String questionnarieData, @RequestParam(value = "image", required = false) MultipartFile file){
         log.info("문진서 등록 정보 : {}", questionnarieData);
         try{
             QuestionnaireRequestDto questionRequestDto = new ObjectMapper().readValue(questionnarieData, QuestionnaireRequestDto.class);
             questionnaireService.createQuestionnaire(questionRequestDto, file);
 
+            return ResponseEntity.ok().build();
         }catch (Exception e){
             e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
     }
 
