@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axiosApi from "../../api/axiosApi";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React from "react";
 import CommentRegist from "./CommentRegist";
 import CommentItem from "./CommentItem";
+import styles from "./Comment.module.css";
 
 function Comment({ comments, freeboardSeq }) {
   return (
-    <>
+    <div className={styles.commentContiner}>
       <CommentRegist freeboardSeq={freeboardSeq} />
-      <ul>
+      <div>
         {comments.map((comment, index) => (
           <CommentItem key={comment.comment_seq} comment={comment} />
         ))}
-      </ul>
-    </>
+      </div>
+    </div>
   );
 }
 export default Comment;

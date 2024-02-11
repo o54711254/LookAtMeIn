@@ -15,30 +15,6 @@ function FreeBoardDetail() {
   const { freeboardSeq } = useParams();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const fetchPost = async () => {
-  //     try {
-  //       let response = await axiosApi.get(
-  //         `/api/freeBoard/freeBoardList/${freeboardSeq}`
-  //       );
-
-  //       setPost(response.data);// 먼저 게시글 정보를 설정
-
-  //       const response2 = await axiosApi.get(
-  //         `/api/file/${response.data.freeboardSeq}`
-  //       )
-  //         console.log(response2.data);
-  //       setImg(response2.data);
-  //       // setPost(response.data);
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.log("자유게시판 상세 불러오기 실패 : ", error);
-  //     }
-  //   };
-  //   if (freeboardSeq) {
-  //     fetchPost();
-  //   }
-  // }, [freeboardSeq]);
   useEffect(() => {
     const fetchPost = async () => {
       try {

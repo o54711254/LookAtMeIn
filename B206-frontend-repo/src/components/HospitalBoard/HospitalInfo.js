@@ -90,32 +90,35 @@ const HospitalInfo = () => {
       });
   }, []);
 
+  const viewDoctorInfo = (docInfoSeq) => {
+    navigate(`/의사 디테일 하나..?`);
+  };
+
   const week = ["월", "화", "수", "목", "금", "토", "일"];
   return (
-    <>
-      <div className={styles.part}>
-        <div className={styles.container}>
-          <div className={styles.imgTitle}>
-            <div className={styles.profile}>
-              {img ? (
-                <img src={img} alt="게시글 이미지" />
-              ) : (
-                <img src={basicHos} alt="병원 기본 프사" />
-              )}
-            </div>
-
-            <div className={styles.title}>{hospitalData.hospitalInfo_name}</div>
+    <div className={styles.container}>
+      <div className={styles.part1}>
+        <div className={styles.imgTitle}>
+          <div className={styles.profile}>
+            {img ? (
+              <img src={img} alt="게시글 이미지" />
+            ) : (
+              <img src={basicHos} alt="병원 기본 프사" />
+            )}
           </div>
-          <div className={styles.address}>
-            <div>주소</div>
-            {hospitalData.hospitalInfo_address}
-          </div>
-          <div className={styles.url}>
-            <div>홈페이지 </div>
-            {hospitalData.hospitalInfo_url}
-          </div>
-          <div className={styles.time}>
-            <div>진료시간</div>
+          <div className={styles.title}>{hospitalData.hospitalInfo_name}</div>
+        </div>
+        <div className={styles.address}>
+          <div className={styles.tt}>주소</div>
+          <div className={styles.text}>{hospitalData.hospitalInfo_address}</div>
+        </div>
+        <div className={styles.url}>
+          <div className={styles.tt}>홈페이지 </div>
+          <div className={styles.link}>{hospitalData.hospitalInfo_url}</div>
+        </div>
+        <div className={styles.time}>
+          <div className={styles.tt}>진료시간</div>
+          <div className={styles.weeks}>
             {week.map((day) => (
               <div>
                 {day === "토" && (
@@ -133,20 +136,26 @@ const HospitalInfo = () => {
               </div>
             ))}
           </div>
-          <div className={styles.Number}>
-            <div>전화번호</div> {hospitalData.hospitalInfo_phoneNumber}
+        </div>
+        <div className={styles.Number}>
+          <div className={styles.tt}>전화번호</div>
+          <div className={styles.text}>
+            {hospitalData.hospitalInfo_phoneNumber}
           </div>
-          <div className={styles.info}>
-            <div>소개</div>
+        </div>
+        <div className={styles.info}>
+          <div className={styles.tt}>소개</div>
+          <div className={styles.text}>
             {hospitalData.hospitalInfo_introduce}
           </div>
-
-          {/* <div>avgScore: {hospitalData.avgScore}</div> */}
         </div>
+
+        {/* <div>avgScore: {hospitalData.avgScore}</div> */}
         <Reserve />
       </div>
-      <div className={styles.part}>
-        {reviews.map((review, key) => (
+      <div className={styles.part2}>
+        <div>리뷰 목록</div>
+        {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}
             className={styles.reviewItem}
@@ -172,8 +181,25 @@ const HospitalInfo = () => {
           </li>
         ))}
       </div>
-      <div className={styles.part}></div>
-    </>
+      <div className={styles.part3}>
+        <h3>의사 목록</h3>
+        {doctors.map((doctor) => (
+          <li
+            key={doctor.docInfoSeq}
+            className={styles.reviewItem}
+            onClick={() => viewDoctorInfo}
+          >
+            <div>
+              <img src={profile} alt="프로필" className={styles.profile} />
+            </div>
+            <div className={styles.writer}>
+              <div>{doctor.customer_name}</div>
+              <div>{/* <StarResult score={doctor.reviewBoard_score} /> */}</div>
+            </div>
+          </li>
+        ))}
+      </div>
+    </div>
   );
 };
 

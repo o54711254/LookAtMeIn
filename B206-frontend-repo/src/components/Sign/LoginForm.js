@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
-import logo from "../../assets/fulllogo.png";
+import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";

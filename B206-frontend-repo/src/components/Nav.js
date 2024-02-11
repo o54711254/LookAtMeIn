@@ -74,7 +74,7 @@ className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ""}`}
 > */
     <nav className={styles.navBar}>
       <Link to="/" className={styles.nav0}>
-        <img src={logo} alt="룩앳미인 로고" width="60px" />
+        <img src={logo} alt="룩앳미인 로고" width="120px" />
         &nbsp; <span>룩앳미인</span>
       </Link>
       {/* 모바일 뷰에서 보일 메뉴 버튼 */}
