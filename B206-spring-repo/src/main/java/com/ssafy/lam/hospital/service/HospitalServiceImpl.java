@@ -121,7 +121,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public List<Hospital> getAllHospitalInfo() {
-        return hospitalRepository.findAll();
+        return hospitalRepository.findByIsApprovedTrue();
     }
 
     @Override
