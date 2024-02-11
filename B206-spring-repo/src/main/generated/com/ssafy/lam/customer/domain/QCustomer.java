@@ -32,6 +32,8 @@ public class QCustomer extends EntityPathBase<Customer> {
 
     public final StringPath gender = createString("gender");
 
+    public final com.ssafy.lam.file.domain.QUploadFile profile;
+
     public final NumberPath<Integer> reportCnt = createNumber("reportCnt", Integer.class);
 
     public final StringPath tel = createString("tel");
@@ -56,6 +58,7 @@ public class QCustomer extends EntityPathBase<Customer> {
 
     public QCustomer(Class<? extends Customer> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.profile = inits.isInitialized("profile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("profile")) : null;
         this.user = inits.isInitialized("user") ? new com.ssafy.lam.user.domain.QUser(forProperty("user")) : null;
     }
 
