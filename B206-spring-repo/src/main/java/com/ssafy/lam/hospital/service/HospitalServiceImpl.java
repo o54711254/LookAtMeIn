@@ -1,5 +1,4 @@
 package com.ssafy.lam.hospital.service;
-
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hospital.domain.*;
@@ -13,15 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class HospitalServiceImpl implements HospitalService {
-
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
@@ -29,11 +25,8 @@ public class HospitalServiceImpl implements HospitalService {
     private final CareerRepository careerRepository;
     private final HospitalCategoryRepository hospitalCategoryRepository;
     private final UploadFileService uploadFileService;
-
     private final DoctorCategoryRepository doctorCategoryRepository;
-
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
-
     @Override
     public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto, MultipartFile registrationFile) {
         log.info("createHospital : {}", hospitalDto);
@@ -46,9 +39,7 @@ public class HospitalServiceImpl implements HospitalService {
                 .userType("HOSPITAL")
                 .roles(roles)
                 .build();
-
         userService.createUser(user);
-
         Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
@@ -61,8 +52,6 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
         UploadFile uploadFile = uploadFileService.store(registrationFile);
         hospital.setRegistrationFile(uploadFile);
-
-
         hospital = hospitalRepository.save(hospital);
         for (CategoryDto category : categoryDto) {
             log.info("category : {}", category);
@@ -72,16 +61,13 @@ public class HospitalServiceImpl implements HospitalService {
                     .build();
             hospitalCategoryRepository.save(hospitalCategoryEntity);
         }
-
         return hospital;
     }
-
     @Override
     public HospitalDto getHospital(long userId) {
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
             com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
-
             HospitalDto dto = HospitalDto.builder()
                     .hospitalInfo_id(hospital.getUser().getUserId())
                     .hospitalInfo_password(hospital.getUser().getPassword())
@@ -98,12 +84,10 @@ public class HospitalServiceImpl implements HospitalService {
             return null;
         }
     }
-
     @Override
     public Hospital updateHospital(long userSeq, HospitalDto hospitalDto) {
         User user = userRepository.findById(userSeq).get();
         Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
-
         user.setPassword(hospitalDto.getHospitalInfo_password());
         user.setName(hospitalDto.getHospitalInfo_name());
         hospital.setTel(hospitalDto.getHospitalInfo_phoneNumber());
@@ -112,18 +96,14 @@ public class HospitalServiceImpl implements HospitalService {
         hospital.setCloseTime(hospitalDto.getHospitalInfo_close());
         hospital.setAddress(hospitalDto.getHospitalInfo_address());
         hospital.setUrl(hospitalDto.getHospitalInfo_url());
-
         userRepository.save(user);
         return hospitalRepository.save(hospital);
     }
-
     ////////////
-
     @Override
     public List<Hospital> getAllHospitalInfo() {
         return hospitalRepository.findByIsApprovedTrue();
     }
-
     @Override
     public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList) {
         Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
@@ -143,7 +123,6 @@ public class HospitalServiceImpl implements HospitalService {
             careerRepository.save(career);
         }
     }
-
     @Override
     public HospitalDetailDto getHospitalInfo(Long hospitalSeq) { // 고객이 병원 페이지 조회
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
@@ -168,17 +147,14 @@ public class HospitalServiceImpl implements HospitalService {
             return null;
         }
     }
-
     @Override
     public List<ReviewBoard> getReviewsByHospital(Long hospitalSeq) {
         List<ReviewBoard> reviews = hospitalRepository.findReviewsByHospitalSeq(hospitalSeq);
         return reviews;
     }
-
     @Override
     public List<Doctor> getHospitalDoctorList(Long hospitalSeq) {
         List<Doctor> doctorList = hospitalRepository.findDoctorByHospitalSeq(hospitalSeq).orElse(null);
         return doctorList;
     }
-
 }
