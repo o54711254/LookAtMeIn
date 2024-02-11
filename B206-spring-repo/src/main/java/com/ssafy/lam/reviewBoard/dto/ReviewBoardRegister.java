@@ -1,15 +1,12 @@
+
 package com.ssafy.lam.reviewBoard.dto;
-
 import lombok.*;
-
 import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 public class ReviewBoardRegister {
-
     private long user_seq; // 고객 번호
     private String reviewBoard_title; // 제목
     private String reviewBoard_content; // 내용
@@ -23,7 +20,6 @@ public class ReviewBoardRegister {
     private String reviewBoard_hospital; // 병원 이름
     private int reviewBoard_expected_price; // 견적 가격
     private int reviewBoard_surgery_price; // 시술 가격
-
     @Builder
     public ReviewBoardRegister(long user_seq, String reviewBoard_title, String reviewBoard_content,
                                double reviewBoard_score, String username, String reviewBoard_doctor,

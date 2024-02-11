@@ -1,7 +1,8 @@
 package com.ssafy.lam.hospital.controller;
 
 import com.ssafy.lam.hospital.domain.Career;
-import com.ssafy.lam.hospital.domain.Category;
+import com.ssafy.lam.hospital.domain.DoctorCategory;
+import com.ssafy.lam.hospital.domain.HospitalCategory;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.dto.CareerDto;
 import com.ssafy.lam.hospital.dto.CategoryDto;
@@ -32,9 +33,9 @@ public class DoctorController {
     @GetMapping("/{doctor_seq}")
     @Operation(summary = "의사 정보를 조회한다.")
     public ResponseEntity<DoctorDto> getDoctor(@PathVariable Long doctor_seq) {
-        List<Category> category = doctorService.getCategory(doctor_seq);
+        List<DoctorCategory> doctorCategories = doctorService.getCategory(doctor_seq);
         List<CategoryDto> categoryDto = new ArrayList<>();
-        for(Category c : category) {
+        for(DoctorCategory c : doctorCategories) {
             categoryDto.add(new CategoryDto(c.getPart()));
         }
 
@@ -62,19 +63,9 @@ public class DoctorController {
         List<ReviewBoard> reviews = doctorService.getReviewsByDoctor(doctor_seq);
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
         for(ReviewBoard r : reviews) {
-            reviewDisplay.add(ReviewListDisplay.builder()
-                            .reviewBoard_seq(r.getSeq())
-                            .customer_name(r.getUser().getName())
-                            .reviewBoard_title(r.getTitle())
-                            .reviewBoard_regDate(r.getRegdate())
-                            .reviewBoard_score(r.getScore())
-                            .reviewBoard_doctor(r.getDoctor().getDocInfoName())
-                            .reviewBoard_region(r.getRegion())
-                            .reviewBoard_surgery(r.getSurgery())
-                            .reviewBoard_hospital(r.getHospital().getUser().getName())
-                            .reviewBoard_expected_price(r.getExpectedPrice())
-                            .reviewBoard_surgery_price(r.getSurgeryPrice())
-                    .build());
+            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
+                    r.getRegdate(), r.getScore(), r.getDoctor().getDocInfoName(), r.getRegion(), r.getSurgery(), r.getHospital().getUser().getName(),
+                    r.getExpectedPrice(), r.getSurgeryPrice()));
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }

@@ -50,6 +50,8 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public final StringPath title = createString("title");
 
+    public final com.ssafy.lam.file.domain.QUploadFile uploadFile;
+
     public final com.ssafy.lam.user.domain.QUser user;
 
     public QReviewBoard(String variable) {
@@ -72,6 +74,7 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
         super(type, metadata, inits);
         this.doctor = inits.isInitialized("doctor") ? new com.ssafy.lam.hospital.domain.QDoctor(forProperty("doctor"), inits.get("doctor")) : null;
         this.hospital = inits.isInitialized("hospital") ? new com.ssafy.lam.hospital.domain.QHospital(forProperty("hospital"), inits.get("hospital")) : null;
+        this.uploadFile = inits.isInitialized("uploadFile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("uploadFile")) : null;
         this.user = inits.isInitialized("user") ? new com.ssafy.lam.user.domain.QUser(forProperty("user")) : null;
     }
 

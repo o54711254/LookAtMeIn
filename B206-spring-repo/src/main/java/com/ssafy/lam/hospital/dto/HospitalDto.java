@@ -1,6 +1,7 @@
 package com.ssafy.lam.hospital.dto;
 
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -19,7 +20,9 @@ public class HospitalDto {
     private String hospitalInfo_url;
 
 
+
     @Builder
+
     public HospitalDto(String hospitalInfo_id, String hospitalInfo_password, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_email, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url) {
         this.hospitalInfo_id = hospitalInfo_id;
         this.hospitalInfo_password = hospitalInfo_password;

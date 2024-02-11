@@ -15,7 +15,7 @@
 
 /images
 
-/src/main/generated/**
+./src/main/generated/**
 
 
 # .nfs files are1. 병원마이페이지 - 코디네이터 등록하기

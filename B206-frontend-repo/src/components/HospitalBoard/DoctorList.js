@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosApi from "../../api/axiosApi";
+import { useParams } from 'react-router-dom';
 
 const DoctorList = () => {
   const [doctorList, setDoctorList] = useState([]);
+  const hospital_seq = useParams();
 
   useEffect(() => {
     const fetchDoctorList = async () => {
       try {
-        const response = await axios.get('/doctor/list');
+        const response = await axiosApi.get(`/api/hospital/${hospital_seq}/doctors`);
         const { statusCode, message, responseObj } = response.data;
         if (statusCode === '상태 코드' && message === 'success') {
           setDoctorList(responseObj);

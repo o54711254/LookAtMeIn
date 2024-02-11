@@ -12,7 +12,7 @@ public class UploadFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "file_seq")
-    private long seq; // 이미지 번호
+    private Long seq; // 이미지 번호
 
     @Column(name = "type")
     private String type; // 이미지 카테고리
@@ -23,7 +23,7 @@ public class UploadFile {
 
     @Builder
 
-    public UploadFile(long seq, String type, String name) {
+    public UploadFile(Long seq, String type, String name) {
         this.seq = seq;
         this.type = type;
         this.name = name;

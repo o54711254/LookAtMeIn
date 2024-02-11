@@ -1,13 +1,10 @@
 package com.ssafy.lam.reviewBoard.dto;
-
 import lombok.*;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 public class ReviewBoardUpdate {
-
     private long reviewBoard_seq; // 리뷰 게시글 시퀀스
     private String reviewBoard_title; // 제목
     private String reviewBoard_content; // 내용
@@ -20,7 +17,6 @@ public class ReviewBoardUpdate {
     private int reviewBoard_surgery_price; // 시술 가격
     private long hospital_seq; // 병원 시퀀스
     private long doctor_seq; // 의사 시퀀스
-
     @Builder
     public ReviewBoardUpdate(long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content,
                              double reviewBoard_score, String reviewBoard_doctor, String reviewBoard_region,

@@ -25,7 +25,8 @@ span {
 .navBar a:hover,
 .navBar div:hover {
   background-color: transparent; /* 호버 시 배경색 없음 */
-  color: inherit; /* 호버 시 기존 글자색 유지 */
+  color:rgb(219, 77, 101);
+  text-decoration: none;
 }
 
 /* 클릭 시 글자색 변경 */

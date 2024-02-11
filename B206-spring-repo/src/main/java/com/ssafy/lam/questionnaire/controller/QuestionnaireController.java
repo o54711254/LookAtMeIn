@@ -1,6 +1,7 @@
 package com.ssafy.lam.questionnaire.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.file.domain.UploadFile;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 
 @RestController
-@RequestMapping("/questionnaire")
+@RequestMapping("/api/questionnaire")
 @RequiredArgsConstructor
 public class QuestionnaireController {
     private Logger log = LoggerFactory.getLogger(QuestionnaireController.class);
@@ -32,12 +34,17 @@ public class QuestionnaireController {
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
     @PostMapping("/regist")
     @Operation(summary = "문진서 등록")
-    public void registQuestionnaire(@ModelAttribute QuestionnaireRequestDto questionRequestDto) {
-        log.info("문진서 등록 정보 : {}", questionRequestDto);
+    public ResponseEntity<Void> registQuestionnaire(@RequestParam("questionnaireData") String questionnarieData, @RequestParam(value = "image", required = false) MultipartFile file){
+        log.info("문진서 등록 정보 : {}", questionnarieData);
+        try{
+            QuestionnaireRequestDto questionRequestDto = new ObjectMapper().readValue(questionnarieData, QuestionnaireRequestDto.class);
+            questionnaireService.createQuestionnaire(questionRequestDto, file);
 
-        questionnaireService.createQuestionnaire(questionRequestDto);
-
-
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/detail/{questionSeq}")
@@ -72,9 +79,5 @@ public class QuestionnaireController {
 
     }
 
-    private String encodeFileToBase64(Path path) throws IOException {
-        byte[] fileContent = Files.readAllBytes(path);
-        return Base64.getEncoder().encodeToString(fileContent);
-    }
 
 }

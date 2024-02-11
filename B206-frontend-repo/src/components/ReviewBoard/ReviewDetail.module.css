@@ -34,6 +34,7 @@
 .title {
     display: flex;
     font-size: 30px;
+    width: 50%;
     font-weight: bold;
     justify-content: center;
     align-items: center;
@@ -56,18 +57,22 @@
     width: 23%;
     align-items: center;
     border-right:3px solid #EFE8DE;    
+    height: 100%;
 }
 
 .maincenter {
     width:50%;
     padding-top: 20px;
     padding-left: 10px;
+    height: 100%;
+
 }
 
 .mainright {
     padding-top:20px;
     width:25%;
     border-left:3px solid #EFE8DE;    
+    height: 100%;
 }
 
 .imgcon {
@@ -79,4 +84,10 @@
 
 .star {
     margin-left: auto;
+}
+
+.buttonbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
