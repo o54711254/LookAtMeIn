@@ -135,34 +135,45 @@ public class RequestBoardService {
         User user = userRepository.findById(responseDto.getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없음 : " + responseDto.getUserSeq()));
 
-        Response response = Response.builder()
-                .requestboard(requestboard)
-                .user(user)
-                .message(responseDto.getMessage())
-                .build();
-        responseRepository.save(response);
+        if (user.getUserType().equals("CUSTOMER")) {
+            Response response = Response.builder()
+                    .requestboard(requestboard)
+                    .user(user)
+                    .message(responseDto.getMessage())
+                    .build();
+            responseRepository.save(response);
 
-        // 알림 생성 로직 호출
-        createNotification(requestboard.getUser(), user, response.getMessage());
+            // 알림 생성 로직 호출
+            createNotification(requestboard.getUser(), user, response.getMessage());
+        } else {
+            new IllegalArgumentException("병원만 제안 가능 : " + responseDto.getUserSeq());
+        }
     }
 
     public void createNotification(User recipient, User sender, String message) {
-        String notificationMessage = String.format("%s 제안을 보낸 병원 : %s", sender.getName(), message);
+        String notificationMessage = String.format(sender.getName(), message);
         Notification notification = new Notification(recipient, notificationMessage, false);
         notificationRepository.save(notification);
     }
 
-    public List<ResponseDto> findAllresponse(long userSeq){
+    public List<NotificationDto> findAllNotificationsByUser(Long userSeq) {
+        List<Notification> notifications = notificationRepository.findAllByRecipientUserSeq(userSeq);
+        return notifications.stream()
+                .map(notification -> NotificationDto.builder()
+                        .seq(notification.getId())
+                        .hospitalName(notification.getRecipient().getName())
+                        .message(notification.getMessage())
+                        .isRead(notification.isRead())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public List<ResponseDto> findAllresponse(long userSeq) {
         List<Response> responses = responseRepository.findAllByUserUserSeq(userSeq);
-        for(Response r : responses){
-            System.out.println("메세지"+r.getMessage());
-        }
         List<ResponseDto> responseDtos = responses.stream()
                 .map(response -> new ResponseDto(response.getId(), response.getUser().getUserSeq(), response.getUser().getName(), response.getMessage()))
                 .collect(Collectors.toList());
-        for(ResponseDto r : responseDtos){
-            System.out.println(r.getUserSeq()+" "+r.getMessage());
-        }
+
         return responseDtos;
     }
 }

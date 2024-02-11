@@ -13,6 +13,7 @@ import com.ssafy.lam.requestboard.domain.Requestboard;
 import com.ssafy.lam.requestboard.domain.RequestboardRepository;
 import com.ssafy.lam.requestboard.domain.Response;
 import com.ssafy.lam.requestboard.domain.ResponseRepository;
+import com.ssafy.lam.requestboard.dto.NotificationDto;
 import com.ssafy.lam.requestboard.dto.ResponseDto;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
 import com.ssafy.lam.reserve.domain.Reserve;
@@ -108,4 +109,10 @@ public class MypageController {
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
+    @GetMapping("/notifications/{userSeq}")
+    @Operation(summary = "제안을 한 병원 조회")
+    public ResponseEntity<List<NotificationDto>> getNotificationsByUser(@PathVariable Long userSeq) {
+        List<NotificationDto> notifications = requestBoardService.findAllNotificationsByUser(userSeq);
+        return ResponseEntity.ok(notifications);
+    }
 }
