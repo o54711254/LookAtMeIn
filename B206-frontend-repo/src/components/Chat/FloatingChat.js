@@ -6,8 +6,6 @@ import { useSelector } from "react-redux";
 import { Link, Routes, Route, BrowserRouter } from "react-router-dom"; // Link 컴포넌트 추가
 import ChatApp from "./ChatApp";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styles from "./FloatingChat.module.css";
-
 import {
   faCommentDots,
   faCommentSlash,
@@ -41,9 +39,9 @@ function FloatingChat() {
         >
           <Button onClick={handleToggleChat}>
             {open ? (
-              <FontAwesomeIcon icon={faCommentSlash} className={styles.icon} />
+              <FontAwesomeIcon icon={faCommentSlash} />
             ) : (
-              <FontAwesomeIcon icon={faCommentDots} className={styles.icon} />
+              <FontAwesomeIcon icon={faCommentDots} />
             )}
           </Button>
           {open && (
