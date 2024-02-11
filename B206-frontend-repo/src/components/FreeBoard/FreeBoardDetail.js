@@ -29,7 +29,9 @@ function FreeBoardDetail() {
         const base64 = response.data.base64;
         const type = response.data.type;
         const data = `data:${type};base64,${base64}`;
-        if (base64 != null) setImg(data);
+        if(base64 != null)
+          setImg(data)
+
       } catch (error) {
         console.log("자유게시판 상세 불러오기 실패: ", error);
       }

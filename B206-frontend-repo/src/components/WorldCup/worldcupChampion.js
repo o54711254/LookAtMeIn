@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import styles from "./WorldcupChampion.module.css";
+import styles from "./worldcupChampion.module.css";
 import Aos from "aos";
 
 const WorldcupChampion = () => {

@@ -39,6 +39,7 @@ function InfoUpdate() {
     axiosApi
       .put(`/api/mypage/user/${user.userSeq}`, updateData)
       .then(() => {
+        console.log(updateData)
         navigate(`/mypage/info`);
       })
       .catch((error) => {
