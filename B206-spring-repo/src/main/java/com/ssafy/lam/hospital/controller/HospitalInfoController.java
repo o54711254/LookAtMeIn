@@ -64,10 +64,10 @@ public class HospitalInfoController {
                         .build();
 
                 // 병원 프로필 사진 base64로 인코딩해서 보내줘야함
-                Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
-                String profileBase64 = EncodeFile.encodeFileToBase64(path);
-
-                hospitalDetailDto.setProfileBase64(profileBase64);
+//                Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
+//                String profileBase64 = EncodeFile.encodeFileToBase64(path);
+//
+//                hospitalDetailDto.setProfileBase64(profileBase64);
 
             }
         }catch (Exception e) {
