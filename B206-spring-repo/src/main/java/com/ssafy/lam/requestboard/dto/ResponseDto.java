@@ -8,12 +8,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ResponseDto {
-    private Long userSeq; // 응답하는 사용자의 식별자
-    private String message; // 응답 메시지
+    private Long seq;
+    private Long userSeq; // 제안하는 사람
+    private String hospitalName;
+    private String message; // 제안 메시지
 
-    // 생성자, Getter, Setter 등은 Lombok 어노테이션으로 대체 가능
-    public ResponseDto(Long userSeq, String message) {
+    public ResponseDto(Long seq, Long userSeq, String hospitalName, String message) {
+        this.seq = seq;
         this.userSeq = userSeq;
+        this.hospitalName = hospitalName;
         this.message = message;
     }
 }

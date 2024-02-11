@@ -111,7 +111,7 @@ public class RequestBoardService {
         if (requestUpdateDto.getContent() != null) requestboard.setContent(requestUpdateDto.getContent());
         requestboard.setDeleted(requestUpdateDto.isDeleted());
 
-        Requestboard updatedRequestboard = requestboardRepository.save(requestboard);
+        requestboardRepository.save(requestboard);
 
         return RequestUpdateDto.builder()
                 .seq(requestUpdateDto.getSeq())
@@ -147,8 +147,22 @@ public class RequestBoardService {
     }
 
     public void createNotification(User recipient, User sender, String message) {
-        String notificationMessage = String.format("%s hospital responded: %s", sender.getName(), message);
+        String notificationMessage = String.format("%s 제안을 보낸 병원 : %s", sender.getName(), message);
         Notification notification = new Notification(recipient, notificationMessage, false);
         notificationRepository.save(notification);
+    }
+
+    public List<ResponseDto> findAllresponse(long userSeq){
+        List<Response> responses = responseRepository.findAllByUserUserSeq(userSeq);
+        for(Response r : responses){
+            System.out.println("메세지"+r.getMessage());
+        }
+        List<ResponseDto> responseDtos = responses.stream()
+                .map(response -> new ResponseDto(response.getId(), response.getUser().getUserSeq(), response.getUser().getName(), response.getMessage()))
+                .collect(Collectors.toList());
+        for(ResponseDto r : responseDtos){
+            System.out.println(r.getUserSeq()+" "+r.getMessage());
+        }
+        return responseDtos;
     }
 }

@@ -9,6 +9,12 @@ import com.ssafy.lam.freeboard.service.FreeboardService;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.hospital.service.HospitalService;
+import com.ssafy.lam.requestboard.domain.Requestboard;
+import com.ssafy.lam.requestboard.domain.RequestboardRepository;
+import com.ssafy.lam.requestboard.domain.Response;
+import com.ssafy.lam.requestboard.domain.ResponseRepository;
+import com.ssafy.lam.requestboard.dto.ResponseDto;
+import com.ssafy.lam.requestboard.service.RequestBoardService;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.service.ReserveService;
@@ -23,6 +29,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,6 +42,7 @@ public class MypageController {
     private final FreeboardService freeboardService;
     private final ReviewBoardService reviewBoardService;
     private final ReserveService reserveService;
+    private final RequestBoardService requestBoardService;
 
     @GetMapping("/{userSeq}")
     @Operation(summary = "유저 타입에 따라 고객 정보나 병원 정보를 조회")
@@ -91,6 +99,13 @@ public class MypageController {
     public ResponseEntity<?> getReserve(@PathVariable long userSeq) {
         List<ReserveResponseDto> reserveList = reserveService.findByUserSeq(userSeq);
         return new ResponseEntity<>(reserveList, HttpStatus.OK);
+    }
+
+    @GetMapping("/request/{userSeq}")
+    @Operation(summary = "제안을 수락한 병원 목록")
+    public ResponseEntity<?> getResponse(@PathVariable long userSeq) {
+        List<ResponseDto> responseDtos = requestBoardService.findAllresponse(userSeq);
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
 }
