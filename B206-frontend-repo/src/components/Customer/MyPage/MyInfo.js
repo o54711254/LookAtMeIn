@@ -86,14 +86,6 @@ function MyInfo() {
             className={styles.profileImg}
           />
         </label>
-        {selectedFile && (
-          <img
-            src={update}
-            alt="updateIcon"
-            className={styles.icon}
-            onClick={handleImageUpload}
-          />
-        )}
         <input
           id="image-upload"
           type="file"
@@ -101,9 +93,23 @@ function MyInfo() {
           onChange={handleImageChange}
           style={{ display: "none" }}
         />
-        <div className={styles.infoName}>
-          {infoData.customerName} 님 반갑습니다!
-          <div className={styles.infoId}>ID : {infoData.userId}</div>
+        <div className={styles.headBox}>
+          <div className={styles.infoName}>
+            {infoData.customerName} 님 반갑습니다!
+            <div className={styles.infoId}>ID : {infoData.userId}</div>
+          </div>
+          <div className={styles.profileButtonArea}>
+            <div className={styles.버튼버튼}>
+              {selectedFile && (
+                <img
+                  src={update}
+                  alt="updateIcon"
+                  className={styles.icon}
+                  onClick={handleImageUpload}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.box}>
