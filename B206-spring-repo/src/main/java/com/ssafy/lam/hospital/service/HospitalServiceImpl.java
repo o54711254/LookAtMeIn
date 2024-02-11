@@ -148,6 +148,31 @@ public class HospitalServiceImpl implements HospitalService {
         }
     }
     @Override
+    public HospitalDetailDto getHospitalLikeInfo(Long hospitalSeq, Long userSeq) { // 고객이 병원 페이지 조회 + 찜
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
+        if (hospitalOptional.isPresent()) {
+            Hospital hospital = hospitalOptional.get();
+            double avgScore = hospitalRepository.findAvgByHospitalSeq(hospitalSeq).orElse(0.0);
+            HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
+                    .hospitalInfo_seq(hospitalSeq)
+                    .hospitalInfo_name(hospital.getUser().getName())
+                    .hospitalInfo_phoneNumber(hospital.getTel())
+                    .hospitalInfo_introduce(hospital.getIntro())
+                    .hospitalInfo_address(hospital.getAddress())
+                    .hospitalInfo_open(hospital.getOpenTime())
+                    .hospitalInfo_close(hospital.getCloseTime())
+                    .hospitalInfo_url(hospital.getUrl())
+                    .userSeq(hospital.getUser().getUserSeq())
+                    .hospitalInfo_avgScore(avgScore)
+                    .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
+                    .hospitalInfo_isLiked(favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeqAndIsLikedTrue(hospitalSeq, userSeq).isLiked())
+                    .build();
+            return hospitalDetailDto;
+        } else {
+            return null;
+        }
+    }
+    @Override
     public List<ReviewBoard> getReviewsByHospital(Long hospitalSeq) {
         List<ReviewBoard> reviews = hospitalRepository.findReviewsByHospitalSeq(hospitalSeq);
         return reviews;

@@ -78,10 +78,10 @@ public class HospitalInfoController {
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/detail/{hospital_seq}")
+    @PostMapping("/detail/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 병원 상세 정보")
-    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq) {
-        HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalInfo(hospital_seq);
+    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq, @RequestParam Long user_seq) {
+        HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalLikeInfo(hospital_seq, user_seq);
         return new ResponseEntity<>(hospitalDetailDto, HttpStatus.OK);
     }
 
