@@ -5,6 +5,7 @@ export const userSlice = createSlice({
   name: "user", // 리듀서의 이름
   initialState: {
     userSeq: "", // 사용자 역할
+    profileImg: "",
     userId: "", // 사용자 아이디
     userName: "", // 사용자 이름
     userPassword: "",
@@ -22,6 +23,7 @@ export const userSlice = createSlice({
       console.log(action.payload);
       // action.payload에는 업데이트할 사용자 정보가 담겨 있음
       state.userSeq = action.payload.userSeq; // 사용자 일련번호 업데이트
+      state.profileImg = action.payload.profileImg; // 프로필 사진
       state.userName = action.payload.userName; // 사용자 이름 업데이트
       state.userId = action.payload.userId; // 사용자 아이디 업데이트
       state.userPassword = action.payload.userPassword; // 사용자 비밀번호 업데이트
