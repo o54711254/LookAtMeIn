@@ -106,10 +106,10 @@ function App() {
 
                   {/*병원 게시판*/}
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
-                  {/* <Route
+                  <Route
                     path="/hospital-info/detail/:hospital_seq"
                     element={<HospitalDetail />}
-                  /> */}
+                  />
 
                   {/*이상향 월드컵*/}
                   <Route path="/worldcup/*" element={<Worldcup />} />
