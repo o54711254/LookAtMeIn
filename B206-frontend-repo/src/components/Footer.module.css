@@ -1,0 +1,38 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+footer {
+  margin-top: auto;
+  border-top: 1px solid #e4e4e4;
+  background-color: rgba(254, 202, 171, 0.36);
+  padding: 1rem 0;
+  height: 100px;
+}
+
+.footer-message {
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #545e6f;
+  margin: 0 0 0 0.6rem;
+}
+
+.footer-contact {
+  font-size: 0.9rem;
+  color: #545e6f;
+  margin: 0.6rem;
+}
+
+.footer-copyright {
+  font-size: 0.9rem;
+  color: #545e6f;
+  margin: 0.6rem;
+}

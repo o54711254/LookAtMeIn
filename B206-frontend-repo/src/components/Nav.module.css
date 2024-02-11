@@ -1,0 +1,117 @@
+.navBar {
+  display: flex;
+  justify-content: space-between; /* 요소들 사이에 공간을 균등하게 분배 */
+  align-items: center; /* 세로 중앙 정렬 */
+  height: 70px; /* Navbar의 높이를 70px로 설정 */
+  background-color: #fffaf4;
+  margin-bottom: 100px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+
+.navBar a,
+.navBar div {
+  /* 기존 스타일 */
+  transition: color 0.3s; /* 색상 변화 효과 */
+}
+span {
+  color: rgb(219, 77, 101);
+}
+/* 마우스 호버 시 글자색 변경 */
+.navBar a:hover,
+.navBar div:hover {
+  background-color: transparent; /* 호버 시 배경색 없음 */
+  color:rgb(219, 77, 101);
+  text-decoration: none;
+}
+
+/* 클릭 시 글자색 변경 */
+.navBar a:active,
+.navBar div:active {
+  color: rgb(219, 77, 101); /* 클릭 상태의 글자색 */
+}
+
+.nav0,
+.nav1,
+.nav2 {
+  display: flex; /* 가로로 나열 */
+  align-items: center; /* 세로 중앙 정렬 */
+  gap: 10px; /* 요소들 사이의 간격 */
+}
+
+/* nav0과 nav2에 좌우 여백을 줘서 가운데 요소(nav1)와 일정 간격을 두도록 함 */
+
+.nav0 {
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.nav1 {
+  /* 가운데에 위치하므로 여기에는 특별한 스타일이 필요 없음 */
+  margin-left: 80px;
+  margin-left: 80px;
+}
+
+.nav2 {
+  margin-left: auto; /* nav2를 오른쪽에 정렬 */
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown {
+  position: relative; /* 드롭다운 내용을 절대 위치로 설정하기 위한 기준점 */
+}
+
+.dropdownContent {
+  display: none; /* 기본 상태에서는 숨김 */
+  position: absolute;
+  top: 100%; /* .dropdown 바로 아래에 위치 */
+  left: 0;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  padding-top: 0.5em; /* 상단에 약간의 패딩을 추가하여 마우스 이벤트 간격 조절 */
+}
+/* 드롭다운 메뉴에 마우스가 있는 동안 드롭다운 메뉴를 계속 표시 */
+.dropdownContent:hover {
+  display: block;
+}
+.dropdownContent a {
+  display: block; /* 링크가 블록 요소처럼 동작하도록 함 */
+  padding: 10px 15px; /* 상하 좌우 패딩을 적절히 조정 */
+  color: #2a2a2a; /* 텍스트 색상 설정, 필요에 따라 변경 가능 */
+  text-decoration: none; /* 링크 밑 줄 제거 */
+  color: #2a2a2a; /* 텍스트 색상 설정, 필요에 따라 변경 가능 */
+  text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+.dropdownContent a:hover {
+  /* background-color: rgba(254, 202, 171, 0.76); 호버 상태일 때 배경색 변경 */
+  color: rgb(219, 77, 101); /* 호버 상태일 때 텍스트 색상 변경 */
+  /* background-color: rgba(254, 202, 171, 0.76); 호버 상태일 때 배경색 변경 */
+  color: rgb(219, 77, 101); /* 호버 상태일 때 텍스트 색상 변경 */
+}
+/* 숨겨진 요소의 기본 스타일 */
+.show {
+  display: block; /* 보여줄 때는 block으로 설정 */
+}
+
+/* 링크 및 로그아웃 버튼 스타일 */
+.navBar a,
+.navBar div {
+  color: #2a2a2a; /* 글씨 색 */
+  padding: 10px 15px; /* 패딩 */
+  text-decoration: none; /* 링크 밑줄 제거 */
+  font-weight: bold; /* 글씨 굵게 */
+  border-radius: 5px; /* 둥근 모서리 */
+  transition: background-color 0.3s; /* 배경색 변화 효과 */
+}
+.menu:hover {
+  background-color: #ddd; /* 마우스 오버 시 배경색 설정 */
+}
