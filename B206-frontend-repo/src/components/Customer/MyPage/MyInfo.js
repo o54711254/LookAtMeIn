@@ -31,7 +31,7 @@ function MyInfo() {
       <div className={styles.infoTop}>
         <img src={profile} alt="profileImg" className={styles.profileImg} />
         <div className={styles.infoName}>
-          {infoData.customerName} 님 반갑습니다!
+          {infoData.customerName}싸피 님 반갑습니다!
           <div className={styles.infoId}>ID : {infoData.userId}</div>
         </div>
       </div>

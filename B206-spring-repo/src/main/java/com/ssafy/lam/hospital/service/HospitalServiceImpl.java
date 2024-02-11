@@ -125,10 +125,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public void createDoctor(Long userSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList) {
-        Optional<Hospital> findHospital = hospitalRepository.findByUserUserSeq(userSeq);
-        if(findHospital.isEmpty()) return;
-        Long hospitalSeq = findHospital.get().getHospitalSeq();
+    public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList) {
         Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
         Doctor doctor = Doctor.builder().docInfoSeq(doctorDto.getDoc_info_seq()).docInfoName(doctorDto.getDoc_info_name())
                 .hospital(hospital).build();
@@ -148,10 +145,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public HospitalDetailDto getHospitalInfo(Long userSeq) { // 고객이 병원 페이지 조회
-        Optional<Hospital> findHospital = hospitalRepository.findByUserUserSeq(userSeq);
-        if(findHospital.isEmpty()) return null;
-        Long hospitalSeq = findHospital.get().getHospitalSeq();
+    public HospitalDetailDto getHospitalInfo(Long hospitalSeq) { // 고객이 병원 페이지 조회
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
         if (hospitalOptional.isPresent()) {
             Hospital hospital = hospitalOptional.get();
@@ -176,19 +170,13 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public List<ReviewBoard> getReviewsByHospital(Long userSeq) {
-        Optional<Hospital> findHospital = hospitalRepository.findByUserUserSeq(userSeq);
-        if(findHospital.isEmpty()) return new ArrayList<>();
-        Long hospitalSeq = findHospital.get().getHospitalSeq();
+    public List<ReviewBoard> getReviewsByHospital(Long hospitalSeq) {
         List<ReviewBoard> reviews = hospitalRepository.findReviewsByHospitalSeq(hospitalSeq);
         return reviews;
     }
 
     @Override
-    public List<Doctor> getHospitalDoctorList(Long userSeq) {
-        Optional<Hospital> findHospital = hospitalRepository.findByUserUserSeq(userSeq);
-        if(findHospital.isEmpty()) return new ArrayList<>();
-        Long hospitalSeq = findHospital.get().getHospitalSeq();
+    public List<Doctor> getHospitalDoctorList(Long hospitalSeq) {
         List<Doctor> doctorList = hospitalRepository.findDoctorByHospitalSeq(hospitalSeq).orElse(null);
         return doctorList;
     }

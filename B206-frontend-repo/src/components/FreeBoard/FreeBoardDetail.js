@@ -24,14 +24,12 @@ function FreeBoardDetail() {
         setPost(response.data); // 먼저 게시글 정보를 설정
 
         setPost(response.data);
-        console.log("데이터 정보", response.data);
-        const imgResponse = await axiosApi.get(response.data.fileUrl);
-        console.log("response2: ", imgResponse);
-        const base64 = imgResponse.data.base64;
-        const type = imgResponse.data.type;
+        console.log(response.data);
 
+        const base64 = response.data.base64;
+        const type = response.data.type;
         const data = `data:${type};base64,${base64}`;
-        setImg(data);
+        if (base64 != null) setImg(data);
       } catch (error) {
         console.log("자유게시판 상세 불러오기 실패: ", error);
       }

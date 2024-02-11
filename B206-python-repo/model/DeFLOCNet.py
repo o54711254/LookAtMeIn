@@ -113,7 +113,7 @@ class DeFLOCNet(BaseModel):
         self.gt = input_img.to(self.device)
         self.sketch = torch.add(torch.neg(sketch.float()), 1).float().to(self.device)  # 0,1 replace
         self.color = color.to(self.device)
-
+        
         # Define the mask, we have two types of mask, the first is center and the second is the input mask.
         if self.opt.mask_type == 'center':
             self.mask_global.zero_()
@@ -130,6 +130,9 @@ class DeFLOCNet(BaseModel):
                                             self.mask_global.size(3)).float().to(self.device)
         self.inv_mask = torch.add(torch.neg(self.mask.float()), 1).float().cuda()
 
+        # print("mask: ", mask.shape)    
+        # print("input_noise: " ,self.input_noise.shape)
+        # print("self.mask: ", self.mask.shape)    
         self.input_sketch = self.sketch * self.mask
         self.input_noise = self.input_noise * self.mask
         self.input_color = self.color * mask_color.to(self.device)

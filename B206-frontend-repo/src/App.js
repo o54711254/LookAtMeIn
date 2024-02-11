@@ -43,6 +43,7 @@ import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion";
+import Canvas from "./components/Canvas/canvas.js";
 
 function App() {
   return (
@@ -129,6 +130,7 @@ function App() {
                   <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
                   <Route path="/reviewregist" element={<ReviewRegist />} />
+                  <Route path="/canvas" element={<Canvas />} />
                 </Routes>
               </div>
             </div>
@@ -139,7 +141,7 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {/* <Questionnaire /> */}
+          {<Questionnaire />}
           <FloatingChat />
         </div>
         <Footer />

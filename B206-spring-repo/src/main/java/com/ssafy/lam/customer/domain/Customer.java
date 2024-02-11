@@ -40,6 +40,7 @@ public class Customer{
 
 
     @Builder
+
     public Customer(Long customerSeq, User user, String gender, String birth, String tel, String email, String address, int reportCnt) {
         this.customerSeq = customerSeq;
         this.user = user;

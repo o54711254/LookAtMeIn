@@ -29,7 +29,7 @@ function ReviewDetail() {
         const type = res.data.type;
 
         const data = `data:${type};base64,${base64}`;
-        setImgURL(data);
+        if (base64 != null) setImgURL(data);
 
         setReviewDetail(res.data);
       })
@@ -82,7 +82,11 @@ function ReviewDetail() {
         </div>
         <div className={styles.maincenter}>
           <div className={styles.imgcon}>
-            <img src={imgURL} alt="글 사진" />
+            {imgURL ? (
+              <img src={imgURL} alt="글 사진" />
+            ) : (
+              <div>이미지 없음</div>
+            )}
           </div>
           <div>내용: {reviewDetail.reviewBoard_content}</div>
           <div className={styles.star}>

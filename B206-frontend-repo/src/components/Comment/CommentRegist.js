@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
+import styles from "./CommentRegist.module.css";
 function CommentRegist({ freeboardSeq }) {
   const [isRegist, setIsRegist] = useState(false);
   //user 리덕스에서 로그인한 사용자 userSeq 가져옴
