@@ -62,16 +62,13 @@ public class HospitalInfoController {
                         .hospitalInfo_url(h.getUrl())
                         .userSeq(h.getUser().getUserSeq())
                         .build();
-
-                if(h.getProfileFile() != null) {
-                    // 병원 프로필 사진 base64로 인코딩해서 보내줘야함
-                    Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
+                if(h.getRegistrationFile() != null) {
+                    // 병원 등록증 base64로 인코딩해서 보내줘야함
+                    Path path = Paths.get(uploadPath + "/" + h.getRegistrationFile().getName());
                     String profileBase64 = EncodeFile.encodeFileToBase64(path);
-
                     hospitalDetailDto.setProfileBase64(profileBase64);
-
                 }
-                hospitalDetailDtoList.add(hospitalDetailDto);
+
 
             }
         }catch (Exception e) {
@@ -81,10 +78,10 @@ public class HospitalInfoController {
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
 
-    @GetMapping("/detail/{hospital_seq}")
+    @PostMapping("/detail/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 병원 상세 정보")
-    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq) {
-        HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalInfo(hospital_seq);
+    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq, @RequestParam Long user_seq) {
+        HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalLikeInfo(hospital_seq, user_seq);
         return new ResponseEntity<>(hospitalDetailDto, HttpStatus.OK);
     }
 
