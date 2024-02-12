@@ -68,8 +68,7 @@ public class HospitalInfoController {
                     String profileBase64 = EncodeFile.encodeFileToBase64(path);
                     hospitalDetailDto.setProfileBase64(profileBase64);
                 }
-
-
+                hospitalDetailDtoList.add(hospitalDetailDto);
             }
         }catch (Exception e) {
             e.printStackTrace();
