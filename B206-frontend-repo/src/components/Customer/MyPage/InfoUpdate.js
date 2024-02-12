@@ -34,7 +34,7 @@ function InfoUpdate() {
       .catch((error) => {
         console.error("데이터를 불러오는 중 에러 발생", error);
       });
-  }, [user.userSeq]);
+  }, [user.userSeq]); // userSeq가 변경될 때마다 데이터를 다시 불러옵니다.
 
   const handleInputChange = (e) => {
     setUpdateData({

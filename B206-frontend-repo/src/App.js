@@ -120,7 +120,7 @@ function App() {
                   />
 
                   {/*이상향 월드컵*/}
-                  <Route path="/worldcup/*" element={<Worldcup />} />
+                  {/* <Route path="/worldcup/*" element={<Worldcup />} /> */}
 
                   <Route path="/worldcup/man" element={<WorldcupMan />}></Route>
                   <Route

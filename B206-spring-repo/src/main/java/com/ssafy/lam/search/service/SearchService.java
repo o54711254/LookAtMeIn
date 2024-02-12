@@ -1,6 +1,8 @@
 package com.ssafy.lam.search.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.QFreeboard;
 import com.ssafy.lam.hospital.domain.Hospital;
@@ -13,7 +15,6 @@ import com.ssafy.lam.search.dto.FreeboardDto;
 import com.ssafy.lam.search.dto.HospitalDto;
 import com.ssafy.lam.search.dto.ReviewBoardDto;
 import com.ssafy.lam.user.domain.UserRepository;
-import com.ssafy.lam.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class SearchService {
     private final JPAQueryFactory queryFactory;
     private final HospitalRepository hospitalRepository;
     private final ReviewBoardRepository reviewBoardRepository;
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     public List<?> search(String keyword, String category) {
         if ("hospital".equals(category)) {
@@ -61,7 +62,7 @@ public class SearchService {
                 .hospitalInfo_address(result.getAddress())
                 .hospitalInfo_open(result.getOpenTime())
                 .hospitalInfo_close(result.getCloseTime())
-                .hospitalInfo_avgScore(hospitalRepository.findAvgByHospitalSeq(result.getHospitalSeq()).orElse(0.0)) // 예시 값, 실제 계산 로직 필요
+                .hospitalInfo_avgScore(hospitalRepository.findAvgByHospitalSeq(result.getHospitalSeq()).orElse(0.0))
                 .build()).collect(Collectors.toList());
     }
 
@@ -75,7 +76,7 @@ public class SearchService {
         return results.stream().map(result -> FreeboardDto.builder()
                 .freeboardSeq(result.getFreeboardSeq())
                 .userId(result.getUser().getUserId())
-                .userEmail(hospitalRepository.findById(result.getFreeboardSeq()).get().getEmail()) // 예시, 실제 User 엔티티의 구조에 따라 변경 필요
+                .userEmail(customerRepository.findByUserUserSeq(result.getUser().getUserSeq()).get().getEmail())
                 .freeboardTitle(result.getTitle())
                 .freeboardContent(result.getContent())
                 .freeboardRegisterdate(result.getRegisterDate())
