@@ -33,7 +33,7 @@ public class HospitalDetailDto {
 
     @Builder
 
-    public HospitalDetailDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, long userSeq, String profileBase64, String registrationFileBase64, double hospitalInfo_avgScore, int hospitalInfo_cntReviews, boolean hospitalInfo_isLiked) {
+    public HospitalDetailDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, long userSeq, String profileBase64, String registrationFileBase64, double hospitalInfo_avgScore, int hospitalInfo_cntReviews, boolean hospitalInfo_isLiked, String profileType) {
         this.hospitalInfo_seq = hospitalInfo_seq;
         this.hospitalInfo_name = hospitalInfo_name;
         this.hospitalInfo_phoneNumber = hospitalInfo_phoneNumber;

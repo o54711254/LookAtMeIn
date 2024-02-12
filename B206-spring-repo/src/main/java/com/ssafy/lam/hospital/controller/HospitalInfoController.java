@@ -3,7 +3,7 @@ package com.ssafy.lam.hospital.controller;
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.hospital.domain.DoctorCategory;
-import com.ssafy.lam.hospital.domain.HospitalCategory;
+
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.CategoryDto;
@@ -49,8 +49,10 @@ public class HospitalInfoController {
     public ResponseEntity<List<HospitalDetailDto>> getAllHospital() {
         List<Hospital> hospitalList = hospitalService.getAllHospitalInfo();
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
+        log.info("병원 목록: " + hospitalList);
         try{
             for(Hospital h : hospitalList) {
+                log.info("병원 정보: " + h);
                 HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
                         .hospitalInfo_seq(h.getHospitalSeq())
                         .hospitalInfo_name(h.getUser().getName())
@@ -70,6 +72,14 @@ public class HospitalInfoController {
                 }
 
 
+                log.info("병원 정보: " + hospitalDetailDto);
+//                if(h.getRegistrationFile() != null) { // 병원 목록 조회 시 오류 발생
+//                    // 병원 등록증 base64로 인코딩해서 보내줘야함
+//                    Path path = Paths.get(uploadPath + "/" + h.getRegistrationFile().getName());
+//                    String profileBase64 = EncodeFile.encodeFileToBase64(path);
+//                    hospitalDetailDto.setProfileBase64(profileBase64);
+//                }
+                hospitalDetailDtoList.add(hospitalDetailDto);
             }
         }catch (Exception e) {
             e.printStackTrace();
@@ -85,10 +95,10 @@ public class HospitalInfoController {
         return new ResponseEntity<>(hospitalDetailDto, HttpStatus.OK);
     }
 
-    @GetMapping("/reviews/{hospital_seq}")
+    @GetMapping("/reviews/{user_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 후기 목록")
-    public ResponseEntity<List<ReviewListDisplay>> getHospitalReview(@PathVariable Long hospital_seq) {
-        List<ReviewBoard> reviews = hospitalService.getReviewsByHospital(hospital_seq);
+    public ResponseEntity<List<ReviewListDisplay>> getHospitalReview(@PathVariable Long user_seq) {
+        List<ReviewBoard> reviews = hospitalService.getReviewsByHospital(user_seq);
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
         for(ReviewBoard r : reviews) {
             reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
@@ -98,17 +108,10 @@ public class HospitalInfoController {
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
 
-//    @GetMapping("/doctors/{hospital_seq}")
-//    @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
-//    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable Long hospital_seq) {
-//        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
-//        return new ResponseEntity<>(doctors, HttpStatus.OK);
-//    }
-
-    @GetMapping("/doctors/{hospital_seq}")
+    @GetMapping("/doctors/{user_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
-    public ResponseEntity<List<DoctorListDto>> getHospitalDoctors(@PathVariable Long hospital_seq) {
-        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
+    public ResponseEntity<List<DoctorListDto>> getHospitalDoctors(@PathVariable Long user_seq) {
+        List<Doctor> doctors = hospitalService.getHospitalDoctorList(user_seq);
         List<DoctorListDto> doctorDtoList = new ArrayList<>();
         for(Doctor d : doctors) {
             List<DoctorCategory> doctorCategories = doctorService.getCategory(d.getDocInfoSeq());

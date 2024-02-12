@@ -2,7 +2,6 @@ package com.ssafy.lam.admin.service;
 
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
-import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
 import com.ssafy.lam.freeboard.dto.FreeboardAdminDto;
 import com.ssafy.lam.hospital.domain.Hospital;
@@ -73,7 +72,7 @@ public class AdminServiceImpl implements AdminService {
     public List<HospitalAdminDto> findUnapprovedHospitals() {
 
         List<HospitalAdminDto> hospitalAdminDtoList = new ArrayList<>();
-        List<Hospital> hospitals = hospitalRepository.findByIsApprovedFalse();
+        List<Hospital> hospitals = hospitalRepository.findAllByIsApprovedFalse();
 
             for(Hospital hospital : hospitals){
                 try {

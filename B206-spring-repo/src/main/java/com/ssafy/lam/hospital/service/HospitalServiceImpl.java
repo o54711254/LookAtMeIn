@@ -199,31 +199,19 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
                     .hospitalInfo_isLiked(favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeqAndIsLikedTrue(hospitalSeq, userSeq).isLiked())
                     .build();
-            if(hospital.getProfileFile() != null){
-                Path path = Paths.get(uploadPath +"/" + hospital.getProfileFile().getName());
-                try{
-                    String base64 = EncodeFile.encodeFileToBase64(path);
-                    String type = hospital.getProfileFile().getType();
-                    hospitalDetailDto.setProfileBase64(base64);
-                    hospitalDetailDto.setProfileType(type);
-
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
             return hospitalDetailDto;
         } else {
             return null;
         }
     }
     @Override
-    public List<ReviewBoard> getReviewsByHospital(Long hospitalSeq) {
-        List<ReviewBoard> reviews = hospitalRepository.findReviewsByHospitalSeq(hospitalSeq);
+    public List<ReviewBoard> getReviewsByHospital(Long user_seq) {
+        List<ReviewBoard> reviews = hospitalRepository.findReviewsByUserSeq(user_seq);
         return reviews;
     }
     @Override
-    public List<Doctor> getHospitalDoctorList(Long hospitalSeq) {
-        List<Doctor> doctorList = hospitalRepository.findDoctorByHospitalSeq(hospitalSeq).orElse(null);
+    public List<Doctor> getHospitalDoctorList(Long user_seq) {
+        List<Doctor> doctorList = hospitalRepository.findDoctorByUserSeq(user_seq).orElse(null);
         return doctorList;
     }
 }
