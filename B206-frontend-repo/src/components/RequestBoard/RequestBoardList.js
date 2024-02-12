@@ -13,21 +13,12 @@ function RequestBoardList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //더미데이터
-  // const RequestBoardList = {
-  //   customer_id: "user123",
-  //   requestBoard_title: "테스트 리뷰",
-  //   requestBoard_cnt: 100,
-  //   requestBoard_regDate: "2024-01-28",
-  //   requestBoard_score: 4,
-  // };
-
   const [requestBordList, setRequestBoardList] = useState([]);
   useEffect(() => {
     axiosApi
-      .get(`api/requestBoardList`)
+      .get(`api/requestboard/read`)
       .then((response) => {
-        // regDate를 사용하여 데이터를 최신순으로 정렬
+        console.log(response.data);
         const sortedData = response.data.sort(
           (a, b) => new Date(b.time) - new Date(a.time)
         );
