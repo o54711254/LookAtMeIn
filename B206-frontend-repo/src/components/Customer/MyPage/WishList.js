@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
+import { useSelector } from "react-redux";
+import axiosApi from "../../../api/axiosApi";
 
 const WishList = () => {
   const [hospitalInfo, setHospitalInfo] = useState(null);
   const [category, setCategory] = useState(null);
 
+  const user_seq = useSelector((state) => state.user.userSeq);
+
   useEffect(() => {
-    axios
-      .get(`/favorites/list/{user_seq}`)
+    axiosApi
+      .get(`api/favorites/list/${user_seq}`)
       .then((response) => {
+        console.log(response.data);
         if (response.data.message === "success") {
-          setHospitalInfo(response.data.responseObj.hospitalinfo);
-          setCategory(response.data.responseObj.category);
+          setHospitalInfo(response.data.hospitalinfo);
+          setCategory(response.data.category);
         } else {
           console.error(
             "데이터를 불러오는데 실패했습니다:",
