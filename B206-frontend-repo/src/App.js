@@ -19,7 +19,7 @@ import HosMyPage from "./pages/Mypage/HosMyPage.js";
 import AdminMyPage from "./pages/Mypage/AdminMyPage.js";
 
 import SearchList from "./components/Search/SearchList";
-import VideoRoom from "./components/OpenVidu/video.js";
+import VideoRoom from "./components/RTC/VideoSession.js";
 import SearchInput from "./components/Search/SearchInput";
 import Footer from "./components/Footer";
 import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
