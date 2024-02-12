@@ -23,6 +23,7 @@ public class Notification {
     private User recipient; // 알림을 받는 사용자
 
     private String message;
+
     private boolean isRead = false;
 
     @Builder

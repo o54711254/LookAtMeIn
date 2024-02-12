@@ -8,6 +8,7 @@ function ProposeList() {
   const [proposeList, setProposeList] = useState([]);
   const userSeq = useSelector((state) => state.user.userSeq);
   const userName = useSelector((state) => state.user.userName);
+  // const [responseSeq, setResponseSeq] = useState(null);
 
   useEffect(() => {
     axiosApi
@@ -15,6 +16,7 @@ function ProposeList() {
       .then((response) => {
         console.log(response.data);
         setProposeList(response.data);
+        // setResponseSeq(response.data.seq);
       })
       .catch((error) => {
         console.error(
@@ -22,9 +24,18 @@ function ProposeList() {
           error
         );
       });
-  }, []);
+  }, [userSeq]);
 
-  function startChat() {}
+  function startChat(seq) {
+    axiosApi
+      .post(`api/requestboard/accept-response/${seq}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("상담 수락 처리 중 에러 발생:", error);
+      });
+  }
 
   return (
     <div>
@@ -42,7 +53,7 @@ function ProposeList() {
               <div>{propose.message}</div>
             </div>
             <div>
-              <button onClick={startChat}>수락하기</button>
+              <button onClick={() => startChat(propose.seq)}>수락하기</button>
             </div>
           </li>
         ))}
