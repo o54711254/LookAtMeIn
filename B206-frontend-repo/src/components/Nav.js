@@ -91,7 +91,7 @@ className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ""}`}
         >
           병원 정보
         </Link>
-        <Link to="/reviewList" className={styles.menu}>
+        <Link to="/reviewBoard/list" className={styles.menu}>
           시술 후기
         </Link>
         <Link to="/freeBoard/freeBoardList" className={styles.menu}>
