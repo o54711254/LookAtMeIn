@@ -4,11 +4,15 @@ import com.ssafy.lam.requestboard.domain.Requestboard;
 import com.ssafy.lam.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Setter
 @Getter
+@ToString
 public class RequestSaveDto {
 
     private Long seq;

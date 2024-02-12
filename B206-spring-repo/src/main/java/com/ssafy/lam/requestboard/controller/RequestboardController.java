@@ -6,6 +6,8 @@ import com.ssafy.lam.requestboard.dto.*;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,12 @@ public class RequestboardController {
 
     private final RequestBoardService requestboardService;
     private final ChatService chatService;
-
+    private Logger log = LoggerFactory.getLogger(RequestboardController.class);
 
     @PostMapping("/register")
     @Operation(summary = "게시판 등록")
     public ResponseEntity<Long> registerRequest(@RequestBody RequestSaveDto requestSaveDto) {
+        log.info("게시물등록요청: {}",requestSaveDto);
         Long savedRequestId = requestboardService.saveRequestboard(requestSaveDto);
         return ResponseEntity.ok(savedRequestId);
     }
