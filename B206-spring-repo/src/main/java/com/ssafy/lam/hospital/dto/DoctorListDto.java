@@ -16,6 +16,9 @@ public class DoctorListDto {
     private int doctorCntReviews; // 의사 후기 개수
     private List<CategoryDto> doctorCategory; // 의사 전문 카테고리
 
+    private String doctorProfileBase64; // 의사 프로필 이미지
+    private String doctorProfileType; // 의사 프로필 이미지 타입
+
     @Builder
     public DoctorListDto(Long doctorSeq, String doctorName, double doctorAvgScore, int doctorCntReviews,
                          List<CategoryDto> doctorCategory) {

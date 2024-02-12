@@ -1,6 +1,9 @@
 package com.ssafy.lam.reserve.service;
 
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.customer.domain.CustomerRepository;
+import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.reserve.domain.PastReserveRepository;
 import com.ssafy.lam.reserve.domain.Reserve;
@@ -13,6 +16,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,19 +33,46 @@ public class ReserveServiceImpl implements ReserveService {
     private final UserRepository userRepository;
     private final PastReserveRepository pastReserveRepository;
 
+    MultipartConfig multipartConfig = new MultipartConfig();
+    // 파일이 업로드될 디렉토리 경로
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+
     @Override
     public List<ReserveResponseDto> findByUserSeq(Long userSeq) {
-        return reserveRepository.findByUserSeq(userSeq).stream()
-                .map(reserve -> new ReserveResponseDto(
-                        reserve.getCustomer().getName(),
-                        reserve.getHospital().getName(),
-                        reserve.getReserveType(),
-                        reserve.getYear(),
-                        reserve.getMonth(),
-                        reserve.getDay(),
-                        reserve.getDayofweek(),
-                        reserve.getTime()))
-                .collect(Collectors.toList());
+        List<Reserve> reserves = reserveRepository.findByUserSeq(userSeq);
+        List<ReserveResponseDto> reserveResponseDtos = new ArrayList<>();
+
+        for(Reserve reserve : reserves){
+            Hospital hospital = hospitalRepository.findByUserUserSeq(reserve.getHospital().getUserSeq()).get();
+            ReserveResponseDto dto = ReserveResponseDto.builder()
+                    .customerName(reserve.getCustomer().getName())
+                    .hospitalName(hospital.getUser().getName())
+                    .reserveType(reserve.getReserveType())
+                    .year(reserve.getYear())
+                    .month(reserve.getMonth())
+                    .day(reserve.getDay())
+                    .dayofweek(reserve.getDayofweek())
+                    .time(reserve.getTime())
+                    .build();
+
+            if(hospital.getProfileFile() != null){
+                try{
+                    Path path = Paths.get(uploadPath +"/"+ hospital.getProfileFile().getName());
+                    String hospitalProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String hospitalProfileType = hospital.getProfileFile().getType();
+                    dto.setHospitalProfileBase64(hospitalProfileBase64);
+                    dto.setHospitalProfileType(hospitalProfileType);
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+            reserveResponseDtos.add(dto);
+
+
+        }
+        return reserveResponseDtos;
     }
 
 

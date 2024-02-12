@@ -2,12 +2,15 @@ package com.ssafy.lam.hospital.service;
 
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.favorites.domain.FavoritesRepository;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hospital.domain.*;
 import com.ssafy.lam.hospital.dto.*;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
+import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import com.ssafy.lam.user.service.UserService;
@@ -37,6 +40,7 @@ public class HospitalServiceImpl implements HospitalService {
     MultipartConfig multipartConfig = new MultipartConfig();
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
+    private final CustomerRepository customerRepository;
 
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
@@ -124,11 +128,18 @@ public class HospitalServiceImpl implements HospitalService {
         return hospitalRepository.findByIsApprovedTrue();
     }
     @Override
-    public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList) {
+    public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList, MultipartFile doctorProfile) {
         Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
+
+
         Doctor doctor = Doctor.builder().docInfoSeq(doctorDto.getDoc_info_seq()).docInfoName(doctorDto.getDoc_info_name())
                 .hospital(hospital).build();
-        doctorRepository.save(doctor);
+        if(doctorProfile != null){
+            UploadFile uploadFile = uploadFileService.store(doctorProfile);
+            doctor.setProfile(uploadFile);
+        }
+
+        doctor = doctorRepository.save(doctor);
         for(CategoryDto c : categoryDtoList) {
             DoctorCategory doctorCategory = DoctorCategory.builder()
                     .part(c.getPart())
@@ -205,13 +216,55 @@ public class HospitalServiceImpl implements HospitalService {
         }
     }
     @Override
-    public List<ReviewBoard> getReviewsByHospital(Long user_seq) {
+    public List<ReviewListDisplay> getReviewsByHospital(Long user_seq) {
         List<ReviewBoard> reviews = hospitalRepository.findReviewsByUserSeq(user_seq);
-        return reviews;
+
+        List<ReviewListDisplay> reviewListDisplays = new ArrayList<>();
+        for(ReviewBoard r : reviews) {
+            ReviewListDisplay display = ReviewListDisplay.builder()
+                    .reviewBoard_seq(r.getSeq())
+                    .customer_name(r.getUser().getName())
+                    .reviewBoard_title(r.getTitle())
+                    .reviewBoard_regDate(r.getRegdate())
+                    .reviewBoard_cnt(r.getCnt())
+                    .reviewBoard_score(r.getScore())
+                    .reviewBoard_doctor(r.getDoctor().getDocInfoName())
+                    .reviewBoard_region(r.getRegion())
+                    .reviewBoard_surgery(r.getSurgery())
+                    .reviewBoard_hospital(r.getHospital().getUser().getName())
+                    .reviewBoard_expected_price(r.getExpectedPrice())
+                    .reviewBoard_surgery_price(r.getSurgeryPrice())
+                    .build();
+
+            User user = r.getUser();
+            Customer customer = customerRepository.findByUserUserSeq(user.getUserSeq()).get();
+            if(customer.getProfile() != null){
+                UploadFile profileFile = customer.getProfile();
+                Path path = Paths.get(uploadPath + "/"+profileFile.getName());
+                try{
+                    String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String customerProfileType = profileFile.getType();
+                    display.setCustomerProfileBase64(customerProfileBase64);
+                    display.setCustomerProfileType(customerProfileType);
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            reviewListDisplays.add(display);
+
+        }
+
+
+
+        return reviewListDisplays;
+
     }
     @Override
-    public List<Doctor> getHospitalDoctorList(Long user_seq) {
-        List<Doctor> doctorList = hospitalRepository.findDoctorByUserSeq(user_seq).orElse(null);
+    public List<Doctor> getHospitalDoctorList(Long hospitalSeq) {
+        List<Doctor> doctorList = hospitalRepository.findDoctorByHospitalSeq(hospitalSeq).orElse(null);
         return doctorList;
     }
+
 }
