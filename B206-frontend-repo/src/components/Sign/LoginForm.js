@@ -85,6 +85,14 @@ function LoginForm() {
                 role: loginResponse.data.userType,
               })
             );
+          } else {
+            // 관리자
+            dispatch(
+              loginUser({
+                userSeq: loginResponse.data.userSeq,
+                role: loginResponse.data.userType,
+              })
+            );
           }
 
           const { accessToken } = loginResponse.data.tokenInfo;
