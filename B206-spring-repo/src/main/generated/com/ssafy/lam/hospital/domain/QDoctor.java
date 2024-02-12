@@ -28,6 +28,8 @@ public class QDoctor extends EntityPathBase<Doctor> {
 
     public final QHospital hospital;
 
+    public final com.ssafy.lam.file.domain.QUploadFile profile;
+
     public QDoctor(String variable) {
         this(Doctor.class, forVariable(variable), INITS);
     }
@@ -47,6 +49,7 @@ public class QDoctor extends EntityPathBase<Doctor> {
     public QDoctor(Class<? extends Doctor> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.hospital = inits.isInitialized("hospital") ? new QHospital(forProperty("hospital"), inits.get("hospital")) : null;
+        this.profile = inits.isInitialized("profile") ? new com.ssafy.lam.file.domain.QUploadFile(forProperty("profile")) : null;
     }
 
 }
