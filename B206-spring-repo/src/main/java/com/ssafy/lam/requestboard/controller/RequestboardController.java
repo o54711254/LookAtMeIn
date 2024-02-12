@@ -2,10 +2,7 @@ package com.ssafy.lam.requestboard.controller;
 
 import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
 import com.ssafy.lam.chat.service.ChatService;
-import com.ssafy.lam.requestboard.dto.RequestDto;
-import com.ssafy.lam.requestboard.dto.RequestSaveDto;
-import com.ssafy.lam.requestboard.dto.RequestUpdateDto;
-import com.ssafy.lam.requestboard.dto.ResponseDto;
+import com.ssafy.lam.requestboard.dto.*;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -35,15 +32,15 @@ public class RequestboardController {
     @GetMapping("/read")
     @Operation(summary = "게시물 전체조회")
     public ResponseEntity<?> getAllRequestboard() {
-        List<RequestDto> list = requestboardService.findAllRequestbooard();
-        return new ResponseEntity<List<RequestDto>>(list, HttpStatus.OK);
+        List<RequestResponDto> list = requestboardService.findAllRequestboard();
+        return new ResponseEntity<List<RequestResponDto>>(list, HttpStatus.OK);
     }
 
     @GetMapping("/detail/{requestSeq}")
     @Operation(summary = "게시물 상세조회")
     public ResponseEntity<?> getRequestBySeq(@PathVariable Long requestSeq) {
-        RequestDto requestDto = requestboardService.findRequestboard(requestSeq);
-        return new ResponseEntity<RequestDto>(requestDto, HttpStatus.OK);
+        RequestResponDto requestResponDto = requestboardService.findRequestboard(requestSeq);
+        return new ResponseEntity<RequestResponDto>(requestResponDto, HttpStatus.OK);
     }
 
     @PutMapping("/delete/{requestSeq}")

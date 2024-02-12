@@ -30,6 +30,8 @@ public class QNotification extends EntityPathBase<Notification> {
 
     public final com.ssafy.lam.user.domain.QUser recipient;
 
+    public final StringPath sender = createString("sender");
+
     public QNotification(String variable) {
         this(Notification.class, forVariable(variable), INITS);
     }
