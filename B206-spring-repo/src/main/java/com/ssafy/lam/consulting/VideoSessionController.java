@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/video")
+@RequestMapping("/openvidu/api")
 public class VideoSessionController {
 
     private OpenVidu openVidu;
@@ -32,6 +32,7 @@ public class VideoSessionController {
     public ResponseEntity<?> createSession() {
         try {
             Session session = this.openVidu.createSession();
+            System.out.println(session);
             String sessionId = session.getSessionId();
             // Store the session with sessionId for later use.
             sessionMap.put(sessionId, session);

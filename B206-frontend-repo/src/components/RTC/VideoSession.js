@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { OpenVidu } from 'openvidu-browser';
+import axios from 'axios';
 
 const OV = new OpenVidu();
 
@@ -16,9 +17,10 @@ function VideoSession() {
 
     const createSession = async () => {
         try {
-            const response = await fetch('http://localhost:80/api/video/sessions', { method: 'POST' });
-            const data = await response.json();
-            joinSession(data.sessionId, data.token);
+            // Axios를 사용하여 POST 요청을 보냅니다.
+            const response = await axios.post('http://localhost:80/openvidu/api/sessions');
+            const { sessionId, token } = response.data;
+            joinSession(sessionId, token);
         } catch (error) {
             console.error('Error creating session:', error);
         }
