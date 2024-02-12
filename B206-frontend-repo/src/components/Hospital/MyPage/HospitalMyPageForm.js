@@ -2,10 +2,9 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import styles from "./HospitalMyPage.module.css";
 import { useSelector } from "react-redux";
 import Doctor from "./Doctor";
-import beauty from "../../../assets/mypage/beauty.png";
-import post from "../../../assets/mypage/post.png";
 import consult from "../../../assets/mypage/consult.png";
 import reserve from "../../../assets/mypage/reserve.png";
+import HospitalInfo from "./HospitalInfo";
 import doctor from "../../../assets/mypage/doctor.png";
 import ReservationList from "./ReservationList";
 import ConsultingList from "./ConsultingList";
@@ -62,6 +61,7 @@ function HospitalMyPageForm() {
       </div>
       <div className={styles.contents}>
         <Routes>
+          <Route path="info" element={<HospitalInfo />} />
           <Route path="doctor" element={<Doctor />} />
           <Route path="reserve" element={<ReservationList />} />
           <Route path="consult" element={<ConsultingList />} />

@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../../../redux/user";
 import axiosApi from "../../../api/axiosApi";
-import styles from "./MyInfo.module.css";
-import profile from "../../../assets/profile2.png";
 import update from "../../../assets/update.png";
+import profile from "../../../assets/profile.png";
+import styles from "./HospitalInfo.module.css";
 
-// axios 완료
-function MyInfo() {
+function HospitalInfo() {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [infoData, setInfoData] = useState({});
   const [profileImg, setProfileImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -73,12 +70,6 @@ function MyInfo() {
       })
       .then((res) => {
         console.log("프로필 이미지 업로드 성공", res);
-        dispatch(
-          loginUser({
-            ...user,
-            profileImg: profileImg,
-          })
-        );
         window.location.reload();
       })
       .catch((error) => {
@@ -123,7 +114,7 @@ function MyInfo() {
       </div>
       <div className={styles.box}>
         <div className={styles.infoMiddle}>
-          <div className={styles.info}>고객정보</div>
+          <div className={styles.info}>병원정보</div>
           <img
             src={update}
             alt="updateIcon"
@@ -145,4 +136,4 @@ function MyInfo() {
     </div>
   );
 }
-export default MyInfo;
+export default HospitalInfo;
