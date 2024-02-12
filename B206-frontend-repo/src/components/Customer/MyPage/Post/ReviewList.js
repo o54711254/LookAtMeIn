@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axiosAPi from "../../../../api/axiosApi";
+import axiosApi from "../../../../api/axiosApi";
 import StarResult from "../../../ReviewBoard/StarRating/StarResult";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ function ReviewList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axiosAPi
+    axiosApi
       .get(`/api/mypage/review/${user.userSeq}`)
       .then((res) => {
         console.log(res.data);

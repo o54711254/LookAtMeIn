@@ -10,10 +10,12 @@ import styles from "./HospitalInfo.module.css";
 import basicHos from "../../assets/basicHos.png";
 import profile from "../../assets/gun.png";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
+import { useSelector } from "react-redux";
+import Wish from "./HospitalWish.js"
 
 const HospitalInfo = () => {
   const dispatch = useDispatch();
-  const { hospital_seq } = useParams();
+  const { hospitalInfo_seq } = useParams();
   const [hospitalData, setHospitalData] = useState({
     hospitalInfo_seq: "",
     hospitalInfo_name: "",
@@ -32,11 +34,14 @@ const HospitalInfo = () => {
   useEffect(() => {
     const getHospitalInfo = async () => {
       try {
+        console.log(hospitalInfo_seq);
+
         const response = await axiosApi.get(
-          `/api/hospital-info/detail/${hospital_seq}`
+          `/api/hospital-info/detail/${hospitalInfo_seq}`
         );
         setHospitalData(response.data);
         console.log("여기", response.data);
+        console.log(response.data.userSeq);
         // const imgResponse = await axiosApi.get(response.data.fileUrl);
         // console.log("response2: ", imgResponse);
         // const base64 = imgResponse.data.base64;
@@ -58,13 +63,15 @@ const HospitalInfo = () => {
     getHospitalInfo();
   }, []);
 
+  const userSeq = useSelector((state) => state.hospital.hospitalSeq);
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     axiosApi
-      .get(`/api/hospital-info/reviews/${hospital_seq}`)
+      .get(`/api/hospital-info/reviews/${userSeq}`)
       .then((response) => {
+        console.log(userSeq);
         console.log(response.data);
         setReviews(response.data);
       })
@@ -74,13 +81,13 @@ const HospitalInfo = () => {
   }, []);
 
   const handleClick = (reviewBoard_seq) => {
-    navigate(`api/reviewBoard/{seq}`);
+    navigate(`api/reviewBoard/${reviewBoard_seq}`);
   };
 
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     axiosApi
-      .get(`api/hospital-info/doctors/${hospital_seq}`)
+      .get(`api/hospital-info/doctors/${userSeq}`)
       .then((response) => {
         console.log(response.data);
         setDoctors(response.data);
@@ -90,34 +97,37 @@ const HospitalInfo = () => {
       });
   }, []);
 
+  const viewDoctorInfo = (docInfoSeq) => {
+    navigate(`/의사 디테일 하나..?`);
+  };
+
   const week = ["월", "화", "수", "목", "금", "토", "일"];
   return (
-    <>
-      <div className={styles.part}>
-        <div className={styles.container}>
-          <div className={styles.imgTitle}>
-            <div className={styles.profile}>
-              {img ? (
-                <img src={img} alt="게시글 이미지" />
-              ) : (
-                <img src={basicHos} alt="병원 기본 프사" />
-              )}
-            </div>
-
-            <div className={styles.title}>{hospitalData.hospitalInfo_name}</div>
+    <div className={styles.container}>
+      <div className={styles.part1}>
+        <div className={styles.imgTitle}>
+          <div className={styles.profile}>
+            {img ? (
+              <img src={img} alt="게시글 이미지" />
+            ) : (
+              <img src={basicHos} alt="병원 기본 프사" />
+            )}
           </div>
-          <div className={styles.address}>
-            <div>주소</div>
-            {hospitalData.hospitalInfo_address}
-          </div>
-          <div className={styles.url}>
-            <div>홈페이지 </div>
-            {hospitalData.hospitalInfo_url}
-          </div>
-          <div className={styles.time}>
-            <div>진료시간</div>
+          <div className={styles.title}>{hospitalData.hospitalInfo_name}</div>
+        </div>
+        <div className={styles.address}>
+          <div className={styles.tt}>주소</div>
+          <div className={styles.text}>{hospitalData.hospitalInfo_address}</div>
+        </div>
+        <div className={styles.url}>
+          <div className={styles.tt}>홈페이지 </div>
+          <div className={styles.link}>{hospitalData.hospitalInfo_url}</div>
+        </div>
+        <div className={styles.time}>
+          <div className={styles.tt}>진료시간</div>
+          <div className={styles.weeks}>
             {week.map((day) => (
-              <div>
+              <div key={day} className={styles.day}>
                 {day === "토" && (
                   <div>
                     {day} {hospitalData.hospitalInfo_open} ~ 13:00{" "}
@@ -133,20 +143,27 @@ const HospitalInfo = () => {
               </div>
             ))}
           </div>
-          <div className={styles.Number}>
-            <div>전화번호</div> {hospitalData.hospitalInfo_phoneNumber}
+        </div>
+        <div className={styles.Number}>
+          <div className={styles.tt}>전화번호</div>
+          <div className={styles.text}>
+            {hospitalData.hospitalInfo_phoneNumber}
           </div>
-          <div className={styles.info}>
-            <div>소개</div>
+        </div>
+        <div className={styles.info}>
+          <div className={styles.tt}>소개</div>
+          <div className={styles.text}>
             {hospitalData.hospitalInfo_introduce}
           </div>
-
-          {/* <div>avgScore: {hospitalData.avgScore}</div> */}
         </div>
+
+        {/* <div>avgScore: {hospitalData.avgScore}</div> */}
         <Reserve />
       </div>
-      <div className={styles.part}>
-        {reviews.map((review, key) => (
+      <div className={styles.part2}>
+        <div>리뷰 목록</div>
+        <Wish/>
+        {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}
             className={styles.reviewItem}
@@ -172,8 +189,25 @@ const HospitalInfo = () => {
           </li>
         ))}
       </div>
-      <div className={styles.part}></div>
-    </>
+      <div className={styles.part3}>
+        <h3>의사 목록</h3>
+        {doctors.map((doctor) => (
+          <li
+            key={doctor.docInfoSeq}
+            className={styles.reviewItem}
+            onClick={() => viewDoctorInfo}
+          >
+            <div>
+              <img src={profile} alt="프로필" className={styles.profile} />
+            </div>
+            <div className={styles.writer}>
+              <div>{doctor.customer_name}</div>
+              <div>{/* <StarResult score={doctor.reviewBoard_score} /> */}</div>
+            </div>
+          </li>
+        ))}
+      </div>
+    </div>
   );
 };
 

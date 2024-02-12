@@ -35,11 +35,14 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
+import WorldcupMan from "./components/WorldCup/WorldcupMan";
+import WorldcupWoman from "./components/WorldCup/WorldcupWoman";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
 import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
+import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
 
 function App() {
@@ -103,21 +106,30 @@ function App() {
 
                   {/*병원 게시판*/}
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
-                  {/* <Route
-                    path="/hospital-info/detail/:hospital_seq"
-                    element={<HospitalDetail />}
-                  /> */}
+                  <Route
+                    path="/hospital-info/detail/:hospitalInfo_seq"
+                    element={<HospitalInfo />}
+                  />
 
                   {/*이상향 월드컵*/}
                   <Route path="/worldcup/*" element={<Worldcup />} />
 
+                  <Route path="/worldcup/man" element={<WorldcupMan />}></Route>
+                  <Route
+                    path="/worldcup/woman"
+                    element={<WorldcupWoman />}
+                  ></Route>
+                  <Route
+                    path="/worldcup/champion"
+                    element={<WorldcupChampion />}
+                  />
                   <Route path="/face" element={<FacialAsy />} />
 
                   {/*검색*/}
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
-                  <Route path="/reviewregist" element={<ReviewRegist/> }/>
+                  <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
                 </Routes>
               </div>
@@ -129,7 +141,7 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {<Questionnaire /> }
+          {<Questionnaire />}
           <FloatingChat />
         </div>
         <Footer />

@@ -2,6 +2,7 @@ package com.ssafy.lam.hospital.service;
 
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.favorites.domain.FavoritesRepository;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hospital.domain.*;
@@ -21,11 +22,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class HospitalServiceImpl implements HospitalService {
-
     private final HospitalRepository hospitalRepository;
     private final UserRepository userRepository;
     private final UserService userService;
@@ -33,15 +32,14 @@ public class HospitalServiceImpl implements HospitalService {
     private final CareerRepository careerRepository;
     private final HospitalCategoryRepository hospitalCategoryRepository;
     private final UploadFileService uploadFileService;
-
     private final DoctorCategoryRepository doctorCategoryRepository;
+    private final FavoritesRepository favoritesRepository;
     MultipartConfig multipartConfig = new MultipartConfig();
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
 
 
     private Logger log = LoggerFactory.getLogger(HospitalServiceImpl.class);
-
     @Override
     public Hospital createHospital(HospitalDto hospitalDto, List<CategoryDto> categoryDto, MultipartFile registrationFile) {
         log.info("createHospital : {}", hospitalDto);
@@ -54,9 +52,7 @@ public class HospitalServiceImpl implements HospitalService {
                 .userType("HOSPITAL")
                 .roles(roles)
                 .build();
-
         userService.createUser(user);
-
         Hospital hospital = Hospital.builder()
                 .user(user)
                 .tel(hospitalDto.getHospitalInfo_phoneNumber())
@@ -69,8 +65,6 @@ public class HospitalServiceImpl implements HospitalService {
                 .build();
         UploadFile uploadFile = uploadFileService.store(registrationFile);
         hospital.setRegistrationFile(uploadFile);
-
-
         hospital = hospitalRepository.save(hospital);
         for (CategoryDto category : categoryDto) {
             log.info("category : {}", category);
@@ -80,16 +74,13 @@ public class HospitalServiceImpl implements HospitalService {
                     .build();
             hospitalCategoryRepository.save(hospitalCategoryEntity);
         }
-
         return hospital;
     }
-
     @Override
     public HospitalDto getHospital(long userId) {
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
         if (hospitalOptional.isPresent()) {
             com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
-
             HospitalDto dto = HospitalDto.builder()
                     .hospitalInfo_id(hospital.getUser().getUserId())
                     .hospitalInfo_password(hospital.getUser().getPassword())
@@ -106,7 +97,6 @@ public class HospitalServiceImpl implements HospitalService {
             return null;
         }
     }
-
     @Override
     public Hospital updateHospital(long userSeq, HospitalDto hospitalDto, MultipartFile profile) {
         User user = userRepository.findById(userSeq).get();
@@ -125,18 +115,14 @@ public class HospitalServiceImpl implements HospitalService {
         hospital.setCloseTime(hospitalDto.getHospitalInfo_close());
         hospital.setAddress(hospitalDto.getHospitalInfo_address());
         hospital.setUrl(hospitalDto.getHospitalInfo_url());
-
         userRepository.save(user);
         return hospitalRepository.save(hospital);
     }
-
     ////////////
-
     @Override
     public List<Hospital> getAllHospitalInfo() {
         return hospitalRepository.findByIsApprovedTrue();
     }
-
     @Override
     public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList) {
         Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
@@ -156,7 +142,6 @@ public class HospitalServiceImpl implements HospitalService {
             careerRepository.save(career);
         }
     }
-
     @Override
     public HospitalDetailDto getHospitalInfo(Long hospitalSeq) { // 고객이 병원 페이지 조회
         Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
@@ -194,17 +179,51 @@ public class HospitalServiceImpl implements HospitalService {
             return null;
         }
     }
+    @Override
+    public HospitalDetailDto getHospitalLikeInfo(Long hospitalSeq, Long userSeq) { // 고객이 병원 페이지 조회 + 찜
+        Optional<Hospital> hospitalOptional = hospitalRepository.findById(hospitalSeq);
+        if (hospitalOptional.isPresent()) {
+            Hospital hospital = hospitalOptional.get();
+            double avgScore = hospitalRepository.findAvgByHospitalSeq(hospitalSeq).orElse(0.0);
+            HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
+                    .hospitalInfo_seq(hospitalSeq)
+                    .hospitalInfo_name(hospital.getUser().getName())
+                    .hospitalInfo_phoneNumber(hospital.getTel())
+                    .hospitalInfo_introduce(hospital.getIntro())
+                    .hospitalInfo_address(hospital.getAddress())
+                    .hospitalInfo_open(hospital.getOpenTime())
+                    .hospitalInfo_close(hospital.getCloseTime())
+                    .hospitalInfo_url(hospital.getUrl())
+                    .userSeq(hospital.getUser().getUserSeq())
+                    .hospitalInfo_avgScore(avgScore)
+                    .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
+                    .hospitalInfo_isLiked(favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeqAndIsLikedTrue(hospitalSeq, userSeq).isLiked())
+                    .build();
+            if(hospital.getProfileFile() != null){
+                Path path = Paths.get(uploadPath +"/" + hospital.getProfileFile().getName());
+                try{
+                    String base64 = EncodeFile.encodeFileToBase64(path);
+                    String type = hospital.getProfileFile().getType();
+                    hospitalDetailDto.setProfileBase64(base64);
+                    hospitalDetailDto.setProfileType(type);
 
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return hospitalDetailDto;
+        } else {
+            return null;
+        }
+    }
     @Override
     public List<ReviewBoard> getReviewsByHospital(Long hospitalSeq) {
         List<ReviewBoard> reviews = hospitalRepository.findReviewsByHospitalSeq(hospitalSeq);
         return reviews;
     }
-
     @Override
     public List<Doctor> getHospitalDoctorList(Long hospitalSeq) {
         List<Doctor> doctorList = hospitalRepository.findDoctorByHospitalSeq(hospitalSeq).orElse(null);
         return doctorList;
     }
-
 }

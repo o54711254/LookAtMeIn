@@ -12,7 +12,7 @@ function ReviewRegist() {
   const navigate = useNavigate();
   const userSeq = useSelector((store) => store.user.userSeq); // 사용자 ID 추출
   const userName = useSelector((store) => store.user.userName); // 사용자 ID 추출
-  const [reviewImage, setReviewImage] = useState(''); // 리뷰 이미지 상태
+  const [reviewImage, setReviewImage] = useState(""); // 리뷰 이미지 상태
 
   // 리뷰 데이터 상태 초기화
   const [reviewData, setReviewData] = useState({
@@ -43,41 +43,40 @@ function ReviewRegist() {
   };
 
   // 폼 제출 핸들러
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
 
-    const reviewBoardData ={}
-    
+    const reviewBoardData = {};
 
     // reviewData의 키와 값을 FormData에 추가
     Object.keys(reviewData).forEach((key) => {
-      
       reviewBoardData[key] = reviewData[key];
       // formData.append(key, reviewData[key]);
     });
     formData.append("reviewBoardData", JSON.stringify(reviewBoardData));
 
-
-    
-
     // 이미지 파일 추가
-    
-    if (reviewImage) {  
+
+    if (reviewImage) {
       formData.append("uploadFile", reviewImage);
     }
-    
+
     // for(let [key, value] of formData.entries()){
     //   console.log(key, value);
     // }
 
-    try{ 
-      const response = await axiosApi.post("/api/reviewBoard/regist", formData, {
-        headers:{ "Content-Type": "multipart/form-data" }       
-      })
+    try {
+      const response = await axiosApi.post(
+        "/api/reviewBoard/regist",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       console.log("리뷰 등록 성공", response.data);
       navigate("/reviewList"); // 성공 후 리뷰 목록 페이지로 이동
-    }catch(error){
+    } catch (error) {
       console.error("리뷰 등록 실패", error);
     }
 
@@ -152,13 +151,22 @@ function ReviewRegist() {
         />
         <StarRating
           value={reviewData.reviewBoard_score}
-          onChange={(value) => setReviewData({ ...reviewData, reviewBoard_score: value })}
+          onChange={(value) =>
+            setReviewData({ ...reviewData, reviewBoard_score: value })
+          }
         />
         <IconButton color="primary" component="label">
-          <input hidden accept="image/*" type="file" onChange={handleImageChange} />
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={handleImageChange}
+          />
           <PhotoCamera />
         </IconButton>
-        <Button type="submit" variant="contained" color="primary">등록하기</Button>
+        <Button type="submit" variant="contained" color="primary">
+          등록하기
+        </Button>
       </form>
     </div>
   );

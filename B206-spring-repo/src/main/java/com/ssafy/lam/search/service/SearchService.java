@@ -107,35 +107,4 @@ public class SearchService {
                 .reviewBoard_score(result.getScore())
                 .build()).collect(Collectors.toList());
     }
-
-
-
-//    private List<Hospital> searchInHospital(String keyword) {
-//        QHospital hospital = QHospital.hospital;
-//        return queryFactory.selectFrom(hospital)
-//                .where(hospital.user.name.contains(keyword)
-//                        .or(hospital.address.contains(keyword))
-//                        .or(hospital.email.contains(keyword)))
-//                .fetch();
-//    }
-//
-//
-//    private List<Freeboard> searchInFreeboard(String keyword) {
-//        QFreeboard freeboard = QFreeboard.freeboard;
-//        return queryFactory.selectFrom(freeboard)
-//                .where(freeboard.title.contains(keyword)
-//                        .or(freeboard.content.contains(keyword)))
-//                .fetch();
-//    }
-//
-//    private List<ReviewBoard> searchInReviewBoard(String keyword) {
-//        QReviewBoard reviewBoard = QReviewBoard.reviewBoard;
-//        return queryFactory.selectFrom(reviewBoard)
-//                .where(reviewBoard.title.contains(keyword)
-//                        .or(reviewBoard.content.contains(keyword))
-//                        .or(reviewBoard.region.contains(keyword))
-//                        .or(reviewBoard.doctor.contains(keyword))
-//                        .or(reviewBoard.surgery.contains(keyword)))
-//                .fetch();
-//    }
 }

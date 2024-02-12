@@ -25,6 +25,7 @@ public class HospitalDetailDto {
 //    private int cntReviews; // 후기 총 개수
     private double hospitalInfo_avgScore; // 후기 평균 평점
     private int hospitalInfo_cntReviews; // 후기 총 개수
+    private boolean hospitalInfo_isLiked;
     // 해당 병원 후기 목록
     // 각 후기의 작성자 피로필 사진, 이름, 후기 제목, 가격, 별점, 카테고리 출력
     // 해당 병원 의사 목록
@@ -32,7 +33,7 @@ public class HospitalDetailDto {
 
     @Builder
 
-    public HospitalDetailDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, long userSeq, String profileBase64, String profileType, double hospitalInfo_avgScore, int hospitalInfo_cntReviews) {
+    public HospitalDetailDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, long userSeq, String profileBase64, String registrationFileBase64, double hospitalInfo_avgScore, int hospitalInfo_cntReviews, boolean hospitalInfo_isLiked) {
         this.hospitalInfo_seq = hospitalInfo_seq;
         this.hospitalInfo_name = hospitalInfo_name;
         this.hospitalInfo_phoneNumber = hospitalInfo_phoneNumber;
@@ -46,5 +47,6 @@ public class HospitalDetailDto {
         this.profileType = profileType;
         this.hospitalInfo_avgScore = hospitalInfo_avgScore;
         this.hospitalInfo_cntReviews = hospitalInfo_cntReviews;
+        this.hospitalInfo_isLiked = hospitalInfo_isLiked;
     }
 }
