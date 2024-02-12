@@ -1,5 +1,10 @@
 package com.ssafy.lam.requestboard.service;
 
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.requestboard.domain.*;
 import com.ssafy.lam.requestboard.dto.*;
 import com.ssafy.lam.user.domain.User;
@@ -8,6 +13,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,6 +27,9 @@ public class RequestBoardService {
     private final SurgeryRepository surgeryRepository;
     private final ResponseRepository responseRepository;
     private final NotificationRepository notificationRepository;
+    private final CustomerRepository customerRepository;
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     //등록기능
     public Long saveRequestboard(RequestSaveDto requestSaveDto) {
@@ -35,10 +45,41 @@ public class RequestBoardService {
     }
 
     //조회기능
-    public List<RequestDto> findAllRequestbooard() {
+//    public List<RequestResponDto> findAllRequestbooard() {
+//        List<Requestboard> requestboards = requestboardRepository.findByIsDeletedFalse();
+//
+//        return requestboards.stream().map(requestboard -> RequestResponDto.builder()
+//                .seq(requestboard.getSeq())
+//                .title(requestboard.getTitle())
+//                .userName(requestboard.getUser().getName())
+//                .regDate(requestboard.getRegDate())
+//                .requestCnt(requestboard.getRequestCnt())
+//                .cnt(requestboard.getCnt())
+//                .isDeleted(requestboard.isDeleted())
+//                .surgeries(requestboard.getSurgeries().stream().map(surgery -> SurgeryDto.builder()
+//                        .seq(surgery.getSeq())
+//                        .part(surgery.getPart())
+//                        .type(surgery.getType())
+//                        .regDate(surgery.getRegDate())
+//                        .isDeleted(surgery.isDeleted())
+//                        .build()
+//                ).collect(Collectors.toList()))
+//                .build()).collect(Collectors.toList());
+//    }
+
+    public List<RequestResponDto> findAllRequestboard() {
         List<Requestboard> requestboards = requestboardRepository.findByIsDeletedFalse();
 
-        return requestboards.stream().map(requestboard -> RequestDto.builder()
+        return requestboards.stream()
+                .map(this::toRequestResponDto)
+                .collect(Collectors.toList());
+    }
+
+    public RequestResponDto toRequestResponDto(Requestboard requestboard) {
+        Customer customer = customerRepository.findByUserUserSeq(requestboard.getUser().getUserSeq())
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        RequestResponDto requestResponDto = RequestResponDto.builder()
                 .seq(requestboard.getSeq())
                 .title(requestboard.getTitle())
                 .userName(requestboard.getUser().getName())
@@ -46,31 +87,52 @@ public class RequestBoardService {
                 .requestCnt(requestboard.getRequestCnt())
                 .cnt(requestboard.getCnt())
                 .isDeleted(requestboard.isDeleted())
-                .surgeries(requestboard.getSurgeries().stream().map(surgery -> SurgeryDto.builder()
-                        .seq(surgery.getSeq())
-                        .part(surgery.getPart())
-                        .type(surgery.getType())
-                        .regDate(surgery.getRegDate())
-                        .isDeleted(surgery.isDeleted())
-                        .build()
-                ).collect(Collectors.toList()))
-                .build()).collect(Collectors.toList());
+                .surgeries(requestboard.getSurgeries().stream()
+                        .map(surgery -> SurgeryDto.builder()
+                                .seq(surgery.getSeq())
+                                .part(surgery.getPart())
+                                .type(surgery.getType())
+                                .regDate(surgery.getRegDate())
+                                .isDeleted(surgery.isDeleted())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
+
+        if (customer.getProfile() != null) {
+            UploadFile customerProfile = customer.getProfile();
+            Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
+            try {
+                String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                String customerProfileType = customerProfile.getType();
+                requestResponDto.setCustomerProfileBase64(customerProfileBase64);
+                requestResponDto.setCustomerProfileType(customerProfileType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return requestResponDto;
     }
 
     //상세조회
     @Transactional
-    public RequestDto finRequestboard(Long requestSeq) {
-        // 여기사이에 조회수 들어가야 함
+    public RequestResponDto findRequestboard(Long requestSeq) {
+
         Optional<Requestboard> requestboardOptional = requestboardRepository.findBySeqAndIsDeletedFalse(requestSeq);
+
+        Customer customer = customerRepository.findByUserUserSeq(requestboardOptional.get().getUser().getUserSeq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
         if (requestboardOptional.isPresent()) {
             Requestboard requestboard = requestboardRepository.findById(requestSeq).get();
 
             requestboard.setCnt(requestboard.getCnt() + 1);
             requestboardRepository.save(requestboard);
 
-            RequestDto requestDto = RequestDto.builder()
+            RequestResponDto requestResponDto = RequestResponDto.builder()
                     .seq(requestboard.getSeq())
                     .title(requestboard.getTitle())
+                    .content(requestboard.getContent())
+                    .userSeq(requestboard.getUser().getUserSeq())
                     .userName(requestboard.getUser().getUsername())
                     .regDate(requestboard.getRegDate())
                     .requestCnt(requestboard.getRequestCnt())
@@ -86,7 +148,20 @@ public class RequestBoardService {
                             .collect(Collectors.toList()))
                     .build();
 
-            return requestDto;
+            if (customer.getProfile() != null) {
+                UploadFile customerProfile = customer.getProfile();
+                Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
+                try {
+                    String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String customerProfileType = customerProfile.getType();
+                    requestResponDto.setCustomerProfileBase64(customerProfileBase64);
+                    requestResponDto.setCustomerProfileType(customerProfileType);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return requestResponDto;
         }
         return null;
     }
@@ -152,7 +227,7 @@ public class RequestBoardService {
 
     public void createNotification(User recipient, User sender, String message) {
         String notificationMessage = String.format(sender.getName(), message);
-        Notification notification = new Notification(recipient, notificationMessage, false);
+        Notification notification = new Notification(sender.getName(), recipient, notificationMessage, false);
         notificationRepository.save(notification);
     }
 
@@ -161,7 +236,7 @@ public class RequestBoardService {
         return notifications.stream()
                 .map(notification -> NotificationDto.builder()
                         .seq(notification.getId())
-                        .hospitalName(notification.getRecipient().getName())
+                        .hospitalName(notification.getSender())
                         .message(notification.getMessage())
                         .isRead(notification.isRead())
                         .build())
