@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/freeBoard")
@@ -54,30 +55,34 @@ public class FreeboardController {
         List<Freeboard> freeboardList = freeboardService.getAllFreeboards();
         List<FreeboardResponseDto> freeboardResponseDtoList = new ArrayList<>();
 
-
         for(Freeboard freeboard : freeboardList){
-            Customer customer = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq()).get();
-            FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
-                    .freeboardSeq(freeboard.getFreeboardSeq())
-                    .userId(freeboard.getUser().getUserId())
-                    .freeboardTitle(freeboard.getTitle())
-                    .freeboardRegisterdate(freeboard.getRegisterDate())
-                    .build();
+            Optional<Customer> customerOptional = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq());
+            Customer customer = null;
+            if(customerOptional.isPresent()){
+                customer = customerOptional.get();
+                FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
+                        .freeboardSeq(freeboard.getFreeboardSeq())
+                        .userId(freeboard.getUser().getUserId())
+                        .freeboardTitle(freeboard.getTitle())
+                        .freeboardRegisterdate(freeboard.getRegisterDate())
+                        .build();
 
-            if(customer.getProfile() != null){
-                UploadFile customerProfile = customer.getProfile();
-                Path path = Paths.get(uploadPath+"/"+customerProfile.getName());
-                try{
-                    String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
-                    String customerProfileType = customerProfile.getType();
-                    freeboardResponseDto.setCustomerProfileBase64(customerProfileBase64);
-                    freeboardResponseDto.setCustomerProfileType(customerProfileType);
-                }catch(Exception e) {
-                    e.printStackTrace();
+                if(customer.getProfile() != null){
+                    UploadFile customerProfile = customer.getProfile();
+                    Path path = Paths.get(uploadPath+"/"+customerProfile.getName());
+                    try{
+                        String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                        String customerProfileType = customerProfile.getType();
+                        freeboardResponseDto.setCustomerProfileBase64(customerProfileBase64);
+                        freeboardResponseDto.setCustomerProfileType(customerProfileType);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                freeboardResponseDtoList.add(freeboardResponseDto);
             }
-            freeboardResponseDtoList.add(freeboardResponseDto);
         }
+
 
 
         return ResponseEntity.ok().body(freeboardResponseDtoList);

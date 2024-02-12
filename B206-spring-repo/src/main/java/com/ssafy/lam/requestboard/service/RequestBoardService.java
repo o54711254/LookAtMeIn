@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,11 +35,31 @@ public class RequestBoardService {
     //등록기능
     public Long saveRequestboard(RequestSaveDto requestSaveDto) {
         User user = userRepository.findByUserSeq(requestSaveDto.getUserSeq()).orElseThrow(() -> new RuntimeException("유저 없음"));
-        Requestboard requestboard = requestboardRepository.save(requestSaveDto.toEntity(user));
+        Requestboard requestboard = Requestboard.builder()
+                .user(user)
+                .title(requestSaveDto.getTitle())
+                .content(requestSaveDto.getContent())
+                .requestCnt(0)
+                .cnt(0)
+                .isDeleted(false)
+                .regDate(requestSaveDto.getRegDate())
+                .build();
 
-        List<Surgery> surgeries = requestSaveDto.getSurgeries().stream()
-                .map(surgeryDto -> surgeryDto.toEntity(requestboard))
-                .collect(Collectors.toList());
+
+
+        requestboard = requestboardRepository.save(requestboard);
+        List<Surgery> surgeries = new ArrayList<>();
+        for(SurgeryDto surgeryDto : requestSaveDto.getSurgeries()) {
+            Surgery surgery = Surgery.builder()
+                    .requestboard(requestboard)
+                    .part(surgeryDto.getPart())
+                    .type(surgeryDto.getType())
+                    .isDeleted(false)
+                    .build();
+            surgeries.add(surgery);
+        }
+
+
         surgeryRepository.saveAll(surgeries);
 
         return requestboard.getSeq();
@@ -82,6 +103,8 @@ public class RequestBoardService {
         RequestResponDto requestResponDto = RequestResponDto.builder()
                 .seq(requestboard.getSeq())
                 .title(requestboard.getTitle())
+                .content(requestboard.getContent())
+                .userSeq(requestboard.getUser().getUserSeq())
                 .userName(requestboard.getUser().getName())
                 .regDate(requestboard.getRegDate())
                 .requestCnt(requestboard.getRequestCnt())
@@ -217,7 +240,6 @@ public class RequestBoardService {
                     .message(responseDto.getMessage())
                     .build();
             responseRepository.save(response);
-
             // 알림 생성 로직 호출ㅇ
             System.out.println(requestboard.getUser() + " " + user + " " + response.getMessage());
             createNotification(requestboard.getUser(), user, response.getMessage());
@@ -228,13 +250,14 @@ public class RequestBoardService {
     }
 
     public void createNotification(User recipient, User sender, String message) {
-        String notificationMessage = String.format(sender.getName(), message);
-        Notification notification = new Notification(sender.getName(), recipient, notificationMessage, false);
+
+        Notification notification = new Notification(sender.getName(), recipient, message, false);
         notificationRepository.save(notification);
     }
 
     public List<NotificationDto> findAllNotificationsByUser(Long userSeq) {
         List<Notification> notifications = notificationRepository.findAllByRecipientUserSeq(userSeq);
+
         return notifications.stream()
                 .map(notification -> NotificationDto.builder()
                         .seq(notification.getId())
