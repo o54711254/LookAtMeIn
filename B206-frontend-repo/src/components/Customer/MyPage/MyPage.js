@@ -9,11 +9,12 @@ import ConsultingList from "./ConsultingList";
 import ReservationList from "./ReservationList";
 import styles from "./MyPage.module.css";
 import { useSelector } from "react-redux";
-import beauty from "../../../assets/mypage/beauty.png";
+import notification from "../../../assets/mypage/notification.png";
 import post from "../../../assets/mypage/post.png";
 import consult from "../../../assets/mypage/consult.png";
 import reserve from "../../../assets/mypage/reserve.png";
 import wish from "../../../assets/mypage/wish.png";
+import ProposeList from "./Post/ProposeList";
 
 function MyPage() {
   const user = useSelector((state) => state.user);
@@ -80,14 +81,14 @@ function MyPage() {
           </div>
           <div className={styles.horizon}></div>
           <div className={styles.column}>
-            <img src={beauty} alt="icon" className={styles.icon} />
+            <img src={notification} alt="icon" className={styles.icon} />
             <NavLink
-              to="mypost"
+              to="propose"
               className={({ isActive }) =>
                 isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
               }
             >
-              나의 이상향
+              알림
             </NavLink>
           </div>
         </nav>
@@ -100,6 +101,7 @@ function MyPage() {
           <Route path="mypost/*" element={<MyPost />} />
           <Route path="consult" element={<ConsultingList />} />
           <Route path="reserve" element={<ReservationList />} />
+          <Route path="propose" element={<ProposeList />} />
         </Routes>
       </div>
     </div>
