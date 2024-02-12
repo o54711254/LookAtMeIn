@@ -1,5 +1,5 @@
 // ReviewBoardForm.js
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import Button from "@mui/material/Button";
@@ -11,8 +11,6 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { useNavigate } from "react-router-dom";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 function FreeBoardRegist() {
   const [open, setOpen] = React.useState(false); // 모달의 열림/닫힘 상태를 관리하는 state입니다. 처음에는 false로 모달이 닫혀있는 상태입니다.

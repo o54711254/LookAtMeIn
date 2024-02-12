@@ -45,6 +45,7 @@ import HospitalDetail from "./pages/HospitalDetail.js";
 import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
+import RequestRegist from "./components/RequestBoard/RequestRegist";
 
 function App() {
   return (
@@ -110,6 +111,10 @@ function App() {
                   <Route
                     path="/requestBoard/requestBoardList/:requestboardSeq"
                     element={<RequestBoardDetail />}
+                  />
+                  <Route
+                    path="/requestBoard/regist"
+                    element={<RequestRegist />}
                   />
 
                   {/*병원 게시판*/}
