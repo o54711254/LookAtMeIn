@@ -9,7 +9,6 @@ import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.file.domain.UploadFile;
-import com.ssafy.lam.file.dto.FileResponseDto;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
@@ -43,19 +42,15 @@ public class FreeboardServiceImpl implements FreeboardService {
 
     @Override
     public Freeboard createFreeboard(FreeboardRequestDto freeboardRequestDto) {
-        System.out.println("1111111111111111111111");
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-        System.out.println("user = " + user);
-        System.out.println("22222222222222222222222");
         // 파일 저장
         // DTO의 MultiPartFile을 받아서 서비스로 보내서 파일 저장함
         UploadFile uploadFile = null;
-        if(freeboardRequestDto.getUploadFile() != null)
-           uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
+        if (freeboardRequestDto.getUploadFile() != null)
+            uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
 
 
         log.info("글 등록 유저 정보: {}", user);
-
 
 
         // 게시글에 UploadFile을 연관지어주고 저장
@@ -93,14 +88,14 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .build();
 
 
-        if(freeboard.getUploadFile() != null){
-            try{
+        if (freeboard.getUploadFile() != null) {
+            try {
                 UploadFile uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
-                Path path = Paths.get(uploadPath +"/" + uploadFile.getName());
+                Path path = Paths.get(uploadPath + "/" + uploadFile.getName());
                 String base64 = EncodeFile.encodeFileToBase64(path);
                 freeboardResponseDto.setBase64(base64);
                 freeboardResponseDto.setFileSeq(uploadFile.getSeq());
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

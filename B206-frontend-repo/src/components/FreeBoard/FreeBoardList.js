@@ -58,7 +58,7 @@ function FreeBoardList() {
             onClick={() => goDetailPage(board.freeboardSeq)}
             className={styles.reviewItem}
           >
-            <div>No. {index}</div>
+            <div className={styles.index}>No. {index + 1}</div>
             <div>
               <img src={profile} alt="프로필" className={styles.profile} />
             </div>

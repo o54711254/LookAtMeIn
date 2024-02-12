@@ -1,6 +1,8 @@
 package com.ssafy.lam.search.service;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.QFreeboard;
 import com.ssafy.lam.hospital.domain.Hospital;
@@ -26,7 +28,7 @@ public class SearchService {
     private final JPAQueryFactory queryFactory;
     private final HospitalRepository hospitalRepository;
     private final ReviewBoardRepository reviewBoardRepository;
-    private final UserRepository userRepository;
+    private final CustomerRepository customerRepository;
 
     public List<?> search(String keyword, String category) {
         if ("hospital".equals(category)) {
@@ -74,7 +76,7 @@ public class SearchService {
         return results.stream().map(result -> FreeboardDto.builder()
                 .freeboardSeq(result.getFreeboardSeq())
                 .userId(result.getUser().getUserId())
-                .userEmail(hospitalRepository.findById(result.getFreeboardSeq()).get().getEmail())
+                .userEmail(customerRepository.findByUserUserSeq(result.getUser().getUserSeq()).get().getEmail())
                 .freeboardTitle(result.getTitle())
                 .freeboardContent(result.getContent())
                 .freeboardRegisterdate(result.getRegisterDate())

@@ -3,6 +3,8 @@
   display: flex;
   flex-wrap: wrap;
   background-color: rgba(239, 232, 222, 0.2);
+  margin-bottom: 80px;
+  border-radius: 20px;
 }
 
 .profile {
@@ -19,9 +21,15 @@
   border-radius: 30px;
   padding: 10px;
   text-decoration: none;
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.15);
+}
+.profile:hover{
+  text-decoration: none;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2); /* 그림자 효과 강화 */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 .profileImage {
-  background-image: url("../../../assets/man/유승호.jpg");
+  background-image: url("../../../assets/profile2.png");
   background-color: #ffffff;
   background-position: center;
   background-size: cover;
@@ -52,7 +60,8 @@
   border: 1px solid rgba(254, 202, 171, 0.76);
   border-radius: 30px;
   width: 15%;
-  height: 580px;
+  height: 550px;
+  margin-bottom: 80px;
 }
 
 .navigation {
