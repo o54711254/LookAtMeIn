@@ -13,6 +13,7 @@ import ReviewDetail from "./components/ReviewBoard/ReviewDetail";
 import ReviewRegist from "./components/ReviewBoard/ReviewRegist";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import RequestBoardList from "./components/RequestBoard/RequestBoardList.js";
+import RequestBoardDetail from "./components/RequestBoard/RequestBoardDetail";
 
 import CustomerMyPage from "./pages/Mypage/CustomerMyPage.js";
 import HosMyPage from "./pages/Mypage/HosMyPage.js";
@@ -103,8 +104,12 @@ function App() {
 
                   {/*상담요청 게시판*/}
                   <Route
-                    path="/requestboardlist"
+                    path="/requestBoard/requestBoardList"
                     element={<RequestBoardList />}
+                  />
+                  <Route
+                    path="/requestBoard/requestBoardList/:requestboardSeq"
+                    element={<RequestBoardDetail />}
                   />
 
                   {/*병원 게시판*/}

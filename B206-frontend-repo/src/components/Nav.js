@@ -131,7 +131,7 @@ className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ""}`}
           </>
         ) : (
           <>
-            <Link to="/requestboardlist" className={styles.menu}>
+            <Link to="/requestBoard/requestBoardList" className={styles.menu}>
               상담요청 게시판
             </Link>
             {/* 조건부 렌더링을 사용하여 다른 마이페이지 링크를 표시 */}

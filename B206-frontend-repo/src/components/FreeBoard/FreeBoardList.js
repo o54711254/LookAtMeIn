@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
-import s from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 import FreeBoardRegist from "./FreeBoardRegist.js";
@@ -29,10 +26,6 @@ function FreeBoardList() {
         console.log("자유게시판 불러오기 에러: ", error);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log(freeboardList); // 상태가 업데이트되고 나서 로그를 출력
-  // }, [freeboardList]);
 
   const goDetailPage = (freeboardSeq) => {
     if (freeboardSeq) {

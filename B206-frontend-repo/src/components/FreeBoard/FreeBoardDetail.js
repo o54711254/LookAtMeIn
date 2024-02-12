@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import FreeBoardDelete from "./FreeBoardDelete";
 import FreeBoardUpdate from "./FreeBoardUpdate";
 import Comment from "../Comment/Comment";
-import downloadApi from "../../api/downloadApi";
 import styles from "./FreeBoardDetail.module.css";
 import profile from "../../assets/man/유승호.jpg";
 
@@ -29,9 +28,7 @@ function FreeBoardDetail() {
         const base64 = response.data.base64;
         const type = response.data.type;
         const data = `data:${type};base64,${base64}`;
-        if(base64 != null)
-          setImg(data)
-
+        if (base64 != null) setImg(data);
       } catch (error) {
         console.log("자유게시판 상세 불러오기 실패: ", error);
       }
