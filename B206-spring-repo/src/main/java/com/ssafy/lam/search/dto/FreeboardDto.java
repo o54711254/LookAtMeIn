@@ -18,6 +18,12 @@ public class FreeboardDto {
     private LocalDateTime freeboardRegisterdate;
     private String freeboardContent;
 
+    private String uploadImgBase64;
+    private String uploadImgType;
+
+    private String customerProfileBase64;
+    private String customerProfileType;
+
     @Builder
     public FreeboardDto(Long freeboardSeq, String userId, String userEmail, String freeboardTitle, int freeboardCnt, LocalDateTime freeboardRegisterdate, String freeboardContent) {
         this.freeboardSeq = freeboardSeq;

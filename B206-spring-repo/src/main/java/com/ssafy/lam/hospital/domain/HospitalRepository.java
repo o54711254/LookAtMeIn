@@ -23,4 +23,6 @@ public interface HospitalRepository extends JpaRepository<Hospital, Long>, Query
     Optional<Double> findAvgByHospitalSeq(Long hospitalSeq);
     @Query(value = "select count(r.score) from ReviewBoard r where r.hospital.user.name = (select u.name from User u where u.userSeq = (select h.user.userSeq from Hospital h where h.hospitalSeq = :hospitalSeq))")
     int countByHospitalSeq(Long hospitalSeq);
+    @Query(value = "select h.hospitalSeq from Hospital h where h.user.name = :hospitalName")
+    Long findHospitalSeqByName(String hospitalName);
 }

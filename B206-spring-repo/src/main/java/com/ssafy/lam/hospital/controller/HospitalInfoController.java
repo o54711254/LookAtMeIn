@@ -2,6 +2,7 @@ package com.ssafy.lam.hospital.controller;
 
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.hospital.domain.DoctorCategory;
 
 import com.ssafy.lam.hospital.domain.Doctor;
@@ -73,12 +74,7 @@ public class HospitalInfoController {
 
 
                 log.info("병원 정보: " + hospitalDetailDto);
-//                if(h.getRegistrationFile() != null) { // 병원 목록 조회 시 오류 발생
-//                    // 병원 등록증 base64로 인코딩해서 보내줘야함
-//                    Path path = Paths.get(uploadPath + "/" + h.getRegistrationFile().getName());
-//                    String profileBase64 = EncodeFile.encodeFileToBase64(path);
-//                    hospitalDetailDto.setProfileBase64(profileBase64);
-//                }
+
                 hospitalDetailDtoList.add(hospitalDetailDto);
             }
         }catch (Exception e) {
@@ -88,32 +84,48 @@ public class HospitalInfoController {
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
 
-    @PostMapping("/detail/{hospital_seq}")
+//    @PostMapping("/detail/{hospital_seq}")
+//    @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 병원 상세 정보")
+//    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq, @RequestParam Long user_seq) {
+//        HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalLikeInfo(hospital_seq, user_seq);
+//        return new ResponseEntity<>(hospitalDetailDto, HttpStatus.OK);
+//    }
+
+    @GetMapping("/detail/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 병원 상세 정보")
-    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq, @RequestParam Long user_seq) {
-        HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalLikeInfo(hospital_seq, user_seq);
+    public ResponseEntity<HospitalDetailDto> getHospitalBySeq(@PathVariable Long hospital_seq) {
+        HospitalDetailDto hospitalDetailDto = hospitalService.getHospitalInfo(hospital_seq);
         return new ResponseEntity<>(hospitalDetailDto, HttpStatus.OK);
     }
 
-    @GetMapping("/reviews/{user_seq}")
+    @GetMapping("/reviews/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 후기 목록")
     public ResponseEntity<List<ReviewListDisplay>> getHospitalReview(@PathVariable Long user_seq) {
-        List<ReviewBoard> reviews = hospitalService.getReviewsByHospital(user_seq);
-        List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
-        for(ReviewBoard r : reviews) {
-            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
-                    r.getRegdate(), r.getScore(), r.getDoctor().getDocInfoName(), r.getRegion(), r.getSurgery(), r.getHospital().getUser().getName(),
-                    r.getExpectedPrice(), r.getSurgeryPrice()));
-        }
-        return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
+        List<ReviewListDisplay> reviews = hospitalService.getReviewsByHospital(user_seq);
+
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
-    @GetMapping("/doctors/{user_seq}")
+    @GetMapping("/doctors/{hospital_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 의사 목록")
-    public ResponseEntity<List<DoctorListDto>> getHospitalDoctors(@PathVariable Long user_seq) {
-        List<Doctor> doctors = hospitalService.getHospitalDoctorList(user_seq);
+    public ResponseEntity<List<DoctorListDto>> getHospitalDoctors(@PathVariable Long hospital_seq) {
+        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
         List<DoctorListDto> doctorDtoList = new ArrayList<>();
         for(Doctor d : doctors) {
+            DoctorListDto dto = new DoctorListDto();
+            if(d.getProfile() != null){
+                UploadFile doctorProfile = d.getProfile();
+                Path path = Paths.get(uploadPath + "/" + doctorProfile.getName());
+                try {
+                    String doctorProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String doctorProfileType = doctorProfile.getType();
+                    dto.setDoctorProfileBase64(doctorProfileBase64);
+                    dto.setDoctorProfileType(doctorProfileType);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             List<DoctorCategory> doctorCategories = doctorService.getCategory(d.getDocInfoSeq());
             List<CategoryDto> categoryDto = new ArrayList<>();
             for(DoctorCategory c : doctorCategories) {
@@ -121,7 +133,12 @@ public class HospitalInfoController {
             }
             double avgScore = doctorService.getAvgScore(d.getDocInfoSeq());
             int cntReviews = doctorService.getCntReviews(d.getDocInfoSeq());
-            doctorDtoList.add(new DoctorListDto(d.getDocInfoSeq(), d.getDocInfoName(), avgScore, cntReviews, categoryDto));
+            dto.setDoctorSeq(d.getDocInfoSeq());
+            dto.setDoctorName(d.getDocInfoName());
+            dto.setDoctorAvgScore(avgScore);
+            dto.setDoctorCntReviews(cntReviews);
+            dto.setDoctorCategory(categoryDto);
+            doctorDtoList.add(dto);
         }
         return new ResponseEntity<>(doctorDtoList, HttpStatus.OK);
     }

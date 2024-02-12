@@ -154,7 +154,7 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {/* {<Questionnaire />} */}
+          {<Questionnaire />}
           <FloatingChat />
         </div>
         <Footer />

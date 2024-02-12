@@ -11,4 +11,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     Optional<Double> findAvgByDoctorSeq(Long docInfoSeq);
     @Query(value = "select count(r.score) from ReviewBoard r where r.doctor.docInfoName = (select d.docInfoName from Doctor d where d.docInfoSeq=:docInfoSeq)")
     int countByDoctorSeq(Long docInfoSeq);
+    @Query(value = "select d.docInfoSeq from Doctor d where d.docInfoName = :doctorName")
+    Long findDoctorSeqByName(String doctorName);
 }
