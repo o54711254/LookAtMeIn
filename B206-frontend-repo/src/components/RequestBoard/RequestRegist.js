@@ -30,7 +30,7 @@ function RequestBoardRegist() {
       const response = await axiosApi.post(`/api/requestboard/register`, post);
       console.log("글 작성 성공 : ", response.data);
       handleClose();
-      navigate("/"); // 등록 후 메인 페이지로 이동
+      window.location.reload();
     } catch (error) {
       console.log("글 작성 에러 : ", error);
     }
