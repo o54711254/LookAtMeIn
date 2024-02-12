@@ -60,8 +60,9 @@ public class RequestBoardService {
     //상세조회
     @Transactional
     public RequestDto findRequestboard(Long requestSeq) {
-        // 여기사이에 조회수 들어가야 함
+
         Optional<Requestboard> requestboardOptional = requestboardRepository.findBySeqAndIsDeletedFalse(requestSeq);
+        
         if (requestboardOptional.isPresent()) {
             Requestboard requestboard = requestboardRepository.findById(requestSeq).get();
 

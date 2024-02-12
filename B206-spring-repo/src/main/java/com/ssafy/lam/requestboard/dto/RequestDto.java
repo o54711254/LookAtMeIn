@@ -3,6 +3,7 @@ package com.ssafy.lam.requestboard.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +20,7 @@ public class RequestDto {
     private int cnt;
     private boolean isDeleted;
     private List<SurgeryDto> surgeries;
+    private MultipartFile uploadFile;
 
 
     @Builder
