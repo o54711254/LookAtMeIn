@@ -40,7 +40,6 @@ public class ReviewBoardController {
     // 파일이 업로드될 디렉토리 경로
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
-    private CustomerRepository customerRepository;
 
     @Autowired
     private CustomerRepository customerRepository;
