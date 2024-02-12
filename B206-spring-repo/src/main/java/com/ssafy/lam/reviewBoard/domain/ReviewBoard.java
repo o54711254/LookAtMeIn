@@ -43,9 +43,9 @@ public class ReviewBoard {
     @Column(name = "review_board_score")
     private double score; // 별점
     @Column(name = "review_board_expected_price")
-    private Integer expectedPrice; // 견적 가격
+    private int expectedPrice; // 견적 가격
     @Column(name = "review_board_surgery_price")
-    private Integer surgeryPrice; // 시술 가격
+    private int surgeryPrice; // 시술 가격
     @Column(name = "review_board_regdate")
     private long regdate; // 작성시간
     @Column(name = "review_board_complain")
@@ -54,7 +54,7 @@ public class ReviewBoard {
     @Column(name = "review_board_isdeleted")
     private boolean isdeleted; // 삭제여부
     @Column(name = "review_board_cnt")
-    private Integer cnt = 0; // 조회수
+    private int cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Hospital hospital; // 후기 대상 병원
@@ -78,14 +78,10 @@ public class ReviewBoard {
     }
 
     @Builder
-    public ReviewBoard(long seq, String title, String content, String surgery, String region, double score,
-                       int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted,
-                       int cnt, Hospital hospital, Doctor doctor, User user, UploadFile uploadFile) {
+    public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, Hospital hospital, Doctor doctor, User user, UploadFile uploadFile) {
         this.seq = seq;
         this.title = title;
         this.content = content;
-        this.hospital = hospital;
-        this.doctor = doctor;
         this.surgery = surgery;
         this.region = region;
         this.score = score;
@@ -95,6 +91,8 @@ public class ReviewBoard {
         this.complain = complain;
         this.isdeleted = isdeleted;
         this.cnt = cnt;
+        this.hospital = hospital;
+        this.doctor = doctor;
         this.user = user;
         this.uploadFile = uploadFile;
     }

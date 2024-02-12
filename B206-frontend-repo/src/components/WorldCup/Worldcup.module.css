@@ -1,49 +1,49 @@
-.worldcupContainer{
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: center;
+.worldcupContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
 }
-.title{
-    text-align: center;
-    width: 100%;
-    font-size: 40px;
-    font-weight: 600;
-    margin-bottom: 20px;
+.title {
+  text-align: center;
+  width: 100%;
+  font-size: 30px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
-.content{
-    width: 100%;
-    text-align: center;
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 50px;
+.content {
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 50px;
 }
-.genderButtons{
-    display: flex;
-    justify-content: center;
-    gap: 50px;
+.genderButtons {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
 }
 .button {
-    width: 400px;
-    height: 160px;
-    padding: 10px 20px;
-    background-color: #ffdbc6; /* 호버시 배경색 변경 */
-    color: #333; /* 기본 글자색 */
-    font-size: 15px;
-    font-weight: 700;
-    border: 0;
-    border-radius: 8px; /* 둥근 모서리 */
-    cursor: pointer; /* 마우스 오버시 커서 변경 */
-    transition: all 0.3s ease; /* 부드러운 색상 전환 효과 */
-    box-shadow: 0px 7px 10px rgba(0,0,0,0.15);
-    font-size: 30px;
+  width: 400px;
+  height: 160px;
+  padding: 10px 20px;
+  background-color: #ffdbc6; /* 호버시 배경색 변경 */
+  color: #333; /* 기본 글자색 */
+  font-size: 15px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 8px; /* 둥근 모서리 */
+  cursor: pointer; /* 마우스 오버시 커서 변경 */
+  transition: all 0.3s ease; /* 부드러운 색상 전환 효과 */
+  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.15);
+  font-size: 30px;
 }
 
 .button:hover {
-    background-color: #fdb788; /* 기본 배경색 */
-    text-decoration: none;
+  background-color: #fdb788; /* 기본 배경색 */
+  text-decoration: none;
 }
 .active {
-    background-color: #fdb788; /* 활성화된 탭의 배경색 */
-    color: #ffffff; /* 활성화된 탭의 글자색 */
- }
+  background-color: #fdb788; /* 활성화된 탭의 배경색 */
+  color: #ffffff; /* 활성화된 탭의 글자색 */
+}

@@ -87,18 +87,35 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .userEmail(customer.getEmail())
                 .build();
 
+        if(customer.getProfile() != null){
+            UploadFile customerProfile = customer.getProfile();
+            Path path = Paths.get(uploadPath+"/"+customerProfile.getName());
+            try{
+                String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                String customerProfileType = customerProfile.getType();
+                freeboardResponseDto.setCustomerProfileBase64(customerProfileBase64);
+                freeboardResponseDto.setCustomerProfileType(customerProfileType);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 
         if (freeboard.getUploadFile() != null) {
             try {
                 UploadFile uploadFile = uploadFileService.getUploadFile(freeboard.getUploadFile().getSeq());
                 Path path = Paths.get(uploadPath + "/" + uploadFile.getName());
                 String base64 = EncodeFile.encodeFileToBase64(path);
+                String type = uploadFile.getType();
                 freeboardResponseDto.setBase64(base64);
+                freeboardResponseDto.setType(type);
                 freeboardResponseDto.setFileSeq(uploadFile.getSeq());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+
 
         // 현재 게시물에 달린 댓글 가져오기
         List<Comment> commentList = commentService.getAllComments(freeBoardSeq);

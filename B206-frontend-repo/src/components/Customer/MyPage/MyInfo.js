@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../../redux/user";
 import axiosApi from "../../../api/axiosApi";
 import styles from "./MyInfo.module.css";
 import profile from "../../../assets/profile2.png";
@@ -10,6 +11,7 @@ import update from "../../../assets/update.png";
 function MyInfo() {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [infoData, setInfoData] = useState({});
   const [profileImg, setProfileImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -54,6 +56,7 @@ function MyInfo() {
       "customerData",
       JSON.stringify({
         userId: infoData.userId,
+        userPassword: user.userPassword,
         customerName: infoData.customerName,
         customerGender: infoData.customerGender,
         customerAddress: infoData.customerAddress,
@@ -70,6 +73,12 @@ function MyInfo() {
       })
       .then((res) => {
         console.log("프로필 이미지 업로드 성공", res);
+        dispatch(
+          loginUser({
+            ...user,
+            profileImg: profileImg,
+          })
+        );
         window.location.reload();
       })
       .catch((error) => {
@@ -86,14 +95,6 @@ function MyInfo() {
             className={styles.profileImg}
           />
         </label>
-        {selectedFile && (
-          <img
-            src={update}
-            alt="updateIcon"
-            className={styles.icon}
-            onClick={handleImageUpload}
-          />
-        )}
         <input
           id="image-upload"
           type="file"
@@ -101,9 +102,23 @@ function MyInfo() {
           onChange={handleImageChange}
           style={{ display: "none" }}
         />
-        <div className={styles.infoName}>
-          {infoData.customerName} 님 반갑습니다!
-          <div className={styles.infoId}>ID : {infoData.userId}</div>
+        <div className={styles.headBox}>
+          <div className={styles.infoName}>
+            {infoData.customerName} 님 반갑습니다!
+            <div className={styles.infoId}>ID : {infoData.userId}</div>
+          </div>
+          <div className={styles.profileButtonArea}>
+            <div className={styles.버튼버튼}>
+              {selectedFile && (
+                <img
+                  src={update}
+                  alt="updateIcon"
+                  className={styles.icon}
+                  onClick={handleImageUpload}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.box}>

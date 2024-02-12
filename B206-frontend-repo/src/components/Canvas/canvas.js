@@ -139,7 +139,7 @@ const Canvas = ()=>{
         points["sketch_points"] = JSON.stringify(sketchPoints)
         formData.append("points", JSON.stringify(points))
         try{
-            const python_server_url = "http://118.42.90.100:8000/api/send/points"
+            const python_server_url = "https://lookatmein.duckdns.org/python/send/points"
             const response = await axios.post(python_server_url, formData,{
                 headers:{
                     'Content-Type': 'multipart/form-data'

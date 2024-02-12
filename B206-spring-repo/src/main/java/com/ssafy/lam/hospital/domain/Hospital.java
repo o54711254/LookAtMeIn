@@ -69,7 +69,6 @@ public class Hospital {
     }
 
     @Builder
-
     public Hospital(Long hospitalSeq, User user, List<Coordinator> coordinators, String tel, String email, String address, String openTime, String closeTime, String intro, boolean isApproved, int bookmark, String url, UploadFile registrationFile, UploadFile profileFile) {
         this.hospitalSeq = hospitalSeq;
         this.user = user;

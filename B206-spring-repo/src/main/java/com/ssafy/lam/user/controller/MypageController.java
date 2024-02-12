@@ -1,5 +1,6 @@
 package com.ssafy.lam.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.dto.CustomerDto;
 import com.ssafy.lam.customer.service.CustomerService;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,16 +71,34 @@ public class MypageController {
 
     @PutMapping("/user/{userSeq}")
     @Operation(summary = "고객 정보 수정")
-    public ResponseEntity<?> updateCustomer(@PathVariable long userSeq, @ModelAttribute CustomerDto customerDto) {
-        Customer customerSaveDto = customerService.updateCustomer(userSeq, customerDto);
-        return new ResponseEntity<Customer>(customerSaveDto, HttpStatus.OK);
+    public ResponseEntity<?> updateCustomer(@PathVariable long userSeq,
+                                            @RequestParam("customerData") String customerData,
+                                            @RequestParam(value = "profile", required = false) MultipartFile profile){
+        try{
+            CustomerDto customerDto = new ObjectMapper().readValue(customerData, CustomerDto.class);
+            Customer customerSaveDto = customerService.updateCustomer(userSeq, customerDto, profile);
+            return new ResponseEntity<Customer>(customerSaveDto, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/hospital/{userSeq}")
     @Operation(summary = "병원 정보 수정.")
-    public ResponseEntity<?> updateHospital(@PathVariable long userSeq, @ModelAttribute HospitalDto hospitalDto) {
-        Hospital hospitalSaveDto = hospitalService.updateHospital(userSeq, hospitalDto);
-        return new ResponseEntity<Hospital>(hospitalSaveDto, HttpStatus.OK);
+    public ResponseEntity<?> updateHospital(@PathVariable long userSeq,
+                                            @RequestParam("hospitalData") String hospitalData,
+                                            @RequestParam(value = "profile", required = false) MultipartFile profile){
+        try{
+            HospitalDto hospitalDto = new ObjectMapper().readValue(hospitalData, HospitalDto.class);
+            Hospital hospitalSaveDto = hospitalService.updateHospital(userSeq, hospitalDto, profile);
+            return new ResponseEntity<Hospital>(hospitalSaveDto, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/free/{userSeq}")

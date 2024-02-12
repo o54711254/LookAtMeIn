@@ -64,3 +64,8 @@
 li {
   gap: 20px;
 }
+.index {
+  color: #979797;
+  margin-left: 15px;
+  font-size: small;
+}
