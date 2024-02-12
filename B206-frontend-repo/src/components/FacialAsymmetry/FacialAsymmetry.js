@@ -74,29 +74,45 @@ function FaceSymmetry() {
   };
 
   return (
-    <div>
-      <div className={styles.btn}>
-        <span>+</span>
-        <input
-          type="file"
-          onChange={handleImageUpload}
-          className={styles.FileInput_hidden_overlay}
-        />
+    <div className={styles.container}>
+      <div className={styles.title}>비대칭 검사</div>
+      <div className={styles.content}>
+        당신의 사진을 업로드해 얼굴의 비대칭률을 확인해보세요
       </div>
-      {image && (
-        <>
-          <img
-            ref={imageRef}
-            src={image}
-            alt="Face"
-            onLoad={handleImageAnalyze}
-          />
-          <canvas ref={canvasRef} />
-        </>
-      )}
-      {asymmetryScore !== null && (
-        <p>좌우 비대칭률: {asymmetryScore.toFixed(2) / 2} % 입니다.</p>
-      )}
+      <div className={styles.items}>
+        {image ? (
+          <div className={styles.results}>
+            <img
+              ref={imageRef}
+              src={image}
+              alt="Face"
+              onLoad={handleImageAnalyze}
+              className={styles.result}
+            />
+            <canvas ref={canvasRef} className={styles.result} />
+          </div>
+        ) : (
+          <div className={styles.btn}>
+            <span>+</span>
+            <input
+              type="file"
+              onChange={handleImageUpload}
+              className={styles.FileInput_hidden_overlay}
+            />
+          </div>
+        )}
+      </div>
+      <div className={styles.items}>
+        {asymmetryScore !== null && (
+          <div className={styles.text}>
+            좌우 비대칭률{" "}
+            <span className={styles.percent}>
+              {asymmetryScore.toFixed(2) / 2} %{" "}
+            </span>
+            입니다
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import ReviewDetail from "./components/ReviewBoard/ReviewDetail";
 import ReviewRegist from "./components/ReviewBoard/ReviewRegist";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import RequestBoardList from "./components/RequestBoard/RequestBoardList.js";
+import RequestBoardDetail from "./components/RequestBoard/RequestBoardDetail";
 
 import CustomerMyPage from "./pages/Mypage/CustomerMyPage.js";
 import HosMyPage from "./pages/Mypage/HosMyPage.js";
@@ -78,8 +79,11 @@ function App() {
                   <Route path="/admin-mypage/*" element={<AdminMyPage />} />
 
                   {/* 리뷰 게시판 */}
-                  <Route path="/reviewList" element={<ReviewBoardList />} />
-                  <Route path="/reviewboard/*" element={<ReviewBoardList />} />
+                  <Route
+                    path="/reviewBoard/list"
+                    element={<ReviewBoardList />}
+                  />
+                  {/* <Route path="/reviewboard/*" element={<ReviewBoardList />} /> */}
                   <Route
                     path="/reviewdetail/:reviewBoard_seq"
                     element={<ReviewDetail />}
@@ -100,8 +104,12 @@ function App() {
 
                   {/*상담요청 게시판*/}
                   <Route
-                    path="/requestboardlist"
+                    path="/requestBoard/requestBoardList"
                     element={<RequestBoardList />}
+                  />
+                  <Route
+                    path="/requestBoard/requestBoardList/:requestboardSeq"
+                    element={<RequestBoardDetail />}
                   />
 
                   {/*병원 게시판*/}
@@ -141,7 +149,7 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {<Questionnaire />}
+          {/* {<Questionnaire />} */}
           <FloatingChat />
         </div>
         <Footer />
