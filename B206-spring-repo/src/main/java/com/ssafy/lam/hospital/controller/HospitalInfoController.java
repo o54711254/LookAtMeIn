@@ -73,12 +73,7 @@ public class HospitalInfoController {
 
 
                 log.info("병원 정보: " + hospitalDetailDto);
-//                if(h.getRegistrationFile() != null) { // 병원 목록 조회 시 오류 발생
-//                    // 병원 등록증 base64로 인코딩해서 보내줘야함
-//                    Path path = Paths.get(uploadPath + "/" + h.getRegistrationFile().getName());
-//                    String profileBase64 = EncodeFile.encodeFileToBase64(path);
-//                    hospitalDetailDto.setProfileBase64(profileBase64);
-//                }
+
                 hospitalDetailDtoList.add(hospitalDetailDto);
             }
         }catch (Exception e) {

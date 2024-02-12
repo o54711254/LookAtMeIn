@@ -23,6 +23,10 @@ public class HospitalDto {
     // 해당 병원 의사 목록
     // 각 의사의 의사 프로필 사진, 이름, 평균 평점, 후기 개수, 카테고리 출력
 
+
+    private String hospitalProfileBase64;
+    private String hospitalProfileType;
+
     @Builder
     public HospitalDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber,
                        String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open,
