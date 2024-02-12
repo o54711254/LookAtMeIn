@@ -4,11 +4,13 @@ import logo from "../assets/logo.png";
 import styles from "./Nav.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/user";
+import { logoutHospital } from "../redux/hospital";
 
 function Nav() {
   const user = useSelector((state) => state.user);
+  const hospital = useSelector((state) => state.hospital);
   const userRoll = user.role;
-  const isLogin = user.userSeq !== "";
+  const isLogin = user.userSeq !== "" || hospital.userSeq !== "";
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -17,6 +19,7 @@ function Nav() {
 
   const handleLogout = () => {
     dispatch(logoutUser());
+    dispatch(logoutHospital());
     navigate("/");
   };
 

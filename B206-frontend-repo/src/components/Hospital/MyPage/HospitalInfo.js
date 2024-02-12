@@ -8,15 +8,17 @@ import styles from "./HospitalInfo.module.css";
 
 function HospitalInfo() {
   const user = useSelector((state) => state.user);
+  const hospital = useSelector((state) => state.hospital);
   const navigate = useNavigate();
   const [infoData, setInfoData] = useState({});
   const [profileImg, setProfileImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
   useEffect(() => {
     axiosApi
-      .get(`/api/mypage/${user.userSeq}`)
+      .get(`/api/mypage/${hospital.userSeq}`)
       .then((res) => {
-        console.log(res.data);
+        console.log(hospital);
         setInfoData(res.data);
         const base64 = res.data.base64;
         const type = res.data.type;
