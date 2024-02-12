@@ -8,7 +8,6 @@ import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hospital.domain.*;
 import com.ssafy.lam.hospital.dto.*;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
-import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import com.ssafy.lam.user.service.UserService;
@@ -35,7 +34,6 @@ public class HospitalServiceImpl implements HospitalService {
     private final UploadFileService uploadFileService;
     private final DoctorCategoryRepository doctorCategoryRepository;
     private final FavoritesRepository favoritesRepository;
-    private final ReviewBoardRepository reviewBoardRepository;
     MultipartConfig multipartConfig = new MultipartConfig();
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
@@ -207,8 +205,8 @@ public class HospitalServiceImpl implements HospitalService {
         }
     }
     @Override
-    public List<ReviewBoard> getReviewsByHospital(Long user_seq) {
-        List<ReviewBoard> reviews = reviewBoardRepository.findAllByHospitalUserUserSeqAndIsdeletedFalse(user_seq);
+    public List<ReviewBoard> getReviewsByHospital(Long hospitalSeq) {
+        List<ReviewBoard> reviews = hospitalRepository.findReviewsByHospitalSeq(hospitalSeq);
         return reviews;
     }
     @Override

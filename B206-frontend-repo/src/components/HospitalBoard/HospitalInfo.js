@@ -69,7 +69,7 @@ const HospitalInfo = () => {
 
   useEffect(() => {
     axiosApi
-      .get(`/api/hospital-info/reviews/${userSeq}`)
+      .post(`/api/hospital-info/reviews/${userSeq}`)
       .then((response) => {
         console.log(userSeq);
         console.log(response.data);
@@ -87,7 +87,7 @@ const HospitalInfo = () => {
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     axiosApi
-      .get(`api/hospital-info/doctors/${hospitalInfo_seq}`)
+      .get(`api/hospital-info/doctors/${userSeq}`)
       .then((response) => {
         console.log(response.data);
         setDoctors(response.data);
@@ -99,10 +99,6 @@ const HospitalInfo = () => {
 
   const viewDoctorInfo = (docInfoSeq) => {
     navigate(`/의사 디테일 하나..?`);
-  };
-
-  const handleSearch = (searchTerm) => {
-    navigate(`/search/${searchTerm}`);
   };
 
   const week = ["월", "화", "수", "목", "금", "토", "일"];
@@ -133,13 +129,13 @@ const HospitalInfo = () => {
             {week.map((day) => (
               <div key={day} className={styles.day}>
                 {day === "토" && (
-                  <div className={styles.day}>
+                  <div>
                     {day} {hospitalData.hospitalInfo_open} ~ 13:00{" "}
                   </div>
                 )}
                 {day === "일" && <div>{day} 휴무</div>}
                 {!(day === "토" || day === "일") && (
-                  <div className={styles.day}>
+                  <div>
                     {day} {hospitalData.hospitalInfo_open} ~{" "}
                     {hospitalData.hospitalInfo_close}{" "}
                   </div>
@@ -194,29 +190,19 @@ const HospitalInfo = () => {
         ))}
       </div>
       <div className={styles.part3}>
+        <h3>의사 목록</h3>
         {doctors.map((doctor) => (
           <li
-            key={doctor.doctorSeq}
+            key={doctor.docInfoSeq}
             className={styles.reviewItem}
             onClick={() => viewDoctorInfo}
           >
             <div>
               <img src={profile} alt="프로필" className={styles.profile} />
             </div>
-            <div className={styles.doctor}>
-              <div className={styles.writer}>
-                <div>
-                  <span className={styles.docName}>{doctor.doctorName}</span>{" "}
-                  원장
-                </div>
-              </div>
-              <div className={styles.hashtagButton}>
-                {doctor.doctorCategory.map((category, index) => (
-                  <div key={index} onClick={() => handleSearch(category.part)}>
-                    {category.part}
-                  </div>
-                ))}
-              </div>
+            <div className={styles.writer}>
+              <div>{doctor.customer_name}</div>
+              <div>{/* <StarResult score={doctor.reviewBoard_score} /> */}</div>
             </div>
           </li>
         ))}
