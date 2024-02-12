@@ -40,6 +40,8 @@ public class QReviewBoard extends EntityPathBase<ReviewBoard> {
 
     public final StringPath region = createString("region");
 
+    public final ListPath<com.ssafy.lam.hashtag.domain.ReviewHashtag, com.ssafy.lam.hashtag.domain.QReviewHashtag> reviewHashtags = this.<com.ssafy.lam.hashtag.domain.ReviewHashtag, com.ssafy.lam.hashtag.domain.QReviewHashtag>createList("reviewHashtags", com.ssafy.lam.hashtag.domain.ReviewHashtag.class, com.ssafy.lam.hashtag.domain.QReviewHashtag.class, PathInits.DIRECT2);
+
     public final NumberPath<Double> score = createNumber("score", Double.class);
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);

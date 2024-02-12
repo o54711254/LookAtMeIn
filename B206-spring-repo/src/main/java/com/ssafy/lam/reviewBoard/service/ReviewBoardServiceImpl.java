@@ -1,5 +1,8 @@
 package com.ssafy.lam.reviewBoard.service;
 
+import com.ssafy.lam.hashtag.domain.Hashtag;
+import com.ssafy.lam.hashtag.domain.HashtagRepository;
+import com.ssafy.lam.hashtag.domain.ReviewHashtag;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.DoctorRepository;
 import com.ssafy.lam.hospital.domain.Hospital;
@@ -29,6 +32,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     private final ReviewBoardRepository reviewBoardRepository;
     private final HospitalRepository hospitalRepository;
     private final DoctorRepository doctorRepository;
+    private final HashtagRepository hashtagRepository;
     MultipartConfig multipartConfig = new MultipartConfig();
 
     // 파일이 업로드될 디렉토리 경로
@@ -78,10 +82,22 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .hospital(hospital)
                 .doctor(doctor)
                 .build();
+
         UploadFile uploadFile = null;
         if(file != null)
             uploadFile = uploadFileService.store(file);
         reviewBoard.setUploadFile(uploadFile);
+
+        reviewBoardRegister.getHashtags().forEach(tagName -> {
+            Hashtag hashtag = hashtagRepository.findByTagName(tagName)
+                    .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
+            ReviewHashtag reviewHashtag = ReviewHashtag.builder()
+                    .reviewBoard(reviewBoard)
+                    .hashtag(hashtag)
+                    .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
+                    .build();
+            reviewBoard.addReviewHashtag(reviewHashtag);
+        });
 
         return reviewBoardRepository.save(reviewBoard);
     }

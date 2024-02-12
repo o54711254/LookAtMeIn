@@ -2,16 +2,18 @@ package com.ssafy.lam.reviewBoard.domain;
 
 
 import com.ssafy.lam.file.domain.UploadFile;
-
+import com.ssafy.lam.hashtag.domain.ReviewHashtag;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.Hospital;
-
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,7 +33,6 @@ public class ReviewBoard {
     @Column(name = "review_board_content")
     private String content; // 내용
 
-    
 
     @Column(name = "review_board_surgery")
     private String surgery; // 시술부위
@@ -53,7 +54,7 @@ public class ReviewBoard {
     @Column(name = "review_board_isdeleted")
     private boolean isdeleted; // 삭제여부
     @Column(name = "review_board_cnt")
-    private Integer cnt = 0; // 조회수 
+    private Integer cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Hospital hospital; // 후기 대상 병원
@@ -64,15 +65,22 @@ public class ReviewBoard {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user; // 후기 작성 고객
 
-    @OneToOne 
-    @JoinColumn(name = "upload_file_seq") 
+    @OneToOne
+    @JoinColumn(name = "upload_file_seq")
     private UploadFile uploadFile;
 
+    @OneToMany(mappedBy = "reviewBoard", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewHashtag> reviewHashtags = new ArrayList<>();
+
+    public void addReviewHashtag(ReviewHashtag reviewHashtag) {
+        this.reviewHashtags.add(reviewHashtag);
+        reviewHashtag.setReviewBoard(this);
+    }
 
     @Builder
     public ReviewBoard(long seq, String title, String content, String surgery, String region, double score,
                        int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted,
-                       int cnt, Hospital hospital, Doctor doctor, User user, UploadFile uploadFile) {  
+                       int cnt, Hospital hospital, Doctor doctor, User user, UploadFile uploadFile) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -89,5 +97,5 @@ public class ReviewBoard {
         this.cnt = cnt;
         this.user = user;
         this.uploadFile = uploadFile;
-    } 
+    }
 }

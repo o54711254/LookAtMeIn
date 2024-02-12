@@ -43,10 +43,10 @@ public class FreeboardServiceImpl implements FreeboardService {
 
     @Override
     public Freeboard createFreeboard(FreeboardRequestDto freeboardRequestDto) {
-
+        System.out.println("1111111111111111111111");
         User user = userRepository.findById(freeboardRequestDto.getUser_seq()).orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
         System.out.println("user = " + user);
-        
+        System.out.println("22222222222222222222222");
         // 파일 저장
         // DTO의 MultiPartFile을 받아서 서비스로 보내서 파일 저장함
         UploadFile uploadFile = null;
