@@ -4,12 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
 import com.ssafy.lam.reviewBoard.dto.ReviewDisplay;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
+import com.ssafy.lam.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +37,19 @@ public class ReviewBoardController {
     private Logger log = LoggerFactory.getLogger(ReviewBoardController.class);
 
     MultipartConfig multipartConfig = new MultipartConfig();
-
     // 파일이 업로드될 디렉토리 경로
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private final ReviewBoardService reviewBoardService;
 
-    public ReviewBoardController(ReviewBoardService reviewBoardService) {
+    public ReviewBoardController(ReviewBoardService reviewBoardService, CustomerRepository customerRepository) {
         log.info("ReviewBoardController init");
         this.reviewBoardService = reviewBoardService;
+        this.customerRepository = customerRepository;
     }
 
     @GetMapping("/list")
@@ -52,19 +59,38 @@ public class ReviewBoardController {
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
         for(ReviewBoard r : reviews) {
             ReviewListDisplay reviewListDisplay = ReviewListDisplay.builder()
-            .reviewBoard_seq(r.getSeq())
-            .customer_name(r.getUser().getName())
-            .reviewBoard_title(r.getTitle())
-            .reviewBoard_cnt(r.getCnt())
-            .reviewBoard_regDate(r.getRegdate())
-            .reviewBoard_score(r.getScore())
-            .reviewBoard_doctor(r.getDoctor().getDocInfoName())
-            .reviewBoard_region(r.getRegion())
-            .reviewBoard_surgery(r.getSurgery())
-            .reviewBoard_hospital(r.getHospital().getUser().getName())
-            .reviewBoard_expected_price(r.getExpectedPrice())
-            .reviewBoard_surgery_price(r.getSurgeryPrice())
-            .build();
+                    .reviewBoard_seq(r.getSeq())
+                    .customer_name(r.getUser().getName())
+                    .reviewBoard_title(r.getTitle())
+                    .reviewBoard_cnt(r.getCnt())
+                    .reviewBoard_regDate(r.getRegdate())
+                    .reviewBoard_score(r.getScore())
+                    .reviewBoard_doctor(r.getDoctor().getDocInfoName())
+                    .reviewBoard_region(r.getRegion())
+                    .reviewBoard_surgery(r.getSurgery())
+                    .reviewBoard_hospital(r.getHospital().getUser().getName())
+                    .reviewBoard_expected_price(r.getExpectedPrice())
+                    .reviewBoard_surgery_price(r.getSurgeryPrice())
+                    .build();
+
+            User user = r.getUser();
+            Customer customer = customerRepository.findByUserUserSeq(user.getUserSeq()).get();
+            if(customer.getProfile() != null){
+                UploadFile profileFile = customer.getProfile();
+                Path path = Paths.get(uploadPath + "/"+profileFile.getName());
+                try{
+                    String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String customerProfileType = profileFile.getType();
+                    reviewListDisplay.setCustomerProfileBase64(customerProfileBase64);
+                    reviewListDisplay.setCustomerProfileType(customerProfileType);
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
             reviewDisplay.add(reviewListDisplay);
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
@@ -77,8 +103,6 @@ public class ReviewBoardController {
         ReviewDisplay detailReview = null;
         if(review!=null) {
             try{
-            
-
                 detailReview = ReviewDisplay.builder()
                         .reviewBoard_seq(review.getSeq())
                         .reviewBoard_title(review.getTitle())
@@ -100,6 +124,23 @@ public class ReviewBoardController {
                     detailReview.setBase64(base64);
                     detailReview.setImageType(imageType);
                 }
+
+                User user = review.getUser();
+                Customer customer = customerRepository.findByUserUserSeq(user.getUserSeq()).get();
+                if(customer.getProfile() != null){
+                    UploadFile profileFile = customer.getProfile();
+                    Path path = Paths.get(uploadPath + "/"+profileFile.getName());
+                    try{
+                        String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                        String customerProfileType = profileFile.getType();
+                        detailReview.setCustomerProfileBase64(customerProfileBase64);
+                        detailReview.setCustomerProfileType(customerProfileType);
+
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }catch(Exception e){
                 e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

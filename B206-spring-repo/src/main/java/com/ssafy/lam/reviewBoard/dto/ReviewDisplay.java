@@ -23,6 +23,9 @@ public class ReviewDisplay {
     private String base64;
     private String imageType;
 
+    private String customerProfileBase64;
+    private String customerProfileType;
+
     @Builder
     public ReviewDisplay(Long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content, double reviewBoard_score, String customer_name, String reviewBoard_doctor, String reviewBoard_region, String reviewBoard_surgery, String reviewBoard_hospital, int reviewBoard_expected_price, int reviewBoard_surgery_price, int reviewBoard_cnt, String base64, String imageType) {
         this.reviewBoard_seq = reviewBoard_seq;
