@@ -241,7 +241,6 @@ public class RequestBoardService {
                     .message(responseDto.getMessage())
                     .build();
             responseRepository.save(response);
-            System.out.println("requestboard.getUser() : " + requestboard.getUser() + " " + "user : " + user + " " + "response.getMessage() : " + response.getMessage());
             // 알림 생성 로직 호출ㅇ
             createNotification(requestboard.getUser(), user, response.getMessage());
         } else {
@@ -250,8 +249,7 @@ public class RequestBoardService {
     }
 
     public void createNotification(User recipient, User sender, String message) {
-        System.out.println("recipient : "+ recipient + " " + "sender : " + sender + " " + "message : " + message);
-//        String notificationMessage = String.format(sender.getName(), message);
+
         Notification notification = new Notification(sender.getName(), recipient, message, false);
         notificationRepository.save(notification);
     }
