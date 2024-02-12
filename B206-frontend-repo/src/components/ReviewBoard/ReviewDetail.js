@@ -10,7 +10,7 @@ import profile from "../../assets/gun.png";
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);
   const { reviewBoard_seq } = useParams(); // URL 파라미터에서 reviewBoard_seq를 가져옴
-  const [imgURL, setImgURL] = useState('');
+  const [imgURL, setImgURL] = useState("");
   const navigate = useNavigate();
   const [showButton, setShowButton] = useState(true);
   // 예제를 위한 현재 사용자 정보 (실제로는 로그인 데이터 등을 통해 설정해야 함)
@@ -29,8 +29,7 @@ function ReviewDetail() {
         const type = res.data.type;
 
         const data = `data:${type};base64,${base64}`;
-        if(base64 != null)
-          setImgURL(data);
+        if (base64 != null) setImgURL(data);
 
         setReviewDetail(res.data);
       })
@@ -48,7 +47,9 @@ function ReviewDetail() {
   };
 
   // 현재 사용자가 글쓴이와 같거나 관리자인지 확인
-  const canEditOrDelete = currentUser.name === reviewDetail.customer_name || currentUser.role === "admin";
+  const canEditOrDelete =
+    currentUser.name === reviewDetail.customer_name ||
+    currentUser.role === "admin";
 
   return (
     <div className={styles.container}>
@@ -57,12 +58,17 @@ function ReviewDetail() {
           <img src={profile} alt="프로필" className={styles.profile}></img>
           <p>{reviewDetail.customer_name}</p>
         </div>
-        <div className={styles.title}><p>{reviewDetail.reviewBoard_title}</p></div>
+        <div className={styles.title}>
+          <p>{reviewDetail.reviewBoard_title}</p>
+        </div>
         <div className={styles.buttonbox}>
           {showButton && canEditOrDelete && (
             <>
               <Button onClick={onReviewUpdate}>수정</Button>
-              <ReviewDelete reviewBoard_seq={reviewBoard_seq} onUpdated={onReviewDeleted}></ReviewDelete>
+              <ReviewDelete
+                reviewBoard_seq={reviewBoard_seq}
+                onUpdated={onReviewDeleted}
+              ></ReviewDelete>
             </>
           )}
         </div>
@@ -75,13 +81,19 @@ function ReviewDetail() {
           <div>지역: {reviewDetail.reviewBoard_region}</div>
         </div>
         <div className={styles.maincenter}>
-         <div className={styles.imgcon}>
-          {imgURL ? <img src={imgURL} alt="글 사진"/> : <div>이미지 없음</div>}
+          <div className={styles.imgcon}>
+            {imgURL ? (
+              <img src={imgURL} alt="글 사진" />
+            ) : (
+              <div>이미지 없음</div>
+            )}
           </div>
-         <div>내용: {reviewDetail.reviewBoard_content}</div>
-         <div className={styles.star}><StarResult score={reviewDetail.reviewBoard_score}/></div>
-       </div>
-       <div className={styles.mainright}>
+          <div>내용: {reviewDetail.reviewBoard_content}</div>
+          <div className={styles.star}>
+            <StarResult score={reviewDetail.reviewBoard_score} />
+          </div>
+        </div>
+        <div className={styles.mainright}>
           <p>의사 정보 들어갈 공간</p>
         </div>
       </div>

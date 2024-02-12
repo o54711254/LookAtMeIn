@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axiosApi from "../../api/axiosApi";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import styles from "./CommentItem.module.css";
+import profile from "../../assets/man/유승호.jpg";
 
 function CommentItem({ comment }) {
   const [isUpdate, setIsUpdate] = useState(false);
@@ -41,27 +40,32 @@ function CommentItem({ comment }) {
   };
 
   return (
-    <>
-      <li>
+    <div className={styles.commentContainer}>
+      <div className={styles.top}>
+        <img src={profile} className={styles.profileImg} />
+        <div className={styles.topRight}>
+          <div className={styles.userId}>{comment.customerId}</div>
+          <div className={styles.buttons}>
+            <button onClick={startUpdate} className={styles.updateButton} />
+            <button onClick={handleDelete} className={styles.deleteButton} />
+          </div>
+        </div>
+      </div>
+      <div className={styles.bottom}>
         {!isUpdate ? (
-          <p>댓글 내용 : {comment.comment_content}</p>
+          <div>{comment.comment_content}</div>
         ) : (
-          <>
+          <div>
             <input
               type="text"
               value={c.comment_content}
               onChange={(e) => setC({ ...c, comment_content: e.target.value })}
             ></input>
             <button onClick={handleUpdate}>수정완료</button>
-          </>
+          </div>
         )}
-
-        <p>댓글 작성자 : {comment.customerId}</p>
-        {/* <p>{comment.freeboard_seq}</p> */}
-        <button onClick={startUpdate}>수정하기</button>
-        <button onClick={handleDelete}>삭제하기</button>
-      </li>
-    </>
+      </div>
+    </div>
   );
 }
 export default CommentItem;
