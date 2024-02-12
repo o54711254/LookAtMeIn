@@ -241,7 +241,6 @@ public class RequestBoardService {
                     .message(responseDto.getMessage())
                     .build();
             responseRepository.save(response);
-            System.out.println("requestboard.getUser() : " + requestboard.getUser() + " " + "user : " + user + " " + "response.getMessage() : " + response.getMessage());
             // 알림 생성 로직 호출ㅇ
             System.out.println(requestboard.getUser() + " " + user + " " + response.getMessage());
             createNotification(requestboard.getUser(), user, response.getMessage());
@@ -252,6 +251,7 @@ public class RequestBoardService {
     }
 
     public void createNotification(User recipient, User sender, String message) {
+
         Notification notification = new Notification(sender.getName(), recipient, message, false);
         notificationRepository.save(notification);
     }
