@@ -43,11 +43,15 @@ public class ReviewBoardController {
     private CustomerRepository customerRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private final ReviewBoardService reviewBoardService;
 
-    public ReviewBoardController(ReviewBoardService reviewBoardService) {
+    public ReviewBoardController(ReviewBoardService reviewBoardService, CustomerRepository customerRepository) {
         log.info("ReviewBoardController init");
         this.reviewBoardService = reviewBoardService;
+        this.customerRepository = customerRepository;
     }
 
     @GetMapping("/list")
