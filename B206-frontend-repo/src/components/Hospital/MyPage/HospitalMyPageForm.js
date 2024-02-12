@@ -10,14 +10,16 @@ import ReservationList from "./ReservationList";
 import ConsultingList from "./ConsultingList";
 
 function HospitalMyPageForm() {
-  const user = useSelector((state) => state.user);
+  const hospital = useSelector((state) => state.hospital);
   return (
     <div className={styles.mypageContainer}>
       <NavLink to="info" className={styles.profile}>
-        <div className={styles.profileImage} />
+        <img src={hospital.profileImg} className={styles.profileImage} />
         <div className={styles.profileInfo}>
-          <div className={styles.profileName}>{user.userName}</div>
-          <div className={styles.profileEmail}>asdfas@asdfsda.com</div>
+          <div className={styles.profileName}>{hospital.hospitalInfo_name}</div>
+          <div className={styles.profileEmail}>
+            {hospital.hospitalInfo_email}
+          </div>
         </div>
       </NavLink>
       <div className={styles.sidebar}>
