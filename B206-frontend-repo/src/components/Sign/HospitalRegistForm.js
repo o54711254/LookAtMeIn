@@ -1,11 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import axiosApi from "axios";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import axiosAPi from "../../api/axiosApi";
+import axiosApi from "../../api/axiosApi";
 import "react-toastify/dist/ReactToastify.css";
 import DaumPostcode from "react-daum-postcode";
 import { Modal, Button } from "antd";
@@ -26,11 +25,11 @@ const validationSchema = yup.object({
     .string()
     .oneOf([yup.ref("password"), null], "비밀번호가 일치하지 않습니다.")
     .required("비밀번호를 다시 입력하세요."),
-  hospitalInfo_email: yup
+  email: yup
     .string()
     .email("올바른 이메일 형식을 입력하세요.")
     .required("이메일을 입력하세요."),
-  hospitalInfo_phoneNumber: yup
+  phoneNumber: yup
     .string()
     .matches(/^[0-9]+$/, "숫자만 입력하세요.")
     .required("전화번호를 입력하세요."),
@@ -41,11 +40,13 @@ function HospitalRegistForm() {
 
   //사용 가능한 정보인지 검사
   const [useable, setUseable] = useState(null);
+  const [tag, setTag] = useState(''); // 사용자 입력을 관리하는 로컬 상태
+
 
   //아이디 중복체크
   const checkDuplicateId = (e) => {
     e.preventDefault();
-    axiosAPi
+    axiosApi
       .get(`/api/user/regist/idcheck/${formik.values.id}`)
       .then((response) => {
         console.log(response.data);
@@ -76,11 +77,11 @@ function HospitalRegistForm() {
       password: "",
       confirmPassword: "",
       name: "", // 병원명->밑에 이름 다 바꿔!!
-      addresss: "",
+      address: "",
       url: "", //병원 홈페이지 주소
       email: "",
       phoneNumber: "", //병원 전화번호
-      part: "", // 병원 전문 분야
+      categoryList: [],
       info: "", // 병원 소개 멘트
       open: "", // 오픈 시간
       close: "", // 닫는 시간
@@ -88,42 +89,69 @@ function HospitalRegistForm() {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       const formData = new FormData();
-      formData.append("hospitalInfo_id", values.id);
-      formData.append("hospitalInfo_password", values.password);
-      formData.append("hospitalInfo_name", values.name);
-      formData.append("hospitalInfo_address", values.addresss);
-      formData.append("hospitalInfo_url", values.url);
-      formData.append("hospitalInfo_email", values.email);
-      formData.append("hospitalInfo_phoneNumber", values.phoneNumber);
-      formData.append("category", values.part);
-      formData.append(
-        "businessRegistrationCertificate",
-        businessRegistrationCertificate
-      ); //여기까지는 필수 입력 사항
-      //여기부터는 선택적으로 입력하는 사항
-      if (values.info) {
-        formData.append("hospitalInfo_introduce", values.info);
-      }
-      if (values.open) {
-        formData.append("hospitalInfo_open", values.open);
-      }
-      if (values.close) {
-        formData.append("hospitalInfo_close", values.close);
+      // Hospital 정보를 "hospital" 객체 내부에 넣어서 추가
+
+      const hospital ={
+        hospitalInfo_id: values.id,
+        hospitalInfo_password: values.password,
+        hospitalInfo_name: values.name,
+        hospitalInfo_address: values.address,
+        hospitalInfo_url: values.url,
+        hospitalInfo_email: values.email,
+        hospitalInfo_phoneNumber: values.phoneNumber,
       }
 
+      if(values.info){
+        hospital["hospitalInfo_introduce"] = values.info;
+      }
+
+      if(values.open){
+        hospital["hospitalInfo_open"] = values.open;
+      }
+
+      if(values.close){
+        hospital["hospitalInfo_close"] = values.close;
+      }
+      // 비즈니스 등록증 파일 추가
+      // hospital["businessRegistrationCertificate"] = businessRegistrationCertificate; 
+
+      // formData.append("hospital", JSON.stringify(hospital));
+
+      // 카테고리 정보를 추가
+      const categoryList = []
+
+      // CategoryList 배열 정보를 추가
+      values.categoryList.forEach((category, index) => {
+        categoryList.push({part: category});
+      });
+
+      const hospitalDto = {}
+      hospitalDto["hospital"] = hospital;
+      hospitalDto["categoryList"] = categoryList;
+
+      formData.append("hospital", JSON.stringify(hospitalDto));
+      formData.append("registrationFile", businessRegistrationCertificate);
+
+
+
+      for (let key of formData.keys()) {
+        console.log(key, ":", formData.get(key));
+     }
+      
       try {
         await axiosApi.post("/api/hospital/regist", formData, {
-          //서버에게 클라이언트가 보내는 데이터의 유형을 알려주는 것.
+          // 서버에게 클라이언트가 보내는 데이터의 유형을 알려주는 것.
           headers: {
             "Content-Type": "multipart/form-data", //multipart/form-data는 폼 데이터가 파일이나 이미지와 같은 바이너리 데이터를 포함할 수 있음을 나타냄
           },
         });
+        
         window.alert("회원가입이 완료되었습니다. 승인을 대기해주세요");
         setTimeout(() => {
           navigate("/");
         }, 2000);
       } catch (e) {
-        console.log(e.response.data.message);
+        console.log(e.message);
       }
     },
   });
@@ -163,6 +191,15 @@ function HospitalRegistForm() {
   //모달을 닫을 때 사용되며, modalVisible을 false로 설정
   const closeModal = () => {
     setModalVisible(false);
+  };
+
+  const addTag = () => {
+    // 입력된 태그가 비어있지 않은 경우에만 추가
+    if (tag) {
+      const newTags = [...formik.values.categoryList, tag];
+      formik.setFieldValue('categoryList', newTags);
+      setTag(''); // 입력 필드 초기화
+    }
   };
 
   return (
@@ -234,20 +271,20 @@ function HospitalRegistForm() {
               type="text"
               placeholder="병원 이름"
               name="name"
-              value={formik.values.hospitalInfo_name}
+              value={formik.values.name}
               id={styles.input}
               onChange={formik.handleChange}
               className={
-                formik.touched.hospitalInfo_name &&
-                formik.errors.hospitalInfo_name
+                formik.touched.name &&
+                formik.errors.name
                   ? "error"
                   : ""
               }
             />
-            {formik.touched.hospitalInfo_name &&
-              formik.errors.hospitalInfo_name && (
+            {formik.touched.name &&
+              formik.errors.name && (
                 <div className="helperText">
-                  {formik.errors.hospitalInfo_name}
+                  {formik.errors.name}
                 </div>
               )}
           </div>
@@ -327,16 +364,21 @@ function HospitalRegistForm() {
             )}
           </div>
           <div className="inputText">
-            <h3 className={styles.text}>해시태그</h3>
-            <input
-              type="text"
-              name="hashtag"
-              placeholder="해시태그"
-              value={formik.values.hashtag}
-              id={styles.input}
-              onChange={formik.handleChange}
-            />
-          </div>
+      <h3 className={styles.text}>해시태그</h3>
+      <input
+        type="text"
+        name="tag"
+        placeholder="해시태그 입력 후 추가 버튼 클릭"
+        value={tag}
+        onChange={(e) => setTag(e.target.value)}
+        id={styles.input}
+      />
+      <button type="button" onClick={addTag}>추가</button>
+      {/* 이미 추가된 해시태그 목록을 보여줌 */}
+      {formik.values.categoryList.map((category, index) => (
+        <div key={index}>{category}</div>
+      ))}
+    </div>
           {/* 선택적 필드: 병원 소개, 오픈 시간, 닫는 시간 */}
           <div className="inputText">
             <h3 className={styles.text}>병원 소개 (선택 사항)</h3>

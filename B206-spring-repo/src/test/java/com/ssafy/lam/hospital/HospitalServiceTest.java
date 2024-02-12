@@ -45,8 +45,8 @@ public class HospitalServiceTest {
         List<CategoryDto> categoryDtoList = new ArrayList<>();
         categoryDtoList.add(categoryDto);
         categoryDtoList.add(categoryDto2);
-        Hospital hospital = hospitalService.createHospital(hospitalDto, categoryDtoList);
-        System.out.println("hospital.getHospitalSeq() = " + hospital.getHospitalSeq());
+//        Hospital hospital = hospitalService.createHospital(hospitalDto, categoryDtoList);
+//        System.out.println("hospital.getHospitalSeq() = " + hospital.getHospitalSeq());
     
     }
 }

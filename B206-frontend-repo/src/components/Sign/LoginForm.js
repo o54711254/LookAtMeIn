@@ -1,41 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import * as yup from "yup";
-import logo from "../../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Field, useFormik } from "formik";
-import { toast, ToastContainer } from "react-toastify";
-import axiosApi from "../../api/axiosApi.js";
-import { loginUser } from "../../redux/user.js";
-import { changeLoading, setToken } from "../../redux/auth";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useFormik } from "formik";
+import * as yup from "yup";
+import axiosApi from "../../api/axiosApi";
+import { loginUser } from "../../redux/user";
+import { setToken } from "../../redux/auth";
 import styles from "./LoginForm.module.css";
-import { style } from "@mui/system";
-
-// axios test 완료
+import logo from "../../assets/logo.png";
+import profile from "../../assets/profile2.png"; // 기본 프로필 이미지
 
 const validationSchema = yup.object({
-  userId: yup
-    .string()
-    // .email("올바른 아이디를 입력해주세요.")
-    .required("아이디 입력해주세요."),
+  userId: yup.string().required("아이디 입력해주세요."),
   userPassword: yup.string().required("패스워드를 입력해주세요."),
 });
 
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [membertype, setMembertype] = useState("");
-
-  //멤버 타입(고객,병원 ,,,)이 라디오 타입으로 바꾸면 어떤 멤번지 바꿔주는 함수
-  const handleChange = (e) => {
-    const value = e.target.value;
-    console.log(`선택한 값 : ${value}`);
-    setMembertype(value);
-  };
+  const [profileImg, setProfileImg] = useState(profile); // 기본값으로 profile 설정
 
   const formik = useFormik({
     initialValues: {
@@ -43,253 +26,99 @@ function LoginForm() {
       userPassword: "",
     },
     validationSchema: validationSchema,
-
     onSubmit: async (values) => {
-      if (membertype === "customer") {
-        //customer
-        try {
-          await axiosApi.post("/api/user/login", values).then((res) => {
-            console.log(values);
-            //res는 서버에서 받은 응답 객체
-            if (res.status === 200) {
-              //로그인 성공
-              dispatch(
-                loginUser({
-                  userSeq: res.data.userSeq, // 사용자 일련번호
-                  userId: values.userId, // 사용자 아이디
-                  userName: res.data.userName, // 사용자 이름
-                  userPassword: values.userPassword, // 사용자 비밀번호
-                  // userGender:
-                  // userBirth:
-                  // userPhone:
-                  // userAddress:
-                  // userEmail:
-                  role: res.data.userType, // 역할 업데이트
-                })
-              );
+      try {
+        const loginResponse = await axiosApi.post("/api/user/login", values);
+        if (loginResponse.status === 200) {
+          const profileResponse = await axiosApi.get(
+            `/api/mypage/${loginResponse.data.userSeq}`
+          );
+          let imageData = profile; // 기본 프로필 이미지
+          if (profileResponse.data.base64 && profileResponse.data.type) {
+            const { base64, type } = profileResponse.data;
+            imageData = `data:${type};base64,${base64}`;
+          }
+          setProfileImg(imageData); // 상태 업데이트
 
-              //토큰 받아오기
-              //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-              const accessToken = res.data.tokenInfo.accessToken;
-              dispatch(setToken({ accessToken: accessToken }));
-              window.alert("반갑습니다. 로그인이 완료되었습니다. ");
-              // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
-              navigate("/");
-            } else {
-              window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-            }
-          });
-        } catch { 
-          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-      }
-      } else if (membertype === "hospital") {
-        //hospital
-        try {
-          await axiosApi
-            .post("/api/user/login", values)
-            //values에는 이메일과 비밀번호가 담겨 있음
-
-            .then((res) => {
-              //res는 서버에서 받은 응답 객체
-              if (res.status === 200) {
-                //로그인 성공
-                console.log("로그인성공", res.data);
-                dispatch(
-                  loginUser({
-                    userSeq: res.data.userSeq, // 사용자 일련번호
-                    userId: values.userId, // 사용자 아이디
-                    userName: res.data.userName, // 사용자 이름
-                    userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType, // 역할 업데이트
-                  })
-                );
-
-                //토큰 받아오기
-                //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-                const accessToken = res.data.tokenInfo.accessToken;
-                dispatch(setToken({ accessToken: accessToken }));
-                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
-                // 로그인이 성공한 경우, 3초 후에 특정 경로로 이동
-                navigate("/hospital/mypage"); //병원 로그인 성공하면 병원 마이페이지로 이동//홈? 마페?
-              } else {
-                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-              }
-            });
-        } catch {
-          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-        }
-      } else if (membertype === "coordinator") {
-        //coordinator
-        try {
-          await axiosApi
-            .post("/api/user/login", values, {
-              //values에는 이메일과 비밀번호가 담겨 있음
-              withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
+          dispatch(
+            loginUser({
+              userSeq: loginResponse.data.userSeq,
+              profileImg: imageData, // 업데이트된 이미지 데이터
+              userId: profileResponse.data.userId,
+              userPassword: profileResponse.data.userPassword,
+              userName: profileResponse.data.customerName,
+              userEmail: profileResponse.data.customerEmail,
+              role: loginResponse.data.userType,
             })
-            .then((res) => {
-              //res는 서버에서 받은 응답 객체
-              if (res.data.status === 200) {
-                //로그인 성공
-                console.log(res.data);
-                dispatch(
-                  loginUser({
-                    userSeq: res.data.userSeq, // 사용자 일련번호
-                    userId: values.userId, // 사용자 아이디
-                    userName: res.data.userName, // 사용자 이름
-                    userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType, // 역할 업데이트
-                  })
-                );
+          );
 
-                //토큰 받아오기
-                //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-                const accessToken = res.data.tokenInfo.accessToken;
-                dispatch(setToken({ accessToken: accessToken }));
-                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
-                // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
-                navigate("/");
-              } else {
-                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-              }
-            });
-        } catch {
-          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
+          const { accessToken } = loginResponse.data.tokenInfo;
+          dispatch(setToken({ accessToken }));
+          alert("반갑습니다. 로그인이 완료되었습니다.");
+          navigate("/");
+        } else {
+          alert("아이디나 비밀번호를 다시 확인해 주세요.");
         }
-      } else if (membertype === "admin") {
-        //admin
-        try {
-          await axiosApi
-            .post("/api/user/login", values, {
-              //values에는 이메일과 비밀번호가 담겨 있음
-              withCredentials: true, //CORS(Cross-Origin Resource Sharing) 정책을 따르는 웹 애플리케이션에서 발생하는 문제 중 하나를 해결하기 위한 옵션
-            })
-            .then((res) => {
-              //res는 서버에서 받은 응답 객체
-              if (res.data.status === 200) {
-                //로그인 성공
-                console.log(res.data);
-                dispatch(
-                  loginUser({
-                    userSeq: res.data.userSeq, // 사용자 일련번호
-                    userId: values.userId, // 사용자 아이디
-                    userName: res.data.userName, // 사용자 이름
-                    userPassword: values.userPassword, // 사용자 비밀번호
-                    role: res.data.userType, // 역할 업데이트
-                  })
-                );
-
-                //토큰 받아오기
-                //서버에서 받은 토큰(authorization)을 사용하여 Redux 스토어에 토큰을 저장
-                const accessToken = res.headers.get("authorization");
-                dispatch(setToken({ accessToken: accessToken }));
-                window.alert("반갑습니다. 로그인이 완료되었습니다. ");
-                console.log(res.data);
-                // 로그인이 성공한 경우, 3초 후에 메인 홈으로 이동
-                navigate("/");
-              } else {
-                window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-              }
-            });
-        } catch {
-          window.alert("아이디나 비밀번호를 다시 확인해 주세요.");
-        }
-      } else {
-        window.alert("회원유형을 선택해주세요 !");
+      } catch (error) {
+        alert("아이디나 비밀번호를 다시 확인해 주세요.");
       }
     },
   });
 
   return (
-    <div className={styles.loginform}>
-      <form onSubmit={formik.handleSubmit}>
-      <div className="로그인 창 시작" id={styles.loginheader}>
-        <img src={logo} alt="로고사진" className={styles.logo}/>
-      </div >
-        <div className="radioButtons" id={styles.radio}>
-          <div className="radioButton">
-            <input
-              id="admin"
-              value="admin"
-              name="membertype"
-              type="radio"
-              onChange={handleChange}
-            ></input>
-            <label htmlFor="admin">관리자</label>
-          </div>
-          <div className="radioButton">
-            <input
-              id="customer"
-              value="customer"
-              type="radio"
-              name="membertype"
-              onChange={handleChange}
-            ></input>
-            <label htmlFor="customer">고객</label>
-          </div>
-          <div className="radioButton">
-            <input
-              id="hospital"
-              value="hospital"
-              name="membertype"
-              type="radio"
-              onChange={handleChange}
-            ></input>
-            <label htmlFor="hospital">병원</label>
-          </div>
-          <div className="radioButton">
-            <input
-              id="coordinator"
-              value="coordinator"
-              name="membertype"
-              type="radio"
-              onChange={handleChange}
-            ></input>
-            <label htmlFor="coordinator">코디네이터</label>
-          </div>
-        </div>
-
-        <div className="idInput" id={styles.userinput}>
-          <h3>아이디</h3>
+    <div className={styles.loginFormContainer}>
+      <div className={styles.logo}>
+        <img src={logo} alt="로고" className={styles.logoIcon} />
+      </div>
+      <form onSubmit={formik.handleSubmit} className={styles.submitBox}>
+        {/* 아이디 입력 */}
+        <div className={styles.inputBox}>
           <input
             name="userId"
             placeholder="아이디를 입력해주세요"
             value={formik.values.userId}
             onChange={formik.handleChange}
             type="text"
-            id = {styles.input}
-            className={formik.touched.id && formik.errors.id ? "error" : ""}
+            className={
+              formik.touched.userId && formik.errors.userId ? "error" : ""
+            }
+            id={styles.input}
           />
-          {formik.touched.id && formik.errors.id && (
-            <div className="helperText">{formik.errors.id}</div>
+          {formik.touched.userId && formik.errors.userId && (
+            <div>{formik.errors.userId}</div>
           )}
         </div>
-        <div className="passwordInput" id={styles.userinput}>
-          <h3>비밀번호</h3>
+        {/* 비밀번호 입력 */}
+        <div className={styles.inputBox}>
           <input
             name="userPassword"
             placeholder="비밀번호를 입력해주세요"
             value={formik.values.userPassword}
             onChange={formik.handleChange}
             type="password"
-            id = {styles.input}
             className={
               formik.touched.userPassword && formik.errors.userPassword
                 ? "error"
                 : ""
             }
+            id={styles.input}
           />
           {formik.touched.userPassword && formik.errors.userPassword && (
-            <div className="helperText">{formik.errors.userPassword}</div>
+            <div>{formik.errors.userPassword}</div>
           )}
         </div>
-
-        <button type="submit" className={styles.loginButton}>로그인</button>
-        <div className={styles.selectBox}>
-          <Link to="/regist" className={styles.select}>회원가입</Link>
-          <Link to="/findPassword" className={styles.select}> 비밀번호 찾기</Link>
+        {/* 로그인 버튼 */}
+        <div className={styles.buttonBox}>
+          <button type="submit" className={styles.button}>
+            로그인
+          </button>
+          <Link to="/regist" className={styles.button}>
+            회원가입
+          </Link>
         </div>
       </form>
     </div>
   );
 }
+
 export default LoginForm;

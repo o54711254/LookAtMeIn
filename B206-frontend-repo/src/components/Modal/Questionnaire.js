@@ -28,25 +28,39 @@ export default function FormDialog() {
     setOpen(false);
   };
 
-  const handleRegist = () => {
+  const handleRegist = async () => {
     const formData = new FormData();
-    if (image) {
-      formData.append('image', image); // 서버에서 사용하는 필드명('image' 등)으로 교체 가능
-    }
+    // formData.append("customer_seq", 1);
+    // formData.append("hospital_seq", 2);
+
+    // const 
+
+    const questionnaireData = {}
+
+
 
     // 기존 questionnaire 데이터를 FormData에 추가
     Object.keys(questionnaire).forEach(key => {
-      formData.append(key, questionnaire[key]);
+      // formData.append(key, questionnaire[key]);
+      questionnaireData[key] = questionnaire[key];
     });
 
-    axiosApi.post('/api/questionnaire/regist', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    .then(response => {
-      console.log('Success:', response.data);
-      // 성공 처리 로직
+    formData.append("questionnaireData", JSON.stringify(questionnaireData));
+    
+    if (image) {
+      formData.append('image', image); // 서버에서 사용하는 필드명('image' 등)으로 교체 가능
+    }
+    
+    try{
+      const response = await axiosApi.post('/api/questionnaire/regist', formData, {
+        headers:{
+          'Content-Type': 'multipart/form-data',
+        }
+      });
+
+      console.log("success: ", response.data);
+
+      setOpen(false)
       setOpen(false); // 다이얼로그 닫기
       // 폼 상태 초기화
       setQuestionnaire({
@@ -55,11 +69,32 @@ export default function FormDialog() {
         questionnaire_content: "",
       });
       setImage(null);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      // 오류 처리 로직
-    });
+
+    }catch(e){
+      console.log("error: ", e);
+    }
+
+    // axiosApi.post('/api/questionnaire/regist', formData, {
+    //   headers: {
+    //     'Content-Type': 'multipart/form-data',
+    //   },
+    // })
+    // .then(response => {
+    //   console.log('Success:', response.data);
+    //   // 성공 처리 로직
+    //   setOpen(false); // 다이얼로그 닫기
+    //   // 폼 상태 초기화
+    //   setQuestionnaire({
+    //     questionnaire_remark: "",
+    //     questionnaire_blood: "",
+    //     questionnaire_content: "",
+    //   });
+    //   setImage(null);
+    // })
+    // .catch(error => {
+    //   console.error('Error:', error);
+    //   // 오류 처리 로직
+    // });
   };
 
   const handleImageChange = (event) => {

@@ -1,40 +1,68 @@
 import { useEffect, useState } from "react";
 import axiosApi from "../../../../api/axiosApi";
-import StarRating from "../../../ReviewBoard/StarRating/StarResult";
+import StarResult from "../../../ReviewBoard/StarRating/StarResult";
+import { useNavigate } from "react-router-dom";
+import profile from "../../../../assets/gun.png";
+import AOS from "aos";
+import styles from "./ReportedReview.module.css";
 
 function ReportedReview() {
-  const [reviewList, setReviewList] = useState([]);
+  const [reviewBoardList, setReviewBoardList] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     axiosApi
-      .get(`/reviewBoard/report/list`)
+      .get(`/api/admin/reviewComplain`)
       .then((res) => {
-        setReviewList(res.data);
+        console.log(res.data);
+        setReviewBoardList(res.data);
       })
       .catch((error) => {
-        console.log(
-          "신고된 리뷰 게시판을 불러오는데 오류가 발생했습니다.",
-          error
-        );
+        console.log("시술 후기 데이터를 가져오는데 실패했습니다.", error);
       });
+  }, []);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
   });
+
+  const handleClick = (reviewBoard_seq) => {
+    navigate(`/reviewdetail/${reviewBoard_seq}`);
+  };
+
   return (
     <div>
-      {reviewList.length > 0 ? (
+      {reviewBoardList.length >= 0 ? (
         <div>
-          {reviewList.map((board, index) => {
-            <li key={index}>
-              <div>작성자: {board.customer_id}</div>
-              <div>제목: {board.reviewBoard_title}</div>
-              <div>조회수: {board.reviewBoard_cnt}</div>
-              <div>작성날짜: {board.reviewBoard_regDate}</div>
+          {reviewBoardList.map((board) => (
+            <div
+              key={board.reviewBoard_seq}
+              onClick={() => handleClick(board.reviewBoard_seq)}
+              className={styles.reviewItem}
+              data-aos="fade-up"
+            >
               <div>
-                <StarRating score={board.reviewBoard_score} />
+                <img src={profile} alt="프로필" className={styles.profile} />
               </div>
-            </li>;
-          })}
+              <div className={styles.writer}>
+                <div>{board.customer_name}</div>
+                <div>
+                  <StarResult score={board.reviewBoard_score} />
+                </div>
+              </div>
+              <div className={styles.title}>
+                <div>{board.reviewBoard_title}</div>
+              </div>
+              <div className={styles.price}>
+                시술가 : {board.reviewBoard_price} 원
+              </div>
+            </div>
+          ))}
         </div>
       ) : (
-        <div>시술 후기에 신고된 글이 없습니다.</div>
+        <div>작성한 시술 후기가 없습니다.</div>
       )}
     </div>
   );

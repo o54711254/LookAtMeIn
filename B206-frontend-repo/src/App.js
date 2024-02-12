@@ -6,13 +6,14 @@ import Regist from "./components/Sign/Regist";
 import UserRegistForm from "./components/Sign/UserRegistForm";
 import HospitalRegistForm from "./components/Sign/HospitalRegistForm";
 import Nav from "./components/Nav.js";
-import Home from "./components/Home.js";
+import Home from "./pages/Home";
 import HospitalBoardList from "./components/HospitalBoard/HospitalList.js";
 import ReviewBoardList from "./components/ReviewBoard/ReviewList";
 import ReviewDetail from "./components/ReviewBoard/ReviewDetail";
 import ReviewRegist from "./components/ReviewBoard/ReviewRegist";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import RequestBoardList from "./components/RequestBoard/RequestBoardList.js";
+import RequestBoardDetail from "./components/RequestBoard/RequestBoardDetail";
 
 import CustomerMyPage from "./pages/Mypage/CustomerMyPage.js";
 import HosMyPage from "./pages/Mypage/HosMyPage.js";
@@ -35,9 +36,15 @@ import Questionnaire from "./components/Modal/Questionnaire.js";
 
 import FreeBoardDetail from "./components/FreeBoard/FreeBoardDetail.js";
 import Worldcup from "./components/WorldCup/Worldcup.js";
+import WorldcupMan from "./components/WorldCup/WorldcupMan";
+import WorldcupWoman from "./components/WorldCup/WorldcupWoman";
 import ReviewUpdate from "./components/ReviewBoard/ReviewUpate.js";
 import HospitalInfo from "./components/HospitalBoard/HospitalInfo.js";
 import HospitalDetail from "./pages/HospitalDetail.js";
+
+import Search from "./components/Search/SearchInput.js";
+import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
+import Canvas from "./components/Canvas/canvas.js";
 
 function App() {
   return (
@@ -69,12 +76,14 @@ function App() {
                   {/* 마이페이지 */}
                   <Route path="/mypage/*" element={<CustomerMyPage />} />
                   <Route path="/hospital-mypage/*" element={<HosMyPage />} />
-
                   <Route path="/admin-mypage/*" element={<AdminMyPage />} />
 
                   {/* 리뷰 게시판 */}
-                  <Route path="/reviewList" element={<ReviewBoardList />} />
-                  <Route path="/reviewboard/*" element={<ReviewBoardList />} />
+                  <Route
+                    path="/reviewBoard/list"
+                    element={<ReviewBoardList />}
+                  />
+                  {/* <Route path="/reviewboard/*" element={<ReviewBoardList />} /> */}
                   <Route
                     path="/reviewdetail/:reviewBoard_seq"
                     element={<ReviewDetail />}
@@ -95,25 +104,41 @@ function App() {
 
                   {/*상담요청 게시판*/}
                   <Route
-                    path="/requestboardlist"
+                    path="/requestBoard/requestBoardList"
                     element={<RequestBoardList />}
+                  />
+                  <Route
+                    path="/requestBoard/requestBoardList/:requestboardSeq"
+                    element={<RequestBoardDetail />}
                   />
 
                   {/*병원 게시판*/}
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
                   <Route
-                    path="/hospital-info/detail/:hospital_seq"
-                    element={<HospitalDetail />}
+                    path="/hospital-info/detail/:hospitalInfo_seq"
+                    element={<HospitalInfo />}
                   />
 
                   {/*이상향 월드컵*/}
                   <Route path="/worldcup/*" element={<Worldcup />} />
 
+                  <Route path="/worldcup/man" element={<WorldcupMan />}></Route>
+                  <Route
+                    path="/worldcup/woman"
+                    element={<WorldcupWoman />}
+                  ></Route>
+                  <Route
+                    path="/worldcup/champion"
+                    element={<WorldcupChampion />}
+                  />
                   <Route path="/face" element={<FacialAsy />} />
 
-                  {/* <Route path="/search/*" element={<SearchList />} /> */}
+                  {/*검색*/}
+                  <Route path="/search/*" element={<Search />} />
+                  <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
-                  {/* <Route path="/search/:query" element={<SearchList />} /> */}
+                  <Route path="/reviewregist" element={<ReviewRegist />} />
+                  <Route path="/canvas" element={<Canvas />} />
                 </Routes>
               </div>
             </div>
@@ -124,7 +149,7 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {/* <Questionnaire /> */}
+          {/* {<Questionnaire />} */}
           <FloatingChat />
         </div>
         <Footer />

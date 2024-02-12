@@ -1,5 +1,7 @@
 package com.ssafy.lam.admin.service;
 
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
 import com.ssafy.lam.freeboard.dto.FreeboardAdminDto;
@@ -12,6 +14,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +27,8 @@ public class AdminServiceImpl implements AdminService {
     private final FreeboardRepository freeboardRepository;
     private final ReviewBoardRepository reviewBoardRepository;
     private final HospitalRepository hospitalRepository;
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @Override
     public List<FreeboardAdminDto> findComplainedAndNotDeletedFreeboards() {
@@ -49,11 +56,12 @@ public class AdminServiceImpl implements AdminService {
                         .reviewBoard_title(reviewBoard.getTitle())
                         .reviewBoard_content(reviewBoard.getContent())
                         .customer_name(reviewBoard.getUser().getName())
-                        .reviewBoard_doctor(reviewBoard.getDoctor())
+                        .reviewBoard_doctor(reviewBoard.getDoctor().getDocInfoName())
                         .reviewBoard_region(reviewBoard.getRegion())
                         .score(reviewBoard.getScore())
-                        .reviewBoard_hospital(reviewBoard.getHospital())
-                        .reviewBoard_price(reviewBoard.getPrice())
+                        .reviewBoard_hospital(reviewBoard.getHospital().getUser().getName())
+                        .reviewBoard_expected_price(reviewBoard.getExpectedPrice())
+                        .reviewBoard_surgery_price(reviewBoard.getSurgeryPrice())
                         .regdate(reviewBoard.getRegdate())
                         .complain(reviewBoard.isComplain())
                         .isdeleted(reviewBoard.isIsdeleted())
@@ -63,28 +71,68 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<HospitalAdminDto> findUnapprovedHospitals() {
-        return hospitalRepository.findByIsApprovedFalse().stream()
-                .map(hospital -> HospitalAdminDto.builder()
-                        .hospitalSeq(hospital.getHospitalSeq())
-                        .userSeq(hospital.getUser().getUserSeq())
-                        .hospitalInfo_id(hospital.getUser().getUserId())
-                        .hospitalInfo_name(hospital.getUser().getName())
-                        .isApproved(hospital.isApproved())
-                        .build())
-                .collect(Collectors.toList());
+
+        List<HospitalAdminDto> hospitalAdminDtoList = new ArrayList<>();
+        List<Hospital> hospitals = hospitalRepository.findByIsApprovedFalse();
+
+            for(Hospital hospital : hospitals){
+                try {
+                    HospitalAdminDto hospitalAdminDto = HospitalAdminDto.builder()
+                            .hospitalSeq(hospital.getHospitalSeq())
+                            .userSeq(hospital.getUser().getUserSeq())
+                            .hospitalInfo_id(hospital.getUser().getUserId())
+                            .hospitalInfo_name(hospital.getUser().getName())
+                            .isApproved(hospital.isApproved())
+                            .build();
+
+                    if(hospital.getRegistrationFile() != null){
+                        Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
+                        String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
+
+                        hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+                    }
+
+
+                    hospitalAdminDtoList.add(hospitalAdminDto);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            return hospitalAdminDtoList;
     }
 
     @Override
     public List<HospitalAdminDto> findApprovedHospitals() {
-        return hospitalRepository.findByIsApprovedTrue().stream()
-                .map(hospital -> HospitalAdminDto.builder()
+//
+
+        List<HospitalAdminDto> hospitalAdminDtoList = new ArrayList<>();
+        List<Hospital> hospitals = hospitalRepository.findByIsApprovedTrue();
+
+        for(Hospital hospital : hospitals){
+            try {
+                HospitalAdminDto hospitalAdminDto = HospitalAdminDto.builder()
                         .hospitalSeq(hospital.getHospitalSeq())
                         .userSeq(hospital.getUser().getUserSeq())
                         .hospitalInfo_id(hospital.getUser().getUserId())
                         .hospitalInfo_name(hospital.getUser().getName())
                         .isApproved(hospital.isApproved())
-                        .build())
-                .collect(Collectors.toList());
+                        .build();
+
+                if(hospital.getRegistrationFile() != null){
+                    Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
+                    String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String type = hospital.getRegistrationFile().getType();
+                    hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+
+                }
+
+
+                hospitalAdminDtoList.add(hospitalAdminDto);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return hospitalAdminDtoList;
     }
 
     @Override

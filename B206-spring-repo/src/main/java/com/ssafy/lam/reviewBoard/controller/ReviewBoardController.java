@@ -1,5 +1,9 @@
 package com.ssafy.lam.reviewBoard.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
@@ -13,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +31,11 @@ import java.util.Map;
 public class ReviewBoardController {
 
     private Logger log = LoggerFactory.getLogger(ReviewBoardController.class);
+
+    MultipartConfig multipartConfig = new MultipartConfig();
+
+    // 파일이 업로드될 디렉토리 경로
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @Autowired
     private final ReviewBoardService reviewBoardService;
@@ -39,9 +51,21 @@ public class ReviewBoardController {
         List<ReviewBoard> reviews = reviewBoardService.getAllReviews();
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
         for(ReviewBoard r : reviews) {
-            reviewDisplay.add(new ReviewListDisplay(r.getSeq(), r.getUser().getName(), r.getTitle(), r.getCnt(),
-                    r.getRegdate(), r.getScore(), r.getDoctor(), r.getRegion(), r.getSurgery(), r.getHospital(),
-                    r.getPrice()));
+            ReviewListDisplay reviewListDisplay = ReviewListDisplay.builder()
+            .reviewBoard_seq(r.getSeq())
+            .customer_name(r.getUser().getName())
+            .reviewBoard_title(r.getTitle())
+            .reviewBoard_cnt(r.getCnt())
+            .reviewBoard_regDate(r.getRegdate())
+            .reviewBoard_score(r.getScore())
+            .reviewBoard_doctor(r.getDoctor().getDocInfoName())
+            .reviewBoard_region(r.getRegion())
+            .reviewBoard_surgery(r.getSurgery())
+            .reviewBoard_hospital(r.getHospital().getUser().getName())
+            .reviewBoard_expected_price(r.getExpectedPrice())
+            .reviewBoard_surgery_price(r.getSurgeryPrice())
+            .build();
+            reviewDisplay.add(reviewListDisplay);
         }
         return new ResponseEntity<>(reviewDisplay, HttpStatus.OK);
     }
@@ -52,18 +76,52 @@ public class ReviewBoardController {
         ReviewBoard review = reviewBoardService.getReview(seq);
         ReviewDisplay detailReview = null;
         if(review!=null) {
-            detailReview = new ReviewDisplay(seq, review.getTitle(), review.getContent(), review.getScore(),
-                    review.getUser().getName(), review.getDoctor(), review.getRegion(), review.getSurgery(),
-                    review.getHospital(), review.getPrice(), review.getCnt());
+            try{
+            
+
+                detailReview = ReviewDisplay.builder()
+                        .reviewBoard_seq(review.getSeq())
+                        .reviewBoard_title(review.getTitle())
+                        .reviewBoard_content(review.getContent())
+                        .reviewBoard_score(review.getScore())
+                        .customer_name(review.getUser().getName())
+                        .reviewBoard_doctor(review.getDoctor().getDocInfoName())
+                        .reviewBoard_region(review.getRegion())
+                        .reviewBoard_surgery(review.getSurgery())
+                        .reviewBoard_hospital(review.getHospital().getUser().getName())
+                        .reviewBoard_expected_price(review.getExpectedPrice())
+                        .reviewBoard_surgery_price(review.getSurgeryPrice())
+                        .reviewBoard_cnt(review.getCnt())
+                        .build();
+                if(review.getUploadFile() != null){
+                    Path path = Paths.get(uploadPath + "/"+review.getUploadFile().getName());
+                    String base64 = EncodeFile.encodeFileToBase64(path);
+                    String imageType = review.getUploadFile().getType();
+                    detailReview.setBase64(base64);
+                    detailReview.setImageType(imageType);
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
         }
         return new ResponseEntity<>(detailReview, HttpStatus.OK);
     }
 
     @PostMapping("/regist")
     @Operation(summary = "새로운 후기 정보를 생성한다.")
-    public ResponseEntity<Void> createReview(@RequestBody ReviewBoardRegister reviewBoardRegister) {
-        reviewBoardService.createReview(reviewBoardRegister);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> createReview(@RequestParam("reviewBoardData") String reviewBoardData, @RequestParam(value = "uploadFile", required = false) MultipartFile file){
+        log.info("reviewBoardData:{}", reviewBoardData);
+        log.info("uploadfile:{}" , file);
+        try{
+            ReviewBoardRegister reviewBoardRegister = new ObjectMapper().readValue(reviewBoardData, ReviewBoardRegister.class);
+            reviewBoardService.createReview(reviewBoardRegister, null);
+            return ResponseEntity.ok().build();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/update")
@@ -86,5 +144,17 @@ public class ReviewBoardController {
         reviewBoardService.reportReview(seq);
         return ResponseEntity.ok().build();
     }
+
+//    @GetMapping("/avg/{seq}")
+//    @Operation(summary = "평균")
+//    public double avgScore(@PathVariable long seq) {
+//        return reviewBoardService.avgScore(seq);
+//    }
+//
+//    @GetMapping("/cnt/{seq}")
+//    @Operation(summary = "개수")
+//    public double cntReviews(@PathVariable long seq) {
+//        return reviewBoardService.cntReviews(seq);
+//    }
 
 }

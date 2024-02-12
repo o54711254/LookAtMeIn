@@ -85,10 +85,11 @@ class Backend:
 
 
 
-    def complete(self, pts):
-        sketch = self.make_sketch(self.sketch_points)
+    def complete(self, mask_points,sketch_points):
+        
+        sketch = self.make_sketch(sketch_points)
         stroke, stroke_down = self.make_stroke(self.stroke_points)
-        mask = self.make_mask(pts)
+        mask = self.make_mask(mask_points)
 
 
         stroke_down = np.concatenate([stroke_down[:, :, 2:3], stroke_down[:, :, 1:2], stroke_down[:, :, :1]], axis=2)

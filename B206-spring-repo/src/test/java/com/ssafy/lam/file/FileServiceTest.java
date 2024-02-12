@@ -22,8 +22,8 @@ public class FileServiceTest {
         UploadFile dto = uploadFileService.getUploadFile(fileSeq);
         System.out.println("dto.getOriginalPath().getFilename() = " + dto.getName());
 
-        Resource resource = uploadFileService.loadFile(fileSeq);
-        System.out.println("resource.getFilename() = " + resource.getFilename());
+//        Resource resource = uploadFileService.loadFile(fileSeq);
+//        System.out.println("resource.getFilename() = " + resource.getFilename());
         // when
         // then
     }

@@ -1,8 +1,7 @@
 import React from "react";
-import axios from "axios";
-import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
+import styles from "./FreeBoardDelete.module.css";
 
 const FreeBoardDelete = ({ freeBoardSeq }) => {
   const navigate = useNavigate();
@@ -22,9 +21,11 @@ const FreeBoardDelete = ({ freeBoardSeq }) => {
   };
 
   return (
-    <Button variant="contained" onClick={handleUpdate}>
-      삭제하기
-    </Button>
+    <button
+      variant="contained"
+      onClick={handleUpdate}
+      className={styles.button}
+    ></button>
   );
 };
 
