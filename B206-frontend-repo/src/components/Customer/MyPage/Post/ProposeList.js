@@ -7,6 +7,8 @@ import styles from "./ProposeList.module.css";
 function ProposeList() {
   const [proposeList, setProposeList] = useState([]);
   const userSeq = useSelector((state) => state.user.userSeq);
+  const userName = useSelector((state) => state.user.userName);
+  // const [responseSeq, setResponseSeq] = useState(null);
 
   useEffect(() => {
     axiosApi
@@ -14,6 +16,7 @@ function ProposeList() {
       .then((response) => {
         console.log(response.data);
         setProposeList(response.data);
+        // setResponseSeq(response.data.seq);
       })
       .catch((error) => {
         console.error(
@@ -21,14 +24,25 @@ function ProposeList() {
           error
         );
       });
-  }, []);
+  }, [userSeq]);
 
-  function startChat() {}
+  function startChat(seq) {
+    axiosApi
+      .post(`api/requestboard/accept-response/${seq}`)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("상담 수락 처리 중 에러 발생:", error);
+      });
+  }
 
   return (
-    <>
-      <h3>여기는 요청받은 채팅 목록</h3>
-      <div className={styles.container}>
+    <div>
+      <div className={styles.head}>
+        <h3>{userName}님께 상담 요청을 보낸 병원 목록</h3>
+      </div>
+      <div>
         {proposeList.map((propose, index) => (
           <li key={index} className={styles.proposeItem}>
             <div className={styles.index}>No. {index + 1}</div>
@@ -39,12 +53,12 @@ function ProposeList() {
               <div>{propose.message}</div>
             </div>
             <div>
-              <button onClick={startChat}>수락하기</button>
+              <button onClick={() => startChat(propose.seq)}>수락하기</button>
             </div>
           </li>
         ))}
       </div>
-    </>
+    </div>
   );
 }
 export default ProposeList;

@@ -39,15 +39,16 @@ public class ReviewBoardController {
     MultipartConfig multipartConfig = new MultipartConfig();
     // 파일이 업로드될 디렉토리 경로
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
-
+    @Autowired
     private CustomerRepository customerRepository;
 
     @Autowired
     private final ReviewBoardService reviewBoardService;
 
-    public ReviewBoardController(ReviewBoardService reviewBoardService) {
+    public ReviewBoardController(ReviewBoardService reviewBoardService, CustomerRepository customerRepository) {
         log.info("ReviewBoardController init");
         this.reviewBoardService = reviewBoardService;
+        this.customerRepository = customerRepository;
     }
 
     @GetMapping("/list")

@@ -250,7 +250,6 @@ public class RequestBoardService {
     }
 
     public void createNotification(User recipient, User sender, String message) {
-
         Notification notification = new Notification(sender.getName(), recipient, message, false);
         notificationRepository.save(notification);
     }
