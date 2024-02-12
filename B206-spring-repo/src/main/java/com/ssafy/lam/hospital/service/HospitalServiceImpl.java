@@ -205,13 +205,14 @@ public class HospitalServiceImpl implements HospitalService {
         }
     }
     @Override
-    public List<ReviewBoard> getReviewsByHospital(Long user_seq) {
-        List<ReviewBoard> reviews = hospitalRepository.findReviewsByUserSeq(user_seq);
+    public List<ReviewBoard> getReviewsByHospital(Long hospitalSeq) {
+        List<ReviewBoard> reviews = hospitalRepository.findReviewsByHospitalSeq(hospitalSeq);
         return reviews;
     }
     @Override
-    public List<Doctor> getHospitalDoctorList(Long user_seq) {
-        List<Doctor> doctorList = hospitalRepository.findDoctorByUserSeq(user_seq).orElse(null);
+    public List<Doctor> getHospitalDoctorList(Long hospitalSeq) {
+        List<Doctor> doctorList = hospitalRepository.findDoctorByHospitalSeq(hospitalSeq).orElse(null);
         return doctorList;
     }
+
 }

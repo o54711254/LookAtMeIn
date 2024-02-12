@@ -42,9 +42,9 @@ public class ReviewBoard {
     @Column(name = "review_board_score")
     private double score; // 별점
     @Column(name = "review_board_expected_price")
-    private Integer expectedPrice; // 견적 가격
+    private int expectedPrice; // 견적 가격
     @Column(name = "review_board_surgery_price")
-    private Integer surgeryPrice; // 시술 가격
+    private int surgeryPrice; // 시술 가격
     @Column(name = "review_board_regdate")
     private long regdate; // 작성시간
     @Column(name = "review_board_complain")
@@ -53,7 +53,7 @@ public class ReviewBoard {
     @Column(name = "review_board_isdeleted")
     private boolean isdeleted; // 삭제여부
     @Column(name = "review_board_cnt")
-    private Integer cnt = 0; // 조회수 
+    private int cnt = 0; // 조회수
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Hospital hospital; // 후기 대상 병원
