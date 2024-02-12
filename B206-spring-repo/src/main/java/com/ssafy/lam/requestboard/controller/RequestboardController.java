@@ -42,7 +42,7 @@ public class RequestboardController {
     @GetMapping("/detail/{requestSeq}")
     @Operation(summary = "게시물 상세조회")
     public ResponseEntity<?> getRequestBySeq(@PathVariable Long requestSeq) {
-        RequestDto requestDto = requestboardService.finRequestboard(requestSeq);
+        RequestDto requestDto = requestboardService.findRequestboard(requestSeq);
         return new ResponseEntity<RequestDto>(requestDto, HttpStatus.OK);
     }
 

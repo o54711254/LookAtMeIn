@@ -59,7 +59,7 @@ public class RequestBoardService {
 
     //상세조회
     @Transactional
-    public RequestDto finRequestboard(Long requestSeq) {
+    public RequestDto findRequestboard(Long requestSeq) {
         // 여기사이에 조회수 들어가야 함
         Optional<Requestboard> requestboardOptional = requestboardRepository.findBySeqAndIsDeletedFalse(requestSeq);
         if (requestboardOptional.isPresent()) {
@@ -71,6 +71,8 @@ public class RequestBoardService {
             RequestDto requestDto = RequestDto.builder()
                     .seq(requestboard.getSeq())
                     .title(requestboard.getTitle())
+                    .content(requestboard.getContent())
+                    .userSeq(requestboard.getUser().getUserSeq())
                     .userName(requestboard.getUser().getUsername())
                     .regDate(requestboard.getRegDate())
                     .requestCnt(requestboard.getRequestCnt())
