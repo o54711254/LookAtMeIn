@@ -17,6 +17,8 @@
 .navBar div {
   /* 기존 스타일 */
   transition: color 0.3s; /* 색상 변화 효과 */
+  font-size: clamp(12px, 1.5vw, 16px); /* 최소 12px, 선호 1.5vw, 최대 16px */
+  padding: 10px 15px; /* 패딩을 화면 크기에 따라 조금 조정 */
 }
 span {
   color: rgb(219, 77, 101);

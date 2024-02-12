@@ -78,8 +78,11 @@ function App() {
                   <Route path="/admin-mypage/*" element={<AdminMyPage />} />
 
                   {/* 리뷰 게시판 */}
-                  <Route path="/reviewList" element={<ReviewBoardList />} />
-                  <Route path="/reviewboard/*" element={<ReviewBoardList />} />
+                  <Route
+                    path="/reviewBoard/list"
+                    element={<ReviewBoardList />}
+                  />
+                  {/* <Route path="/reviewboard/*" element={<ReviewBoardList />} /> */}
                   <Route
                     path="/reviewdetail/:reviewBoard_seq"
                     element={<ReviewDetail />}
@@ -141,7 +144,7 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {<Questionnaire />}
+          {/* {<Questionnaire />} */}
           <FloatingChat />
         </div>
         <Footer />
