@@ -18,8 +18,9 @@ const HospitalList = () => {
     axiosApi
       .get(`/api/hospital-info/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
       .then((response) => {
+        console.log(response.data)
         setHospitalInfo(response.data);
-        console.log(hospitalInfo);
+        
       })
       .catch((error) => {
         console.error("병원 정보 리스트 조회 에러 : ", error);
