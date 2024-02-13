@@ -30,8 +30,8 @@ public interface ReserveService {
                   MultipartFile afterImg);
 
 
-    List<Reserve> getAllByUserSeqCompleted(Long userSeq);
+    List<ReserveResponseDto> getAllByUserSeqCompleted(Long userSeq);
 
-    Reserve getDetailReseveCompleted(Long reserveSeq);
+    ReserveResponseDto getDetailReseveCompleted(Long reserveSeq);
 
 }

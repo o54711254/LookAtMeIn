@@ -32,6 +32,14 @@ public class ReserveResponseDto {
 
     private boolean completed;
 
+
+    private String afterImgBase64;
+    private String afterImgType;
+
+    private String beforeImgBase64;
+    private String beforeImgType;
+
+
     @Builder
 
     public ReserveResponseDto(Long customerUserSeq, Long hospitalUserSeq, Long reserveSeq, String customerName, String hospitalName, int year, int month, int day, String dayofweek, int time, String content, int price, boolean questionnaired, Long questionnaireSeq, String hospitalProfileBase64, String hospitalProfileType, boolean completed) {
