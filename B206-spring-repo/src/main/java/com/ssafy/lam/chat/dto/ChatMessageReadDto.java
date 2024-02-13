@@ -19,8 +19,12 @@ public class ChatMessageReadDto {
     private String customerProfileBase64;
     private String customerProfileType;
 
+    private String hospitalProfileBase64;
+    private String hospitalProfileType;
+
     @Builder
-    public ChatMessageReadDto(Long chatroomSeq, String sender, Long senderSeq, String message, Long messageSeq, String customerProfileBase64, String customerProfileType) {
+
+    public ChatMessageReadDto(Long chatroomSeq, String sender, Long senderSeq, String message, Long messageSeq, String customerProfileBase64, String customerProfileType, String hospitalProfileBase64, String hospitalProfileType) {
         this.chatroomSeq = chatroomSeq;
         this.sender = sender;
         this.senderSeq = senderSeq;
@@ -28,6 +32,8 @@ public class ChatMessageReadDto {
         this.messageSeq = messageSeq;
         this.customerProfileBase64 = customerProfileBase64;
         this.customerProfileType = customerProfileType;
+        this.hospitalProfileBase64 = hospitalProfileBase64;
+        this.hospitalProfileType = hospitalProfileType;
     }
 }
 

@@ -4,11 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const hospitalSlice = createSlice({
   name: "hospital", // 리듀서의 이름
   initialState: {
-    userSeq: "",
     profileImg: "",
     hospitalSeq: "",
-    hospitalInfo_id: "",
-    hospitalInfo_password: "",
     hospitalInfo_name: "",
     hospitalInfo_phoneNumber: "",
     hospitalInfo_email: "",
@@ -20,11 +17,8 @@ export const hospitalSlice = createSlice({
   }, // 초기 상태 값
   reducers: {
     loginHospital: (state, action) => {
-      state.userSeq = action.payload.userSeq;
       state.profileImg = action.payload.profileImg;
       state.hospitalSeq = action.payload.hospitalSeq;
-      state.hospitalInfo_id = action.payload.hospitalInfo_id;
-      state.hospitalInfo_password = action.payload.hospitalInfo_password;
       state.hospitalInfo_name = action.payload.hospitalInfo_name;
       state.hospitalInfo_phoneNumber = action.payload.hospitalInfo_phoneNumber;
       state.hospitalInfo_email = action.payload.hospitalInfo_email;
@@ -33,14 +27,10 @@ export const hospitalSlice = createSlice({
       state.hospitalInfo_open = action.payload.hospitalInfo_open;
       state.hospitalInfo_close = action.payload.hospitalInfo_close;
       state.hospitalInfo_url = action.payload.hospitalInfo_url;
-      state.role = action.payload.role;
       return state;
     },
     logoutHospital: (state) => {
-      state.userSeq = "";
       state.hospitalSeq = "";
-      state.hospitalInfo_id = "";
-      state.hospitalInfo_password = "";
       state.hospitalInfo_name = "";
       state.hospitalInfo_phoneNumber = "";
       state.hospitalInfo_email = "";
@@ -49,7 +39,6 @@ export const hospitalSlice = createSlice({
       state.hospitalInfo_open = "";
       state.hospitalInfo_close = "";
       state.hospitalInfo_url = "";
-      state.role = "";
       return state;
     },
   },
