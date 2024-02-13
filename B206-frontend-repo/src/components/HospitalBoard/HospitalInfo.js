@@ -5,13 +5,12 @@ import { useParams, useNavigate } from "react-router-dom";
 // import div from "@mui/material/div";
 import Reserve from "../Modal/DateTimePickerModal";
 import { useDispatch } from "react-redux";
-import { setHospital } from "../../redux/hospital.js";
 import styles from "./HospitalInfo.module.css";
 import basicHos from "../../assets/basicHos.png";
 import profile from "../../assets/gun.png";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { useSelector } from "react-redux";
-import Wish from "./HospitalWish.js"
+import Wish from "./HospitalWish.js";
 
 const HospitalInfo = () => {
   const dispatch = useDispatch();
@@ -35,13 +34,13 @@ const HospitalInfo = () => {
   useEffect(() => {
     const getHospitalInfo = async () => {
       try {
-        console.log(hospitalInfo_seq);
+        console.log("hospitalInfo_seq: ", hospitalInfo_seq);
 
         const response = await axiosApi.post(
           `/api/hospital-info/detail/${hospitalInfo_seq}?user_seq=${user_seq}`
         );
-        setHospitalData(response.data);
         console.log("여기", response.data);
+        setHospitalData(response.data);
         console.log(response.data.userSeq);
         // const imgResponse = await axiosApi.get(response.data.fileUrl);
         // console.log("response2: ", imgResponse);
@@ -49,18 +48,10 @@ const HospitalInfo = () => {
         // const type = imgResponse.data.type;
         // const data = `data:${type};base64,${base64}`;
         // setImg(data);
-
-        dispatch(
-          setHospital({
-            hospitalSeq: response.data.userSeq,
-            hospitalName: response.data.hospitalInfo_name,
-          })
-        );
       } catch (error) {
         console.error("병원 정보를 가져오는데 실패했습니다:", error);
       }
     };
-
     getHospitalInfo();
   }, []);
 
@@ -69,8 +60,9 @@ const HospitalInfo = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+    
     axiosApi
-      .get(`/api/hospital-info/reviews/${userSeq}`)
+      .get(`/api/hospital-info/reviews/${hospitalInfo_seq}`)
       .then((response) => {
         console.log(userSeq);
         console.log(response.data);
@@ -82,13 +74,13 @@ const HospitalInfo = () => {
   }, []);
 
   const handleClick = (reviewBoard_seq) => {
-    navigate(`api/reviewBoard/${reviewBoard_seq}`);
+    navigate(`/reviewdetail/${reviewBoard_seq}`);
   };
 
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     axiosApi
-      .get(`api/hospital-info/doctors/${userSeq}`)
+      .get(`api/hospital-info/doctors/${hospitalInfo_seq}`)
       .then((response) => {
         console.log(response.data);
         setDoctors(response.data);
@@ -100,6 +92,10 @@ const HospitalInfo = () => {
 
   const viewDoctorInfo = (docInfoSeq) => {
     navigate(`/의사 디테일 하나..?`);
+  };
+
+  const handleSearch = (searchTerm) => {
+    navigate(`/search/${searchTerm}`);
   };
 
   const week = ["월", "화", "수", "목", "금", "토", "일"];
@@ -130,13 +126,13 @@ const HospitalInfo = () => {
             {week.map((day) => (
               <div key={day} className={styles.day}>
                 {day === "토" && (
-                  <div>
+                  <div className={styles.day}>
                     {day} {hospitalData.hospitalInfo_open} ~ 13:00{" "}
                   </div>
                 )}
                 {day === "일" && <div>{day} 휴무</div>}
                 {!(day === "토" || day === "일") && (
-                  <div>
+                  <div className={styles.day}>
                     {day} {hospitalData.hospitalInfo_open} ~{" "}
                     {hospitalData.hospitalInfo_close}{" "}
                   </div>
@@ -159,11 +155,11 @@ const HospitalInfo = () => {
         </div>
 
         {/* <div>avgScore: {hospitalData.avgScore}</div> */}
-        <Reserve />
+        <Reserve hospitalInfoSeq={hospitalInfo_seq} />
       </div>
       <div className={styles.part2}>
         <div>리뷰 목록</div>
-        <Wish/>
+        <Wish />
         {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}
@@ -191,19 +187,29 @@ const HospitalInfo = () => {
         ))}
       </div>
       <div className={styles.part3}>
-        <h3>의사 목록</h3>
         {doctors.map((doctor) => (
           <li
-            key={doctor.docInfoSeq}
+            key={doctor.doctorSeq}
             className={styles.reviewItem}
             onClick={() => viewDoctorInfo}
           >
             <div>
               <img src={profile} alt="프로필" className={styles.profile} />
             </div>
-            <div className={styles.writer}>
-              <div>{doctor.customer_name}</div>
-              <div>{/* <StarResult score={doctor.reviewBoard_score} /> */}</div>
+            <div className={styles.doctor}>
+              <div className={styles.writer}>
+                <div>
+                  <span className={styles.docName}>{doctor.doctorName}</span>{" "}
+                  원장
+                </div>
+              </div>
+              <div className={styles.hashtagButton}>
+                {doctor.doctorCategory.map((category, index) => (
+                  <div key={index} onClick={() => handleSearch(category.part)}>
+                    {category.part}
+                  </div>
+                ))}
+              </div>
             </div>
           </li>
         ))}

@@ -54,7 +54,8 @@ public class QuestionnaireController {
         try{
             Questionnaire questionnaire = questionnaireService.getQuestionnaireDetail(questionSeq);
             QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
-                    .seq(questionnaire.getSeq())
+                    .reserveSeq(questionnaire.getReserve().getSeq())
+                    .questionnaireSeq(questionnaire.getSeq())
                     .blood(questionnaire.getBlood())
                     .remark(questionnaire.getRemark())
                     .content(questionnaire.getContent())

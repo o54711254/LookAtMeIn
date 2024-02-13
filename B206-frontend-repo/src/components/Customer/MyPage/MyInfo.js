@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../../redux/user";
 import axiosApi from "../../../api/axiosApi";
 import styles from "./MyInfo.module.css";
 import profile from "../../../assets/profile2.png";
 import update from "../../../assets/update.png";
+import { loginCustomer } from "../../../redux/customer";
 
 // axios 완료
 function MyInfo() {
   const user = useSelector((state) => state.user);
+  const customer = useSelector((state) => state.customer);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [infoData, setInfoData] = useState({});
   const [profileImg, setProfileImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -71,6 +75,12 @@ function MyInfo() {
       })
       .then((res) => {
         console.log("프로필 이미지 업로드 성공", res);
+        dispatch(
+          loginCustomer({
+            ...customer,
+            profileImg: profileImg,
+          })
+        );
         window.location.reload();
       })
       .catch((error) => {

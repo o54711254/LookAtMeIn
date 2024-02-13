@@ -20,6 +20,10 @@ public class HospitalDto {
     private String hospitalInfo_url;
 
 
+    private String hospitalProfileBase64;
+    private String hospitalProfileType;
+
+
 
     @Builder
 

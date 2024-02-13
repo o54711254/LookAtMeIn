@@ -15,6 +15,7 @@ import com.ssafy.lam.requestboard.domain.RequestboardRepository;
 import com.ssafy.lam.requestboard.domain.Response;
 import com.ssafy.lam.requestboard.domain.ResponseRepository;
 import com.ssafy.lam.requestboard.dto.NotificationDto;
+import com.ssafy.lam.requestboard.dto.RequestResponDto;
 import com.ssafy.lam.requestboard.dto.ResponseDto;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
 import com.ssafy.lam.reserve.domain.Reserve;
@@ -26,6 +27,8 @@ import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
 import com.ssafy.lam.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +49,12 @@ public class MypageController {
     private final ReviewBoardService reviewBoardService;
     private final ReserveService reserveService;
     private final RequestBoardService requestBoardService;
-
+    private Logger log = LoggerFactory.getLogger(MypageController.class);
     @GetMapping("/{userSeq}")
     @Operation(summary = "유저 타입에 따라 고객 정보나 병원 정보를 조회")
     public ResponseEntity<?> getMypageByUser(@PathVariable long userSeq) {
         String role = userService.getUser(userSeq).getUserType();
-
+        log.info("role : {}", role);
         if (role.equals("CUSTOMER")) {
             CustomerDto dto = customerService.getCustomer(userSeq);
             if (dto != null) {
@@ -61,6 +64,7 @@ public class MypageController {
             }
         } else {
             HospitalDto dto = hospitalService.getHospital(userSeq);
+            log.info("dto : {}", dto.getHospitalInfo_id());
             if (dto != null) {
                 return new ResponseEntity<HospitalDto>(dto, HttpStatus.OK);
             } else {
@@ -122,7 +126,7 @@ public class MypageController {
         return new ResponseEntity<>(reserveList, HttpStatus.OK);
     }
 
-    @GetMapping("/request/{userSeq}")
+    @GetMapping("/suggest/{userSeq}")
     @Operation(summary = "제안을 수락한 병원 목록")
     public ResponseEntity<?> getResponse(@PathVariable long userSeq) {
         List<ResponseDto> responseDtos = requestBoardService.findAllresponse(userSeq);
@@ -134,5 +138,12 @@ public class MypageController {
     public ResponseEntity<List<NotificationDto>> getNotificationsByUser(@PathVariable Long userSeq) {
         List<NotificationDto> notifications = requestBoardService.findAllNotificationsByUser(userSeq);
         return ResponseEntity.ok(notifications);
+    }
+
+    @GetMapping("/request/{userSeq}")
+    @Operation(summary = "고객이 작성한 요청게시판 조회")
+    public ResponseEntity<?> getRequestboard(@PathVariable long userSeq){
+       List<RequestResponDto> requestResponDtos = requestBoardService.findByUserUserSeqAndIsDeletedFalse(userSeq);
+        return new ResponseEntity<>(requestResponDtos, HttpStatus.OK);
     }
 }

@@ -2,6 +2,8 @@ package com.ssafy.lam.reviewBoard.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,6 +22,10 @@ public class ReviewListDisplay {
     private String reviewBoard_hospital; // 병원 이름
     private int reviewBoard_expected_price; // 견적 가격
     private int reviewBoard_surgery_price; // 시술 가격
+
+    private String customerProfileBase64;
+    private String customerProfileType;
+
 
     @Builder
     public ReviewListDisplay(long reviewBoard_seq, String customer_name, String reviewBoard_title, int reviewBoard_cnt,

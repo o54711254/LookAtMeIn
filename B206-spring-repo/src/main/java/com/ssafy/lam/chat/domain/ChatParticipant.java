@@ -30,10 +30,13 @@ public class ChatParticipant {
     @JoinColumn(name = "chatRoom_seq")
     private ChatRoom chatRoom;
 
+    private String chatRoomName;
+
     @Builder
-    public ChatParticipant(Long participantSeq, User user, ChatRoom chatRoom) {
+    public ChatParticipant(Long participantSeq, User user, ChatRoom chatRoom, String chatRoomName) {
         this.participantSeq = participantSeq;
         this.user = user;
         this.chatRoom = chatRoom;
+        this.chatRoomName = chatRoomName;
     }
 }

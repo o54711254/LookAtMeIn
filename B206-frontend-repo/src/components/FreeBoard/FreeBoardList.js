@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
-import s from "classnames";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 import FreeBoardRegist from "./FreeBoardRegist.js";
 import styles from "./FreeBoardList.module.css";
-import profile from "../../assets/gun.png";
+import profile from "../../assets/profile2.png";
+// import profile from "../../assets/gun.png";
 
 function FreeBoardList() {
   const navigate = useNavigate();
@@ -23,16 +21,27 @@ function FreeBoardList() {
         const sortedData = response.data.sort(
           (a, b) => new Date(b.freeboardSeq) - new Date(a.freeboardSeq)
         );
-        setFreeBoardList(sortedData);
+
+        const updateData = sortedData.map((board) => {
+          if (board.customerProfileBase64 && board.customerProfileType) {
+            board.img = `data:${board.customerProfileType};base64,${board.customerProfileBase64}`;
+          } else {
+            board.img = profile;
+          }
+          return board;
+        });
+        setFreeBoardList(updateData);
+        // setFreeBoardList(sortedData);
+        // const base64 = response.data.customerProfileBase64;
+        // const type = response.data.customerProfileType;
+        // const data = `data:${type};base64,${base64}`;
+        // if (base64 != null) setImg(data);
+        // console.log(img);
       })
       .catch((error) => {
         console.log("자유게시판 불러오기 에러: ", error);
       });
   }, []);
-
-  // useEffect(() => {
-  //   console.log(freeboardList); // 상태가 업데이트되고 나서 로그를 출력
-  // }, [freeboardList]);
 
   const goDetailPage = (freeboardSeq) => {
     if (freeboardSeq) {
@@ -60,7 +69,14 @@ function FreeBoardList() {
           >
             <div className={styles.index}>No. {index + 1}</div>
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              {/* <img src={profile} alt="프로필" className={styles.profile} /> */}
+              {board.img && (
+                <img
+                  src={board.img}
+                  alt="자게 작성자 프사"
+                  className={styles.profile}
+                />
+              )}
             </div>
             {/* <div>No. {index + 1}</div> */}
             <div className={styles.writer}>

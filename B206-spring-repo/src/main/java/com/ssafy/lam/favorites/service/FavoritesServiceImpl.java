@@ -80,4 +80,13 @@ public class FavoritesServiceImpl implements FavoritesService {
         }
         return favorites;
     }
+
+    @Override
+    public Boolean isHospitalFavorite(Long userSeq, Long hospitalSeq) {
+        Favorites favorites = favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeqAndIsLikedTrue(userSeq, hospitalSeq);
+        if(favorites!=null)
+            return true;
+        else
+            return false;
+    }
 }

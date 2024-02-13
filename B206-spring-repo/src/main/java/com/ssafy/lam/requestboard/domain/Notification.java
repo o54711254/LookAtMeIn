@@ -16,15 +16,19 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String sender;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq")
     private User recipient; // 알림을 받는 사용자
 
     private String message;
+
     private boolean isRead = false;
 
     @Builder
-    public Notification(User recipient, String message, boolean isRead) {
+    public Notification(String sender, User recipient, String message, boolean isRead) {
+        this.sender = sender;
         this.recipient = recipient;
         this.message = message;
         this.isRead = isRead;

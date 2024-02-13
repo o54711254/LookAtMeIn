@@ -21,6 +21,12 @@ public class ReviewBoardDto {
     private int reviewBoard_surgery_price; // 시술 가격
     private int reviewBoard_cnt; // 조회수
 
+    private String hospitalProfileBase64;
+    private String hospitalProfileType;
+
+    private String uploadImgBase64;
+    private String uploadImgType;
+
     @Builder
     public ReviewBoardDto(long reviewBoard_seq, String reviewBoard_title, String reviewBoard_content,
                          double reviewBoard_score, String customer_name, String reviewBoard_doctor,

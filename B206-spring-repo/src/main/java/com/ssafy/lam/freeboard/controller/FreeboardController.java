@@ -1,8 +1,13 @@
 package com.ssafy.lam.freeboard.controller;
 
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.exception.NoArticleExeption;
 import com.ssafy.lam.exception.UnAuthorizedException;
 
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
@@ -15,8 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/freeBoard")
@@ -24,11 +32,13 @@ import java.util.List;
 public class FreeboardController {
     private final FreeboardService freeboardService;
     private final UploadFileService uploadFileService;
+    private final CustomerRepository customerRepository;
 
 
 
     private Logger log = LoggerFactory.getLogger(FreeboardController.class);
-
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @PostMapping("/regist")
     @Operation(summary = "자유게시판 글 등록")
@@ -45,16 +55,34 @@ public class FreeboardController {
         List<Freeboard> freeboardList = freeboardService.getAllFreeboards();
         List<FreeboardResponseDto> freeboardResponseDtoList = new ArrayList<>();
 
-
         for(Freeboard freeboard : freeboardList){
-            FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
-                    .freeboardSeq(freeboard.getFreeboardSeq())
-                    .userId(freeboard.getUser().getUserId())
-                    .freeboardTitle(freeboard.getTitle())
-                    .freeboardRegisterdate(freeboard.getRegisterDate())
-                    .build();
-            freeboardResponseDtoList.add(freeboardResponseDto);
+            Optional<Customer> customerOptional = customerRepository.findByUserUserSeq(freeboard.getUser().getUserSeq());
+            Customer customer = null;
+            if(customerOptional.isPresent()){
+                customer = customerOptional.get();
+                FreeboardResponseDto freeboardResponseDto = FreeboardResponseDto.builder()
+                        .freeboardSeq(freeboard.getFreeboardSeq())
+                        .userId(freeboard.getUser().getUserId())
+                        .freeboardTitle(freeboard.getTitle())
+                        .freeboardRegisterdate(freeboard.getRegisterDate())
+                        .build();
+
+                if(customer.getProfile() != null){
+                    UploadFile customerProfile = customer.getProfile();
+                    Path path = Paths.get(uploadPath+"/"+customerProfile.getName());
+                    try{
+                        String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                        String customerProfileType = customerProfile.getType();
+                        freeboardResponseDto.setCustomerProfileBase64(customerProfileBase64);
+                        freeboardResponseDto.setCustomerProfileType(customerProfileType);
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                freeboardResponseDtoList.add(freeboardResponseDto);
+            }
         }
+
 
 
         return ResponseEntity.ok().body(freeboardResponseDtoList);

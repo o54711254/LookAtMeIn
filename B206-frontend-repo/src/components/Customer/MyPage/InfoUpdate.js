@@ -1,13 +1,25 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { loginUser } from "../../../redux/user";
 import axiosApi from "../../../api/axiosApi";
 import styles from "./InfoUpdate.module.css";
-import profile from "../../../assets/man/유승호.jpg";
-import check from "../../../assets/check.png";
+import profile from "../../../assets/man/유승호.jpg"; // 데모 이미지로 가정
+import check from "../../../assets/check.png"; // 데모 체크 이미지로 가정
+
+function base64ToBlob(base64, mimeType) {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType });
+}
 
 function InfoUpdate() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [initialData, setInitialData] = useState({});
   const [updateData, setUpdateData] = useState({});
@@ -34,25 +46,54 @@ function InfoUpdate() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const hasChanges = Object.keys(initialData).some(
-      (key) => updateData[key] !== initialData[key]
+    // Base64 이미지 데이터에서 실제 데이터만 추출
+    const base64Data = user.profileImg.split(",")[1];
+    const imageBlob = base64ToBlob(base64Data, "image/png");
+
+    const formData = new FormData();
+    formData.append("profile", imageBlob, "profile.png");
+    formData.append(
+      "customerData",
+      JSON.stringify({
+        userId: updateData.userId,
+        userPassword: updateData.userPassword,
+        customerName: updateData.customerName,
+        customerGender: updateData.customerGender,
+        customerAddress: updateData.customerAddress,
+        customerEmail: updateData.customerEmail,
+        customerPhoneNumber: updateData.customerPhoneNumber,
+      })
     );
-    const dataToSubmit = hasChanges ? updateData : initialData;
-    console.log("수정요청보낼데이터", dataToSubmit);
+
     axiosApi
-      .put(`/api/customer/mypage/modify/${user.userSeq}`, dataToSubmit)
-      .then(() => {
-        navigate(`/mypage/info`);
+      .put(`/api/customer/mypage/modify/${user.userSeq}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log("수정성공", res);
+        dispatch(
+          loginUser({
+            ...user,
+            ...updateData,
+            profileImg: user.profileImg, // 기존 이미지 정보를 유지
+          })
+        );
+        navigate(-1); // 이전 페이지로 이동
       })
       .catch((error) => {
-        console.error("유저 정보 수정 중 에러 발생", error);
+        console.error("업로드 중 에러 발생", error);
       });
   };
-
   return (
     <div className={styles.infoContainer}>
       <div className={styles.infoTop}>
-        <img src={profile} alt="profileImg" className={styles.profileImg} />
+        <img
+          src={user.profileImg}
+          alt="profileImg"
+          className={styles.profileImg}
+        />
         <div className={styles.infoName}>
           {updateData.customerName}님 반갑습니다!
           <div className={styles.infoId}>ID : {updateData.userId}</div>

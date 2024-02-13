@@ -13,13 +13,13 @@ import ReviewDetail from "./components/ReviewBoard/ReviewDetail";
 import ReviewRegist from "./components/ReviewBoard/ReviewRegist";
 import FreeBoardList from "./components/FreeBoard/FreeBoardList";
 import RequestBoardList from "./components/RequestBoard/RequestBoardList.js";
+import RequestBoardDetail from "./components/RequestBoard/RequestBoardDetail";
 
 import CustomerMyPage from "./pages/Mypage/CustomerMyPage.js";
 import HosMyPage from "./pages/Mypage/HosMyPage.js";
 import AdminMyPage from "./pages/Mypage/AdminMyPage.js";
 
 import SearchList from "./components/Search/SearchList";
-import VideoRoom from "./components/OpenVidu/streaming/OvVideo.js";
 import SearchInput from "./components/Search/SearchInput";
 import Footer from "./components/Footer";
 import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
@@ -44,6 +44,11 @@ import HospitalDetail from "./pages/HospitalDetail.js";
 import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
+import RequestRegist from "./components/RequestBoard/RequestRegist";
+
+// openvidu
+import WaitingRoom from "./pages/Openvidu.js";
+import HospitalReservation from "./components/Modal/HospitalReservation.js";
 
 function App() {
   return (
@@ -78,8 +83,11 @@ function App() {
                   <Route path="/admin-mypage/*" element={<AdminMyPage />} />
 
                   {/* 리뷰 게시판 */}
-                  <Route path="/reviewList" element={<ReviewBoardList />} />
-                  <Route path="/reviewboard/*" element={<ReviewBoardList />} />
+                  <Route
+                    path="/reviewBoard/list"
+                    element={<ReviewBoardList />}
+                  />
+                  {/* <Route path="/reviewboard/*" element={<ReviewBoardList />} /> */}
                   <Route
                     path="/reviewdetail/:reviewBoard_seq"
                     element={<ReviewDetail />}
@@ -100,8 +108,16 @@ function App() {
 
                   {/*상담요청 게시판*/}
                   <Route
-                    path="/requestboardlist"
+                    path="/requestBoard/requestBoardList"
                     element={<RequestBoardList />}
+                  />
+                  <Route
+                    path="/requestBoard/requestBoardList/:requestboardSeq"
+                    element={<RequestBoardDetail />}
+                  />
+                  <Route
+                    path="/requestBoard/regist"
+                    element={<RequestRegist />}
                   />
 
                   {/*병원 게시판*/}
@@ -112,7 +128,7 @@ function App() {
                   />
 
                   {/*이상향 월드컵*/}
-                  <Route path="/worldcup/*" element={<Worldcup />} />
+                  {/* <Route path="/worldcup/*" element={<Worldcup />} /> */}
 
                   <Route path="/worldcup/man" element={<WorldcupMan />}></Route>
                   <Route
@@ -128,11 +144,15 @@ function App() {
                   {/*검색*/}
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
-                  {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
+                  {/* <Route path="/meeting/meet/*" element={<VideoRoom />} /> */}
+                  <Route path="/meeting/*" element={<WaitingRoom />} />
                   <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
+                  <Route path="/meeting/*" element={<WaitingRoom />} />
                 </Routes>
               </div>
+
+              {/* <HospitalReservation/> */}
             </div>
           </BrowserRouter>
           <div>
@@ -144,7 +164,6 @@ function App() {
           {<Questionnaire />}
           <FloatingChat />
         </div>
-        <Footer />
       </div>
     </div>
   );

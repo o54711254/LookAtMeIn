@@ -29,7 +29,6 @@
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 .profileImage {
-  background-image: url("../../../assets/profile2.png");
   background-color: #ffffff;
   background-position: center;
   background-size: cover;

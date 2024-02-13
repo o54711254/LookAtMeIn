@@ -44,15 +44,21 @@ public class HosptialController {
 
 //    @PutMapping
 
-    
+
     // 병원에서 의사 정보 추가
     @PostMapping("/{hospital_seq}/doctors/regist")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가")
-    public ResponseEntity<Void> createDoctor(@PathVariable Long hospital_seq, @RequestBody DoctorDto doctorDto) {
-        hospitalService.createDoctor(hospital_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> createDoctor(@PathVariable Long hospital_seq, @RequestParam("doctorData") String doctorData, @RequestParam("doctorProfile") MultipartFile doctorProfile) {
+        try{
+            DoctorDto doctorDto = new ObjectMapper().readValue(doctorData, DoctorDto.class);
+            hospitalService.createDoctor(hospital_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career(), doctorProfile);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
-    
+
     // 병원에서 의사 목록 조회
     @GetMapping("/{hospital_seq}/doctors")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사 목록 조회")

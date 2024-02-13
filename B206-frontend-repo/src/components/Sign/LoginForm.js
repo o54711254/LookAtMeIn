@@ -5,6 +5,8 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axiosApi from "../../api/axiosApi";
 import { loginUser } from "../../redux/user";
+import { loginHospital } from "../../redux/hospital";
+import { loginCustomer } from "../../redux/customer";
 import { setToken } from "../../redux/auth";
 import styles from "./LoginForm.module.css";
 import logo from "../../assets/logo.png";
@@ -30,28 +32,71 @@ function LoginForm() {
       try {
         const loginResponse = await axiosApi.post("/api/user/login", values);
         if (loginResponse.status === 200) {
-          const profileResponse = await axiosApi.get(
-            `/api/mypage/${loginResponse.data.userSeq}`
-          );
-          let imageData = profile; // 기본 프로필 이미지
-          if (profileResponse.data.base64 && profileResponse.data.type) {
-            const { base64, type } = profileResponse.data;
-            imageData = `data:${type};base64,${base64}`;
-          }
-          setProfileImg(imageData); // 상태 업데이트
-
+          console.log(loginResponse.data);
           dispatch(
             loginUser({
               userSeq: loginResponse.data.userSeq,
-              profileImg: imageData, // 업데이트된 이미지 데이터
-              userId: profileResponse.data.userId,
-              userPassword: profileResponse.data.userPassword,
-              userName: profileResponse.data.customerName,
-              userEmail: profileResponse.data.customerEmail,
+              userId: values.userId,
+              userPassword: values.userPassword,
               role: loginResponse.data.userType,
             })
           );
 
+          if (loginResponse.data.userType === "CUSTOMER") {
+            const profileResponse = await axiosApi.get(
+              `/api/mypage/${loginResponse.data.userSeq}`
+            );
+            console.log(profileResponse);
+            let imageData = profile; // 기본 프로필 이미지
+            if (profileResponse.data.base64 && profileResponse.data.type) {
+              const { base64, type } = profileResponse.data;
+              imageData = `data:${type};base64,${base64}`;
+            }
+            setProfileImg(imageData); // 상태 업데이트
+
+            dispatch(
+              loginCustomer({
+                profileImg: imageData, // 업데이트된 이미지 데이터
+                customerName: profileResponse.data.customerName,
+                customerGender: profileResponse.data.customerGender,
+                customerPhone: profileResponse.data.customerPhoneNumber,
+                customerEmail: profileResponse.data.customerEmail,
+                customerAddress: profileResponse.data.customerAddress,
+              })
+            );
+          } else if (loginResponse.data.userType === "HOSPITAL") {
+            const hospitalResponse = await axiosApi.get(
+              `/api/mypage/${loginResponse.data.userSeq}`
+            );
+            let imageData = profile;
+            if (
+              hospitalResponse.data.hospitalProfileBase64 &&
+              hospitalResponse.data.hospitalProfileType
+            ) {
+              const base64 = hospitalResponse.data.hospitalProfileBase64;
+              const type = hospitalResponse.data.hospitalProfileType;
+
+              imageData = `data:${type};base64,${base64}`;
+            }
+            setProfileImg(imageData);
+            dispatch(
+              loginHospital({
+                profileImg: imageData,
+                hospitalSeq: "",
+                hospitalInfo_name: hospitalResponse.data.hospitalInfo_name,
+                hospitalInfo_phoneNumber:
+                  hospitalResponse.data.hospitalInfo_phoneNumber,
+                hospitalInfo_email: hospitalResponse.data.hospitalInfo_email,
+                hospitalInfo_introduce:
+                  hospitalResponse.data.hospitalInfo_introduce,
+                hospitalInfo_address:
+                  hospitalResponse.data.hospitalInfo_address,
+                hospitalInfo_open: hospitalResponse.data.hospitalInfo_open,
+                hospitalInfo_close: hospitalResponse.data.hospitalInfo_close,
+                hospitalInfo_url: hospitalResponse.data.hospitalInfo_url,
+              })
+            );
+          }
           const { accessToken } = loginResponse.data.tokenInfo;
           dispatch(setToken({ accessToken }));
           alert("반갑습니다. 로그인이 완료되었습니다.");
