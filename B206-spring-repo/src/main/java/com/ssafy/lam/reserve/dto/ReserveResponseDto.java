@@ -21,15 +21,20 @@ public class ReserveResponseDto {
     private int day;
     private String dayofweek;
     private int time;
+    private String content;
+    private int price;
 
     private boolean questionnaired;
+    private Long questionnaireSeq;
 
     private String hospitalProfileBase64;
     private String hospitalProfileType;
 
+    private boolean completed;
+
     @Builder
 
-    public ReserveResponseDto(Long customerUserSeq, Long hospitalUserSeq, Long reserveSeq, String customerName, String hospitalName, int year, int month, int day, String dayofweek, int time, boolean questionnaired, String hospitalProfileBase64, String hospitalProfileType) {
+    public ReserveResponseDto(Long customerUserSeq, Long hospitalUserSeq, Long reserveSeq, String customerName, String hospitalName, int year, int month, int day, String dayofweek, int time, String content, int price, boolean questionnaired, Long questionnaireSeq, String hospitalProfileBase64, String hospitalProfileType, boolean completed) {
         this.customerUserSeq = customerUserSeq;
         this.hospitalUserSeq = hospitalUserSeq;
         this.reserveSeq = reserveSeq;
@@ -40,8 +45,12 @@ public class ReserveResponseDto {
         this.day = day;
         this.dayofweek = dayofweek;
         this.time = time;
+        this.content = content;
+        this.price = price;
         this.questionnaired = questionnaired;
+        this.questionnaireSeq = questionnaireSeq;
         this.hospitalProfileBase64 = hospitalProfileBase64;
         this.hospitalProfileType = hospitalProfileType;
+        this.completed = completed;
     }
 }

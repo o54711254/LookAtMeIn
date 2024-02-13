@@ -84,6 +84,7 @@ public class HospitalServiceImpl implements HospitalService {
     public HospitalDto getHospital(long userSeq) {
         Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
         HospitalDto dto = HospitalDto.builder()
+                .hospitalInfo_seq(hospital.getHospitalSeq())
                 .hospitalInfo_id(hospital.getUser().getUserId())
                 .hospitalInfo_password(hospital.getUser().getPassword())
                 .hospitalInfo_name(hospital.getUser().getName())
