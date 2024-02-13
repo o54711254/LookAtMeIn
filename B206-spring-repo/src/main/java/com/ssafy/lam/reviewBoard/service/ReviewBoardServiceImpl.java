@@ -99,20 +99,6 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
             uploadFile = uploadFileService.store(file);
         reviewBoard.setUploadFile(uploadFile);
 
-        List<String> hashtags = reviewBoardRegister.getHashtags(); // DTO에 해시태그 리스트 필드가 추가되었다고 가정
-        if (hashtags != null && !hashtags.isEmpty()) {
-            for (String tagName : hashtags) {
-                Hashtag hashtag = hashtagRepository.findByTagName(tagName)
-                        .orElseGet(() -> hashtagRepository.save(new Hashtag(tagName)));
-                ReviewHashtag reviewHashtag = ReviewHashtag.builder()
-                        .reviewBoard(reviewBoard)
-                        .hashtag(hashtag)
-                        .regDate(LocalDate.now()) // 등록 날짜 설정
-                        .build();
-                reviewBoard.addReviewHashtag(reviewHashtag); // ReviewBoard 엔터티에 ReviewHashtag 연결
-            }
-        }
-
         return reviewBoardRepository.save(reviewBoard);
     }
 
