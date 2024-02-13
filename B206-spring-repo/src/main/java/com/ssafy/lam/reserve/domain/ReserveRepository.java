@@ -12,11 +12,11 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
     @Query("SELECT r FROM Reserve r WHERE r.customer.userSeq = :userSeq OR r.hospital.userSeq = :userSeq AND r.completed = false")
     List<Reserve> findAllByUserSeqAndCompletedFalse(Long userSeq);
 
-    Optional<Reserve> findByIdAndCompletedFalse(Long reserveSeq);
+    Optional<Reserve> findBySeqAndCompletedFalse(Long reserveSeq);
 
 
     @Query("SELECT r FROM Reserve r WHERE r.customer.userSeq = :userSeq OR r.hospital.userSeq = :userSeq AND r.completed = true")
     List<Reserve> findAllByUserSeqAndCompletedTrue(Long userSeq);
 
-    Optional<Reserve> findByIdAndCompletedTrue(Long reserveSeq);
+    Optional<Reserve> findBySeqAndCompletedTrue(Long reserveSeq);
 }

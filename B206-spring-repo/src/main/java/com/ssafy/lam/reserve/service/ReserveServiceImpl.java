@@ -93,7 +93,7 @@ public class ReserveServiceImpl implements ReserveService {
     // 상담 예약 내역 상세조회
     @Override
     public Reserve getDetailReserveNotCompleted(Long reserveSeq) {
-        return reserveRepository.findByIdAndCompletedFalse(reserveSeq)
+        return reserveRepository.findBySeqAndCompletedFalse(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
     }
 
@@ -200,7 +200,7 @@ public class ReserveServiceImpl implements ReserveService {
 
     @Override
     public Reserve getDetailReseveCompleted(Long reserveSeq) {
-        return reserveRepository.findByIdAndCompletedTrue(reserveSeq)
+        return reserveRepository.findBySeqAndCompletedTrue(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
     }
     // ===================== 상담한 내역 상세 조회 =====================
