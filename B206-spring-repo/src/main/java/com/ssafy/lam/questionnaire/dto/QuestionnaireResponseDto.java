@@ -7,7 +7,8 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 public class QuestionnaireResponseDto {
-    private Long seq;
+    private Long reserveSeq;
+    private Long questionnaireSeq;
     private String blood;
     private String remark;
     private String content;
@@ -16,8 +17,10 @@ public class QuestionnaireResponseDto {
     private String base64;
 
     @Builder
-    public QuestionnaireResponseDto(Long seq, String blood, String remark, String content, String title, String base64) {
-        this.seq = seq;
+
+    public QuestionnaireResponseDto(Long reserveSeq, Long questionnaireSeq, String blood, String remark, String content, String title, String base64) {
+        this.reserveSeq = reserveSeq;
+        this.questionnaireSeq = questionnaireSeq;
         this.blood = blood;
         this.remark = remark;
         this.content = content;

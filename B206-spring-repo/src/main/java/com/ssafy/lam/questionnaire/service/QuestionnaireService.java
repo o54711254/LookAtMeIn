@@ -5,6 +5,7 @@ import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.questionnaire.domain.QuesionnareRepository;
 import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
+import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,12 +31,18 @@ public class QuestionnaireService {
         UploadFile uploadFile = null;
         if(file != null)
             uploadFile = uploadFileService.store(file);
+
+        Reserve reserve = Reserve.builder()
+                .seq(questionRequestDto.getReserveSeq())
+                .build();
+
         Questionnaire questionnaire = Questionnaire.builder()
                 .blood(questionRequestDto.getQuestionnaire_blood())
                 .remark(questionRequestDto.getQuestionnaire_remark())
                 .title(questionRequestDto.getQuestionnaire_title())
                 .content(questionRequestDto.getQuestionnaire_content())
                 .uploadFile(uploadFile)
+                .reserve(reserve)
                 .build();
 
         Questionnaire saveQuesionnaire = quesionnareRepository.save(questionnaire);
