@@ -242,10 +242,10 @@ public class HospitalServiceImpl implements HospitalService {
                     .reviewBoard_regDate(r.getRegdate())
                     .reviewBoard_cnt(r.getCnt())
                     .reviewBoard_score(r.getScore())
-                    .reviewBoard_doctor(r.getDoctor().getDocInfoName())
+                    .reviewBoard_doctor(r.getDoctor())
                     .reviewBoard_region(r.getRegion())
                     .reviewBoard_surgery(r.getSurgery())
-                    .reviewBoard_hospital(r.getHospital().getUser().getName())
+                    .reviewBoard_hospital(r.getHospital())
                     .reviewBoard_expected_price(r.getExpectedPrice())
                     .reviewBoard_surgery_price(r.getSurgeryPrice())
                     .build();

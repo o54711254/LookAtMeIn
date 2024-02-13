@@ -149,7 +149,7 @@ public class SearchService {
                 .where(reviewBoard.title.contains(keyword)
                         .or(reviewBoard.content.contains(keyword))
                         .or(reviewBoard.region.contains(keyword))
-                        .or(reviewBoard.doctor.docInfoName.contains(keyword))
+                        .or(reviewBoard.doctor.contains(keyword))
                         .or(reviewBoard.surgery.contains(keyword)))
                 .fetch();
 
@@ -160,15 +160,17 @@ public class SearchService {
                     .reviewBoard_content(result.getContent())
                     .reviewBoard_score(result.getScore())
                     .customer_name(reviewBoardRepository.findById(result.getSeq()).get().getUser().getName())
-                    .reviewBoard_doctor(result.getDoctor().getDocInfoName())
+                    .reviewBoard_doctor(result.getDoctor())
                     .reviewBoard_region(result.getRegion())
                     .reviewBoard_surgery(result.getSurgery())
-                    .reviewBoard_hospital(result.getHospital().getUser().getName())
+                    .reviewBoard_hospital(result.getHospital())
                     .reviewBoard_cnt(result.getCnt())
                     .reviewBoard_score(result.getScore())
                     .build();
 
-            Hospital hospital = result.getHospital();
+//            Hospital hospital = result.getHospital();
+            Long hospitalSeq = hospitalRepository.findHospitalSeqByName(result.getHospital());
+            Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
             if(hospital.getProfileFile() != null){
                 try{
                     Path path = Paths.get(uploadPath +"/"+ hospital.getProfileFile().getName());

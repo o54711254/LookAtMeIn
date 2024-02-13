@@ -72,10 +72,10 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
         
 //        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardRegister.getHospital_seq()).build();
 //        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardRegister.getDoctor_seq()).build();
-        Long hospitalSeq = hospitalRepository.findHospitalSeqByName(reviewBoardRegister.getReviewBoard_hospital());
-        Long doctorSeq = doctorRepository.findDoctorSeqByName(reviewBoardRegister.getReviewBoard_doctor());
-        Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
-        Doctor doctor = doctorRepository.findById(doctorSeq).orElse(null);
+//        Long hospitalSeq = hospitalRepository.findHospitalSeqByName(reviewBoardRegister.getReviewBoard_hospital());
+//        Long doctorSeq = doctorRepository.findDoctorSeqByName(reviewBoardRegister.getReviewBoard_doctor());
+//        Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
+//        Doctor doctor = doctorRepository.findById(doctorSeq).orElse(null);
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
 
@@ -89,8 +89,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .expectedPrice(reviewBoardRegister.getReviewBoard_expected_price())
                 .surgeryPrice(reviewBoardRegister.getReviewBoard_surgery_price())
                 .regdate(date)
-                .hospital(hospital)
-                .doctor(doctor)
+                .hospital(reviewBoardRegister.getReviewBoard_hospital())
+                .doctor(reviewBoardRegister.getReviewBoard_doctor())
                 .build();
         log.info("후기 정보: " + reviewBoard);
         UploadFile uploadFile = null;
@@ -98,16 +98,19 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
             uploadFile = uploadFileService.store(file);
         reviewBoard.setUploadFile(uploadFile);
 
-        reviewBoardRegister.getHashtags().forEach(tagName -> {
-            Hashtag hashtag = hashtagRepository.findByTagName(tagName)
-                    .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
-            ReviewHashtag reviewHashtag = ReviewHashtag.builder()
-                    .reviewBoard(reviewBoard)
-                    .hashtag(hashtag)
-                    .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
-                    .build();
-            reviewBoard.addReviewHashtag(reviewHashtag);
-        });
+        if(reviewBoardRegister.getHashtags()!=null) {
+            reviewBoardRegister.getHashtags().forEach(tagName -> {
+                Hashtag hashtag = hashtagRepository.findByTagName(tagName)
+                        .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
+                ReviewHashtag reviewHashtag = ReviewHashtag.builder()
+                        .reviewBoard(reviewBoard)
+                        .hashtag(hashtag)
+                        .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
+                        .build();
+                reviewBoard.addReviewHashtag(reviewHashtag);
+            });
+        }
+
 
         return reviewBoardRepository.save(reviewBoard);
     }
@@ -127,8 +130,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
             reviewBoard.setScore(reviewBoardUpdate.getReviewBoard_score());
             reviewBoard.setExpectedPrice(reviewBoardUpdate.getReviewBoard_expected_price());
             reviewBoard.setSurgeryPrice(reviewBoardUpdate.getReviewBoard_surgery_price());
-            reviewBoard.setHospital(hospital);
-            reviewBoard.setDoctor(doctor);
+            reviewBoard.setHospital(hospital.getUser().getName());
+            reviewBoard.setDoctor(doctor.getDocInfoName());
             reviewBoardRepository.save(reviewBoard);
         }
     }
