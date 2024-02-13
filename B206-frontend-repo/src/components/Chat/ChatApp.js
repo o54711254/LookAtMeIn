@@ -17,6 +17,8 @@ function ChatApp() {
   // 채팅 메시지 목록의 끝을 참조하는 ref. 이를 이용해 새 메시지가 추가될 때 스크롤을 이동
   const messagesEndRef = useRef(null);
   // 컴포넌트 마운트 시 실행. 웹소켓 연결 및 초기 메시지 로딩
+  const [profileImg, setProfileImg] = useState(null);
+
   useEffect(() => {
     connect();
     fetchMessages();
@@ -54,6 +56,12 @@ function ChatApp() {
       .get(`/chatroom/${roomId}/messages`)
       .then((response) => {
         console.log("메시지 목록", response.data);
+        const customerProfileBase64 = response.data.customerProfileBase64;
+        const customerProfileType = response.data.customerProfileType;
+        const profileData = `data:${customerProfileType};base64,${customerProfileBase64}`;
+        if (customerProfileBase64) {
+          setProfileImg(profileData);
+        }
         setMessages(response.data);
       })
       .catch((error) => console.error("Failed to fetch chat messages.", error));
@@ -61,7 +69,6 @@ function ChatApp() {
   // 새 메시지를 보내는 함수
   const sendMessage = () => {
     if (stompClient.current && message) {
-      // senderSeq에는 현재 사용자의 ID를 넣어야 함. 지금은 일단 1로 설정
       const messageObj = {
         chatroomSeq: roomId,
         senderSeq: currentUser.userSeq,
@@ -85,6 +92,7 @@ function ChatApp() {
             }}
           >
             {msg.sender !== currentUser.userId && <p>{msg.sender}</p>}
+
             <p>{msg.message}</p>
           </div>
         ))}
