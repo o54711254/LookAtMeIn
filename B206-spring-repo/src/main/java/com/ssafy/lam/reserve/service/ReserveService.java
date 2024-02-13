@@ -14,8 +14,6 @@ public interface ReserveService {
 
 
     //=================== READ ===================
-//    List<ReserveResponseDto> getReservesByUser(long userSeq);
-//    List<ReserveResponseDto> findReservesByUserSeq(long userSeq);
     List<ReserveResponseDto> findByUserSeq(Long userSeq);
 
     //=================== DELETE ===================

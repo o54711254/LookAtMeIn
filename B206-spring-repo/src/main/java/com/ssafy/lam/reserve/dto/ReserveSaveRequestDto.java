@@ -16,8 +16,8 @@ public class ReserveSaveRequestDto {
     private int day;
     private String dayofweek;
     private int time;
-    private long customerUserSeq; // 수정됨
-    private long hospitalUserSeq; // 수정됨
+    private long customerUserSeq;
+    private long hospitalUserSeq;
 
     public Reserve toEntity(User customer, User hospital) {
         return Reserve.builder()
@@ -28,6 +28,7 @@ public class ReserveSaveRequestDto {
                 .day(this.day)
                 .dayofweek(this.dayofweek)
                 .time(this.time)
+                .reserveType(1)
                 .build();
     }
 }

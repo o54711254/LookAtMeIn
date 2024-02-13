@@ -157,9 +157,10 @@ public class ChatService {
         User hospital = response.getUser();
 
         if (!hospital.getUserType().equals("HOSPITAL")) {
-            throw new IllegalArgumentException("Response not from a hospital user.");
+            throw new IllegalArgumentException("병원사용자가 아님");
         }
 
+        responseRepository.deleteById(responseId);
         ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(hospital.getUserSeq(), customer.getUserSeq());
         return createChatRoom(chatRoomRequestDto);
     }
