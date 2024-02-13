@@ -5,19 +5,22 @@ import Doctor from "./Doctor";
 import consult from "../../../assets/mypage/consult.png";
 import reserve from "../../../assets/mypage/reserve.png";
 import HospitalInfo from "./HospitalInfo";
+import HospitalInfoUpdate from "./HospitalInfoUpdate";
 import doctor from "../../../assets/mypage/doctor.png";
 import ReservationList from "./ReservationList";
 import ConsultingList from "./ConsultingList";
 
 function HospitalMyPageForm() {
-  const user = useSelector((state) => state.user);
+  const hospital = useSelector((state) => state.hospital);
   return (
     <div className={styles.mypageContainer}>
       <NavLink to="info" className={styles.profile}>
-        <div className={styles.profileImage} />
+        <img src={hospital.profileImg} className={styles.profileImage} />
         <div className={styles.profileInfo}>
-          <div className={styles.profileName}>{user.userName}</div>
-          <div className={styles.profileEmail}>asdfas@asdfsda.com</div>
+          <div className={styles.profileName}>{hospital.hospitalInfo_name}</div>
+          <div className={styles.profileEmail}>
+            {hospital.hospitalInfo_email}
+          </div>
         </div>
       </NavLink>
       <div className={styles.sidebar}>
@@ -62,6 +65,7 @@ function HospitalMyPageForm() {
       <div className={styles.contents}>
         <Routes>
           <Route path="info" element={<HospitalInfo />} />
+          <Route path="info/update" element={<HospitalInfoUpdate />} />
           <Route path="doctor" element={<Doctor />} />
           <Route path="reserve" element={<ReservationList />} />
           <Route path="consult" element={<ConsultingList />} />

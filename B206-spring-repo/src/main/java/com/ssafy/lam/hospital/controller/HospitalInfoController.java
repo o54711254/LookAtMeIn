@@ -51,7 +51,6 @@ public class HospitalInfoController {
         List<Hospital> hospitalList = hospitalService.getAllHospitalInfo();
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
         log.info("병원 목록: " + hospitalList);
-        try{
             for(Hospital h : hospitalList) {
                 log.info("병원 정보: " + h);
                 HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
@@ -65,11 +64,16 @@ public class HospitalInfoController {
                         .hospitalInfo_url(h.getUrl())
                         .userSeq(h.getUser().getUserSeq())
                         .build();
-                if(h.getRegistrationFile() != null) {
+                if(h.getProfileFile() != null) {
                     // 병원 등록증 base64로 인코딩해서 보내줘야함
-                    Path path = Paths.get(uploadPath + "/" + h.getRegistrationFile().getName());
-                    String profileBase64 = EncodeFile.encodeFileToBase64(path);
-                    hospitalDetailDto.setProfileBase64(profileBase64);
+                    Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
+                    try{
+                        String profileBase64 = EncodeFile.encodeFileToBase64(path);
+                        hospitalDetailDto.setProfileBase64(profileBase64);
+
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
@@ -77,10 +81,7 @@ public class HospitalInfoController {
 
                 hospitalDetailDtoList.add(hospitalDetailDto);
             }
-        }catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
 

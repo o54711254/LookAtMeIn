@@ -13,9 +13,10 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { addDays, startOfDay, format } from "date-fns";
 import { ko } from "date-fns/locale"; // 한국어 요일 표시를 위해
 import styles from "./DateTimePickerModal.module.css";
+
 // 백엔드 수정 후에 axiso test 필요
 
-export default function ResponsiveModal() {
+export default function ResponsiveModal({ hospitalInfoSeq }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(startOfDay(addDays(new Date(), 1)));
   const [selectedTime, setSelectedTime] = useState(null);
@@ -25,7 +26,8 @@ export default function ResponsiveModal() {
     .map((hour) => `${hour}:00 ${hour >= 12 ? "PM" : "AM"}`);
 
   const customerUserSeq = useSelector((state) => state.user.userSeq);
-  const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
+
+  // const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
@@ -47,7 +49,7 @@ export default function ResponsiveModal() {
 
     const reservationData = {
       customerUserSeq,
-      hospitalUserSeq,
+      hospitalUserSeq: parseInt(hospitalInfoSeq, 10),
       year,
       month,
       day,
@@ -56,6 +58,7 @@ export default function ResponsiveModal() {
     };
 
     try {
+      console.log(reservationData);
       // 백엔드 API로 예약 데이터 전송
       await axiosApi.post("/api/reserve", reservationData);
       window.alert("예약이 완료되었습니다.");

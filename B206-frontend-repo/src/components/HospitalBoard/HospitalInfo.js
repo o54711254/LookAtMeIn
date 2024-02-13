@@ -5,13 +5,12 @@ import { useParams, useNavigate } from "react-router-dom";
 // import div from "@mui/material/div";
 import Reserve from "../Modal/DateTimePickerModal";
 import { useDispatch } from "react-redux";
-import { setHospital } from "../../redux/hospital.js";
 import styles from "./HospitalInfo.module.css";
 import basicHos from "../../assets/basicHos.png";
 import profile from "../../assets/gun.png";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { useSelector } from "react-redux";
-import Wish from "./HospitalWish.js"
+import Wish from "./HospitalWish.js";
 
 const HospitalInfo = () => {
   const dispatch = useDispatch();
@@ -48,18 +47,10 @@ const HospitalInfo = () => {
         // const type = imgResponse.data.type;
         // const data = `data:${type};base64,${base64}`;
         // setImg(data);
-
-        dispatch(
-          setHospital({
-            hospitalSeq: response.data.userSeq,
-            hospitalName: response.data.hospitalInfo_name,
-          })
-        );
       } catch (error) {
         console.error("병원 정보를 가져오는데 실패했습니다:", error);
       }
     };
-
     getHospitalInfo();
   }, []);
 
@@ -162,11 +153,11 @@ const HospitalInfo = () => {
         </div>
 
         {/* <div>avgScore: {hospitalData.avgScore}</div> */}
-        <Reserve />
+        <Reserve hospitalInfoSeq={hospitalInfo_seq} />
       </div>
       <div className={styles.part2}>
         <div>리뷰 목록</div>
-        <Wish/>
+        <Wish />
         {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}

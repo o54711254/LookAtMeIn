@@ -20,7 +20,6 @@ import HosMyPage from "./pages/Mypage/HosMyPage.js";
 import AdminMyPage from "./pages/Mypage/AdminMyPage.js";
 
 import SearchList from "./components/Search/SearchList";
-import VideoRoom from "./components/OpenVidu/streaming/OvVideo.js";
 import SearchInput from "./components/Search/SearchInput";
 import Footer from "./components/Footer";
 import FacialAsy from "./components/FacialAsymmetry/FacialAsymmetry";
@@ -46,6 +45,9 @@ import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
 import RequestRegist from "./components/RequestBoard/RequestRegist";
+
+// openvidu
+import WaitingRoom from "./pages/Openvidu.js";
 
 function App() {
   return (
@@ -141,7 +143,8 @@ function App() {
                   {/*검색*/}
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
-                  {/* <Route path="/meeting/*" element={<VideoRoom />} /> */}
+                  {/* <Route path="/meeting/meet/*" element={<VideoRoom />} /> */}
+                  <Route path="/meeting/*" element={<WaitingRoom />} />
                   <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
                 </Routes>

@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginHospital } from "../../../redux/hospital";
 import axiosApi from "../../../api/axiosApi";
 import update from "../../../assets/update.png";
 import profile from "../../../assets/profile.png";
 import styles from "./HospitalInfo.module.css";
 
 function HospitalInfo() {
-  const user = useSelector((state) => state.user);
+  const hospital = useSelector((state) => state.hospital);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [infoData, setInfoData] = useState({});
   const [profileImg, setProfileImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
   useEffect(() => {
     axiosApi
-      .get(`/api/mypage/${user.userSeq}`)
+      .get(`/api/mypage/${hospital.userSeq}`)
       .then((res) => {
-        console.log(res.data);
+        console.log(hospital);
         setInfoData(res.data);
-        const base64 = res.data.base64;
-        const type = res.data.type;
+        const base64 = res.data.hospitalProfileBase64;
+        const type = res.data.hospitalProfileType;
         if (base64) {
           const data = `data:${type};base64,${base64}`;
           setProfileImg(data);
@@ -50,26 +53,35 @@ function HospitalInfo() {
       formData.append("profile", selectedFile);
     }
     formData.append(
-      "customerData",
+      "hospitalData",
       JSON.stringify({
-        userId: infoData.userId,
-        userPassword: user.userPassword,
-        customerName: infoData.customerName,
-        customerGender: infoData.customerGender,
-        customerAddress: infoData.customerAddress,
-        customerEmail: infoData.customerEmail,
-        customerPhoneNumber: infoData.customerPhoneNumber,
+        hospitalInfo_id: infoData.hospitalInfo_id,
+        hospitalInfo_password: infoData.hospitalInfo_password,
+        hospitalInfo_name: infoData.hospitalInfo_name,
+        hospitalInfo_phoneNumber: infoData.hospitalInfo_phoneNumber,
+        hospitalInfo_email: infoData.hospitalInfo_email,
+        hospitalInfo_introudce: infoData.hospitalInfo_introudce,
+        hospitalInfo_address: infoData.hospitalInfo_address,
+        hospitalInfo_open: infoData.hospitalInfo_open,
+        hospitalInfo_close: infoData.hospitalInfo_close,
+        hospitalInfo_url: infoData.hospitalInfo_url,
       })
     );
 
     axiosApi
-      .put(`/api/customer/mypage/modify/${user.userSeq}`, formData, {
+      .put(`/api/hospital/mypage/modify/${hospital.userSeq}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
         console.log("프로필 이미지 업로드 성공", res);
+        dispatch(
+          loginHospital({
+            ...hospital,
+            profileImg: profileImg,
+          })
+        );
         window.location.reload();
       })
       .catch((error) => {
@@ -95,8 +107,8 @@ function HospitalInfo() {
         />
         <div className={styles.headBox}>
           <div className={styles.infoName}>
-            {infoData.customerName} 님 반갑습니다!
-            <div className={styles.infoId}>ID : {infoData.userId}</div>
+            {infoData.hospitalInfo_name} 님 반갑습니다!
+            <div className={styles.infoId}>ID : {infoData.hospitalInfo_id}</div>
           </div>
           <div className={styles.profileButtonArea}>
             <div className={styles.버튼버튼}>
@@ -123,14 +135,22 @@ function HospitalInfo() {
           />
         </div>
         <div className={styles.infoBottom}>
-          <div className={styles.title}>성별 </div>
-          <div className={styles.contents}>{infoData.customerGender}</div>
+          <div className={styles.title}>병원명 </div>
+          <div className={styles.contents}>{infoData.hospitalInfo_name}</div>
           <div className={styles.title}>주소</div>
-          <div className={styles.contents}>{infoData.customerAddress}</div>
+          <div className={styles.contents}>{infoData.hospitalInfo_address}</div>
           <div className={styles.title}>이메일</div>
-          <div className={styles.contents}>{infoData.customerEmail}</div>
+          <div className={styles.contents}>{infoData.hospitalInfo_email}</div>
           <div className={styles.title}>전화번호</div>
-          <div className={styles.contents}>{infoData.customerPhoneNumber}</div>
+          <div className={styles.contents}>
+            {infoData.hospitalInfo_phoneNumber}
+          </div>
+          <div className={styles.title}>운영시간</div>
+          <div className={styles.contents}>
+            {infoData.hospitalInfo_open} - {infoData.hospitalInfo_close}
+          </div>
+          <div className={styles.title}>홈페이지</div>
+          <div className={styles.contents}>{infoData.hospitalInfo_url}</div>
         </div>
       </div>
     </div>
