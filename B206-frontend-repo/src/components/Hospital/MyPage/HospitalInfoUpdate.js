@@ -35,7 +35,7 @@ function InfoUpdate() {
       .catch((error) => {
         console.error("데이터를 불러오는 중 에러 발생", error);
       });
-  }, [hospital.userSeq]); // userSeq가 변경될 때마다 데이터를 다시 불러옵니다.
+  }, [hospital.userSeq]);
 
   const handleInputChange = (e) => {
     setUpdateData({
