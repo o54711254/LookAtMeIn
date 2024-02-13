@@ -52,8 +52,7 @@ function RequestBoardDetail() {
 
   const handleSubmitSuggestion = async (message) => {
     const requestBody = {
-      userSeq: post.userSeq,
-      hospitalName: "어쩌구저쩌구",
+      userSeq: hospital.userSeq,
       message: message,
     };
     try {
