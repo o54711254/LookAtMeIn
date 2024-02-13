@@ -113,4 +113,12 @@ public class ReserveController {
         return ResponseEntity.ok(reserveService.getDetailReseveCompleted(reserveSeq));
     }
 
+    @PutMapping("/detail/{reserveSeq}/completed/delete")
+    @Operation(summary = "상담한 내역 삭제")
+    public ResponseEntity<Void> deleteReserveCompleted(@PathVariable Long reserveSeq) {
+        reserveService.deleteReserve(reserveSeq);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }
