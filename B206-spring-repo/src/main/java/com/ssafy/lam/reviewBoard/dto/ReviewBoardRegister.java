@@ -22,7 +22,7 @@ public class ReviewBoardRegister {
     private int reviewBoard_surgery_price; // 시술 가격
     private List<String> hashtags;
     @Builder
-    public ReviewBoardRegister(long user_seq, String reviewBoard_title, String reviewBoard_content, double reviewBoard_score, String username, String reviewBoard_doctor, String reviewBoard_region, String reviewBoard_surgery, String reviewBoard_hospital, int reviewBoard_expected_price, int reviewBoard_surgery_price) {
+    public ReviewBoardRegister(long user_seq, String reviewBoard_title, String reviewBoard_content, double reviewBoard_score, String username, String reviewBoard_doctor, String reviewBoard_region, String reviewBoard_surgery, String reviewBoard_hospital, int reviewBoard_expected_price, int reviewBoard_surgery_price, List<String> hashtags) {
         this.user_seq = user_seq;
         this.reviewBoard_title = reviewBoard_title;
         this.reviewBoard_content = reviewBoard_content;

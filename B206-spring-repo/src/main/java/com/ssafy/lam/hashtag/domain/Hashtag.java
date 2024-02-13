@@ -21,11 +21,8 @@ public class Hashtag {
     @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewHashtag> reviewHashtags;
 
-
     @Builder
-
-    public Hashtag(long seq, String tagName) {
-        this.seq = seq;
+    public Hashtag(String tagName) {
         this.tagName = tagName;
     }
 }

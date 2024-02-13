@@ -15,10 +15,7 @@ public class ChatMessageDto {
     private String message;
     private Long messageSeq;
 
-
-
     @Builder
-
     public ChatMessageDto(Long chatroomSeq, String sender, Long senderSeq, String message, Long messageSeq) {
         this.chatroomSeq = chatroomSeq;
         this.sender = sender;

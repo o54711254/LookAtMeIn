@@ -11,6 +11,8 @@ import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
@@ -32,6 +34,8 @@ public class RequestBoardService {
     MultipartConfig multipartConfig = new MultipartConfig();
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
+    private Logger log = LoggerFactory.getLogger(RequestBoardService.class);
+
     //등록기능
     public Long saveRequestboard(RequestSaveDto requestSaveDto) {
         User user = userRepository.findByUserSeq(requestSaveDto.getUserSeq()).orElseThrow(() -> new RuntimeException("유저 없음"));
@@ -46,10 +50,9 @@ public class RequestBoardService {
                 .build();
 
 
-
         requestboard = requestboardRepository.save(requestboard);
         List<Surgery> surgeries = new ArrayList<>();
-        for(SurgeryDto surgeryDto : requestSaveDto.getSurgeries()) {
+        for (SurgeryDto surgeryDto : requestSaveDto.getSurgeries()) {
             Surgery surgery = Surgery.builder()
                     .requestboard(requestboard)
                     .part(surgeryDto.getPart())
@@ -88,8 +91,56 @@ public class RequestBoardService {
 //                .build()).collect(Collectors.toList());
 //    }
 
+    public List<RequestResponDto> findByUserUserSeqAndIsDeletedFalse(Long userSeq){
+        List<Requestboard> requestboards = requestboardRepository.findByUserUserSeqAndIsDeletedFalse(userSeq);
+        List<RequestResponDto> requestResponDtos = new ArrayList<>();
+
+        for (Requestboard requestboard : requestboards) {
+            Customer customer = customerRepository.findByUserUserSeq(requestboard.getUser().getUserSeq())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+            RequestResponDto requestResponDto = RequestResponDto.builder()
+                    .seq(requestboard.getSeq())
+                    .title(requestboard.getTitle())
+                    .content(requestboard.getContent())
+                    .userSeq(requestboard.getUser().getUserSeq())
+                    .userName(requestboard.getUser().getName())
+                    .regDate(requestboard.getRegDate())
+                    .requestCnt(requestboard.getRequestCnt())
+                    .cnt(requestboard.getCnt())
+                    .isDeleted(requestboard.isDeleted())
+                    .surgeries(requestboard.getSurgeries().stream()
+                            .map(surgery -> SurgeryDto.builder()
+                                    .seq(surgery.getSeq())
+                                    .part(surgery.getPart())
+                                    .type(surgery.getType())
+                                    .regDate(surgery.getRegDate())
+                                    .isDeleted(surgery.isDeleted())
+                                    .build())
+                            .collect(Collectors.toList()))
+                    .build();
+            if (customer.getProfile() != null) {
+                UploadFile customerProfile = customer.getProfile();
+                Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
+                try {
+                    String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String customerProfileType = customerProfile.getType();
+                    requestResponDto.setCustomerProfileBase64(customerProfileBase64);
+                    requestResponDto.setCustomerProfileType(customerProfileType);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            requestResponDtos.add(requestResponDto);
+        }
+        return requestResponDtos;
+    }
+
     public List<RequestResponDto> findAllRequestboard() {
         List<Requestboard> requestboards = requestboardRepository.findByIsDeletedFalse();
+        for (Requestboard r : requestboards) {
+            System.out.println(r.getUser().getUserSeq());
+        }
 
         return requestboards.stream()
                 .map(this::toRequestResponDto)
@@ -230,6 +281,9 @@ public class RequestBoardService {
     public void createResponse(Long requestSeq, ResponseDto responseDto) {
         Requestboard requestboard = requestboardRepository.findById(requestSeq)
                 .orElseThrow(() -> new IllegalArgumentException("요청게시판을 찾을 수 없음 : " + requestSeq));
+
+        log.info("userSeq : {}", responseDto.getUserSeq());
+
         User user = userRepository.findById(responseDto.getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없음 : " + responseDto.getUserSeq()));
 
@@ -240,8 +294,6 @@ public class RequestBoardService {
                     .message(responseDto.getMessage())
                     .build();
             responseRepository.save(response);
-            // 알림 생성 로직 호출ㅇ
-            System.out.println(requestboard.getUser() + " " + user + " " + response.getMessage());
             createNotification(requestboard.getUser(), user, response.getMessage());
 
         } else {

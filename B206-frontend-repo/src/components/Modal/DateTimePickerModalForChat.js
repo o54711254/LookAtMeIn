@@ -5,7 +5,6 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Modal from "@mui/joy/Modal";
 import ModalDialog from "@mui/joy/ModalDialog";
-import Typography from "@mui/joy/Typography";
 import TextField from "@mui/material/TextField";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -16,7 +15,7 @@ import styles from "./DateTimePickerModal.module.css";
 
 // 백엔드 수정 후에 axiso test 필요
 
-export default function ResponsiveModal({ hospitalInfoSeq }) {
+export default function ResponsiveModal({ customerUserSeq }) {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(startOfDay(addDays(new Date(), 1)));
   const [selectedTime, setSelectedTime] = useState(null);
@@ -25,9 +24,9 @@ export default function ResponsiveModal({ hospitalInfoSeq }) {
     .filter((hour) => hour !== 12) // 12시를 제외합니다.
     .map((hour) => `${hour}:00 ${hour >= 12 ? "PM" : "AM"}`);
 
-  const customerUserSeq = useSelector((state) => state.user.userSeq);
+  // const hospitalUserSeq = useSelector((state) => state.hospital.userSeq);
 
-  // const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
+  const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
@@ -49,7 +48,7 @@ export default function ResponsiveModal({ hospitalInfoSeq }) {
 
     const reservationData = {
       customerUserSeq,
-      hospitalUserSeq: parseInt(hospitalInfoSeq, 10),
+      hospitalUserSeq,
       year,
       month,
       day,

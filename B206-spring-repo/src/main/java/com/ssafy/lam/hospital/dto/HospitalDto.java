@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @ToString
 public class HospitalDto {
+    private Long hospitalInfo_seq;
     private String hospitalInfo_id;
     private String hospitalInfo_password;
     private String hospitalInfo_name;
@@ -27,7 +28,8 @@ public class HospitalDto {
 
     @Builder
 
-    public HospitalDto(String hospitalInfo_id, String hospitalInfo_password, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_email, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url) {
+    public HospitalDto(Long hospitalInfo_seq, String hospitalInfo_id, String hospitalInfo_password, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_email, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, String hospitalProfileBase64, String hospitalProfileType) {
+        this.hospitalInfo_seq = hospitalInfo_seq;
         this.hospitalInfo_id = hospitalInfo_id;
         this.hospitalInfo_password = hospitalInfo_password;
         this.hospitalInfo_name = hospitalInfo_name;
@@ -38,5 +40,7 @@ public class HospitalDto {
         this.hospitalInfo_open = hospitalInfo_open;
         this.hospitalInfo_close = hospitalInfo_close;
         this.hospitalInfo_url = hospitalInfo_url;
+        this.hospitalProfileBase64 = hospitalProfileBase64;
+        this.hospitalProfileType = hospitalProfileType;
     }
 }

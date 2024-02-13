@@ -8,6 +8,7 @@ import profile from "../../../assets/profile.png";
 import styles from "./HospitalInfo.module.css";
 
 function HospitalInfo() {
+  const user = useSelector((state) => state.user);
   const hospital = useSelector((state) => state.hospital);
   const navigate = useNavigate();
   const dispatch = useDispatch();

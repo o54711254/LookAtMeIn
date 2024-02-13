@@ -6,6 +6,7 @@ import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.questionnaire.domain.Questionnaire;
+import com.ssafy.lam.questionnaire.dto.QuestionnaireCreateResponse;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireResponseDto;
 import com.ssafy.lam.questionnaire.service.QuestionnaireService;
@@ -34,13 +35,19 @@ public class QuestionnaireController {
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
     @PostMapping("/regist")
     @Operation(summary = "문진서 등록")
-    public ResponseEntity<Void> registQuestionnaire(@RequestParam("questionnaireData") String questionnarieData, @RequestParam(value = "image", required = false) MultipartFile file){
+    public ResponseEntity<QuestionnaireCreateResponse> registQuestionnaire(@RequestParam("questionnaireData") String questionnarieData, @RequestParam(value = "image", required = false) MultipartFile file){
         log.info("문진서 등록 정보 : {}", questionnarieData);
         try{
             QuestionnaireRequestDto questionRequestDto = new ObjectMapper().readValue(questionnarieData, QuestionnaireRequestDto.class);
-            questionnaireService.createQuestionnaire(questionRequestDto, file);
+            Questionnaire questionnaire = questionnaireService.createQuestionnaire(questionRequestDto, file);
 
-            return ResponseEntity.ok().build();
+            QuestionnaireCreateResponse createResponse = QuestionnaireCreateResponse.builder()
+                    .questionnaireSeq(questionnaire.getSeq())
+                    .reverseSeq(questionnaire.getReserve().getSeq())
+                    .build();
+
+            return ResponseEntity.ok().body(createResponse);
+
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
@@ -54,7 +61,8 @@ public class QuestionnaireController {
         try{
             Questionnaire questionnaire = questionnaireService.getQuestionnaireDetail(questionSeq);
             QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
-                    .seq(questionnaire.getSeq())
+                    .reserveSeq(questionnaire.getReserve().getSeq())
+                    .questionnaireSeq(questionnaire.getSeq())
                     .blood(questionnaire.getBlood())
                     .remark(questionnaire.getRemark())
                     .content(questionnaire.getContent())

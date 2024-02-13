@@ -13,7 +13,7 @@ function ProposeList() {
 
   useEffect(() => {
     axiosApi
-      .get(`api/mypage/notifications/${userSeq}`)
+      .get(`/api/mypage/notifications/${userSeq}`)
       .then((response) => {
         console.log(response.data);
         setProposeList(response.data);
@@ -30,7 +30,7 @@ function ProposeList() {
   // 제안을 수락하는 함수. seq를 매개변수로 받음
   function startChat(seq) {
     axiosApi
-      .post(`api/requestboard/accept-response/${seq}`)
+      .post(`/api/requestboard/accept-response/${seq}`)
       .then((response) => {
         console.log(response.data);
         //수락 요청 성공적으로 받으면, seq가 true로 바뀌면서 수락되었음 표시함.
@@ -44,14 +44,14 @@ function ProposeList() {
   return (
     <div>
       <div className={styles.head}>
-        <h3>{userName}님께 상담 요청을 보낸 병원 목록</h3>
+        <p>{userName}님께 상담 요청을 보낸 병원 목록</p>
       </div>
       <div>
         {proposeList.map((propose, index) => (
           <li key={index} className={styles.proposeItem}>
             <div className={styles.index}>No. {index + 1}</div>
             <div>{}</div>
-            <div className={styles.writer}>
+            <div className={styles.hospitalName}>
               <div>{propose.hospitalName}</div>
             </div>
             <div>

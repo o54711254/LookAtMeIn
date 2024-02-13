@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axiosApi from "../../api/axiosApi";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Comment from "../Comment/Comment";
 import styles from "./RequestBoardDetail.module.css";
 import profile from "../../assets/man/유승호.jpg";
 import RequestBoardDelete from "./RequestBoardDelete";
+import RequestBoardUpdate from "./RequestBoardUpdate";
 import { useSelector } from "react-redux";
 import SuggestModal from "../Modal/SuggestModal";
 
@@ -15,10 +15,14 @@ function RequestBoardDetail() {
   const [isModalOpen, setModalOpen] = useState(false);
   const user = useSelector((state) => state.user);
   const hospital = useSelector((state) => state.hospital);
+  const customer = useSelector((state)=>state.customer)
   const { requestboardSeq } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("zz",hospital)
+    console.log("AFDSADF", user)
+    console.log("cust",customer)
     const fetchPost = async () => {
       try {
         let response = await axiosApi.get(
@@ -39,7 +43,7 @@ function RequestBoardDetail() {
     if (requestboardSeq) {
       fetchPost();
     }
-  }, [requestboardSeq]);
+  }, []);
 
   const handleOpenModal = () => {
     setModalOpen(true);
@@ -50,9 +54,9 @@ function RequestBoardDetail() {
   };
 
   const handleSubmitSuggestion = async (message) => {
+    console.log("post:", post)
     const requestBody = {
-      userSeq: post.userSeq,
-      hospitalName: "어쩌구저쩌구",
+      userSeq: user.userSeq,
       message: message,
     };
     try {
@@ -82,11 +86,12 @@ function RequestBoardDetail() {
           <div className={styles.headInfo1}>
             <div className={styles.userId}>{post.userName}</div>
             <div className={styles.buttons}>
-              {/* <FreeBoardUpdate
-                freeboardContent={post.freeboardContent}
-                freeboardTitle={post.freeboardTitle}
-                freeboardSeq={post.freeboardSeq}
-              /> */}
+              <RequestBoardUpdate
+                requestboardContent={post.content}
+                requestboardTitle={post.title}
+                requestboardSeq={post.seq}
+                requestboardPart={post.surgeries.map((surgery) => surgery.part)}
+              />
               <RequestBoardDelete requestBoardSeq={requestboardSeq} />
             </div>
           </div>

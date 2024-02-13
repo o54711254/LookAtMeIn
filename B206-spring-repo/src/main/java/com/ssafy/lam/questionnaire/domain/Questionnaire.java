@@ -1,6 +1,7 @@
 package com.ssafy.lam.questionnaire.domain;
 
 import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -22,18 +23,24 @@ public class Questionnaire {
     private String title;
     private String content;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "reserve_seq")
+    private Reserve reserve;
+
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "upload_file_seq")
     private UploadFile uploadFile;
 
     @Builder
-    public Questionnaire(Long seq, String blood, String remark, String title, String content, UploadFile uploadFile) {
+
+    public Questionnaire(Long seq, String blood, String remark, String title, String content, Reserve reserve, UploadFile uploadFile) {
         this.seq = seq;
         this.blood = blood;
         this.remark = remark;
         this.title = title;
         this.content = content;
+        this.reserve = reserve;
         this.uploadFile = uploadFile;
     }
 }
