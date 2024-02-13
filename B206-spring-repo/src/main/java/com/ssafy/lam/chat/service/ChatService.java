@@ -7,6 +7,8 @@ import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.domain.CustomerRepository;
 import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.requestboard.domain.Response;
 import com.ssafy.lam.requestboard.domain.ResponseRepository;
 import com.ssafy.lam.user.domain.User;
@@ -43,6 +45,9 @@ public class ChatService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private HospitalRepository hospitalRepository;
 
     MultipartConfig multipartConfig = new MultipartConfig();
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
@@ -81,10 +86,8 @@ public class ChatService {
         List<ChatMessageReadDto> chatMessageReadDtos = new ArrayList<>();
 
         for (ChatMessage chatMessage : chatMessages) {
-            log.info("chatMessage : {}", chatMessage);
-            Customer customer = customerRepository.findByUserUserSeq(chatMessage.getUser().getUserSeq())
-                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
-
+            log.info("chatMessage : {}", chatMessage.getUser().getUserId());
+            log.info("chatUser:{}, ", chatMessage.getUser().getUserType());
             ChatMessageReadDto chatMessageReadDto = ChatMessageReadDto.builder()
                     .chatroomSeq(chatMessage.getChatroom().getChatroomSeq())
                     .sender(chatMessage.getUser().getUserId()) // getUser()가 발신자 User를 반환한다고 가정
@@ -93,18 +96,45 @@ public class ChatService {
                     .messageSeq(chatMessage.getMessageSeq())
                     .build();
 
-            if (customer.getProfile() != null) {
-                UploadFile customerProfile = customer.getProfile();
-                Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
-                try {
-                    String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
-                    String customerProfileType = customerProfile.getType();
-                    chatMessageReadDto.setCustomerProfileBase64(customerProfileBase64);
-                    chatMessageReadDto.setCustomerProfileType(customerProfileType);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if(chatMessage.getUser().getUserType().equals("HOSPITAL")) {
+                Hospital hospital = hospitalRepository.findByUserUserSeq(chatMessage.getUser().getUserSeq())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 병원이 없습니다."));
+
+                if(hospital.getProfileFile() != null){
+                    UploadFile hospitalProfile = hospital.getProfileFile();
+                    Path path = Paths.get(uploadPath + "/" + hospitalProfile.getName());
+                    try {
+                        String hospitalProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                        String hospitalProfileType = hospitalProfile.getType();
+                        chatMessageReadDto.setHospitalProfileBase64(hospitalProfileBase64);
+                        chatMessageReadDto.setHospitalProfileType(hospitalProfileType);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }else if(chatMessage.getUser().getUserType().equals("CUSTOMER")) {
+
+              Customer customer = customerRepository.findByUserUserSeq(chatMessage.getUser().getUserSeq())
+                  .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
+                  if (customer.getProfile() != null) {
+                    UploadFile customerProfile = customer.getProfile();
+                    Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
+                    try {
+                        String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                        String customerProfileType = customerProfile.getType();
+                        chatMessageReadDto.setCustomerProfileBase64(customerProfileBase64);
+                        chatMessageReadDto.setCustomerProfileType(customerProfileType);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+
+
+
+
+
 
             chatMessageReadDtos.add(chatMessageReadDto);
         }
