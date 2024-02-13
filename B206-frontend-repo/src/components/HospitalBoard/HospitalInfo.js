@@ -153,7 +153,7 @@ const HospitalInfo = () => {
         </div>
 
         {/* <div>avgScore: {hospitalData.avgScore}</div> */}
-        <Reserve />
+        <Reserve hospitalInfoSeq={hospitalInfo_seq} />
       </div>
       <div className={styles.part2}>
         <div>리뷰 목록</div>
