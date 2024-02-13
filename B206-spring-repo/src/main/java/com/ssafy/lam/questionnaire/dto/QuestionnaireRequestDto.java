@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class QuestionnaireRequestDto {
 
+    private Long questionnaireSeq;
     private String questionnaire_blood;
     private String questionnaire_remark;
     private String questionnaire_title;
@@ -16,8 +17,8 @@ public class QuestionnaireRequestDto {
 
 
     @Builder
-
-    public QuestionnaireRequestDto(String questionnaire_blood, String questionnaire_remark, String questionnaire_title, String questionnaire_content) {
+    public QuestionnaireRequestDto(Long questionnaireSeq, String questionnaire_blood, String questionnaire_remark, String questionnaire_title, String questionnaire_content) {
+        this.questionnaireSeq = questionnaireSeq;
         this.questionnaire_blood = questionnaire_blood;
         this.questionnaire_remark = questionnaire_remark;
         this.questionnaire_title = questionnaire_title;

@@ -1,6 +1,7 @@
 package com.ssafy.lam.reserve.domain;
 
 import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -17,13 +18,15 @@ public class PastReserve {
     @Column(name = "past_reserve_seq")
     private Long pReserveSeq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_user_seq")
-    private User customer; // 예약한 고객
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hospital_user_seq")
-    private User hospital; // 예약을 받는 병원
+    @JoinColumn(name="customer_seq")
+    private User customer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="hospital_seq")
+    private User hospital;
+
 
     @Column(name = "past_reserve_content")
     private String pContent;
@@ -47,7 +50,12 @@ public class PastReserve {
     @JoinColumn(name = "after_img_seq")
     private UploadFile afterImg;
 
-    public PastReserve(Long pReserveSeq, User customer, User hospital, String pContent, int pPrice, int year, int month, int day, String dayofweek, int time, UploadFile beforeImg, UploadFile afterImg) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "questionnaire_seq")
+    private Questionnaire questionnaire;
+
+    @Builder
+    public PastReserve(Long pReserveSeq, User customer, User hospital, String pContent, int pPrice, int year, int month, int day, String dayofweek, int time, UploadFile beforeImg, UploadFile afterImg, Questionnaire questionnaire) {
         this.pReserveSeq = pReserveSeq;
         this.customer = customer;
         this.hospital = hospital;
@@ -60,5 +68,6 @@ public class PastReserve {
         this.time = time;
         this.beforeImg = beforeImg;
         this.afterImg = afterImg;
+        this.questionnaire = questionnaire;
     }
 }

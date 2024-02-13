@@ -2,6 +2,7 @@ package com.ssafy.lam.reserve.domain;
 
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -25,6 +26,10 @@ public class Reserve {
     @JoinColumn(name = "hospital_user_seq")
     private User hospital; // 예약을 받는 병원
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "questionnaire_seq")
+    private Questionnaire questionnaire;
+
 
     private int year;
     private int month;
@@ -33,11 +38,11 @@ public class Reserve {
     private int time;
 
     @Builder
-
-    public Reserve(Long reserveSeq, User customer, User hospital, int year, int month, int day, String dayofweek, int time) {
+    public Reserve(Long reserveSeq, User customer, User hospital, Questionnaire questionnaire, int year, int month, int day, String dayofweek, int time) {
         this.reserveSeq = reserveSeq;
         this.customer = customer;
         this.hospital = hospital;
+        this.questionnaire = questionnaire;
         this.year = year;
         this.month = month;
         this.day = day;
