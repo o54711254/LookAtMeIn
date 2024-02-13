@@ -1,15 +1,21 @@
 package com.ssafy.lam.reserve.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveRequestDto;
 import com.ssafy.lam.reserve.service.ReserveService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -42,7 +48,7 @@ public class ReserveController {
     @GetMapping("/detail/{reserveSeq}")
     @Operation(summary = "상담예약 상세보기")
     public ResponseEntity<ReserveResponseDto> getReserveDetail(@PathVariable Long reserveSeq) {
-        Reserve reserve = reserveService.getDetailReserve(reserveSeq);
+        Reserve reserve = reserveService.getDetailReserveNotCompleted(reserveSeq);
 
         ReserveResponseDto responseDto = ReserveResponseDto.builder()
                 .reserveSeq(reserve.getSeq())
@@ -73,24 +79,31 @@ public class ReserveController {
 
     /**
      * @Param reserveData : 상담예약 seq, 가격, 날짜, 시간, 요일
-     * @Param questionnareData : 문진표 수정정 보와 수정하려는 문진표의 seq
+     * @Param questionnareData : 문진표 수정 정보와 수정하려는 문진표의 seq
      * @Param beforeImg : 성형 전 이미지
      * @Param afterImg : 성형 후 이미지
      *
      */
-//    public ResponseEntity<Void> terminateCosulting(@RequestParam("reserveData") String reserveData,
-//                                                  @RequestParam("questionnareData") String questionnareData,
-//                                                  @RequestParam("beforeImg") String beforeImg,
-//                                                  @RequestParam("afterImg") String afterImg) {
-//
-//        try{
-//            ReserveRequestDto reserveRequestDto = new ObjectMapper().readValue(reserveData, ReserveRequestDto.class);
-//            QuestionnaireRequestDto questionnaireRequestDto = new ObjectMapper().readValue(questionnareData, QuestionnaireRequestDto.class);
-//            reserveService.completeConsulting(reserveRequestDto, questionnaireRequestDto, beforeImg, afterImg);
-//            return new ResponseEntity<>(HttpStatus.OK);
-//        }catch(Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+    @PostMapping("/complete")
+    @Operation(summary = "상담완료")
+    public ResponseEntity<Void> completeConsulting(@RequestParam("reserveData") String reserveData,
+                                                   @RequestParam("questionnareData") String questionnareData,
+                                                   @RequestParam("beforeImg") MultipartFile beforeImg,
+                                                   @RequestParam("afterImg") MultipartFile afterImg) {
+
+        try{
+            ReserveRequestDto reserveRequestDto = new ObjectMapper().readValue(reserveData, ReserveRequestDto.class);
+            QuestionnaireRequestDto questionnaireRequestDto = new ObjectMapper().readValue(questionnareData, QuestionnaireRequestDto.class);
+            reserveService.complete(reserveRequestDto, questionnaireRequestDto, beforeImg, afterImg);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+//    @GetMapping("/user/{userSeq}/completed/list")
+//    @Operation(summary = "상담한 내역 전체 조회")
+//    public ResponseEntity<List<ReserveResponseDto>> getAllReservesByUserCompleted(@PathVariable Long userSeq) {
 //
 //    }
 
