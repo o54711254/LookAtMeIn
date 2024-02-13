@@ -101,10 +101,24 @@ public class ReserveController {
         }
     }
 
-//    @GetMapping("/user/{userSeq}/completed/list")
-//    @Operation(summary = "상담한 내역 전체 조회")
-//    public ResponseEntity<List<ReserveResponseDto>> getAllReservesByUserCompleted(@PathVariable Long userSeq) {
-//
-//    }
+    @GetMapping("/user/{userSeq}/completed/list")
+    @Operation(summary = "상담한 내역 전체 조회")
+    public ResponseEntity<List<ReserveResponseDto>> getAllReservesByUserCompleted(@PathVariable Long userSeq) {
+        return ResponseEntity.ok(reserveService.getAllByUserSeqCompleted(userSeq));
+    }
+
+    @GetMapping("/detail/{reserveSeq}/completed")
+    @Operation(summary = "상담한 내역 상세 조회")
+    public ResponseEntity<ReserveResponseDto> getReserveDetailCompleted(@PathVariable Long reserveSeq) {
+        return ResponseEntity.ok(reserveService.getDetailReseveCompleted(reserveSeq));
+    }
+
+    @PutMapping("/detail/{reserveSeq}/completed/delete")
+    @Operation(summary = "상담한 내역 삭제")
+    public ResponseEntity<Void> deleteReserveCompleted(@PathVariable Long reserveSeq) {
+        reserveService.deleteReserve(reserveSeq);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }
