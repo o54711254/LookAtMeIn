@@ -25,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -200,6 +201,20 @@ public class FreeboardServiceImpl implements FreeboardService {
                     .comments(new ArrayList<>()) // 실제 댓글 데이터가 필요한 경우 여기를 수정
                     .build();
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean reportFreeboard(Long freeBoardSeq) {
+        Optional<Freeboard> reportFreeBoard = freeboardRepository.findById(freeBoardSeq);
+        if(reportFreeBoard.isPresent()) {
+            Freeboard selectedFreeBoard = reportFreeBoard.get();
+            selectedFreeBoard.setReport(true);
+            freeboardRepository.save(selectedFreeBoard);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

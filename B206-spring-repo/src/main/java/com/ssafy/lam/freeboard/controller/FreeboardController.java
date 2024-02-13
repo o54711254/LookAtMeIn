@@ -129,4 +129,17 @@ public class FreeboardController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("/report/{freeBoard_seq}")
+    @Operation(summary = "자유게시판 글 신고")
+    public ResponseEntity<?> report(@PathVariable Long freeBoard_seq) {
+        boolean result = freeboardService.reportFreeboard(freeBoard_seq);
+        if(result) {
+            return ResponseEntity.ok().body("해당 게시글이 신고되었습니다. boardSeq: " + freeBoard_seq);
+        }
+        else {
+            return ResponseEntity.badRequest().body("해당 게시글 신고에 실패하였습니다. boardSeq: " + freeBoard_seq);
+        }
+
+    }
 }
