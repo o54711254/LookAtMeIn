@@ -50,6 +50,7 @@ function ProposeList() {
         {proposeList.map((propose, index) => (
           <li key={index} className={styles.proposeItem}>
             <div className={styles.index}>No. {index + 1}</div>
+            <div>{}</div>
             <div className={styles.writer}>
               <div>{propose.hospitalName}</div>
             </div>
