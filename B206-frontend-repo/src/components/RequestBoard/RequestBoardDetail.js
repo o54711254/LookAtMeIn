@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axiosApi from "../../api/axiosApi";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import Comment from "../Comment/Comment";
 import styles from "./RequestBoardDetail.module.css";
 import profile from "../../assets/man/유승호.jpg";
 import RequestBoardDelete from "./RequestBoardDelete";
