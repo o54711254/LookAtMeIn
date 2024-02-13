@@ -2,18 +2,12 @@ package com.ssafy.lam.reviewBoard.domain;
 
 
 import com.ssafy.lam.file.domain.UploadFile;
-import com.ssafy.lam.hashtag.domain.ReviewHashtag;
-import com.ssafy.lam.hospital.domain.Doctor;
-import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
@@ -69,7 +63,7 @@ public class ReviewBoard {
     private UploadFile uploadFile;
 
     @Builder
-    public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, String hospital, String doctor, User user, UploadFile uploadFile, List<ReviewHashtag> reviewHashtags) {
+    public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, String hospital, String doctor, User user, UploadFile uploadFile) {
         this.seq = seq;
         this.title = title;
         this.content = content;

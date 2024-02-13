@@ -3,9 +3,6 @@ package com.ssafy.lam.reviewBoard.service;
 import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
-import com.ssafy.lam.hashtag.domain.Hashtag;
-import com.ssafy.lam.hashtag.domain.HashtagRepository;
-import com.ssafy.lam.hashtag.domain.ReviewHashtag;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.DoctorRepository;
 import com.ssafy.lam.hospital.domain.Hospital;
@@ -35,7 +32,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     private final ReviewBoardRepository reviewBoardRepository;
     private final HospitalRepository hospitalRepository;
     private final DoctorRepository doctorRepository;
-    private final HashtagRepository hashtagRepository;
+
 
     private Logger log = LoggerFactory.getLogger(ReviewBoardController.class);
     MultipartConfig multipartConfig = new MultipartConfig();
