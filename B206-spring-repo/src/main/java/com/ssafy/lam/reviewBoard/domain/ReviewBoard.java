@@ -19,7 +19,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-//@AllArgsConstructor
 public class ReviewBoard {
 
     @Id
@@ -56,11 +55,11 @@ public class ReviewBoard {
     @Column(name = "review_board_cnt")
     private int cnt = 0; // 조회수
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Hospital hospital; // 후기 대상 병원
+    @Column(name = "review_board_hospital")
+    private String hospital; // 후기 대상 병원
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Doctor doctor; // 후기 대상 의사
+    @Column(name = "review_board_doctor")
+    private String doctor; // 후기 대상 의사
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user; // 후기 작성 고객
@@ -78,7 +77,7 @@ public class ReviewBoard {
     }
 
     @Builder
-    public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, Hospital hospital, Doctor doctor, User user, UploadFile uploadFile) {
+    public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, String hospital, String doctor, User user, UploadFile uploadFile, List<ReviewHashtag> reviewHashtags) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -95,5 +94,6 @@ public class ReviewBoard {
         this.doctor = doctor;
         this.user = user;
         this.uploadFile = uploadFile;
+        this.reviewHashtags = reviewHashtags;
     }
 }
