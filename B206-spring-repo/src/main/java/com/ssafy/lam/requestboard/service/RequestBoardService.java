@@ -11,6 +11,8 @@ import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
@@ -31,6 +33,8 @@ public class RequestBoardService {
     private final CustomerRepository customerRepository;
     MultipartConfig multipartConfig = new MultipartConfig();
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+
+    private Logger log = LoggerFactory.getLogger(RequestBoardService.class);
 
     //등록기능
     public Long saveRequestboard(RequestSaveDto requestSaveDto) {
@@ -229,6 +233,9 @@ public class RequestBoardService {
     public void createResponse(Long requestSeq, ResponseDto responseDto) {
         Requestboard requestboard = requestboardRepository.findById(requestSeq)
                 .orElseThrow(() -> new IllegalArgumentException("요청게시판을 찾을 수 없음 : " + requestSeq));
+
+        log.info("userSeq : {}", responseDto.getUserSeq());
+
         User user = userRepository.findById(responseDto.getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없음 : " + responseDto.getUserSeq()));
 

@@ -81,6 +81,7 @@ public class ChatService {
         List<ChatMessageReadDto> chatMessageReadDtos = new ArrayList<>();
 
         for (ChatMessage chatMessage : chatMessages) {
+            log.info("chatMessage : {}", chatMessage);
             Customer customer = customerRepository.findByUserUserSeq(chatMessage.getUser().getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
 
