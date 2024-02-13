@@ -2,7 +2,9 @@ package com.ssafy.lam.reserve.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
+import com.ssafy.lam.questionnaire.dto.QuestionnaireResponseDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveRequestDto;
@@ -50,6 +52,15 @@ public class ReserveController {
     public ResponseEntity<ReserveResponseDto> getReserveDetail(@PathVariable Long reserveSeq) {
         Reserve reserve = reserveService.getDetailReserveNotCompleted(reserveSeq);
 
+        Questionnaire questionnaire = reserve.getQuestionnaire();
+        QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
+                .reserveSeq(questionnaire.getReserve().getSeq())
+                .questionnaireSeq(questionnaire.getSeq())
+                .blood(questionnaire.getBlood())
+                .title(questionnaire.getTitle())
+                .remark(questionnaire.getRemark())
+                .build();
+
         ReserveResponseDto responseDto = ReserveResponseDto.builder()
                 .reserveSeq(reserve.getSeq())
                 .customerUserSeq(reserve.getCustomer().getUserSeq())
@@ -61,7 +72,7 @@ public class ReserveController {
                 .day(reserve.getDay())
                 .dayofweek(reserve.getDayofweek())
                 .time(reserve.getTime())
-                .questionnaired(reserve.getQuestionnaire() != null) // 문진표가 있는지 없는지
+                .questionnaireResponseDto(questionnaireResponseDto)
                 .build();
 
         return ResponseEntity.ok(responseDto);

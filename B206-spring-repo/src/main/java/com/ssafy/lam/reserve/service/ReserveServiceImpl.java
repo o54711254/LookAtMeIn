@@ -66,7 +66,7 @@ public class ReserveServiceImpl implements ReserveService {
                     .day(reserve.getDay())
                     .dayofweek(reserve.getDayofweek())
                     .time(reserve.getTime())
-                    .questionnaired(reserve.getQuestionnaire() != null)
+
                     .build();
 
             if(hospital.getProfileFile() != null){
@@ -195,6 +195,9 @@ public class ReserveServiceImpl implements ReserveService {
         List<Reserve> reserves = reserveRepository.findAllByUserSeqAndCompletedTrue(userSeq);
         List<ReserveResponseDto> reserveResponseDtos = new ArrayList<>();
         for(Reserve r : reserves){
+
+
+
             ReserveResponseDto responseDto = ReserveResponseDto.builder()
                     .reserveSeq(r.getSeq())
                     .customerUserSeq(r.getCustomer().getUserSeq())
@@ -206,7 +209,7 @@ public class ReserveServiceImpl implements ReserveService {
                     .day(r.getDay())
                     .dayofweek(r.getDayofweek())
                     .time(r.getTime())
-                    .questionnaired(r.getQuestionnaire() != null)
+
                     .content(r.getContent())
                     .price(r.getPrice())
                     .completed(r.isCompleted())
@@ -274,7 +277,6 @@ public class ReserveServiceImpl implements ReserveService {
                 .day(reserve.getDay())
                 .dayofweek(reserve.getDayofweek())
                 .time(reserve.getTime())
-                .questionnaired(reserve.getQuestionnaire() != null)
                 .content(reserve.getContent())
                 .price(reserve.getPrice())
                 .completed(reserve.isCompleted())
