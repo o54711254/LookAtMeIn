@@ -6,10 +6,12 @@ import com.ssafy.lam.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class ReserveSaveRequestDto {
     private int year;
     private int month;

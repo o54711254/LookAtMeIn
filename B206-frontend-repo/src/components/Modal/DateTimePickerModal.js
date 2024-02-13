@@ -56,6 +56,7 @@ export default function ResponsiveModal() {
     };
 
     try {
+      console.log(reservationData);
       // 백엔드 API로 예약 데이터 전송
       await axiosApi.post("/api/reserve", reservationData);
       window.alert("예약이 완료되었습니다.");
