@@ -1,5 +1,7 @@
 package com.ssafy.lam.search.service;
 
+
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;
@@ -17,7 +19,6 @@ import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.search.dto.FreeboardDto;
 import com.ssafy.lam.search.dto.HospitalDto;
 import com.ssafy.lam.search.dto.ReviewBoardDto;
-import com.ssafy.lam.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
