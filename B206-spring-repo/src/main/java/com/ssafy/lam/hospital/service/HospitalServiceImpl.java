@@ -82,15 +82,14 @@ public class HospitalServiceImpl implements HospitalService {
     }
     @Override
     public HospitalDto getHospital(long userSeq) {
-        Hospital hospitalOptional = hospitalRepository.findByUserUserSeq(userSeq).get();
-
-        Hospital hospital = hospitalOptional;
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
         HospitalDto dto = HospitalDto.builder()
                 .hospitalInfo_id(hospital.getUser().getUserId())
                 .hospitalInfo_password(hospital.getUser().getPassword())
                 .hospitalInfo_name(hospital.getUser().getName())
                 .hospitalInfo_phoneNumber(hospital.getTel())
                 .hospitalInfo_introduce(hospital.getIntro())
+                .hospitalInfo_email(hospital.getEmail())
                 .hospitalInfo_address(hospital.getAddress())
                 .hospitalInfo_open(hospital.getOpenTime())
                 .hospitalInfo_close(hospital.getCloseTime())
@@ -178,6 +177,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_phoneNumber(hospital.getTel())
                     .hospitalInfo_introduce(hospital.getIntro())
                     .hospitalInfo_address(hospital.getAddress())
+                    .hospitalInfo_email(hospital.getEmail())
                     .hospitalInfo_open(hospital.getOpenTime())
                     .hospitalInfo_close(hospital.getCloseTime())
                     .hospitalInfo_url(hospital.getUrl())

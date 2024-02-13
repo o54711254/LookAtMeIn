@@ -14,6 +14,8 @@ import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -33,6 +35,7 @@ public class ReserveServiceImpl implements ReserveService {
     private final UserRepository userRepository;
     private final PastReserveRepository pastReserveRepository;
 
+    private Logger log = LoggerFactory.getLogger(ReserveServiceImpl.class);
     MultipartConfig multipartConfig = new MultipartConfig();
     // 파일이 업로드될 디렉토리 경로
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
@@ -79,14 +82,18 @@ public class ReserveServiceImpl implements ReserveService {
     @Override
     @Transactional
     public Reserve saveReserve(ReserveSaveRequestDto dto) {
+        log.info("ReserveSaveRequestDto : {}", dto);
         User customerUser = userRepository.findById(dto.getCustomerUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getCustomerUserSeq()));
 
-        User hospitalUser = userRepository.findById(dto.getHospitalUserSeq())
+//        User hospitalUser = userRepository.findById(dto.getHospitalUserSeq())
+//                .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
+        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
-
-        if (customerUser.getUserType().equals("CUSTOMER") && hospitalUser.getUserType().equals("HOSPITAL")) {
-            Reserve reserve = dto.toEntity(customerUser, hospitalUser);
+        log.info("customerUser : {}", customerUser.getUserId());
+        log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
+        if (customerUser.getUserType().equals("CUSTOMER") && hospitalUser.getUser().getUserType().equals("HOSPITAL")) {
+            Reserve reserve = dto.toEntity(customerUser, hospitalUser.getUser());
             return reserveRepository.save(reserve);
         } else {
             throw new IllegalArgumentException("고객과 병원 매치가 안됨");

@@ -16,6 +16,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/consulting")
 public class ConsultingController {
 
     private final ConsultingService consultingService;
@@ -34,7 +35,7 @@ public class ConsultingController {
     }
 
     // 1. 상담 입장
-    @GetMapping("/consulting/{consultingId}/{userSeq}")
+    @GetMapping("/{consultingId}/{userSeq}")
     public ResponseEntity<?> EnterMeetingRoom(@PathVariable("consultingId") long consultingId, @PathVariable("userSeq") long userSeq) {
         return null; // success OR fail
         // success: 상담화면으로 리다이렉트
@@ -44,7 +45,7 @@ public class ConsultingController {
      * @param params Session properties
      * @return Session ID
      */
-    @PostMapping("/api/sessions")
+    @PostMapping("/sessions")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
         log.info("세션 커넥션 생성");
@@ -60,7 +61,7 @@ public class ConsultingController {
      * @param params    Connection properties
      * @return Token
      */
-    @PostMapping("/api/sessions/{sessionId}/connections")
+    @PostMapping("/sessions/{sessionId}/connections")
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
