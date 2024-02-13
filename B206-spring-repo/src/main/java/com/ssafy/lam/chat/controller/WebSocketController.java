@@ -2,14 +2,13 @@ package com.ssafy.lam.chat.controller;
 
 
 import com.ssafy.lam.chat.domain.ChatMessage;
-import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
-import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
+import com.ssafy.lam.chat.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
-import com.ssafy.lam.chat.dto.ChatMessageDto;
 import com.ssafy.lam.chat.service.ChatService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,9 +65,10 @@ public class WebSocketController {
     // 사용자 ID를 통해 속한 채팅방 번호 목록 반환
     @GetMapping("/chatrooms/{userSeq}")
     @Operation(summary = "사용자의 채팅방 목록 조회", description = "userSeq를 통해 사용자가 속한 채팅방 번호 목록을 반환합니다.")
-    public List<Long> getUserChatRooms(@PathVariable Long userSeq) {
+    public ResponseEntity<?> getUserChatRooms(@PathVariable Long userSeq) {
         log.info("userSeq : {}", userSeq);
-        return chatService.getChatRoomIdsByUserSeq(userSeq);
+        List<ChatRoomInfoDto> chatRoomInfoDtos = chatService.getChatRoomIdsByUserSeq(userSeq);
+        return new ResponseEntity<>(chatRoomInfoDtos, HttpStatus.OK);
     }
 
 
@@ -93,22 +93,8 @@ public class WebSocketController {
     // 특정 채팅방의 메시지 조회
     @GetMapping("/chatroom/{chatRoomId}/messages")
     @Operation(summary = "특정 채팅방의 메시지 조회", description = "특정 채팅방의 메시지를 조회합니다.")
-    public ResponseEntity<List<ChatMessageDto>> getChatRoomMessages(@PathVariable Long chatRoomId) {
-        List<ChatMessage> chatMessages= chatService.getMessagesByChatRoomId(chatRoomId);
-        List<ChatMessageDto> chatMessageDtos = new ArrayList<>();
-        for (ChatMessage chatMessage : chatMessages) {
-            System.out.println("chatMessage = " + chatMessage);
-            ChatMessageDto chatMessageDto = ChatMessageDto.builder()
-                    .chatroomSeq(chatMessage.getChatroom().getChatroomSeq())
-                    .sender(chatMessage.getUser().getUserId())
-                    .senderSeq(chatMessage.getUser().getUserSeq())
-                    .message(chatMessage.getMessage())
-                    .messageSeq(chatMessage.getMessageSeq())
-                    .build();
-            chatMessageDtos.add(chatMessageDto);
-        }
-
-//        return chatMessages;
+    public ResponseEntity<?> getChatRoomMessages(@PathVariable Long chatRoomId) {
+        List<ChatMessageReadDto> chatMessageDtos= chatService.getMessagesByChatRoomId(chatRoomId);
         return ResponseEntity.ok(chatMessageDtos);
     }
 }
