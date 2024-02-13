@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axiosApi from "../../api/axiosApi";
 import { loginUser } from "../../redux/user";
+import { loginHospital } from "../../redux/hospital";
 import { setToken } from "../../redux/auth";
 import styles from "./LoginForm.module.css";
 import logo from "../../assets/logo.png";
@@ -30,27 +31,74 @@ function LoginForm() {
       try {
         const loginResponse = await axiosApi.post("/api/user/login", values);
         if (loginResponse.status === 200) {
-          const profileResponse = await axiosApi.get(
-            `/api/mypage/${loginResponse.data.userSeq}`
-          );
-          let imageData = profile; // 기본 프로필 이미지
-          if (profileResponse.data.base64 && profileResponse.data.type) {
-            const { base64, type } = profileResponse.data;
-            imageData = `data:${type};base64,${base64}`;
-          }
-          setProfileImg(imageData); // 상태 업데이트
+          if (loginResponse.data.userType === "CUSTOMER") {
+            const profileResponse = await axiosApi.get(
+              `/api/mypage/${loginResponse.data.userSeq}`
+            );
+            let imageData = profile; // 기본 프로필 이미지
+            if (profileResponse.data.base64 && profileResponse.data.type) {
+              const { base64, type } = profileResponse.data;
+              imageData = `data:${type};base64,${base64}`;
+            }
+            setProfileImg(imageData); // 상태 업데이트
 
-          dispatch(
-            loginUser({
-              userSeq: loginResponse.data.userSeq,
-              profileImg: imageData, // 업데이트된 이미지 데이터
-              userId: profileResponse.data.userId,
-              userPassword: profileResponse.data.userPassword,
-              userName: profileResponse.data.customerName,
-              userEmail: profileResponse.data.customerEmail,
-              role: loginResponse.data.userType,
-            })
-          );
+            dispatch(
+              loginUser({
+                userSeq: loginResponse.data.userSeq,
+                profileImg: imageData, // 업데이트된 이미지 데이터
+                userId: profileResponse.data.userId,
+                userPassword: profileResponse.data.userPassword,
+                userName: profileResponse.data.customerName,
+                userEmail: profileResponse.data.customerEmail,
+                role: loginResponse.data.userType,
+              })
+            );
+          } else if (loginResponse.data.userType === "HOSPITAL") {
+            const hospitalResponse = await axiosApi.get(
+              `/api/mypage/${loginResponse.data.userSeq}`
+            );
+            let imageData = profile;
+            if (
+              hospitalResponse.data.hospitalProfileBase64 &&
+              hospitalResponse.data.hospitalProfileType
+            ) {
+              const base64 = hospitalResponse.data.hospitalProfileBase64;
+              const type = hospitalResponse.data.hospitalProfileType;
+
+              imageData = `data:${type};base64,${base64}`;
+            }
+            setProfileImg(imageData);
+            dispatch(
+              loginHospital({
+                userSeq: loginResponse.data.userSeq,
+                profileImg: imageData,
+                hospitalSeq: "",
+                hospitalInfo_id: hospitalResponse.data.hospitalInfo_id,
+                hospitalInfo_password:
+                  hospitalResponse.data.hospitalInfo_password,
+                hospitalInfo_name: hospitalResponse.data.hospitalInfo_name,
+                hospitalInfo_phoneNumber:
+                  hospitalResponse.data.hospitalInfo_phoneNumber,
+                hospitalInfo_email: hospitalResponse.data.hospitalInfo_email,
+                hospitalInfo_introduce:
+                  hospitalResponse.data.hospitalInfo_introduce,
+                hospitalInfo_address:
+                  hospitalResponse.data.hospitalInfo_address,
+                hospitalInfo_open: hospitalResponse.data.hospitalInfo_open,
+                hospitalInfo_close: hospitalResponse.data.hospitalInfo_close,
+                hospitalInfo_url: hospitalResponse.data.hospitalInfo_close,
+                role: loginResponse.data.userType,
+              })
+            );
+          } else {
+            // 관리자
+            dispatch(
+              loginUser({
+                userSeq: loginResponse.data.userSeq,
+                role: loginResponse.data.userType,
+              })
+            );
+          }
 
           const { accessToken } = loginResponse.data.tokenInfo;
           dispatch(setToken({ accessToken }));
