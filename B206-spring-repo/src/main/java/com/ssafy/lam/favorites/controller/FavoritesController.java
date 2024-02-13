@@ -56,4 +56,11 @@ public class FavoritesController {
         return new ResponseEntity<>(favorites, HttpStatus.OK);
     }
 
+    @GetMapping("/{userSeq}/{hospitalSeq}")
+    @Operation(summary = "고객이 해당 병원 조회 시 찜 여부 확인")
+    public ResponseEntity<Boolean> isHospitalFavorite(@PathVariable Long userSeq, @PathVariable Long hospitalSeq) {
+        boolean isFavorite = favoritesService.isHospitalFavorite(userSeq, hospitalSeq);
+        return new ResponseEntity<>(isFavorite, HttpStatus.OK);
+    }
+
 }
