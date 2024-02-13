@@ -17,7 +17,6 @@ public class ChatRoomResponseDto {
     private String hospitalId;
     private String hospitalName;
 
-
     @Builder
     public ChatRoomResponseDto(Long chatroomSeq, Long customerSeq, String customerId, String customerName, Long hospitalSeq, String hospitalId, String hospitalName) {
         this.chatroomSeq = chatroomSeq;
