@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import { Stomp } from "@stomp/stompjs";
+import Reserve from "../Modal/DateTimePickerModalForChat";
 function ChatApp() {
   // URL에서 채팅방 ID를 가져옴
   const { roomId } = useParams();
@@ -18,6 +19,7 @@ function ChatApp() {
   const messagesEndRef = useRef(null);
   // 컴포넌트 마운트 시 실행. 웹소켓 연결 및 초기 메시지 로딩
   const [profileImg, setProfileImg] = useState(null);
+  const [customerSeq, setCustomerSeq] = useState("");
 
   useEffect(() => {
     connect();
@@ -40,6 +42,10 @@ function ChatApp() {
       stompClient.current.subscribe(`/sub/chatroom/${roomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+        if (newMessage.senderSeq !== currentUser.userSeq) {
+          setCustomerSeq(newMessage.senderSeq);
+        }
       });
     });
     console.log("방 번호", roomId);
@@ -91,6 +97,7 @@ function ChatApp() {
               textAlign: msg.sender === currentUser.userId ? "right" : "left",
             }}
           >
+            <img src={profileImg} />
             {msg.sender !== currentUser.userId && <p>{msg.sender}</p>}
 
             <p>{msg.message}</p>
@@ -108,6 +115,9 @@ function ChatApp() {
         />
         <button onClick={sendMessage}>Send</button>
       </div>
+      {currentUser.role === "HOSPITAL" && (
+        <Reserve customerUserSeq={customerSeq} />
+      )}
     </div>
   );
 }
