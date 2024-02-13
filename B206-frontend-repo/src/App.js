@@ -48,6 +48,7 @@ import RequestRegist from "./components/RequestBoard/RequestRegist";
 
 // openvidu
 import WaitingRoom from "./pages/Openvidu.js";
+import HospitalReservation from "./components/Modal/HospitalReservation.js";
 
 function App() {
   return (
@@ -147,8 +148,11 @@ function App() {
                   <Route path="/meeting/*" element={<WaitingRoom />} />
                   <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
+                  <Route path="/meeting/*" element={<WaitingRoom />} />
                 </Routes>
               </div>
+
+              {/* <HospitalReservation/> */}
             </div>
           </BrowserRouter>
           <div>
@@ -160,7 +164,6 @@ function App() {
           {<Questionnaire />}
           <FloatingChat />
         </div>
-        <Footer />
       </div>
     </div>
   );

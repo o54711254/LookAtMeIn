@@ -91,8 +91,56 @@ public class RequestBoardService {
 //                .build()).collect(Collectors.toList());
 //    }
 
+    public List<RequestResponDto> findByUserUserSeqAndIsDeletedFalse(Long userSeq){
+        List<Requestboard> requestboards = requestboardRepository.findByUserUserSeqAndIsDeletedFalse(userSeq);
+        List<RequestResponDto> requestResponDtos = new ArrayList<>();
+
+        for (Requestboard requestboard : requestboards) {
+            Customer customer = customerRepository.findByUserUserSeq(requestboard.getUser().getUserSeq())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+            RequestResponDto requestResponDto = RequestResponDto.builder()
+                    .seq(requestboard.getSeq())
+                    .title(requestboard.getTitle())
+                    .content(requestboard.getContent())
+                    .userSeq(requestboard.getUser().getUserSeq())
+                    .userName(requestboard.getUser().getName())
+                    .regDate(requestboard.getRegDate())
+                    .requestCnt(requestboard.getRequestCnt())
+                    .cnt(requestboard.getCnt())
+                    .isDeleted(requestboard.isDeleted())
+                    .surgeries(requestboard.getSurgeries().stream()
+                            .map(surgery -> SurgeryDto.builder()
+                                    .seq(surgery.getSeq())
+                                    .part(surgery.getPart())
+                                    .type(surgery.getType())
+                                    .regDate(surgery.getRegDate())
+                                    .isDeleted(surgery.isDeleted())
+                                    .build())
+                            .collect(Collectors.toList()))
+                    .build();
+            if (customer.getProfile() != null) {
+                UploadFile customerProfile = customer.getProfile();
+                Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
+                try {
+                    String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String customerProfileType = customerProfile.getType();
+                    requestResponDto.setCustomerProfileBase64(customerProfileBase64);
+                    requestResponDto.setCustomerProfileType(customerProfileType);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            requestResponDtos.add(requestResponDto);
+        }
+        return requestResponDtos;
+    }
+
     public List<RequestResponDto> findAllRequestboard() {
         List<Requestboard> requestboards = requestboardRepository.findByIsDeletedFalse();
+        for (Requestboard r : requestboards) {
+            System.out.println(r.getUser().getUserSeq());
+        }
 
         return requestboards.stream()
                 .map(this::toRequestResponDto)

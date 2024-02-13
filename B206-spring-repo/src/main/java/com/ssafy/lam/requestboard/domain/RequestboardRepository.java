@@ -10,6 +10,9 @@ public interface RequestboardRepository extends JpaRepository<Requestboard, Long
 
     List<Requestboard> findByIsDeletedFalse();
 
+    List<Requestboard> findByUserUserSeqAndIsDeletedFalse(Long userSeq);
+
     Optional<Requestboard> findBySeqAndIsDeletedFalse(Long seq);
+
 
 }
