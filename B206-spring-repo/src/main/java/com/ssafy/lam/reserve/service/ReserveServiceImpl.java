@@ -57,13 +57,14 @@ public class ReserveServiceImpl implements ReserveService {
                     .customerUserSeq(reserve.getCustomer().getUserSeq())
                     .customerName(reserve.getCustomer().getName())
                     .hospitalUserSeq(reserve.getHospital().getUserSeq())
-                    .reserveSeq(reserve.getSeq())
                     .hospitalName(hospital.getUser().getName())
+                    .reserveSeq(reserve.getSeq())
                     .year(reserve.getYear())
                     .month(reserve.getMonth())
                     .day(reserve.getDay())
                     .dayofweek(reserve.getDayofweek())
                     .time(reserve.getTime())
+                    .questionnaired(reserve.getQuestionnaire() != null)
                     .build();
 
             if(hospital.getProfileFile() != null){
@@ -118,10 +119,12 @@ public class ReserveServiceImpl implements ReserveService {
     @Override
     @Transactional
     public void deleteReserve(Long reserveSeq) {
-        reserveRepository.findById(reserveSeq)
+        Reserve reserve = reserveRepository.findById(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
 
-        reserveRepository.deleteById(reserveSeq);
+        reserve.setDeleted(true);
+        reserveRepository.save(reserve);
+//        reserveRepository.deleteById(reserveSeq);
     }
 
 

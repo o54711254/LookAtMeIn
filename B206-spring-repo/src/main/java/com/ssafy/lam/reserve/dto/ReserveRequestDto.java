@@ -3,10 +3,7 @@ package com.ssafy.lam.reserve.dto;
 
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.user.domain.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
@@ -24,7 +21,22 @@ public class ReserveRequestDto {
 
     private int price;
     private String content;
+    private boolean questionnaired;
 
+    @Builder
+    public ReserveRequestDto(Long reserveSeq, int year, int month, int day, String dayofweek, int time, long customerUserSeq, long hospitalUserSeq, int price, String content, boolean questionnaired) {
+        this.reserveSeq = reserveSeq;
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.dayofweek = dayofweek;
+        this.time = time;
+        this.customerUserSeq = customerUserSeq;
+        this.hospitalUserSeq = hospitalUserSeq;
+        this.price = price;
+        this.content = content;
+        this.questionnaired = questionnaired;
+    }
 
     public Reserve toEntity(User customer, User hospital) {
         return Reserve.builder()

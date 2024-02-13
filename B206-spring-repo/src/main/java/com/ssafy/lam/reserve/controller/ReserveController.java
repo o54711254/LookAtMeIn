@@ -1,14 +1,11 @@
 package com.ssafy.lam.reserve.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveRequestDto;
 import com.ssafy.lam.reserve.service.ReserveService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +32,8 @@ public class ReserveController {
     // ===================== 조 회 =====================
 
     @GetMapping("/user/{userSeq}")
-    @Operation(summary = "상담예약 가져오기")
-    public ResponseEntity<List<ReserveResponseDto>> getReservesByUser(@PathVariable long userSeq) {
+    @Operation(summary = "상담예약 전체 가져오기")
+    public ResponseEntity<List<ReserveResponseDto>> getAllReservesByUser(@PathVariable long userSeq) {
         List<ReserveResponseDto> reserves = reserveService.findByUserSeq(userSeq);
         return ResponseEntity.ok(reserves);
     }
@@ -58,6 +55,7 @@ public class ReserveController {
                 .day(reserve.getDay())
                 .dayofweek(reserve.getDayofweek())
                 .time(reserve.getTime())
+                .questionnaired(reserve.getQuestionnaire() != null) // 문진표가 있는지 없는지
                 .build();
 
         return ResponseEntity.ok(responseDto);
