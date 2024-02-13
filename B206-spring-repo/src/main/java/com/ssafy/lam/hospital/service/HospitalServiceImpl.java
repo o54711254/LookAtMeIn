@@ -96,6 +96,20 @@ public class HospitalServiceImpl implements HospitalService {
                 .hospitalInfo_close(hospital.getCloseTime())
                 .hospitalInfo_url(hospital.getUrl())
                 .build();
+
+        if(hospital.getProfileFile() != null){
+            Path path = Paths.get(uploadPath +"/" + hospital.getProfileFile().getName());
+            try{
+                String base64 = EncodeFile.encodeFileToBase64(path);
+                String type = hospital.getProfileFile().getType();
+                dto.setHospitalProfileBase64(base64);
+                dto.setHospitalProfileType(type);
+
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         return dto;
 
     }
