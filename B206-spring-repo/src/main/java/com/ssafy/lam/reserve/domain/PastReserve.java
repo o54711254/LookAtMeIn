@@ -1,5 +1,6 @@
 package com.ssafy.lam.reserve.domain;
 
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -36,10 +37,18 @@ public class PastReserve {
     private String dayofweek;
     private int time;
 
-    private int img;
+//    private int img;
 
-    @Builder
-    public PastReserve(User customer, User hospital, String pContent, int pPrice, int year, int month, int day, String dayofweek, int time, int img) {
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "before_img_seq")
+    private UploadFile beforeImg;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "after_img_seq")
+    private UploadFile afterImg;
+
+    public PastReserve(Long pReserveSeq, User customer, User hospital, String pContent, int pPrice, int year, int month, int day, String dayofweek, int time, UploadFile beforeImg, UploadFile afterImg) {
+        this.pReserveSeq = pReserveSeq;
         this.customer = customer;
         this.hospital = hospital;
         this.pContent = pContent;
@@ -49,6 +58,7 @@ public class PastReserve {
         this.day = day;
         this.dayofweek = dayofweek;
         this.time = time;
-        this.img = img;
+        this.beforeImg = beforeImg;
+        this.afterImg = afterImg;
     }
 }
