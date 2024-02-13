@@ -66,6 +66,7 @@ const WishList = () => {
 
   return (
       <>
+      <div className={styles.container}>
         <div className={styles.boardhead}>
           <div className={styles.headtitle}>
             <p>병원 소개</p>
@@ -109,6 +110,7 @@ const WishList = () => {
               </div>
             </li>
           ))}
+        </div>
         </div>
       </>
     );
