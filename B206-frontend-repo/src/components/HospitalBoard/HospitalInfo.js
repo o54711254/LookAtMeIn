@@ -15,7 +15,6 @@ import Wish from "./HospitalWish.js";
 const HospitalInfo = () => {
   const dispatch = useDispatch();
   const { hospitalInfo_seq } = useParams();
-  const user_seq = useSelector((state) => state.user.userSeq);
   const [hospitalData, setHospitalData] = useState({
     hospitalInfo_seq: "",
     hospitalInfo_name: "",
@@ -36,8 +35,8 @@ const HospitalInfo = () => {
       try {
         console.log("hospitalInfo_seq: ", hospitalInfo_seq);
 
-        const response = await axiosApi.post(
-          `/api/hospital-info/detail/${hospitalInfo_seq}?user_seq=${user_seq}`
+        const response = await axiosApi.get(
+          `/api/hospital-info/detail/${hospitalInfo_seq}`
         );
         console.log("여기", response.data);
         setHospitalData(response.data);
