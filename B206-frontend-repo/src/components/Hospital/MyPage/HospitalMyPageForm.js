@@ -9,9 +9,15 @@ import HospitalInfoUpdate from "./HospitalInfoUpdate";
 import doctor from "../../../assets/mypage/doctor.png";
 import ReservationList from "./ReservationList";
 import ConsultingList from "./ConsultingList";
+import { useEffect } from "react";
 
 function HospitalMyPageForm() {
+  const user = useSelector((state) => state.user);
   const hospital = useSelector((state) => state.hospital);
+  useEffect(() => {
+    console.log(user);
+    console.log(hospital);
+  });
   return (
     <div className={styles.mypageContainer}>
       <NavLink to="info" className={styles.profile}>

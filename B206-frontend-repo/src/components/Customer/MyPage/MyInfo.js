@@ -6,10 +6,12 @@ import axiosApi from "../../../api/axiosApi";
 import styles from "./MyInfo.module.css";
 import profile from "../../../assets/profile2.png";
 import update from "../../../assets/update.png";
+import { loginCustomer } from "../../../redux/customer";
 
 // axios 완료
 function MyInfo() {
   const user = useSelector((state) => state.user);
+  const customer = useSelector((state) => state.customer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [infoData, setInfoData] = useState({});
@@ -74,8 +76,8 @@ function MyInfo() {
       .then((res) => {
         console.log("프로필 이미지 업로드 성공", res);
         dispatch(
-          loginUser({
-            ...user,
+          loginCustomer({
+            ...customer,
             profileImg: profileImg,
           })
         );

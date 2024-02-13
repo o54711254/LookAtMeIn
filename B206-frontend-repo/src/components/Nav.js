@@ -5,22 +5,14 @@ import styles from "./Nav.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/user";
 import { logoutHospital } from "../redux/hospital";
+import { logoutCustomer } from "../redux/customer";
 
 function Nav() {
   const user = useSelector((state) => state.user);
   const hospital = useSelector((state) => state.hospital);
-  const [userRole, setUserRole] = useState("");
-  const isLogin = user.userSeq !== "" || hospital.userSeq !== "";
+  const isLogin = user.userSeq !== "";
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (user.role) {
-      setUserRole(user.role);
-    } else if (hospital.role) {
-      setUserRole(hospital.role);
-    }
-  });
 
   // 메뉴 표시 상태를 제어하기 위한 상태 변수
   const [showMenu, setShowMenu] = useState(false);
@@ -28,6 +20,7 @@ function Nav() {
   const handleLogout = () => {
     dispatch(logoutUser());
     dispatch(logoutHospital());
+    dispatch(logoutCustomer());
     navigate("/");
   };
 
@@ -118,17 +111,17 @@ className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ""}`}
               상담요청 게시판
             </Link>
             {/* 조건부 렌더링을 사용하여 다른 마이페이지 링크를 표시 */}
-            {userRole === "CUSTOMER" && (
+            {user.role === "CUSTOMER" && (
               <Link to="/mypage" className={styles.menu}>
                 마이페이지
               </Link>
             )}
-            {userRole === "HOSPITAL" && (
+            {user.role === "HOSPITAL" && (
               <Link to="/hospital-mypage" className={styles.menu}>
                 마이페이지
               </Link>
             )}
-            {userRole === "ADMIN" && (
+            {user.role === "ADMIN" && (
               <Link to="/admin-mypage" className={styles.menu}>
                 마이페이지
               </Link>
