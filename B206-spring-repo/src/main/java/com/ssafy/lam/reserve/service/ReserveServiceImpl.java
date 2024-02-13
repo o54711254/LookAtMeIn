@@ -46,9 +46,11 @@ public class ReserveServiceImpl implements ReserveService {
     // 파일이 업로드될 디렉토리 경로
     private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
+
+    // 상담 예약 내역 전체 조회
     @Override
     public List<ReserveResponseDto> findByUserSeq(Long userSeq) {
-        List<Reserve> reserves = reserveRepository.findByUserSeq(userSeq);
+        List<Reserve> reserves = reserveRepository.findAllByUserSeqAndCompletedFalse(userSeq);
         List<ReserveResponseDto> reserveResponseDtos = new ArrayList<>();
 
         for(Reserve reserve : reserves){
@@ -57,13 +59,14 @@ public class ReserveServiceImpl implements ReserveService {
                     .customerUserSeq(reserve.getCustomer().getUserSeq())
                     .customerName(reserve.getCustomer().getName())
                     .hospitalUserSeq(reserve.getHospital().getUserSeq())
-                    .reserveSeq(reserve.getSeq())
                     .hospitalName(hospital.getUser().getName())
+                    .reserveSeq(reserve.getSeq())
                     .year(reserve.getYear())
                     .month(reserve.getMonth())
                     .day(reserve.getDay())
                     .dayofweek(reserve.getDayofweek())
                     .time(reserve.getTime())
+                    .questionnaired(reserve.getQuestionnaire() != null)
                     .build();
 
             if(hospital.getProfileFile() != null){
@@ -86,9 +89,11 @@ public class ReserveServiceImpl implements ReserveService {
         return reserveResponseDtos;
     }
 
+
+    // 상담 예약 내역 상세조회
     @Override
-    public Reserve getDetailReserve(Long reserveSeq) {
-        return reserveRepository.findById(reserveSeq)
+    public Reserve getDetailReserveNotCompleted(Long reserveSeq) {
+        return reserveRepository.findBySeqAndCompletedFalse(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
     }
 
@@ -118,15 +123,19 @@ public class ReserveServiceImpl implements ReserveService {
     @Override
     @Transactional
     public void deleteReserve(Long reserveSeq) {
-        reserveRepository.findById(reserveSeq)
+        Reserve reserve = reserveRepository.findById(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
 
-        reserveRepository.deleteById(reserveSeq);
+        reserve.setDeleted(true);
+        reserveRepository.save(reserve);
+//        reserveRepository.deleteById(reserveSeq);
     }
 
 
+    // ===================== 상담완료 =====================
+
     @Override
-    public void completeConsulting(ReserveRequestDto reserveRequestDto, QuestionnaireRequestDto questionnaireRequestDto, MultipartFile beforeImg, MultipartFile afterImg) {
+    public void complete(ReserveRequestDto reserveRequestDto, QuestionnaireRequestDto questionnaireRequestDto, MultipartFile beforeImg, MultipartFile afterImg) {
         try{
             Questionnaire questionnaire = Questionnaire.builder()
                     .seq(questionnaireRequestDto.getQuestionnaireSeq())
@@ -150,7 +159,24 @@ public class ReserveServiceImpl implements ReserveService {
             UploadFile afterFile = uploadFileService.store(afterImg);
 
 
+            Reserve reserve = Reserve.builder()
+                    .beforeImg(beforeFile)
+                    .afterImg(afterFile)
+                    .questionnaire(questionnaire)
+                    .customer(customer)
+                    .hospital(hospital)
+                    .seq(reserveRequestDto.getReserveSeq())
+                    .completed(true) // 상담 완료
+                    .price(reserveRequestDto.getPrice())
+                    .year(reserveRequestDto.getYear())
+                    .month(reserveRequestDto.getMonth())
+                    .day(reserveRequestDto.getDay())
+                    .dayofweek(reserveRequestDto.getDayofweek())
+                    .time(reserveRequestDto.getTime())
+                    .build();
 
+
+            reserveRepository.save(reserve);
 
 
         }catch (Exception e){
@@ -158,4 +184,24 @@ public class ReserveServiceImpl implements ReserveService {
             throw new RuntimeException("상담 종료 실패");
         }
     }
+
+
+    // ===================== 상담완료 =====================
+
+
+    // ===================== 상담한 내역 전체 조회 =====================
+    @Override
+    public List<Reserve> getAllByUserSeqCompleted(Long userSeq) {
+        return reserveRepository.findAllByUserSeqAndCompletedTrue(userSeq);
+    }
+    // ===================== 상담한 내역 전체 조회 =====================
+
+    // ===================== 상담한 내역 상세 조회 =====================
+
+    @Override
+    public Reserve getDetailReseveCompleted(Long reserveSeq) {
+        return reserveRepository.findBySeqAndCompletedTrue(reserveSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
+    }
+    // ===================== 상담한 내역 상세 조회 =====================
 }

@@ -7,14 +7,17 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @Table(name = "reserve")
 public class Reserve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "reserve_seq")
     private Long seq;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,9 +28,15 @@ public class Reserve {
     @JoinColumn(name = "hospital_user_seq")
     private User hospital; // 예약을 받는 병원
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "reserve", fetch = FetchType.LAZY)
     @JoinColumn(name = "questionnaire_seq")
     private Questionnaire questionnaire;
+
+    public void setQuestionnaire(Questionnaire questionnaire) {
+        this.questionnaire = questionnaire;
+        this.questionnaire.setReserve(this);
+    }
+
 
     @Column(name = "content")
     private String content;
