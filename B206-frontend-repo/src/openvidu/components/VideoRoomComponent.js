@@ -8,6 +8,7 @@ import styles from './VideoRoomComponent.module.css';
 import Button from "@mui/material/Button";
 import Skeleton from "@mui/material/Skeleton";
 import Link from "@mui/material/Link";
+import { useSelector } from "react-redux"
 
 import OpenViduLayout from '../layout/openvidu-layout';
 import UserModel from '../models/user-model';
@@ -25,9 +26,9 @@ class VideoRoomComponent extends Component {
       this.localUserAccessAllowed = false;
       this.state = {
         mySessionId:
-          this.props.who === "client"
-            ? `u${this.props.client}`
-            : `p${this.props.hospital}`,
+          this.props.who === "CUSTOMER"
+            ? `u${this.props.userSeq}`
+            : `p${this.props.hosSeq}`,
         myUserName: "Participant" + Math.floor(Math.random() * 100),
         session: undefined,
         localUser: undefined,
@@ -111,8 +112,8 @@ class VideoRoomComponent extends Component {
       } else {
         try {
           console.log("토큰get시도");
+          console.log("여기까진 되는데 getToken이 안되는건가?")
           var token = await this.getToken();
-  
           this.connect(token);
         } catch (error) {
           console.error(
@@ -242,7 +243,7 @@ class VideoRoomComponent extends Component {
       this.setState({
         session: undefined,
         subscribers: [],
-        // mySessionId: `${this.props.client}`,
+        mySessionId: `${this.props.userSeq}`,
         myUserName: "OpenVidu_User" + Math.floor(Math.random() * 100),
         localUser: undefined,
       });
@@ -536,10 +537,12 @@ class VideoRoomComponent extends Component {
     async enteredChanged() {
       this.remotes = [];
       this.setState({
-        mySessionId: `p${this.props.hospital}u${this.props.client}`,
+        mySessionId: `p${this.props.hosSeq}u${this.props.userSeq}`,
         subscribers: [],
         entered: true,
       });
+
+      console.log(this.state.mySessionId);
   
       await this.leaveSession();
       await this.joinSession();
@@ -551,7 +554,7 @@ class VideoRoomComponent extends Component {
         const localUser = this.state.localUser;
         const isEntered = this.state.entered;
         var chatDisplay = { display: this.state.chatDisplay };
-        const who = "client";
+        const who = this.props.role;
 
 
         return (
@@ -595,7 +598,7 @@ class VideoRoomComponent extends Component {
                     <StreamComponent user={localUser} isMe={"test"} />
                     </div>
                     <div className={styles.alert}>
-                      {who === "client" ? (
+                      {who === "CUSTOMER" ? (
                         <div className={styles.contentbox}>
                           <p className={styles.title}>
                              상담 이용 안내
@@ -648,7 +651,7 @@ class VideoRoomComponent extends Component {
               <div className={styles.toolbar}>
                 <ToolbarComponent
                   reservationSeq={this.props.reservationSeq}
-                  who={who}
+                  who={this.props.role}
                   sessionId={mySessionId}
                   user={localUser}
                   showNotification={this.state.messageReceived}
@@ -667,7 +670,11 @@ class VideoRoomComponent extends Component {
     }
     
     async getToken() {
+        console.log("여기까진 오케")
+        console.log(this.state.mySessionId)
         const sessionId = await this.createSession(this.state.mySessionId);
+        console.log(sessionId);
+        console.log("토큰도 생성됐어요!!!")
         return await this.createToken(sessionId);
       }
     

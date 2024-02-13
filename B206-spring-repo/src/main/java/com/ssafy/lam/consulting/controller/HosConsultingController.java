@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/api")
+@RequestMapping("/api/sessions")
 @RequiredArgsConstructor
 public class HosConsultingController {
 
@@ -37,7 +37,7 @@ public class HosConsultingController {
      * @param params Session properties
      * @return Session ID
      */
-    @PostMapping("/sessions")
+    @PostMapping
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
 
@@ -53,7 +53,7 @@ public class HosConsultingController {
      * @param params    Connection properties
      * @return Token
      */
-    @PostMapping("/sessions/{sessionId}/connections")
+    @PostMapping("/{sessionId}/connections")
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
