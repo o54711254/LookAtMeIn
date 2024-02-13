@@ -47,7 +47,6 @@ function InfoUpdate() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Base64 이미지 데이터에서 실제 데이터만 추출
     const base64Data = hospital.profileImg.split(",")[1];
     const imageBlob = base64ToBlob(base64Data, "image/png");
 
