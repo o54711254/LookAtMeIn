@@ -25,7 +25,6 @@ public class Reserve {
     @JoinColumn(name = "hospital_user_seq")
     private User hospital; // 예약을 받는 병원
 
-    private Integer reserveType; // 1 : 상담예약, 2 : 병원예약
 
     private int year;
     private int month;
@@ -35,11 +34,10 @@ public class Reserve {
 
     @Builder
 
-    public Reserve(Long reserveSeq, User customer, User hospital, Integer reserveType, Integer year, Integer month, Integer day, String dayofweek, Integer time) {
+    public Reserve(Long reserveSeq, User customer, User hospital, int year, int month, int day, String dayofweek, int time) {
         this.reserveSeq = reserveSeq;
         this.customer = customer;
         this.hospital = hospital;
-        this.reserveType = reserveType;
         this.year = year;
         this.month = month;
         this.day = day;
