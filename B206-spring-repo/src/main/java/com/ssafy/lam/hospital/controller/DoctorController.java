@@ -1,5 +1,8 @@
 package com.ssafy.lam.hospital.controller;
 
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.hospital.domain.Career;
 import com.ssafy.lam.hospital.domain.DoctorCategory;
 import com.ssafy.lam.hospital.domain.HospitalCategory;
@@ -16,6 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +34,9 @@ public class DoctorController {
     public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;
     }
+
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @GetMapping("/{doctor_seq}")
     @Operation(summary = "의사 정보를 조회한다.")
@@ -54,6 +62,21 @@ public class DoctorController {
                 .doc_info_avgScore(doctorService.getAvgScore(doctor_seq))
                 .doc_info_cntReviews(doctorService.getCntReviews(doctor_seq))
                 .build();
+
+        if(doctor.getProfile() != null){
+            UploadFile doctorProfile = doctor.getProfile();
+            Path path = Paths.get(uploadPath + "/" + doctorProfile.getName());
+            try {
+                String doctorProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                String doctorProfileType = doctorProfile.getType();
+                doctorDto.setDoctorProfileBase64(doctorProfileBase64);
+                doctorDto.setDoctorProfileType(doctorProfileType);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         return new ResponseEntity<>(doctorDto, HttpStatus.OK);
     }
 

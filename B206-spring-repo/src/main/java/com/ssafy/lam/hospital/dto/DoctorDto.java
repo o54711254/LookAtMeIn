@@ -17,6 +17,10 @@ public class DoctorDto {
     private double doc_info_avgScore;
     private int doc_info_cntReviews;
 
+    private String doctorProfileBase64; // 의사 프로필 이미지
+    private String doctorProfileType; // 의사 프로필 이미지 타입
+
+
     @Builder
     public DoctorDto(Long doc_info_seq, String doc_info_name, List<CategoryDto> doc_info_category,
                      List<CareerDto> doc_info_career, double doc_info_avgScore, int doc_info_cntReviews) {
