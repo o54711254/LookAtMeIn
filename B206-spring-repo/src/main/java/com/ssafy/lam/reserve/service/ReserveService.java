@@ -19,14 +19,19 @@ public interface ReserveService {
     List<ReserveResponseDto> findByUserSeq(Long userSeq);
 
     // ===================== 상세 조회 =====================
-    Reserve getDetailReserve(Long reserveSeq);
+    Reserve getDetailReserveNotCompleted(Long reserveSeq);
 
     //=================== DELETE ===================
     void deleteReserve(Long reserveSeq);
 
-    void completeConsulting(ReserveRequestDto reserveRequestDto,
-                            QuestionnaireRequestDto questionnaireRequestDto,
-                            MultipartFile beforeImg,
-                            MultipartFile afterImg);
+    void complete(ReserveRequestDto reserveRequestDto,
+                  QuestionnaireRequestDto questionnaireRequestDto,
+                  MultipartFile beforeImg,
+                  MultipartFile afterImg);
+
+
+    List<Reserve> getAllByUserSeqCompleted(Long userSeq);
+
+    Reserve getDetailReseveCompleted(Long reserveSeq);
 
 }

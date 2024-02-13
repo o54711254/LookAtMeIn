@@ -110,6 +110,7 @@ public class CustomerServiceImpl implements CustomerService {
             Customer customer = customerOptional.get();
 
             CustomerDto dto = CustomerDto.builder()
+                    .customerSeq(customer.getCustomerSeq())
                     .userId(customer.getUser().getUserId())
                     .userPassword(customer.getUser().getPassword())
                     .customerName(customer.getUser().getName())

@@ -17,7 +17,7 @@ import lombok.Setter;
 public class Reserve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="reserve_seq")
+    @Column(name = "reserve_seq")
     private Long seq;
 
     @ManyToOne(fetch = FetchType.LAZY)
