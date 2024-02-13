@@ -59,6 +59,7 @@ const HospitalInfo = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
+    
     axiosApi
       .get(`/api/hospital-info/reviews/${hospitalInfo_seq}`)
       .then((response) => {

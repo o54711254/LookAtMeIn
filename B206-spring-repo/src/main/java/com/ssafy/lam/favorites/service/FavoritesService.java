@@ -17,4 +17,6 @@ public interface FavoritesService {
     // 고객이 병원 페이지에서 이미 찜한 병원 찜 선택 시 찜 취소하기
     Favorites deleteFavorites(FavoritesRequestDto favoritesRequestDto);
 
+    Boolean isHospitalFavorite(Long userSeq, Long hospitalSeq);
+
 }

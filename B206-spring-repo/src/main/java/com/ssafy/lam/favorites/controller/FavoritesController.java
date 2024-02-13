@@ -33,13 +33,13 @@ public class FavoritesController {
 
     @GetMapping("/list/{userSeq}")
     @Operation(summary = "해당 고객이 찜한 모든 병원 목록 출력")
-    public List<HospitalDetailDto> getFavoritesList(@PathVariable Long userSeq) {
+    public ResponseEntity<List<HospitalDetailDto>> getFavoritesList(@PathVariable Long userSeq) {
         List<Hospital> hospitalList = favoritesService.getAllFavorites(userSeq);
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
         for(Hospital h : hospitalList) {
-            hospitalDetailDtoList.add(hospitalService.getHospitalInfo(h.getUser().getUserSeq()));
+            hospitalDetailDtoList.add(hospitalService.getHospitalInfo(h.getHospitalSeq()));
         }
-        return hospitalDetailDtoList;
+        return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
 
     @PostMapping("/add")
@@ -54,6 +54,13 @@ public class FavoritesController {
     public ResponseEntity<Favorites> deleteFavorites(@RequestBody FavoritesRequestDto favoritesRequestDto) {
         Favorites favorites = favoritesService.deleteFavorites(favoritesRequestDto);
         return new ResponseEntity<>(favorites, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userSeq}/{hospitalSeq}")
+    @Operation(summary = "고객이 해당 병원 조회 시 찜 여부 확인")
+    public ResponseEntity<Boolean> isHospitalFavorite(@PathVariable Long userSeq, @PathVariable Long hospitalSeq) {
+        boolean isFavorite = favoritesService.isHospitalFavorite(userSeq, hospitalSeq);
+        return new ResponseEntity<>(isFavorite, HttpStatus.OK);
     }
 
 }

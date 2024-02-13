@@ -15,10 +15,14 @@ function RequestBoardDetail() {
   const [isModalOpen, setModalOpen] = useState(false);
   const user = useSelector((state) => state.user);
   const hospital = useSelector((state) => state.hospital);
+  const customer = useSelector((state)=>state.customer)
   const { requestboardSeq } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("zz",hospital)
+    console.log("AFDSADF", user)
+    console.log("cust",customer)
     const fetchPost = async () => {
       try {
         let response = await axiosApi.get(
@@ -50,6 +54,7 @@ function RequestBoardDetail() {
   };
 
   const handleSubmitSuggestion = async (message) => {
+    console.log("post:", post)
     const requestBody = {
       userSeq: user.userSeq,
       message: message,
