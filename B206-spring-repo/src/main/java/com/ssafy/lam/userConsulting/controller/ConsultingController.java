@@ -15,6 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class ConsultingController {
 
@@ -44,7 +45,7 @@ public class ConsultingController {
      * @param params Session properties
      * @return Session ID
      */
-    @PostMapping("/api/sessions")
+    @PostMapping("/sessions/customer")
     public ResponseEntity<String> initializeSession(@RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
         log.info("세션 커넥션 생성");
@@ -60,7 +61,7 @@ public class ConsultingController {
      * @param params    Connection properties
      * @return Token
      */
-    @PostMapping("/api/sessions/{sessionId}/connections")
+    @PostMapping("/sessions/{sessionId}/connections/customer")
     public ResponseEntity<String> createConnection(@PathVariable("sessionId") String sessionId,
                                                    @RequestBody(required = false) Map<String, Object> params)
             throws OpenViduJavaClientException, OpenViduHttpException {
