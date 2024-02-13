@@ -1,20 +1,22 @@
 package com.ssafy.lam.reserve.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.lam.file.service.UploadFileService;
-import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.questionnaire.service.QuestionnaireService;
+import com.ssafy.lam.reserve.domain.PastReserve;
 import com.ssafy.lam.reserve.dto.PastReserveRequestDto;
+import com.ssafy.lam.reserve.dto.PastReserveResponseDto;
 import com.ssafy.lam.reserve.service.PastReserveService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.constraints.Past;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/past-reserve")
@@ -33,7 +35,7 @@ public class PastReserveController {
      * @Param afterImg : 성형 후 이미지
      */
     @PostMapping("/terminate")
-    @Operation
+    @Operation(summary = "상담 종료")
     public ResponseEntity<Void> terminateConsulting(@RequestParam("pastReserveData") String pastReserveData,
                                                     @RequestParam("questionnareData") String questionnareData,
                                                     @RequestParam(value = "beforeImg", required = false) MultipartFile beforeImg,
@@ -50,6 +52,51 @@ public class PastReserveController {
             return ResponseEntity.badRequest().build();
         }
 
+    }
+
+    @GetMapping("/{user_seq}/list")
+    @Operation(summary = "고객의 상담한 내역가져오기")
+    public ResponseEntity<List<PastReserveResponseDto>> getPastReserveList(@PathVariable("user_seq") Long userSeq) {
+
+        List<PastReserveResponseDto> pastReserveResponseDtoList =
+                pastReserveService.getAllByUserSeq(userSeq).stream()
+                .map(pastReserve ->{
+                    return PastReserveResponseDto.builder()
+                            .reserveSeq(pastReserve.getPReserveSeq())
+                            .customerUserSeq(pastReserve.getCustomer().getUserSeq())
+                            .hospitalUserSeq(pastReserve.getHospital().getUserSeq())
+                            .year(pastReserve.getYear())
+                            .month(pastReserve.getMonth())
+                            .day(pastReserve.getDay())
+                            .time(pastReserve.getTime())
+                            .dayofweek(pastReserve.getDayofweek())
+                            .content(pastReserve.getPContent())
+                            .price(pastReserve.getPPrice())
+                            .build();
+
+                }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(pastReserveResponseDtoList);
+    }
+
+    @GetMapping("/detail/{pReserveSeq}")
+    @Operation(summary = "상담한 내역 상세 가져오기")
+    public ResponseEntity<PastReserveResponseDto> getPastReserve(@PathVariable("pReserveSeq") Long pReserveSeq){
+        PastReserve pastReserve = pastReserveService.getByReserveSeq(pReserveSeq);
+        PastReserveResponseDto pastReserveResponseDto = PastReserveResponseDto.builder()
+                .reserveSeq(pastReserve.getPReserveSeq())
+                .customerUserSeq(pastReserve.getCustomer().getUserSeq())
+                .hospitalUserSeq(pastReserve.getHospital().getUserSeq())
+                .year(pastReserve.getYear())
+                .month(pastReserve.getMonth())
+                .day(pastReserve.getDay())
+                .time(pastReserve.getTime())
+                .dayofweek(pastReserve.getDayofweek())
+                .content(pastReserve.getPContent())
+                .price(pastReserve.getPPrice())
+                .build();
+
+        return ResponseEntity.ok(pastReserveResponseDto);
     }
 
 

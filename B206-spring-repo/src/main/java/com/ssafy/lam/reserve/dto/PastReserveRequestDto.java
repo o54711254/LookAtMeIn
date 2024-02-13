@@ -10,7 +10,7 @@ import lombok.ToString;
 @ToString
 public class PastReserveRequestDto {
 
-    private Long reserveSeq;
+    private Long pastReserveSeq;
     private String content;
     private int price;
     private int year;
@@ -18,11 +18,14 @@ public class PastReserveRequestDto {
     private int day;
     private String dayofweek;
     private int time;
+    private Long customerSeq;
+    private Long hospitalSeq;
+
 
     @Builder
 
-    public PastReserveRequestDto(Long reserveSeq, String content, int price, int year, int month, int day, String dayofweek, int time) {
-        this.reserveSeq = reserveSeq;
+    public PastReserveRequestDto(Long pastReserveSeq, String content, int price, int year, int month, int day, String dayofweek, int time, Long customerSeq, Long hospitalSeq) {
+        this.pastReserveSeq = pastReserveSeq;
         this.content = content;
         this.price = price;
         this.year = year;
@@ -30,5 +33,7 @@ public class PastReserveRequestDto {
         this.day = day;
         this.dayofweek = dayofweek;
         this.time = time;
+        this.customerSeq = customerSeq;
+        this.hospitalSeq = hospitalSeq;
     }
 }

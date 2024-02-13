@@ -8,7 +8,6 @@ import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.PastReserve;
 import com.ssafy.lam.reserve.domain.PastReserveRepository;
-import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.PastReserveRequestDto;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -46,8 +47,14 @@ public class PastReserveService {
             questionnaire = quesionnareRepository.save(questionnaire);
 
 
-            Reserve reserve = Reserve.builder()
-                    .reserveSeq(pastReserveRequestDto.getReserveSeq())
+
+
+            User customer = User.builder()
+                    .userSeq(pastReserveRequestDto.getCustomerSeq())
+                    .build();
+
+            User hospital = User.builder()
+                    .userSeq(pastReserveRequestDto.getHospitalSeq())
                     .build();
 
 
@@ -55,10 +62,11 @@ public class PastReserveService {
             UploadFile afterFile = uploadFileService.store(afterImg);
 
             PastReserve pastReserve = PastReserve.builder()
-                    .reserve(reserve)
                     .beforeImg(beforeFile)
                     .afterImg(afterFile)
                     .questionnaire(questionnaire)
+                    .customer(customer)
+                    .hospital(hospital)
                     .pContent(pastReserveRequestDto.getContent())
                     .pPrice(pastReserveRequestDto.getPrice())
                     .year(pastReserveRequestDto.getYear())
@@ -75,5 +83,13 @@ public class PastReserveService {
             log.error("상담 종료 실패 : {}", e.getMessage());
             throw new RuntimeException("상담 종료 실패");
         }
+    }
+
+    public List<PastReserve> getAllByUserSeq(Long userSeq) {
+        return pastReserveRepository.findAllByCustomerUserSeq(userSeq);
+    }
+
+    public PastReserve getByReserveSeq(Long pReserveSeq) {
+        return pastReserveRepository.findById(pReserveSeq).orElseThrow(() -> new IllegalArgumentException("해당 상담내역이 없습니다."));
     }
 }
