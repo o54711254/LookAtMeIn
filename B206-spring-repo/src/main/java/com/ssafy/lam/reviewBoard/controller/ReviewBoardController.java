@@ -77,8 +77,6 @@ public class ReviewBoardController {
         ReviewDisplay detailReview = null;
         if(review!=null) {
             try{
-            
-
                 detailReview = ReviewDisplay.builder()
                         .reviewBoard_seq(review.getSeq())
                         .reviewBoard_title(review.getTitle())

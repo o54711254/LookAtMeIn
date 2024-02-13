@@ -61,6 +61,7 @@ public class MypageController {
             }
         } else {
             HospitalDto dto = hospitalService.getHospital(userSeq);
+            System.out.println("dto : " + dto.getHospitalInfo_id());
             if (dto != null) {
                 return new ResponseEntity<HospitalDto>(dto, HttpStatus.OK);
             } else {

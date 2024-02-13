@@ -46,10 +46,9 @@ public class RequestBoardService {
                 .build();
 
 
-
         requestboard = requestboardRepository.save(requestboard);
         List<Surgery> surgeries = new ArrayList<>();
-        for(SurgeryDto surgeryDto : requestSaveDto.getSurgeries()) {
+        for (SurgeryDto surgeryDto : requestSaveDto.getSurgeries()) {
             Surgery surgery = Surgery.builder()
                     .requestboard(requestboard)
                     .part(surgeryDto.getPart())
@@ -233,7 +232,7 @@ public class RequestBoardService {
         User user = userRepository.findById(responseDto.getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없음 : " + responseDto.getUserSeq()));
 
-        System.out.println("유저타입"+user.getUserType());
+        System.out.println("유저타입" + user.getUserType());
         if (user.getUserType().equals("HOSPITAL")) {
             Response response = Response.builder()
                     .requestboard(requestboard)
@@ -241,8 +240,6 @@ public class RequestBoardService {
                     .message(responseDto.getMessage())
                     .build();
             responseRepository.save(response);
-            System.out.println("requestboard.getUser() : " + requestboard.getUser() + " " + "user : " + user + " " + "response.getMessage() : " + response.getMessage());
-            // 알림 생성 로직 호출ㅇ
             createNotification(requestboard.getUser(), user, response.getMessage());
         } else {
             new IllegalArgumentException("병원만 제안 가능 : " + responseDto.getUserSeq());
@@ -250,9 +247,7 @@ public class RequestBoardService {
     }
 
     public void createNotification(User recipient, User sender, String message) {
-        System.out.println("recipient : "+ recipient + " " + "sender : " + sender + " " + "message : " + message);
-        String notificationMessage = String.format(sender.getName(), message);
-        Notification notification = new Notification(sender.getName(), recipient, notificationMessage, false);
+        Notification notification = new Notification(sender.getName(), recipient, message, false);
         notificationRepository.save(notification);
     }
 

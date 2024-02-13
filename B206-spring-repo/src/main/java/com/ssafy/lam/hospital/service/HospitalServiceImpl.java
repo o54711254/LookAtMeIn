@@ -77,25 +77,21 @@ public class HospitalServiceImpl implements HospitalService {
         return hospital;
     }
     @Override
-    public HospitalDto getHospital(long userId) {
-        Optional<Hospital> hospitalOptional = hospitalRepository.findById(userId);
-        if (hospitalOptional.isPresent()) {
-            com.ssafy.lam.hospital.domain.Hospital hospital = hospitalOptional.get();
-            HospitalDto dto = HospitalDto.builder()
-                    .hospitalInfo_id(hospital.getUser().getUserId())
-                    .hospitalInfo_password(hospital.getUser().getPassword())
-                    .hospitalInfo_name(hospital.getUser().getName())
-                    .hospitalInfo_phoneNumber(hospital.getTel())
-                    .hospitalInfo_introduce(hospital.getIntro())
-                    .hospitalInfo_address(hospital.getAddress())
-                    .hospitalInfo_open(hospital.getOpenTime())
-                    .hospitalInfo_close(hospital.getCloseTime())
-                    .hospitalInfo_url(hospital.getUrl())
-                    .build();
-            return dto;
-        } else {
-            return null;
-        }
+    public HospitalDto getHospital(long userSeq) {
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
+        HospitalDto dto = HospitalDto.builder()
+                .hospitalInfo_id(hospital.getUser().getUserId())
+                .hospitalInfo_password(hospital.getUser().getPassword())
+                .hospitalInfo_name(hospital.getUser().getName())
+                .hospitalInfo_phoneNumber(hospital.getTel())
+                .hospitalInfo_introduce(hospital.getIntro())
+                .hospitalInfo_address(hospital.getAddress())
+                .hospitalInfo_open(hospital.getOpenTime())
+                .hospitalInfo_close(hospital.getCloseTime())
+                .hospitalInfo_url(hospital.getUrl())
+                .build();
+        return dto;
+
     }
     @Override
     public Hospital updateHospital(long userSeq, HospitalDto hospitalDto, MultipartFile profile) {
