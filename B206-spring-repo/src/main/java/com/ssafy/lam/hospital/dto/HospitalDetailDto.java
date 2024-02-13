@@ -22,7 +22,7 @@ public class HospitalDetailDto {
     private String profileType;
 
 
-//    private double avgScore; // 후기 평균 평점
+    //    private double avgScore; // 후기 평균 평점
 //    private int cntReviews; // 후기 총 개수
     private double hospitalInfo_avgScore; // 후기 평균 평점
     private int hospitalInfo_cntReviews; // 후기 총 개수
