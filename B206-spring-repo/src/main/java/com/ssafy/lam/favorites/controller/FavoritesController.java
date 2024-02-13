@@ -33,13 +33,13 @@ public class FavoritesController {
 
     @GetMapping("/list/{userSeq}")
     @Operation(summary = "해당 고객이 찜한 모든 병원 목록 출력")
-    public List<HospitalDetailDto> getFavoritesList(@PathVariable Long userSeq) {
+    public ResponseEntity<List<HospitalDetailDto>> getFavoritesList(@PathVariable Long userSeq) {
         List<Hospital> hospitalList = favoritesService.getAllFavorites(userSeq);
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
         for(Hospital h : hospitalList) {
-            hospitalDetailDtoList.add(hospitalService.getHospitalInfo(h.getUser().getUserSeq()));
+            hospitalDetailDtoList.add(hospitalService.getHospitalInfo(h.getHospitalSeq()));
         }
-        return hospitalDetailDtoList;
+        return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
 
     @PostMapping("/add")
