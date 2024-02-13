@@ -44,14 +44,14 @@ function ProposeList() {
   return (
     <div>
       <div className={styles.head}>
-        <h3>{userName}님께 상담 요청을 보낸 병원 목록</h3>
+        <p>{userName}님께 상담 요청을 보낸 병원 목록</p>
       </div>
       <div>
         {proposeList.map((propose, index) => (
           <li key={index} className={styles.proposeItem}>
             <div className={styles.index}>No. {index + 1}</div>
             <div>{}</div>
-            <div className={styles.writer}>
+            <div className={styles.hospitalName}>
               <div>{propose.hospitalName}</div>
             </div>
             <div>

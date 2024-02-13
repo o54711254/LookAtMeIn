@@ -50,7 +50,6 @@ public class ReserveServiceImpl implements ReserveService {
             ReserveResponseDto dto = ReserveResponseDto.builder()
                     .customerName(reserve.getCustomer().getName())
                     .hospitalName(hospital.getUser().getName())
-                    .reserveType(reserve.getReserveType())
                     .year(reserve.getYear())
                     .month(reserve.getMonth())
                     .day(reserve.getDay())
@@ -86,11 +85,14 @@ public class ReserveServiceImpl implements ReserveService {
         User customerUser = userRepository.findById(dto.getCustomerUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getCustomerUserSeq()));
 
-        User hospitalUser = userRepository.findById(dto.getHospitalUserSeq())
+//        User hospitalUser = userRepository.findById(dto.getHospitalUserSeq())
+//                .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
+        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
-
-        if (customerUser.getUserType().equals("CUSTOMER") && hospitalUser.getUserType().equals("HOSPITAL")) {
-            Reserve reserve = dto.toEntity(customerUser, hospitalUser);
+        log.info("customerUser : {}", customerUser.getUserId());
+        log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
+        if (customerUser.getUserType().equals("CUSTOMER") && hospitalUser.getUser().getUserType().equals("HOSPITAL")) {
+            Reserve reserve = dto.toEntity(customerUser, hospitalUser.getUser());
             return reserveRepository.save(reserve);
         } else {
             throw new IllegalArgumentException("고객과 병원 매치가 안됨");
