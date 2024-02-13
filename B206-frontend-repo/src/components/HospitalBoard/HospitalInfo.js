@@ -33,13 +33,13 @@ const HospitalInfo = () => {
   useEffect(() => {
     const getHospitalInfo = async () => {
       try {
-        console.log(hospitalInfo_seq);
+        console.log("hospitalInfo_seq: ", hospitalInfo_seq);
 
         const response = await axiosApi.get(
           `/api/hospital-info/detail/${hospitalInfo_seq}`
         );
-        setHospitalData(response.data);
         console.log("여기", response.data);
+        setHospitalData(response.data);
         console.log(response.data.userSeq);
         // const imgResponse = await axiosApi.get(response.data.fileUrl);
         // console.log("response2: ", imgResponse);
@@ -60,7 +60,7 @@ const HospitalInfo = () => {
 
   useEffect(() => {
     axiosApi
-      .get(`/api/hospital-info/reviews/${userSeq}`)
+      .get(`/api/hospital-info/reviews/${hospitalInfo_seq}`)
       .then((response) => {
         console.log(userSeq);
         console.log(response.data);
@@ -72,7 +72,7 @@ const HospitalInfo = () => {
   }, []);
 
   const handleClick = (reviewBoard_seq) => {
-    navigate(`api/reviewBoard/${reviewBoard_seq}`);
+    navigate(`/reviewdetail/${reviewBoard_seq}`);
   };
 
   const [doctors, setDoctors] = useState([]);
