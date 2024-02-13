@@ -1,7 +1,7 @@
 package com.ssafy.lam.reserve.domain;
 
-import com.ssafy.lam.customer.domain.Customer;
-import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Reserve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reserveSeq;
+    private Long seq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_user_seq")
@@ -25,6 +25,15 @@ public class Reserve {
     @JoinColumn(name = "hospital_user_seq")
     private User hospital; // 예약을 받는 병원
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "questionnaire_seq")
+    private Questionnaire questionnaire;
+
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "price")
+    private int price;
 
     private int year;
     private int month;
@@ -32,16 +41,35 @@ public class Reserve {
     private String dayofweek;
     private int time;
 
-    @Builder
+    private boolean deleted;
+    private boolean completed;
 
-    public Reserve(Long reserveSeq, User customer, User hospital, int year, int month, int day, String dayofweek, int time) {
-        this.reserveSeq = reserveSeq;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "before_img_seq")
+    private UploadFile beforeImg;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "after_img_seq")
+    private UploadFile afterImg;
+
+
+    @Builder
+    public Reserve(Long seq, User customer, User hospital, Questionnaire questionnaire, String content, int price, int year, int month, int day, String dayofweek, int time, boolean deleted, boolean completed, UploadFile beforeImg, UploadFile afterImg) {
+        this.seq = seq;
         this.customer = customer;
         this.hospital = hospital;
+        this.questionnaire = questionnaire;
+        this.content = content;
+        this.price = price;
         this.year = year;
         this.month = month;
         this.day = day;
         this.dayofweek = dayofweek;
         this.time = time;
+        this.deleted = deleted;
+        this.completed = completed;
+        this.beforeImg = beforeImg;
+        this.afterImg = afterImg;
     }
 }

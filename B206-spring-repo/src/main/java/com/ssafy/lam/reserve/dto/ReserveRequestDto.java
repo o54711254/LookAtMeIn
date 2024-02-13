@@ -12,7 +12,8 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class ReserveSaveRequestDto {
+public class ReserveRequestDto {
+    private Long reserveSeq;
     private int year;
     private int month;
     private int day;
@@ -20,6 +21,10 @@ public class ReserveSaveRequestDto {
     private int time;
     private long customerUserSeq;
     private long hospitalUserSeq;
+
+    private int price;
+    private String content;
+
 
     public Reserve toEntity(User customer, User hospital) {
         return Reserve.builder()
