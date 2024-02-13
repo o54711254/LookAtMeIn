@@ -82,9 +82,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
     @Override
     public HospitalDto getHospital(long userSeq) {
-        Hospital hospitalOptional = hospitalRepository.findByUserUserSeq(userSeq).get();
-
-        Hospital hospital = hospitalOptional;
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
         HospitalDto dto = HospitalDto.builder()
                 .hospitalInfo_id(hospital.getUser().getUserId())
                 .hospitalInfo_password(hospital.getUser().getPassword())

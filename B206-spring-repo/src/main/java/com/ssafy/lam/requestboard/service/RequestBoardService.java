@@ -46,10 +46,9 @@ public class RequestBoardService {
                 .build();
 
 
-
         requestboard = requestboardRepository.save(requestboard);
         List<Surgery> surgeries = new ArrayList<>();
-        for(SurgeryDto surgeryDto : requestSaveDto.getSurgeries()) {
+        for (SurgeryDto surgeryDto : requestSaveDto.getSurgeries()) {
             Surgery surgery = Surgery.builder()
                     .requestboard(requestboard)
                     .part(surgeryDto.getPart())
@@ -240,8 +239,6 @@ public class RequestBoardService {
                     .message(responseDto.getMessage())
                     .build();
             responseRepository.save(response);
-            // 알림 생성 로직 호출ㅇ
-            System.out.println(requestboard.getUser() + " " + user + " " + response.getMessage());
             createNotification(requestboard.getUser(), user, response.getMessage());
 
         } else {
