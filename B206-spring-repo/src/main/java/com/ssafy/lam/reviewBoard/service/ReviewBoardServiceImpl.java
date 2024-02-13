@@ -10,6 +10,7 @@ import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.DoctorRepository;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
+import com.ssafy.lam.reviewBoard.controller.ReviewBoardController;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardRegister;
@@ -17,6 +18,8 @@ import com.ssafy.lam.reviewBoard.dto.ReviewBoardUpdate;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +36,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     private final HospitalRepository hospitalRepository;
     private final DoctorRepository doctorRepository;
     private final HashtagRepository hashtagRepository;
+
+    private Logger log = LoggerFactory.getLogger(ReviewBoardController.class);
     MultipartConfig multipartConfig = new MultipartConfig();
 
     // 파일이 업로드될 디렉토리 경로
@@ -62,10 +67,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .name(reviewBoardRegister.getUsername())
                 .userSeq(reviewBoardRegister.getUser_seq())
                 .build();
+        log.info("유저 정보: " + user);
 
-
-        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardRegister.getHospital_seq()).build();
-        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardRegister.getDoctor_seq()).build();
+        
+//        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardRegister.getHospital_seq()).build();
+//        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardRegister.getDoctor_seq()).build();
+        Long hospitalSeq = hospitalRepository.findHospitalSeqByName(reviewBoardRegister.getReviewBoard_hospital());
+        Long doctorSeq = doctorRepository.findDoctorSeqByName(reviewBoardRegister.getReviewBoard_doctor());
+        Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
+        Doctor doctor = doctorRepository.findById(doctorSeq).orElse(null);
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
 
@@ -82,7 +92,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .hospital(hospital)
                 .doctor(doctor)
                 .build();
-
+        log.info("후기 정보: " + reviewBoard);
         UploadFile uploadFile = null;
         if (file != null)
             uploadFile = uploadFileService.store(file);

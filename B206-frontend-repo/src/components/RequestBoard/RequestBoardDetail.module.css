@@ -76,4 +76,24 @@
     font-size: 20px;
     font-weight: 500;
 }
-/* 댓글 부분 */
+.suggestButton {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    background-color: #ffdbc6;
+    width: 100%;
+    height: 40px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 23px;
+    font-weight: 600;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  .suggestButton:hover {
+    background-color: #f8b195;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+  

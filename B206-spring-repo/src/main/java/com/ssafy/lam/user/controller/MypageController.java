@@ -26,6 +26,8 @@ import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
 import com.ssafy.lam.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +48,12 @@ public class MypageController {
     private final ReviewBoardService reviewBoardService;
     private final ReserveService reserveService;
     private final RequestBoardService requestBoardService;
-
+    private Logger log = LoggerFactory.getLogger(MypageController.class);
     @GetMapping("/{userSeq}")
     @Operation(summary = "유저 타입에 따라 고객 정보나 병원 정보를 조회")
     public ResponseEntity<?> getMypageByUser(@PathVariable long userSeq) {
         String role = userService.getUser(userSeq).getUserType();
-
+        log.info("role : {}", role);
         if (role.equals("CUSTOMER")) {
             CustomerDto dto = customerService.getCustomer(userSeq);
             if (dto != null) {
@@ -61,7 +63,7 @@ public class MypageController {
             }
         } else {
             HospitalDto dto = hospitalService.getHospital(userSeq);
-            System.out.println("dto : " + dto.getHospitalInfo_id());
+            log.info("dto : {}", dto.getHospitalInfo_id());
             if (dto != null) {
                 return new ResponseEntity<HospitalDto>(dto, HttpStatus.OK);
             } else {

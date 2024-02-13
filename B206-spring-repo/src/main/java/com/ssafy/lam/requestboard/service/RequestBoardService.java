@@ -232,7 +232,6 @@ public class RequestBoardService {
         User user = userRepository.findById(responseDto.getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없음 : " + responseDto.getUserSeq()));
 
-        System.out.println("유저타입" + user.getUserType());
         if (user.getUserType().equals("HOSPITAL")) {
             Response response = Response.builder()
                     .requestboard(requestboard)
@@ -241,6 +240,7 @@ public class RequestBoardService {
                     .build();
             responseRepository.save(response);
             createNotification(requestboard.getUser(), user, response.getMessage());
+
         } else {
             new IllegalArgumentException("병원만 제안 가능 : " + responseDto.getUserSeq());
         }

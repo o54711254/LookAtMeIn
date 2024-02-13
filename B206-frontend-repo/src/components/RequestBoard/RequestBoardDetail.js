@@ -6,10 +6,14 @@ import Comment from "../Comment/Comment";
 import styles from "./RequestBoardDetail.module.css";
 import profile from "../../assets/man/유승호.jpg";
 import RequestBoardDelete from "./RequestBoardDelete";
+import { useSelector } from "react-redux";
+import SuggestModal from "../Modal/SuggestModal";
 
 function RequestBoardDetail() {
   const [post, setPost] = useState(null);
   const [img, setImg] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const user = useSelector((state) => state.user);
   const { requestboardSeq } = useParams();
   const navigate = useNavigate();
 
@@ -35,6 +39,35 @@ function RequestBoardDetail() {
       fetchPost();
     }
   }, [requestboardSeq]);
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleSubmitSuggestion = async (message) => {
+    const requestBody = {
+      userSeq: post.userSeq,
+      hospitalName: "어쩌구저쩌구",
+      message: message,
+    };
+    try {
+      console.log("보내는거", requestBody);
+      await axiosApi.post(
+        `/api/requestboard/response/${post.seq}`,
+        requestBody
+      );
+      alert("제안이 성공적으로 전송되었습니다.");
+      // 성공 시 추가 동작
+    } catch (error) {
+      console.error("제안하기 실패: ", error);
+      alert("제안을 전송하는 데 실패했습니다.");
+    }
+  };
+
   //에러찾을라고..
   if (!post) {
     return <div>Loading...</div>;
@@ -74,6 +107,14 @@ function RequestBoardDetail() {
         </div>
       </div>
       {/* <div>해시태그: {post.hashTag}</div> */}
+      <button className={styles.suggestButton} onClick={handleOpenModal}>
+        제안하기
+      </button>
+      <SuggestModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSubmit={handleSubmitSuggestion}
+      />
     </div>
   );
 }
