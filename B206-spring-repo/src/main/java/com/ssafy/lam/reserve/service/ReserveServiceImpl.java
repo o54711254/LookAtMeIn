@@ -50,7 +50,6 @@ public class ReserveServiceImpl implements ReserveService {
             ReserveResponseDto dto = ReserveResponseDto.builder()
                     .customerName(reserve.getCustomer().getName())
                     .hospitalName(hospital.getUser().getName())
-                    .reserveType(reserve.getReserveType())
                     .year(reserve.getYear())
                     .month(reserve.getMonth())
                     .day(reserve.getDay())
