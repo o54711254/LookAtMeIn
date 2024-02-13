@@ -18,16 +18,18 @@ import ProposeList from "./Post/ProposeList";
 
 function MyPage() {
   const user = useSelector((state) => state.user);
+  const customer = useSelector((state) => state.customer);
   useEffect(() => {
     console.log(user);
+    console.log("customer", customer);
   });
   return (
     <div className={styles.mypageContainer}>
       <NavLink to="info" className={styles.profile}>
-        <img src={user.profileImg} className={styles.profileImage} />
+        <img src={customer.profileImg} className={styles.profileImage} />
         <div className={styles.profileInfo}>
-          <div className={styles.profileName}>{user.userName}</div>
-          <div className={styles.profileEmail}>{user.userEmail}</div>
+          <div className={styles.profileName}>{customer.customerName}</div>
+          <div className={styles.profileEmail}>{customer.customerEmail}</div>
         </div>
       </NavLink>
       <div className={styles.sidebar}>

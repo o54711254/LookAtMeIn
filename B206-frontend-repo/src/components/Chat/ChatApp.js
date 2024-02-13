@@ -64,7 +64,7 @@ function ChatApp() {
       // senderSeq에는 현재 사용자의 ID를 넣어야 함. 지금은 일단 1로 설정
       const messageObj = {
         chatroomSeq: roomId,
-        senderSeq: 1,
+        senderSeq: currentUser.userSeq,
         sender: currentUser.userId,
         message: message,
       };
