@@ -65,11 +65,11 @@ public class HospitalInfoController {
                         .hospitalInfo_url(h.getUrl())
                         .userSeq(h.getUser().getUserSeq())
                         .build();
-                if(h.getRegistrationFile() != null) {
+                if(h.getProfileFile() != null) {
                     // 병원 등록증 base64로 인코딩해서 보내줘야함
-                    Path path = Paths.get(uploadPath + "/" + h.getRegistrationFile().getName());
-                    String profileBase64 = EncodeFile.encodeFileToBase64(path);
-                    hospitalDetailDto.setProfileBase64(profileBase64);
+                    Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
+                   String profileBase64 = EncodeFile.encodeFileToBase64(path);
+                   hospitalDetailDto.setProfileBase64(profileBase64);
                 }
 
 
@@ -98,7 +98,7 @@ public class HospitalInfoController {
         return new ResponseEntity<>(hospitalDetailDto, HttpStatus.OK);
     }
 
-    @GetMapping("/reviews/{hospital_seq}")
+    @GetMapping("/reviews/{user_seq}")
     @Operation(summary = "고객이 병원 상세 페이지를 조회한다. - 해당 병원 후기 목록")
     public ResponseEntity<List<ReviewListDisplay>> getHospitalReview(@PathVariable Long user_seq) {
         List<ReviewListDisplay> reviews = hospitalService.getReviewsByHospital(user_seq);

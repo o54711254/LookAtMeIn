@@ -44,7 +44,7 @@ public class HosptialController {
 
 //    @PutMapping
 
-    
+
     // 병원에서 의사 정보 추가
     @PostMapping("/{hospital_seq}/doctors/regist")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가")
@@ -58,7 +58,7 @@ public class HosptialController {
             return ResponseEntity.badRequest().build();
         }
     }
-    
+
     // 병원에서 의사 목록 조회
     @GetMapping("/{hospital_seq}/doctors")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사 목록 조회")
