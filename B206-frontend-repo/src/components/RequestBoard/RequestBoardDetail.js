@@ -14,6 +14,7 @@ function RequestBoardDetail() {
   const [img, setImg] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const user = useSelector((state) => state.user);
+  const hospital = useSelector((state) => state.hospital);
   const { requestboardSeq } = useParams();
   const navigate = useNavigate();
 

@@ -58,8 +58,13 @@ function LoginForm() {
               `/api/mypage/${loginResponse.data.userSeq}`
             );
             let imageData = profile;
-            if (hospitalResponse.data.base64 && hospitalResponse.data.type) {
-              const { base64, type } = hospitalResponse.data;
+            if (
+              hospitalResponse.data.hospitalProfileBase64 &&
+              hospitalResponse.data.hospitalProfileType
+            ) {
+              const base64 = hospitalResponse.data.hospitalProfileBase64;
+              const type = hospitalResponse.data.hospitalProfileType;
+
               imageData = `data:${type};base64,${base64}`;
             }
             setProfileImg(imageData);

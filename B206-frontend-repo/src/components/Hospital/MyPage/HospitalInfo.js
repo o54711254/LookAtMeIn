@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { loginHospital } from "../../../redux/hospital";
 import axiosApi from "../../../api/axiosApi";
 import update from "../../../assets/update.png";
 import profile from "../../../assets/profile.png";
@@ -9,6 +10,7 @@ import styles from "./HospitalInfo.module.css";
 function HospitalInfo() {
   const hospital = useSelector((state) => state.hospital);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [infoData, setInfoData] = useState({});
   const [profileImg, setProfileImg] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -19,8 +21,8 @@ function HospitalInfo() {
       .then((res) => {
         console.log(hospital);
         setInfoData(res.data);
-        const base64 = res.data.base64;
-        const type = res.data.type;
+        const base64 = res.data.hospitalProfileBase64;
+        const type = res.data.hospitalProfileType;
         if (base64) {
           const data = `data:${type};base64,${base64}`;
           setProfileImg(data);
@@ -67,13 +69,19 @@ function HospitalInfo() {
     );
 
     axiosApi
-      .put(`/api/customer/mypage/modify/${hospital.userSeq}`, formData, {
+      .put(`/api/hospital/mypage/modify/${hospital.userSeq}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
         console.log("프로필 이미지 업로드 성공", res);
+        dispatch(
+          loginHospital({
+            ...hospital,
+            profileImg: profileImg,
+          })
+        );
         window.location.reload();
       })
       .catch((error) => {

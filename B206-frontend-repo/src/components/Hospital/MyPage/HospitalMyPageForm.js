@@ -5,6 +5,7 @@ import Doctor from "./Doctor";
 import consult from "../../../assets/mypage/consult.png";
 import reserve from "../../../assets/mypage/reserve.png";
 import HospitalInfo from "./HospitalInfo";
+import HospitalInfoUpdate from "./HospitalInfoUpdate";
 import doctor from "../../../assets/mypage/doctor.png";
 import ReservationList from "./ReservationList";
 import ConsultingList from "./ConsultingList";
@@ -64,6 +65,7 @@ function HospitalMyPageForm() {
       <div className={styles.contents}>
         <Routes>
           <Route path="info" element={<HospitalInfo />} />
+          <Route path="info/update" element={<HospitalInfoUpdate />} />
           <Route path="doctor" element={<Doctor />} />
           <Route path="reserve" element={<ReservationList />} />
           <Route path="consult" element={<ConsultingList />} />

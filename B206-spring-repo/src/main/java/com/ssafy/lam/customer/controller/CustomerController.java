@@ -37,7 +37,9 @@ public class CustomerController {
 
     @PutMapping("/mypage/modify/{userSeq}")
     @Operation(summary = "고객 정보 수정")
-    public ResponseEntity<Void> modify(@PathVariable Long userSeq, @RequestParam("customerData") String customerData, @RequestParam(value = "profile", required = false) MultipartFile profile) {
+    public ResponseEntity<Void> modify(@PathVariable Long userSeq,
+                                       @RequestParam("customerData") String customerData,
+                                       @RequestParam(value = "profile", required = false) MultipartFile profile) {
         try{
             CustomerDto customerDto = new ObjectMapper().readValue(customerData, CustomerDto.class);
 
