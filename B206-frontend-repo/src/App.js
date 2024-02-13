@@ -47,7 +47,7 @@ import Canvas from "./components/Canvas/canvas.js";
 import RequestRegist from "./components/RequestBoard/RequestRegist";
 
 // openvidu
-import WaitingRoom from "./pages/Openvidu.js"
+import WaitingRoom from "./pages/Openvidu.js";
 
 function App() {
   return (
@@ -144,7 +144,7 @@ function App() {
                   <Route path="/search/*" element={<Search />} />
                   <Route path="/search/:query" element={<SearchList />} />
                   {/* <Route path="/meeting/meet/*" element={<VideoRoom />} /> */}
-                  <Route path="/meeting/*" element={<WaitingRoom />}/>
+                  <Route path="/meeting/*" element={<WaitingRoom />} />
                   <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
                 </Routes>

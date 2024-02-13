@@ -8,6 +8,7 @@ function ProposeList() {
   const [proposeList, setProposeList] = useState([]);
   const userSeq = useSelector((state) => state.user.userSeq);
   const userName = useSelector((state) => state.user.userName);
+  const [accept, setAccept] = useState({});
   // const [responseSeq, setResponseSeq] = useState(null);
 
   useEffect(() => {
@@ -26,11 +27,14 @@ function ProposeList() {
       });
   }, [userSeq]);
 
+  // 제안을 수락하는 함수. seq를 매개변수로 받음
   function startChat(seq) {
     axiosApi
       .post(`api/requestboard/accept-response/${seq}`)
       .then((response) => {
         console.log(response.data);
+        //수락 요청 성공적으로 받으면, seq가 true로 바뀌면서 수락되었음 표시함.
+        setAccept((prevSeqs) => ({ ...prevSeqs, [seq]: true }));
       })
       .catch((error) => {
         console.error("상담 수락 처리 중 에러 발생:", error);
@@ -46,6 +50,7 @@ function ProposeList() {
         {proposeList.map((propose, index) => (
           <li key={index} className={styles.proposeItem}>
             <div className={styles.index}>No. {index + 1}</div>
+            <div>{}</div>
             <div className={styles.writer}>
               <div>{propose.hospitalName}</div>
             </div>
@@ -53,7 +58,11 @@ function ProposeList() {
               <div>{propose.message}</div>
             </div>
             <div>
-              <button onClick={() => startChat(propose.seq)}>수락하기</button>
+              {accept[propose.seq] ? (
+                <button disabled>수락완료</button>
+              ) : (
+                <button onClick={() => startChat(propose.seq)}>수락하기</button>
+              )}
             </div>
           </li>
         ))}

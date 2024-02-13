@@ -576,9 +576,10 @@ class VideoRoomComponent extends Component {
                           4. 카메라와 마이크 세팅이 끝났다면 아래의 입장하기 버튼을 눌러 상담에 입장해 주세요.
                           </p>
                           <div className={styles.enterbox}>
-                        <button onClick={this.enteredChanged} className={styles.enter}>
-                          입장하기
-                        </button>
+                          <button onClick={() => this.enteredChanged()} className={styles.enter}>
+  입장하기
+</button>
+
                       </div>
                         </div>
                       ) : (
@@ -597,9 +598,10 @@ class VideoRoomComponent extends Component {
                           4. 카메라와 마이크 세팅이 끝났다면 아래의 입장하기 버튼을 눌러 상담에 입장해 주세요.
                           </p>
                       <div className={styles.enterbox}>
-                      <button onClick={this.enteredChanged} className={styles.enter}>
-                          입장하기
-                        </button>
+                      <button onClick={() => this.enteredChanged()} className={styles.enter}>
+  입장하기
+</button>
+
                       </div>
                         </div>
                       )}
