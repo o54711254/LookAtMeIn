@@ -2,37 +2,36 @@ package com.ssafy.lam.hashtag.domain;
 
 import com.ssafy.lam.freeboard.domain.Freeboard;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
 @Entity
-public class Hashtag {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class FreeboardHashtag {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long seq;
 
-    private String tagName;
+    @ManyToOne
+    private Freeboard freeboard;
 
-    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FreeboardHashtag> freeboardHashtags;
+    @ManyToOne
+    private Hashtag hashtag;
 
     @CreatedDate
     private LocalDateTime createdAt;
-
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
     @Builder
-    public Hashtag(String tagName) {
-        this.tagName = tagName;
+    public FreeboardHashtag(Freeboard freeboard, Hashtag hashtag) {
+        this.freeboard = freeboard;
+        this.hashtag = hashtag;
     }
 }
