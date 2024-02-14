@@ -59,7 +59,6 @@ const HospitalInfo = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    
     axiosApi
       .get(`/api/hospital-info/reviews/${hospitalInfo_seq}`)
       .then((response) => {
@@ -203,11 +202,14 @@ const HospitalInfo = () => {
                 </div>
               </div>
               <div className={styles.hashtagButton}>
-                {doctor.doctorCategory.map((category, index) => (
+                {/* {doctor.doctorCategory.map((category, index) => (
                   <div key={index} onClick={() => handleSearch(category.part)}>
                     {category.part}
                   </div>
-                ))}
+                ))} */}
+                <div onClick={() => handleSearch(doctor.doctorCategory)}>
+                  {doctor.doctorCategory}
+                </div>
               </div>
             </div>
           </li>
