@@ -39,7 +39,7 @@ function ChatApp() {
     const socket = new WebSocket("ws://i10b206.p.ssafy.io/ws");
     stompClient.current = Stomp.over(socket);
     stompClient.current.connect({}, () => {
-      stompClient.current.subscribe(`/sub/chatroom/${roomId}`, (message) => {
+      stompClient.current.subscribe(`/api/sub/chatroom/${roomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
 
@@ -81,7 +81,7 @@ function ChatApp() {
         sender: currentUser.userId,
         message: message,
       };
-      stompClient.current.send(`/pub/api/message`, {}, JSON.stringify(messageObj));
+      stompClient.current.send(`/api/pub/message`, {}, JSON.stringify(messageObj));
       // stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
       setMessage(""); // 입력 필드 초기화
     }
