@@ -35,9 +35,7 @@ public class QuestionnaireService {
         if(file != null)
             uploadFile = uploadFileService.store(file);
 
-        Reserve reserve = Reserve.builder()
-                .seq(questionRequestDto.getReserveSeq())
-                .build();
+        Reserve reserve = reserveRepository.findById(questionRequestDto.getReserveSeq()).get();
 
         Questionnaire questionnaire = Questionnaire.builder()
                 .blood(questionRequestDto.getQuestionnaire_blood())

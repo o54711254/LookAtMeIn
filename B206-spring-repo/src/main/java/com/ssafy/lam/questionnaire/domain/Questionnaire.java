@@ -23,7 +23,7 @@ public class Questionnaire {
     private String title;
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reserve_seq")
     private Reserve reserve;
 

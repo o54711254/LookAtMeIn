@@ -1,5 +1,6 @@
 package com.ssafy.lam.reserve.domain;
 
+
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.user.domain.User;

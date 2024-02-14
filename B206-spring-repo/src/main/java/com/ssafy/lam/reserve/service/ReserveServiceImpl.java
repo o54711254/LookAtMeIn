@@ -95,8 +95,10 @@ public class ReserveServiceImpl implements ReserveService {
     // 상담 예약 내역 상세조회
     @Override
     public Reserve getDetailReserveNotCompleted(Long reserveSeq) {
-        return reserveRepository.findBySeqAndCompletedFalse(reserveSeq)
+        Reserve reserve =  reserveRepository.findBySeqAndCompletedFalse(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
+        log.info("reserve: {}", reserve.getCustomer());
+        return reserve;
     }
 
     @Override
@@ -108,11 +110,11 @@ public class ReserveServiceImpl implements ReserveService {
 
         Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
-        log.info("customerUser : {}", customerUser.getUserId());
-        log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
 
         if (customerUser.getUserType().equals("CUSTOMER") && hospitalUser.getUser().getUserType().equals("HOSPITAL")) {
             Reserve reserve = dto.toEntity(customerUser, hospitalUser.getUser());
+        log.info("customerUser : {}", customerUser.getUserId());
+        log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
 
 
             return reserveRepository.save(reserve);
