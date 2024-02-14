@@ -10,7 +10,7 @@ function ReservationDetail() {
     axiosApi
       .get(`/api/reserve/detail/${reserveSeq}`)
       .then((res) => {
-        console.log(res.data);
+        console.log("예약상세", res.data);
         setReserveDetail(res.data);
       })
       .catch((error) => {

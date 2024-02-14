@@ -32,13 +32,13 @@ function HospitalList() {
   };
   const handleReject = (userSeq) => {
     axiosApi
-      .patch(`/api/admin/approveHos/${userSeq}`)
+      .patch(`/api/admin/disapproveHos/${userSeq}`)
       .then((res) => {
-        console.log("승인 성공");
+        console.log("반려 성공");
         setListType("all");
       })
       .catch((error) => {
-        console.log("승인 실패", error);
+        console.log("반려 실패", error);
       });
   };
 

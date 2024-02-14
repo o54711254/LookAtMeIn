@@ -2,8 +2,12 @@ package com.ssafy.lam.hospital.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.lam.hospital.domain.Doctor;
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.hospital.domain.*;
 import com.ssafy.lam.hospital.dto.*;
+import com.ssafy.lam.hospital.service.DoctorService;
 import com.ssafy.lam.hospital.service.HospitalService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
@@ -14,17 +18,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/hospital")
 public class HosptialController {
     private final HospitalService hospitalService;
+    private final DoctorService doctorService;
     private Logger log = LoggerFactory.getLogger(HosptialController.class);
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     @Autowired
-    public HosptialController(HospitalService hospitalService) {
+    public HosptialController(HospitalService hospitalService, DoctorService doctorService) {
         this.hospitalService = hospitalService;
+        this.doctorService = doctorService;
     }
 
     @PostMapping("/regist")
@@ -47,12 +58,12 @@ public class HosptialController {
 
     // 병원에서 의사 정보 추가
     @PostMapping("/{hospital_seq}/doctors/regist")
-    @Operation(summary = "병")
-    public ResponseEntity<Void> createDoctor(@PathVariable Long hospital_seq, @RequestParam("docto원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가rData") String doctorData, @RequestParam("doctorProfile") MultipartFile doctorProfile) {
+    @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가")
+    public ResponseEntity<Doctor> createDoctor(@PathVariable Long hospital_seq, @RequestParam("doctorData") String doctorData, @RequestParam("doctorProfile") MultipartFile doctorProfile) {
         try{
             DoctorDto doctorDto = new ObjectMapper().readValue(doctorData, DoctorDto.class);
-            hospitalService.createDoctor(hospital_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career(), doctorProfile);
-            return ResponseEntity.ok().build();
+            Doctor doctor = hospitalService.createDoctor(hospital_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career(), doctorProfile);
+            return new ResponseEntity<>(doctor, HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
@@ -62,9 +73,43 @@ public class HosptialController {
     // 병원에서 의사 목록 조회
     @GetMapping("/{hospital_seq}/doctors")
     @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사 목록 조회")
-    public ResponseEntity<List<Doctor>> getHospitalDoctors(@PathVariable long hospital_seq) {
-        List<Doctor> doctors = hospitalService.getHospitalDoctorList(hospital_seq);
-        return new ResponseEntity<>(doctors, HttpStatus.OK);
+    public ResponseEntity<List<DoctorListDto>> getHospitalDoctors(@PathVariable long hospital_seq) {
+        List<Doctor> doctorList = hospitalService.getHospitalDoctorList(hospital_seq);
+        List<DoctorListDto> doctorDtoList = new ArrayList<>();
+        for(Doctor d : doctorList) {
+            Long doctorInfoSeq = d.getDocInfoSeq();
+
+            List<DoctorCategory> doctorCategoryList = doctorService.getCategory(doctorInfoSeq);
+            List<CategoryDto> categoryDtoList = new ArrayList<>();
+            for(DoctorCategory dc : doctorCategoryList) {
+                categoryDtoList.add(new CategoryDto(dc.getPart()));
+            }
+
+            DoctorListDto doctorDto = DoctorListDto.builder()
+                    .doctorSeq(doctorInfoSeq)
+                    .doctorName(d.getDocInfoName())
+                    .doctorAvgScore(doctorService.getAvgScore(doctorInfoSeq))
+                    .doctorCntReviews(doctorService.getCntReviews(doctorInfoSeq))
+                    .doctorCategory(categoryDtoList)
+                    .build();
+
+            if(d.getProfile() != null){
+                UploadFile doctorProfile = d.getProfile();
+                Path path = Paths.get(uploadPath + "/" + doctorProfile.getName());
+                try {
+                    String doctorProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String doctorProfileType = doctorProfile.getType();
+                    doctorDto.setDoctorProfileBase64(doctorProfileBase64);
+                    doctorDto.setDoctorProfileType(doctorProfileType);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            doctorDtoList.add(doctorDto);
+        }
+        return new ResponseEntity<>(doctorDtoList, HttpStatus.OK);
     }
 
     @PutMapping("/mypage/modify/{userSeq}")
