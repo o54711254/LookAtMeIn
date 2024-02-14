@@ -36,7 +36,7 @@ function ChatApp() {
   };
   // 웹소켓 연결 설정
   const connect = () => {
-    const socket = new WebSocket("ws://localhost:80/ws");
+    const socket = new WebSocket("wss://i10b206.p.ssafy.io/ws");
     stompClient.current = Stomp.over(socket);
     stompClient.current.connect({}, () => {
       stompClient.current.subscribe(`/sub/chatroom/${roomId}`, (message) => {
