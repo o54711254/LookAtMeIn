@@ -6,6 +6,7 @@ import ReviewDelete from "./ReviewDelete";
 import { Button } from "@mui/material";
 import styles from "./ReviewDetail.module.css";
 import profile from "../../assets/gun.png";
+import Report from "../Modal/ReviewReport"
 
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);
@@ -49,7 +50,7 @@ function ReviewDetail() {
   // 현재 사용자가 글쓴이와 같거나 관리자인지 확인
   const canEditOrDelete =
     currentUser.name === reviewDetail.customer_name ||
-    currentUser.role === "admin";
+    currentUser.role === "ADMIN";
 
   return (
     <div className={styles.container}>
@@ -57,6 +58,7 @@ function ReviewDetail() {
         <div className={styles.writer}>
           <img src={profile} alt="프로필" className={styles.profile}></img>
           <p>{reviewDetail.customer_name}</p>
+          <Report reviewBoard_seq={reviewBoard_seq}></Report>
         </div>
         <div className={styles.title}>
           <p>{reviewDetail.reviewBoard_title}</p>
