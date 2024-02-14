@@ -33,6 +33,7 @@ function ReservationList() {
     <div className={styles.reserveContainer}>
       {reservations.map((reservation) => (
         <div
+          key={reservation.reserveSeq}
           className={styles.reserveItem}
         >
         <div onClick={() => goDetailPage(reservation.reserveSeq)}>
