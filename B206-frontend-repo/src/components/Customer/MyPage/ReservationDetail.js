@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axiosApi from "../../../api/axiosApi";
 import { useSelector } from "react-redux";
 import styles from "./ReservationDetail.module.css";
@@ -9,6 +9,7 @@ function ReservationDetail() {
   const { reserveSeq } = useParams();
   const [questionnaire, setQuestionnaire] = useState({});
   const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const [meetingData, setMeetingData] = useState({
     userSeq: "",
     hospitalSeq: "",
@@ -19,7 +20,6 @@ function ReservationDetail() {
     axiosApi
       .get(`/api/reserve/detail/${reserveSeq}`)
       .then((res) => {
-        console.log("예약상세", res.data);
         setReserveDetail(res.data);
         setMeetingData((prevData) => ({
           ...prevData,
@@ -27,13 +27,16 @@ function ReservationDetail() {
           hospitalSeq: res.data.hospitalUserSeq,
           reserveSeq: res.data.reserveSeq,
         }));
-        console.log("미팅데이터", meetingData);
         setQuestionnaire(res.data.questionnaireResponseDto);
       })
       .catch((error) => {
         console.log("안됨", error);
       });
   }, []);
+
+  const handleMeetingClick = () => {
+    navigate("/meeting", { state: { meetingData } });
+  };
 
   return (
     <div className={styles.detailContainer}>
@@ -49,10 +52,14 @@ function ReservationDetail() {
         </div>
       </div>
       <div className={styles.questionnaire}>
+        <div className={styles.questionTitle}>문진표</div>
         <img src={questionnaire.base64} className={styles.questionImg} />
-        <div>{questionnaire.blood}</div>
-        <div>{questionnaire.remark}</div>
+        <div>혈액형 : {questionnaire.blood}</div>
+        <div>내용 : {questionnaire.remark}</div>
       </div>
+      <button className={styles.suggestButton} onClick={handleMeetingClick}>
+        상담하기
+      </button>
     </div>
   );
 }
