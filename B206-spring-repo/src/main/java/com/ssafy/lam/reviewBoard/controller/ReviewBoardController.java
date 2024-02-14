@@ -157,7 +157,7 @@ public class ReviewBoardController {
         log.info("uploadfile:{}" , file);
         try{
             ReviewBoardRegister reviewBoardRegister = new ObjectMapper().readValue(reviewBoardData, ReviewBoardRegister.class);
-            reviewBoardService.createReview(reviewBoardRegister, null);
+            reviewBoardService.createReview(reviewBoardRegister, file);
             return ResponseEntity.ok().build();
 
         }catch (Exception e){

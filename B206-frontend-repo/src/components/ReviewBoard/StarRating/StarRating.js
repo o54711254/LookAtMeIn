@@ -34,69 +34,47 @@ const RatingField = styled.fieldset`
   }
 `;
 
-const StarRating = () => {
-  const [rating, setRating] = useState(0);
-
+const StarRating = ({ value, onChange }) => {
   const handleClickRating = (value) => {
-    setRating(value);
+    onChange(value);
   };
 
   return (
     <Base>
       <Name>별점</Name>
       <RatingField>
-        <StarInput
-          onClickRating={handleClickRating}
-          value={5}
-          isHalf={false}
-        />
+        <StarInput onClickRating={handleClickRating} value={5} isHalf={false} />
         <StarInput
           onClickRating={handleClickRating}
           value={4.5}
           isHalf={true}
         />
-        <StarInput
-          onClickRating={handleClickRating}
-          value={4}
-          isHalf={false}
-        />
+        <StarInput onClickRating={handleClickRating} value={4} isHalf={false} />
         <StarInput
           onClickRating={handleClickRating}
           value={3.5}
           isHalf={true}
         />
-        <StarInput
-          onClickRating={handleClickRating}
-          value={3}
-          isHalf={false}
-        />
+        <StarInput onClickRating={handleClickRating} value={3} isHalf={false} />
         <StarInput
           onClickRating={handleClickRating}
           value={2.5}
           isHalf={true}
         />
-        <StarInput
-          onClickRating={handleClickRating}
-          value={2}
-          isHalf={false}
-        />
+        <StarInput onClickRating={handleClickRating} value={2} isHalf={false} />
         <StarInput
           onClickRating={handleClickRating}
           value={1.5}
           isHalf={true}
         />
-        <StarInput
-          onClickRating={handleClickRating}
-          value={1}
-          isHalf={false}
-        />
+        <StarInput onClickRating={handleClickRating} value={1} isHalf={false} />
         <StarInput
           onClickRating={handleClickRating}
           value={0.5}
           isHalf={true}
         />
       </RatingField>
-      <RatingValue>{rating}</RatingValue>
+      <RatingValue>{value}</RatingValue>
     </Base>
   );
 };
