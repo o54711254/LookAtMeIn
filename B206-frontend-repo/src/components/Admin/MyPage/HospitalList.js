@@ -32,13 +32,13 @@ function HospitalList() {
   };
   const handleReject = (userSeq) => {
     axiosApi
-      .patch(`/api/admin/disapproveHos/${userSeq}`)
+      .patch(`/api/admin/approveHos/${userSeq}`)
       .then((res) => {
-        console.log("반려 성공");
+        console.log("승인 성공");
         setListType("all");
       })
       .catch((error) => {
-        console.log("반려 실패", error);
+        console.log("승인 실패", error);
       });
   };
 
@@ -55,26 +55,15 @@ function HospitalList() {
       {postList.length > 0 ? (
         <ul>
           {postList.map((post, index) => (
-            <li key={index} className={styles.container}>
-              <div className={styles.title}>{post.hospitalInfo_name}</div>
-
-              <div
-                className={post.approved ? styles.approved : styles.notApproved}
-              >
-                {post.approved ? "승인됨" : "미승인"}
-              </div>
-              {listType === "reject" && !post.approve && (
-                <div className={styles.btns}>
-                  <button
-                    onClick={() => handleApprove(post.userSeq)}
-                    className={styles.btn}
-                  >
+            <li key={index}>
+              <div>{post.hospitalInfo_name}</div>
+              <div>승인 상태: {post.approved ? "승인됨" : "미승인"}</div>
+              {!post.approve && (
+                <div>
+                  <button onClick={() => handleApprove(post.userSeq)}>
                     승인
                   </button>
-                  <button
-                    onClick={() => handleReject(post.userSeq)}
-                    className={styles.btn}
-                  >
+                  <button onClick={() => handleReject(post.userSeq)}>
                     반려
                   </button>
                 </div>

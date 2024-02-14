@@ -26,7 +26,7 @@ export default function ResponsiveModal({ customerUserSeq }) {
 
   // const hospitalUserSeq = useSelector((state) => state.hospital.userSeq);
 
-  const hospitalSeq = useSelector((state) => state.hospital.hospitalSeq);
+  const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
@@ -48,7 +48,7 @@ export default function ResponsiveModal({ customerUserSeq }) {
 
     const reservationData = {
       customerUserSeq,
-      hospitalSeq: hospitalSeq,
+      hospitalUserSeq,
       year,
       month,
       day,

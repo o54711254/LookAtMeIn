@@ -21,6 +21,4 @@ public interface FreeboardService {
 
 
     List<FreeboardResponseDto> getFreeboardByUserSeq(Long userSeq);
-
-    boolean reportFreeboard(Long freeBoardSeq);
 }

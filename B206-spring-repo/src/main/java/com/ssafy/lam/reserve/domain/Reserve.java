@@ -28,7 +28,7 @@ public class Reserve {
     @JoinColumn(name = "hospital_user_seq")
     private User hospital; // 예약을 받는 병원
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "reserve", fetch = FetchType.LAZY)
     @JoinColumn(name = "questionnaire_seq")
     private Questionnaire questionnaire;
 

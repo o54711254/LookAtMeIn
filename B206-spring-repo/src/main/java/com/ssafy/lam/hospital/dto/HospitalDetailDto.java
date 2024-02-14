@@ -2,8 +2,6 @@ package com.ssafy.lam.hospital.dto;
 
 import lombok.*;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +20,6 @@ public class HospitalDetailDto {
     private long userSeq;
     private String profileBase64;
     private String profileType;
-    private List<CategoryDto> hospitalInfo_category;
 
 
     //    private double avgScore; // 후기 평균 평점
@@ -36,7 +33,8 @@ public class HospitalDetailDto {
     // 각 의사의 의사 프로필 사진, 이름, 평균 평점, 후기 개수, 카테고리 출력
 
     @Builder
-    public HospitalDetailDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_email, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, long userSeq, String profileBase64, String profileType, List<CategoryDto> hospitalInfo_category, double hospitalInfo_avgScore, int hospitalInfo_cntReviews, boolean hospitalInfo_isLiked) {
+
+    public HospitalDetailDto(long hospitalInfo_seq, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_email, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, long userSeq, String profileBase64, String profileType, double hospitalInfo_avgScore, int hospitalInfo_cntReviews, boolean hospitalInfo_isLiked) {
         this.hospitalInfo_seq = hospitalInfo_seq;
         this.hospitalInfo_name = hospitalInfo_name;
         this.hospitalInfo_phoneNumber = hospitalInfo_phoneNumber;
@@ -49,7 +47,6 @@ public class HospitalDetailDto {
         this.userSeq = userSeq;
         this.profileBase64 = profileBase64;
         this.profileType = profileType;
-        this.hospitalInfo_category = hospitalInfo_category;
         this.hospitalInfo_avgScore = hospitalInfo_avgScore;
         this.hospitalInfo_cntReviews = hospitalInfo_cntReviews;
         this.hospitalInfo_isLiked = hospitalInfo_isLiked;

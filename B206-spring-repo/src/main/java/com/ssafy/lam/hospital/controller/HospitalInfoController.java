@@ -63,7 +63,6 @@ public class HospitalInfoController {
                         .hospitalInfo_close(h.getCloseTime())
                         .hospitalInfo_url(h.getUrl())
                         .userSeq(h.getUser().getUserSeq())
-                        .hospitalInfo_category(hospitalService.getHospital(h.getUser().getUserSeq()).getHospitalInfo_category())
                         .build();
                 if(h.getProfileFile() != null) {
                     // 병원 등록증 base64로 인코딩해서 보내줘야함

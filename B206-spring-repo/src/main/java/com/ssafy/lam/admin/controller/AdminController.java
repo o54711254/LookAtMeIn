@@ -57,59 +57,6 @@ public class AdminController {
     }
 
     //병원반려
-    @PatchMapping("/disapproveHos/{userSeq}")
-    @Operation(summary = "미승인 병원 반려")
-    public ResponseEntity<?> rejectApprove(@PathVariable Long userSeq) {
-        boolean result = adminService.disapproveHospital(userSeq);
-        if (result) {
-            return ResponseEntity.ok().body("병원 승인이 거절되었습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("병원 승인 거절에 실패하였습니다.");
-        }
-    }
 
-    @PutMapping("/delete/reviewboard/{reviewboardSeq}")
-    @Operation(summary = "신고받은 후기 게시판 글 삭제")
-    public ResponseEntity<?> deleteReportedReviewBoard(@PathVariable Long reviewboardSeq) {
-        boolean result = adminService.deactivateReviewBoard(reviewboardSeq);
-        if (result) {
-            return ResponseEntity.ok().body("신고된 후기 삭제가 완료되었습니다. boardSeq: " + reviewboardSeq);
-        } else {
-            return ResponseEntity.badRequest().body("신고된 후기 삭제를 실패하였습니다. boardSeq: " + reviewboardSeq);
-        }
-    }
-
-    @PutMapping("cancelReport/reviewboard/{reviewboardSeq}")
-    @Operation(summary = "신고받은 후기 게시판 글 신고 취소")
-    public ResponseEntity<?> cancelReportedReviewBoard(@PathVariable Long reviewboardSeq) {
-        boolean result = adminService.cancelReportReviewBoard(reviewboardSeq);
-        if (result) {
-            return ResponseEntity.ok().body("신고된 후기가 신고 취소되었습니다. boardSeq: " + reviewboardSeq);
-        } else {
-            return ResponseEntity.badRequest().body("신고된 후기가 신고 취소를 실패하였습니다. boardSeq: " + reviewboardSeq);
-        }
-    }
-
-    @PutMapping("/delete/freeboard/{freeboardSeq}")
-    @Operation(summary = "신고받은 자유 게시판 글 삭제")
-    public ResponseEntity<?> deleteReportedFreeBoard(@PathVariable Long freeboardSeq) {
-        boolean result = adminService.deactivateFreeBoard(freeboardSeq);
-        if (result) {
-            return ResponseEntity.ok().body("신고된 자유 게시글 삭제가 완료되었습니다. boardSeq: " + freeboardSeq);
-        } else {
-            return ResponseEntity.badRequest().body("신고된 자유 게시글 삭제를 실패하였습니다. boardSeq: " + freeboardSeq);
-        }
-    }
-
-    @PutMapping("cancelReport/freeboard/{freeboardSeq}")
-    @Operation(summary = "신고받은 자유 게시판 글 신고 취소")
-    public ResponseEntity<?> cancelReportedFreeBoard(@PathVariable Long freeboardSeq) {
-        boolean result = adminService.cancelReportFreeBoard(freeboardSeq);
-        if (result) {
-            return ResponseEntity.ok().body("신고된 자유 게시글이 신고 취소되었습니다. boardSeq: " + freeboardSeq);
-        } else {
-            return ResponseEntity.badRequest().body("신고된 자유 게시글 신고 취소를 실패하였습니다. boardSeq: " + freeboardSeq);
-        }
-    }
 
 }

@@ -12,7 +12,7 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { useNavigate } from "react-router-dom";
 
-function FreeBoardRegist() {
+function DoctorRegist() {
   const [open, setOpen] = React.useState(false); // 모달의 열림/닫힘 상태를 관리하는 state입니다. 처음에는 false로 모달이 닫혀있는 상태입니다.
   const [image, setImage] = React.useState(null); // 사용자가 업로드한 이미지 파일을 저장할 state입니다. 초기값은 null입니다.
 
@@ -129,4 +129,4 @@ function FreeBoardRegist() {
   );
 }
 
-export default FreeBoardRegist;
+export default DoctorRegist;

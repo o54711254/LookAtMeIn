@@ -74,7 +74,7 @@ function ReviewRegist() {
       await axiosApi.post("/api/reviewBoard/regist", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      navigate("/reviewBoard/list"); // 리뷰 목록 페이지로 이동
+      navigate("/reviewList"); // 리뷰 목록 페이지로 이동
     } catch (error) {
       console.error("리뷰 등록 실패", error);
     }
