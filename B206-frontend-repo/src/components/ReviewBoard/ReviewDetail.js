@@ -6,7 +6,8 @@ import ReviewDelete from "./ReviewDelete";
 import { Button } from "@mui/material";
 import styles from "./ReviewDetail.module.css";
 import profile from "../../assets/gun.png";
-import Report from "../Modal/ReviewReport"
+import Report from "../Modal/ReviewReport";
+import { useSelector } from "react-redux";
 
 function ReviewDetail() {
   const [reviewDetail, setReviewDetail] = useState([]);
@@ -20,6 +21,7 @@ function ReviewDetail() {
   const toggleButton = () => {
     setShowButton(!showButton);
   };
+  const userSeq = useSelector((state) => state.user.userSeq);
 
   useEffect(() => {
     axiosApi
