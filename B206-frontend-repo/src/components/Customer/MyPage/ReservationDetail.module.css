@@ -1,0 +1,49 @@
+.detailContainer{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    background-color:rgba(239, 232, 222, 0.2);
+    width: 100%;
+    border-radius: 20px;
+    margin-bottom: 80px;
+}
+.top{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    border-radius: 25px;
+    background-color:  rgba(254, 202, 171, 0.38);
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 10px;
+}
+.title{
+    font-size: 25px;
+    font-weight: 700;
+    width: 100%;
+}
+.headText{
+    font-size: 18px;
+    font-weight: 500;
+}
+.date{
+    justify-content: flex-end;
+    display: flex;
+    font-size: 20px;
+    color: rgba(0, 0, 0, 0.6);
+}
+.questionnaire{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+.questionImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+}
