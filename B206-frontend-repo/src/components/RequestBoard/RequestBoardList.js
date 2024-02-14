@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import RequestBoardRegist from "./RequestRegist";
+import RequestBoardRegist from "./RequestBoardRegist";
 import axiosApi from "../../api/axiosApi";
 import styles from "./RequestBoardList.module.css";
 import profile from "../../assets/gun.png";

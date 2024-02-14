@@ -32,7 +32,8 @@ public class Hashtag {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Hashtag(String tagName) {
+    public Hashtag(long seq, String tagName) {
+        this.seq = seq;
         this.tagName = tagName;
     }
 }
