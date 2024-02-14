@@ -34,7 +34,7 @@ public class ReserveRequestDto {
         this.hospitalSeq = hospitalSeq;
         this.price = price;
         this.content = content;
-        this.questionnaired = questionnaired;
+        
     }
 
     public Reserve toEntity(User customer, User hospital) {
