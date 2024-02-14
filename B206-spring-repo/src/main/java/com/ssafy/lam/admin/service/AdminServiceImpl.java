@@ -74,7 +74,7 @@ public class AdminServiceImpl implements AdminService {
     public List<HospitalAdminDto> findUnapprovedHospitals() {
 
         List<HospitalAdminDto> hospitalAdminDtoList = new ArrayList<>();
-        List<Hospital> hospitals = hospitalRepository.findAllByIsApprovedFalse();
+        List<Hospital> hospitals = hospitalRepository.findAllByIsApprovedFalseAndIsRejectedFalse();
 
             for(Hospital hospital : hospitals){
                 try {
@@ -142,6 +142,15 @@ public class AdminServiceImpl implements AdminService {
         Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. ID: " + userSeq));
         hospital.approve();
+        return true;
+    }
+    
+    @Override
+    @Transactional
+    public boolean disapproveHospital(Long userSeq) {
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. ID: " + userSeq));
+        hospital.reject();
         return true;
     }
 

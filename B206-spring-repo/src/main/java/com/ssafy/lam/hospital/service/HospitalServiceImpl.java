@@ -78,7 +78,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .build();
             hospitalCategoryRepository.save(hospitalCategoryEntity);
         }
-        return hospital;
+        return hospital;    
     }
     @Override
     public HospitalDto getHospital(long userSeq) {
@@ -131,6 +131,9 @@ public class HospitalServiceImpl implements HospitalService {
         hospital.setCloseTime(hospitalDto.getHospitalInfo_close());
         hospital.setAddress(hospitalDto.getHospitalInfo_address());
         hospital.setUrl(hospitalDto.getHospitalInfo_url());
+        if(hospital.isRejected()) {
+            hospital.setRejected(false);
+        }
         userRepository.save(user);
         return hospitalRepository.save(hospital);
     }

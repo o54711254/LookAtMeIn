@@ -24,6 +24,8 @@ public interface AdminService {
 
     boolean approveHospital(Long userSeq);
 
+    boolean disapproveHospital(Long userSeq);
+
     // 신고된 후기 게시글 삭제(비활성화)
     boolean deactivateReviewBoard(Long reviewBoardSeq);
     // 신고된 후기 게시글 신고 취소

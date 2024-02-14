@@ -57,6 +57,16 @@ public class AdminController {
     }
 
     //병원반려
+    @PatchMapping("/disapproveHos/{userSeq}")
+    @Operation(summary = "미승인 병원 반려")
+    public ResponseEntity<?> rejectApprove(@PathVariable Long userSeq) {
+        boolean result = adminService.disapproveHospital(userSeq);
+        if (result) {
+            return ResponseEntity.ok().body("병원 승인이 거절되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("병원 승인 거절에 실패하였습니다.");
+        }
+    }
 
     @PutMapping("/delete/reviewboard/{reviewboardSeq}")
     @Operation(summary = "신고받은 후기 게시판 글 삭제")
