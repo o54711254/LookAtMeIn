@@ -17,7 +17,6 @@ import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.search.dto.FreeboardDto;
 import com.ssafy.lam.search.dto.HospitalDto;
 import com.ssafy.lam.search.dto.ReviewBoardDto;
-import com.ssafy.lam.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -76,18 +75,7 @@ public class SearchService {
                     .hospitalInfo_avgScore(hospitalRepository.findAvgByHospitalSeq(result.getHospitalSeq()).orElse(0.0))
                     .build();
 
-            if(result.getProfileFile() != null){
-                try{
-                    Path path = Paths.get(uploadPath +"/"+ result.getProfileFile().getName());
-                    String hospitalProfileBase64 = EncodeFile.encodeFileToBase64(path);
-                    String hospitalProfileType = result.getProfileFile().getType();
-                    hospitalDto.setHospitalProfileBase64(hospitalProfileBase64);
-                    hospitalDto.setHospitalProfileType(hospitalProfileType);
 
-                }catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
 
             return hospitalDto;
         }).collect(Collectors.toList());
@@ -111,32 +99,31 @@ public class SearchService {
                     .freeboardCnt(result.getCnt())
                     .build();
 
-            if(result.getUploadFile() != null){
-                try{
-                    Path path = Paths.get(uploadPath +"/"+ result.getUploadFile().getName());
+            if (result.getUploadFile() != null) {
+                try {
+                    Path path = Paths.get(uploadPath + "/" + result.getUploadFile().getName());
                     String uploadImgBase64 = EncodeFile.encodeFileToBase64(path);
                     String uploadImgType = result.getUploadFile().getType();
                     freeboardDto.setUploadImgBase64(uploadImgBase64);
                     freeboardDto.setUploadImgType(uploadImgType);
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
             Customer customer = customerRepository.findByUserUserSeq(result.getUser().getUserSeq()).get();
-            if(customer.getProfile() != null){
+            if (customer.getProfile() != null) {
                 UploadFile customerProfile = customer.getProfile();
-                Path path = Paths.get(uploadPath+"/"+customerProfile.getName());
-                try{
+                Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
+                try {
                     String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
                     String customerProfileType = customerProfile.getType();
                     freeboardDto.setCustomerProfileBase64(customerProfileBase64);
                     freeboardDto.setCustomerProfileType(customerProfileType);
-                }catch(Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
 
 
             return freeboardDto;
@@ -168,30 +155,30 @@ public class SearchService {
                     .reviewBoard_score(result.getScore())
                     .build();
 
-//            Hospital hospital = result.getHospital();
             Long hospitalSeq = hospitalRepository.findHospitalSeqByName(result.getHospital());
             Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
-            if(hospital.getProfileFile() != null){
-                try{
-                    Path path = Paths.get(uploadPath +"/"+ hospital.getProfileFile().getName());
+            System.out.println("hospital : " + hospital);
+            if (hospital.getProfileFile() != null) {
+                try {
+                    Path path = Paths.get(uploadPath + "/" + hospital.getProfileFile().getName());
                     String hospitalProfileBase64 = EncodeFile.encodeFileToBase64(path);
                     String hospitalProfileType = hospital.getProfileFile().getType();
                     reviewBoardDto.setHospitalProfileBase64(hospitalProfileBase64);
                     reviewBoardDto.setHospitalProfileType(hospitalProfileType);
 
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
-            if(result.getUploadFile() != null){
-                try{
-                    Path path = Paths.get(uploadPath +"/"+ result.getUploadFile().getName());
+            if (result.getUploadFile() != null) {
+                try {
+                    Path path = Paths.get(uploadPath + "/" + result.getUploadFile().getName());
                     String uploadImgBase64 = EncodeFile.encodeFileToBase64(path);
                     String uploadImgType = result.getUploadFile().getType();
                     reviewBoardDto.setUploadImgBase64(uploadImgBase64);
                     reviewBoardDto.setUploadImgType(uploadImgType);
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
