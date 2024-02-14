@@ -3,7 +3,8 @@ import axiosApi from "../../api/axiosApi";
 import StarResult from "./StarRating/StarResult";
 import { useNavigate } from "react-router-dom";
 import styles from "./ReviewList.module.css";
-import profile from "../../assets/gun.png";
+import profile from "../../assets/profile2.png";
+import viewCnt from "../../assets/viewCnt.png";
 
 // axios 완료d
 
@@ -13,8 +14,17 @@ function ReviewList() {
 
   useEffect(() => {
     axiosApi.get(`/api/reviewBoard/list`).then((res) => {
-      setReviewBoardList(res.data);
-      console.log(reviewBoardList);
+      const updateData = res.data.map((board) => {
+        if (board.customerProfileBase64 && board.customerProfileType) {
+          board.img = `data:${board.customerProfileType};base64,${board.customerProfileBase64}`;
+        } else {
+          board.img = profile;
+        }
+        return board;
+      });
+
+      setReviewBoardList(updateData);
+      console.log(updateData);
     });
   }, []);
 
@@ -24,7 +34,7 @@ function ReviewList() {
 
   const goregist = () => {
     navigate("/reviewregist");
-  }
+  };
 
   return (
     <div>
@@ -44,7 +54,14 @@ function ReviewList() {
             className={styles.reviewItem}
           >
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              {/* <img src={profile} alt="프로필" className={styles.profile} /> */}
+              {board.img && (
+                <img
+                  src={board.img}
+                  alt="자게 작성자 프사"
+                  className={styles.profile}
+                />
+              )}
             </div>
             <div className={styles.writer}>
               <div>{board.customer_name}</div>
@@ -52,19 +69,30 @@ function ReviewList() {
                 <StarResult score={board.reviewBoard_score} />
               </div>
             </div>
-            <div className={styles.title}>
-              <div>{board.reviewBoard_title}</div>
+            <div className={styles.titleCnt}>
+              <div className={styles.title}>
+                <div>{board.reviewBoard_title}</div>
+              </div>
+              <div className={styles.viewCount}>
+                <img src={viewCnt} alt="조회수 아이콘" className={styles.eye} />
+                조회수 : {board.reviewBoard_cnt}
+              </div>
             </div>
             <div className={styles.price}>
-              {/* 시술가 : {board.reviewBoard_price} 원 */}
+              <div className={styles.p}>
+                상담 견적가 : <em>{board.reviewBoard_expected_price}</em> 원
+              </div>
+              <div className={styles.p}>
+                실제 시술가 :<em>{board.reviewBoard_surgery_price}</em> 원
+              </div>
             </div>
           </li>
         ))}
-      </div>        
+      </div>
       <div>
-      <button variant="contained" color="error" onClick={goregist}>
-        후기 등록
-      </button>
+        <button variant="contained" color="error" onClick={goregist}>
+          후기 등록
+        </button>
       </div>
     </div>
   );
