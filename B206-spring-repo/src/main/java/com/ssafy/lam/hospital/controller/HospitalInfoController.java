@@ -65,6 +65,7 @@ public class HospitalInfoController {
                         .userSeq(h.getUser().getUserSeq())
                         .hospitalInfo_avgScore(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_avgScore())
                         .hospitalInfo_cntReviews(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_cntReviews())
+                        .hospitalInfo_category(hospitalService.getHospital(h.getUser().getUserSeq()).getHospitalInfo_category())
                         .build();
                 if(h.getProfileFile() != null) {
                     // 병원 등록증 base64로 인코딩해서 보내줘야함

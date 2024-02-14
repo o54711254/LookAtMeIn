@@ -12,8 +12,8 @@ import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.domain.ReserveRepository;
-import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveRequestDto;
+import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
@@ -66,6 +66,8 @@ public class ReserveServiceImpl implements ReserveService {
                     .day(reserve.getDay())
                     .dayofweek(reserve.getDayofweek())
                     .time(reserve.getTime())
+                    .completed(reserve.isCompleted())
+                    .questionOk(reserve.isQuestionOk())
 
                     .build();
 
@@ -101,11 +103,12 @@ public class ReserveServiceImpl implements ReserveService {
     @Transactional
     public Reserve saveReserve(ReserveRequestDto dto) {
         log.info("ReserveSaveRequestDto : {}", dto);
+        log.info("고객 번호: {}", dto.getCustomerUserSeq());
         User customerUser = userRepository.findById(dto.getCustomerUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getCustomerUserSeq()));
-
-        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalUserSeq())
-                .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
+        log.info("병원 번호: {}", dto.getHospitalSeq());
+        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalSeq())
+                .orElseThrow(() -> new IllegalArgumentException("없는 병원임 : " + dto.getHospitalSeq()));
         log.info("customerUser : {}", customerUser.getUserId());
         log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
 
@@ -152,7 +155,7 @@ public class ReserveServiceImpl implements ReserveService {
                     .build();
 
             User hospital = User.builder()
-                    .userSeq(reserveRequestDto.getHospitalUserSeq())
+                    .userSeq(reserveRequestDto.getHospitalSeq())
                     .build();
 
             UploadFile beforeFile =  uploadFileService.store(beforeImg);

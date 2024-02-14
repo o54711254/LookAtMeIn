@@ -5,7 +5,6 @@ import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hashtag.domain.Hashtag;
 import com.ssafy.lam.hashtag.domain.HashtagRepository;
-import com.ssafy.lam.hashtag.domain.ReviewHashtag;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.DoctorRepository;
 import com.ssafy.lam.hospital.domain.Hospital;
@@ -78,7 +77,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 //        Doctor doctor = doctorRepository.findById(doctorSeq).orElse(null);
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
-
+        log.info("후기 제목: "+reviewBoardRegister.getReviewBoard_title());
+        log.info("후기 평점: "+reviewBoardRegister.getReviewBoard_score());
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
@@ -97,20 +97,6 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
         if (file != null)
             uploadFile = uploadFileService.store(file);
         reviewBoard.setUploadFile(uploadFile);
-
-        if(reviewBoardRegister.getHashtags()!=null) {
-            reviewBoardRegister.getHashtags().forEach(tagName -> {
-                Hashtag hashtag = hashtagRepository.findByTagName(tagName)
-                        .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
-                ReviewHashtag reviewHashtag = ReviewHashtag.builder()
-                        .reviewBoard(reviewBoard)
-                        .hashtag(hashtag)
-                        .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
-                        .build();
-                reviewBoard.addReviewHashtag(reviewHashtag);
-            });
-        }
-
 
         return reviewBoardRepository.save(reviewBoard);
     }
@@ -166,13 +152,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     }
 
     @Override
-    public void reportReview(Long seq) {
+    public boolean reportReview(Long seq) {
         Optional<ReviewBoard> reportedReview = reviewBoardRepository.findById(seq);
         if (reportedReview.isPresent()) {
             ReviewBoard selectedReview = reportedReview.get();
             selectedReview.setComplain(true);
             reviewBoardRepository.save(selectedReview);
+            return true;
         }
+        else return false;
     }
 
 }

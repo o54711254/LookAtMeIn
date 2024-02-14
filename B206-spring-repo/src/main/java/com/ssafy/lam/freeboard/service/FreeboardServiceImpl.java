@@ -14,6 +14,7 @@ import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.domain.FreeboardRepository;
 import com.ssafy.lam.freeboard.dto.FreeboardRequestDto;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
+import com.ssafy.lam.hashtag.service.FreeboardHashtagService;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,6 +37,7 @@ public class FreeboardServiceImpl implements FreeboardService {
     private final CustomerRepository customerRepository;
     private final CommentService commentService;
     private final UploadFileService uploadFileService;
+    private final FreeboardHashtagService freeboardHashtagService;
 
     private Logger log = LoggerFactory.getLogger(FreeboardServiceImpl.class);
     MultipartConfig multipartConfig = new MultipartConfig();
@@ -49,9 +52,7 @@ public class FreeboardServiceImpl implements FreeboardService {
         if (freeboardRequestDto.getUploadFile() != null)
             uploadFile = uploadFileService.store(freeboardRequestDto.getUploadFile());
 
-
         log.info("글 등록 유저 정보: {}", user);
-
 
         // 게시글에 UploadFile을 연관지어주고 저장
         Freeboard freeboard = Freeboard.builder()
@@ -60,7 +61,12 @@ public class FreeboardServiceImpl implements FreeboardService {
                 .title(freeboardRequestDto.getFreeBoard_title())
                 .content(freeboardRequestDto.getFreeBoard_content())
                 .build();
-        return freeboardRepository.save(freeboard);
+
+        Freeboard savedFreeboard =freeboardRepository.save(freeboard);
+
+        freeboardHashtagService.saveHashtag(savedFreeboard,freeboardRequestDto.getTagNames());
+
+        return savedFreeboard;
     }
 
     @Override
@@ -200,6 +206,20 @@ public class FreeboardServiceImpl implements FreeboardService {
                     .comments(new ArrayList<>()) // 실제 댓글 데이터가 필요한 경우 여기를 수정
                     .build();
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean reportFreeboard(Long freeBoardSeq) {
+        Optional<Freeboard> reportFreeBoard = freeboardRepository.findById(freeBoardSeq);
+        if(reportFreeBoard.isPresent()) {
+            Freeboard selectedFreeBoard = reportFreeBoard.get();
+            selectedFreeBoard.setReport(true);
+            freeboardRepository.save(selectedFreeBoard);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 }

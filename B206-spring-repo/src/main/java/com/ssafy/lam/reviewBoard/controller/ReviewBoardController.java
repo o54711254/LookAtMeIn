@@ -183,9 +183,14 @@ public class ReviewBoardController {
 
     @PutMapping("/report/{seq}")
     @Operation(summary = "신고받은 후기 게시글 번호에 해당하는 후기 정보를 '신고됨'으로 수정한다.")
-    public ResponseEntity<Void> reportReview(@PathVariable Long seq) {
-        reviewBoardService.reportReview(seq);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> reportReview(@PathVariable Long seq) {
+        boolean result = reviewBoardService.reportReview(seq);
+        if(result) {
+            return ResponseEntity.ok().body("해당 후기가 신고되었습니다. boardSeq: "+seq);
+        }
+        else {
+            return ResponseEntity.badRequest().body("해당 후기 신고에 실패하였습니다. boardSeq: "+seq);
+        }
     }
 
 //    @GetMapping("/avg/{seq}")
