@@ -5,6 +5,7 @@ import Questionnaire from "../../Modal/Questionnaire";
 import { useNavigate } from "react-router-dom";
 import ReservationDetail from "./ReservationDetail";
 import styles from "./ReservationList.module.css";
+// Axios 연결 확인 완료
 
 function ReservationList() {
   const userSeq = useSelector((state) => state.user.userSeq);

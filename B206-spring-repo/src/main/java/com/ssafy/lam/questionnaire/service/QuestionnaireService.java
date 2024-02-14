@@ -6,7 +6,6 @@ import com.ssafy.lam.questionnaire.domain.QuesionnareRepository;
 import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.Reserve;
-import com.ssafy.lam.reserve.domain.ReserveRepository;
 import com.ssafy.lam.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -24,9 +23,6 @@ public class QuestionnaireService {
     @Autowired
     private UploadFileService uploadFileService;
 
-    @Autowired
-    private ReserveRepository reserveRepository;
-
 
     public Questionnaire createQuestionnaire(QuestionnaireRequestDto questionRequestDto, MultipartFile file) {
 //        User customer = User.builder().userSeq(questionRequestDto.getCusomter_seq()).build();
@@ -36,10 +32,9 @@ public class QuestionnaireService {
         if(file != null)
             uploadFile = uploadFileService.store(file);
 
-        log.info("문진서 등록 정보 : {}", questionRequestDto.getReserveSeq());
-        Reserve reserve = reserveRepository.findById(questionRequestDto.getReserveSeq())
-                .orElseThrow(() -> new IllegalArgumentException("없는 예약임 : " + questionRequestDto.getReserveSeq()));
-
+        Reserve reserve = Reserve.builder()
+                .seq(questionRequestDto.getReserveSeq())
+                .build();
 
         Questionnaire questionnaire = Questionnaire.builder()
                 .blood(questionRequestDto.getQuestionnaire_blood())
@@ -47,10 +42,8 @@ public class QuestionnaireService {
                 .title(questionRequestDto.getQuestionnaire_title())
                 .content(questionRequestDto.getQuestionnaire_content())
                 .uploadFile(uploadFile)
-
+                .reserve(reserve)
                 .build();
-
-        reserve.setQuestionnaire(questionnaire);
 
         Questionnaire saveQuesionnaire = quesionnareRepository.save(questionnaire);
         return saveQuesionnaire;

@@ -13,14 +13,14 @@ function ReviewRegist() {
   const user = useSelector((state) => state.user);
   const customer = useSelector((state) => state.customer);
   const [reviewImage, setReviewImage] = useState(""); // 리뷰 이미지 상태
-  const [tag, setTag] = useState(""); // 현재 입력 중인 해시태그를 관리하는 상태
-  const [tags, setTags] = useState([]); // 추가된 해시태그 목록을 관리하는 상태
+  // const [tag, setTag] = useState(""); // 현재 입력 중인 해시태그를 관리하는 상태
+  // const [tags, setTags] = useState([]); // 추가된 해시태그 목록을 관리하는 상태
 
   const [reviewData, setReviewData] = useState({
     user_seq: user.userSeq,
     reviewBoard_title: "",
     reviewBoard_content: "",
-    reviewBoard_score: 0,
+    reviewBoard_score: 0.0,
     username: customer.customerName,
     reviewBoard_doctor: "",
     reviewBoard_region: "",
@@ -28,7 +28,7 @@ function ReviewRegist() {
     reviewBoard_hospital: "",
     reviewBoard_expected_price: 0,
     reviewBoard_surgery_price: 0,
-    hashtags: [],
+    // hashtags: [],
   });
 
   // 입력 필드 변경 핸들러
@@ -38,17 +38,17 @@ function ReviewRegist() {
   };
 
   // 해시태그 입력 변경 핸들러
-  const handleTagChange = (e) => {
-    setTag(e.target.value); // 입력 필드가 변경될 때마다 tag 상태 업데이트
-  };
+  // const handleTagChange = (e) => {
+  //   setTag(e.target.value); // 입력 필드가 변경될 때마다 tag 상태 업데이트
+  // };
 
   // 해시태그 추가 핸들러
-  const addTag = () => {
-    if (tag && !tags.includes(tag)) {
-      setTags([...tags, tag]); // 현재 입력된 태그를 태그 목록에 추가
-      setTag(""); // 입력 필드 초기화
-    }
-  };
+  // const addTag = () => {
+  //   if (tag && !tags.includes(tag)) {
+  //     setTags([...tags, tag]); // 현재 입력된 태그를 태그 목록에 추가
+  //     setTag(""); // 입력 필드 초기화
+  //   }
+  // };
 
   // 이미지 변경 핸들러
   const handleImageChange = (e) => {
@@ -61,7 +61,7 @@ function ReviewRegist() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    const reviewBoardData = { ...reviewData, hashtags: tags };
+    const reviewBoardData = { ...reviewData };
 
     console.log("reviewBoardData", reviewBoardData);
     formData.append("reviewBoardData", JSON.stringify(reviewBoardData));
@@ -70,6 +70,9 @@ function ReviewRegist() {
       formData.append("uploadFile", reviewImage);
     }
 
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
     try {
       await axiosApi.post("/api/reviewBoard/regist", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -153,7 +156,7 @@ function ReviewRegist() {
             setReviewData({ ...reviewData, reviewBoard_score: value })
           }
         />
-        <TextField
+        {/* <TextField
           label="해시태그"
           value={tag}
           onChange={handleTagChange}
@@ -174,7 +177,7 @@ function ReviewRegist() {
               {tag}
             </span>
           ))}
-        </div>
+        </div> */}
         <IconButton color="primary" component="label">
           <input
             hidden
