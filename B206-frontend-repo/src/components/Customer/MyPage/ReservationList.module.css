@@ -26,6 +26,7 @@
   display: flex;
   width: 100%;
   margin-bottom: 20px;
+  align-items: center;
 }
 .reserveContents {
   display: flex;
@@ -48,4 +49,9 @@
   width: 100%;
   display: flex;
   justify-content: flex-end;
+}
+.profileImg {
+  border-radius: 30px;
+  width: 50px;
+  margin-right: 20px;
 }

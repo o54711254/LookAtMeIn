@@ -51,7 +51,7 @@ function ReservationList() {
             onClick={() => goDetailPage(reservation.reserveSeq)}
           >
             <div className={styles.head}>
-              <img src={profileImg} />
+              <img src={profileImg} className={styles.profileImg} />
               <div className={styles.hospitalName}>
                 {reservation.hospitalName}
               </div>

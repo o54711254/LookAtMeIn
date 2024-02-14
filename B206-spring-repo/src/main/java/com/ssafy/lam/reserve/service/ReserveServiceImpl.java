@@ -12,8 +12,8 @@ import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.domain.ReserveRepository;
-import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveRequestDto;
+import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
@@ -66,6 +66,8 @@ public class ReserveServiceImpl implements ReserveService {
                     .day(reserve.getDay())
                     .dayofweek(reserve.getDayofweek())
                     .time(reserve.getTime())
+                    .completed(reserve.isCompleted())
+                    .questionOk(reserve.isQuestionOk())
 
                     .build();
 

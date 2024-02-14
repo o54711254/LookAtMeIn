@@ -33,8 +33,7 @@ public class Questionnaire {
     private UploadFile uploadFile;
 
     @Builder
-
-    public Questionnaire(Long seq, String blood, String remark, String title, String content, Reserve reserve, UploadFile uploadFile) {
+    public Questionnaire(Long seq, String blood, String remark, String title, String content, UploadFile uploadFile) {
         this.seq = seq;
         this.blood = blood;
         this.remark = remark;
