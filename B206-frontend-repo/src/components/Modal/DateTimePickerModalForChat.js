@@ -24,9 +24,9 @@ export default function ResponsiveModal({ customerUserSeq }) {
     .filter((hour) => hour !== 12) // 12시를 제외합니다.
     .map((hour) => `${hour}:00 ${hour >= 12 ? "PM" : "AM"}`);
 
-  const hospitalUserSeq = useSelector((state) => state.hospital.userSeq);
+  // const hospitalUserSeq = useSelector((state) => state.hospital.userSeq);
 
-  // const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
+  const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);

@@ -1,5 +1,7 @@
 package com.ssafy.lam.search.service;
 
+
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.lam.common.EncodeFile;
 import com.ssafy.lam.config.MultipartConfig;

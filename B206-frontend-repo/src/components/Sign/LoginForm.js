@@ -68,6 +68,7 @@ function LoginForm() {
             const hospitalResponse = await axiosApi.get(
               `/api/mypage/${loginResponse.data.userSeq}`
             );
+            console.log("병원정보", hospitalResponse);
             let imageData = profile;
             if (
               hospitalResponse.data.hospitalProfileBase64 &&
@@ -82,7 +83,7 @@ function LoginForm() {
             dispatch(
               loginHospital({
                 profileImg: imageData,
-                hospitalSeq: "",
+                hospitalSeq: hospitalResponse.data.hospitalInfo_seq,
                 hospitalInfo_name: hospitalResponse.data.hospitalInfo_name,
                 hospitalInfo_phoneNumber:
                   hospitalResponse.data.hospitalInfo_phoneNumber,

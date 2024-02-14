@@ -23,8 +23,7 @@ public class Questionnaire {
     private String title;
     private String content;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reserve_seq")
+    @OneToOne(mappedBy = "questionnaire", fetch = FetchType.LAZY)
     private Reserve reserve;
 
 
@@ -34,13 +33,12 @@ public class Questionnaire {
 
     @Builder
 
-    public Questionnaire(Long seq, String blood, String remark, String title, String content, Reserve reserve, UploadFile uploadFile) {
+    public Questionnaire(Long seq, String blood, String remark, String title, String content, UploadFile uploadFile) {
         this.seq = seq;
         this.blood = blood;
         this.remark = remark;
         this.title = title;
         this.content = content;
-        this.reserve = reserve;
         this.uploadFile = uploadFile;
     }
 }

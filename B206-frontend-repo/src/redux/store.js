@@ -8,6 +8,7 @@ import tokenReducer from "./auth";
 import requestBoardReducer from "./requestBoard";
 import hospitalReducer from "./hospital";
 import customerReducer from "./customer";
+import consultingReducer from "./consulting";
 
 // persist-reducer 및 persistStore 관련
 import storage from "redux-persist/lib/storage";
@@ -19,6 +20,7 @@ const reducers = combineReducers({
   requestBoard: requestBoardReducer,
   hospital: hospitalReducer,
   customer: customerReducer,
+  consulting: consultingReducer,
 });
 
 const persistConfig = {
