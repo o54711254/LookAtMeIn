@@ -1,7 +1,6 @@
 package com.ssafy.lam.reserve.dto;
 
 import com.ssafy.lam.questionnaire.dto.QuestionnaireResponseDto;
-import com.ssafy.lam.reserve.domain.Reserve;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +29,7 @@ public class ReserveResponseDto {
     private String hospitalProfileType;
 
     private boolean completed;
+    private boolean questionOk;
 
 
     private String afterImgBase64;
@@ -43,7 +43,7 @@ public class ReserveResponseDto {
 
     @Builder
 
-    public ReserveResponseDto(Long customerUserSeq, Long hospitalUserSeq, Long reserveSeq, String customerName, String hospitalName, int year, int month, int day, String dayofweek, int time, String content, int price, String hospitalProfileBase64, String hospitalProfileType, boolean completed, String afterImgBase64, String afterImgType, String beforeImgBase64, String beforeImgType, QuestionnaireResponseDto questionnaireResponseDto) {
+    public ReserveResponseDto(Long customerUserSeq, Long hospitalUserSeq, Long reserveSeq, String customerName, String hospitalName, int year, int month, int day, String dayofweek, int time, String content, int price, String hospitalProfileBase64, String hospitalProfileType, boolean completed, String afterImgBase64, String afterImgType, String beforeImgBase64, String beforeImgType, QuestionnaireResponseDto questionnaireResponseDto, boolean questionOk) {
         this.customerUserSeq = customerUserSeq;
         this.hospitalUserSeq = hospitalUserSeq;
         this.reserveSeq = reserveSeq;
@@ -64,5 +64,6 @@ public class ReserveResponseDto {
         this.beforeImgBase64 = beforeImgBase64;
         this.beforeImgType = beforeImgType;
         this.questionnaireResponseDto = questionnaireResponseDto;
+        this.questionOk = questionOk;
     }
 }

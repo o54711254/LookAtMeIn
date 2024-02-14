@@ -5,7 +5,6 @@ import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.hashtag.domain.Hashtag;
 import com.ssafy.lam.hashtag.domain.HashtagRepository;
-import com.ssafy.lam.hashtag.domain.ReviewHashtag;
 import com.ssafy.lam.hospital.domain.Doctor;
 import com.ssafy.lam.hospital.domain.DoctorRepository;
 import com.ssafy.lam.hospital.domain.Hospital;
@@ -98,20 +97,6 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
         if (file != null)
             uploadFile = uploadFileService.store(file);
         reviewBoard.setUploadFile(uploadFile);
-
-//        if(reviewBoardRegister.getHashtags()!=null) {
-//            reviewBoardRegister.getHashtags().forEach(tagName -> {
-//                Hashtag hashtag = hashtagRepository.findByTagName(tagName)
-//                        .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
-//                ReviewHashtag reviewHashtag = ReviewHashtag.builder()
-//                        .reviewBoard(reviewBoard)
-//                        .hashtag(hashtag)
-//                        .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
-//                        .build();
-//                reviewBoard.addReviewHashtag(reviewHashtag);
-//            });
-//        }
-
 
         return reviewBoardRepository.save(reviewBoard);
     }
