@@ -1,3 +1,4 @@
+
 package com.ssafy.lam.hospital.controller;
 
 import com.ssafy.lam.common.EncodeFile;
