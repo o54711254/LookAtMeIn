@@ -4,6 +4,7 @@ import axiosApi from "../../../api/axiosApi";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+//test  
 function Doctor() {
   const [doctorList, setDoctorList] = useState([]);
   const hospital = useSelector((state) => state.hospital);
@@ -22,7 +23,6 @@ function Doctor() {
 
   return (
     <div>
-      
       <h2>의사 리스트</h2>
       <div>
         {doctorList.map((doctor) => (
