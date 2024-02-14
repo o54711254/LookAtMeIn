@@ -149,7 +149,7 @@ const Canvas = ()=>{
         points["mask_points"] = JSON.stringify(maskPoints)
         points["sketch_points"] = JSON.stringify(sketchPoints)
         formData.append("points", JSON.stringify(points))
-        console.log(maskPoints)
+        console.log(points[maskPoints])
         try{
             const python_server_url = "https://lookatmein.duckdns.org/python/send/points"
             const response = await axios.post(python_server_url, formData,{
