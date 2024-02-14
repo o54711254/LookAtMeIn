@@ -33,9 +33,9 @@ function ReservationList() {
     <div className={styles.reserveContainer}>
       {reservations.map((reservation) => (
         <div
-          onClick={() => goDetailPage(reservation.reserveSeq)}
           className={styles.reserveItem}
         >
+        <div onClick={() => goDetailPage(reservation.reserveSeq)}>
           {/* <p>Customer Name: {reservation.customerName}</p> */}
           <div className={styles.hospitalName}>{reservation.hospitalName}</div>
           <div>
@@ -54,7 +54,9 @@ function ReservationList() {
                     : reservation.time - 12
                 } PM`}
           </div>
-          <Questionnaire className={styles.button} />
+        </div>
+          
+          <Questionnaire reserveSeq={reservation.reserveSeq} className={styles.button} />
         </div>
       ))}
 

@@ -1,6 +1,8 @@
 package com.ssafy.lam.reserve.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
@@ -18,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +31,11 @@ import java.util.stream.Collectors;
 public class ReserveController {
 
     private final ReserveService reserveService;
+
+    MultipartConfig multipartConfig = new MultipartConfig();
+    // 파일이 업로드될 디렉토리 경로
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+
 
     Logger log = LoggerFactory.getLogger(ReserveController.class);
 
@@ -58,6 +67,7 @@ public class ReserveController {
         log.info("reserve : " + reserve.getSeq());
         Questionnaire questionnaire = reserve.getQuestionnaire();
         log.info("questionnaire : " + questionnaire.getSeq());
+
         QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
                 .reserveSeq(questionnaire.getReserve().getSeq())
                 .questionnaireSeq(questionnaire.getSeq())
@@ -65,6 +75,19 @@ public class ReserveController {
                 .title(questionnaire.getTitle())
                 .remark(questionnaire.getRemark())
                 .build();
+
+        if(questionnaire.getUploadFile() != null){
+            try{
+                Path path = Paths.get(uploadPath +"/"+ questionnaire.getUploadFile().getName());
+                String encodeFile = EncodeFile.encodeFileToBase64(path);
+                String type = questionnaire.getUploadFile().getType();
+                questionnaireResponseDto.setBase64("data:"+type+";base64,"+encodeFile);
+            }catch (Exception e){
+                log.error("문진서 이미지를 찾을 수 없습니다.");
+            }
+        }
+
+        log.info("questionnaireResponseDto : " + questionnaireResponseDto);
 
         ReserveResponseDto responseDto = ReserveResponseDto.builder()
                 .reserveSeq(reserve.getSeq())
