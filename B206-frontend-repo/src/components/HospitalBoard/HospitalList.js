@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
 import Typography from "@mui/material/Typography";
 import styles from "./HospitalList.module.css";
-import profile from "../../assets/gun.png";
+import profile from "../../assets/profile2.png";
 import { useNavigate } from "react-router-dom";
 import StarResult from "../ReviewBoard/StarRating/StarResult";
 import styled from "@emotion/styled";
@@ -19,7 +19,15 @@ const HospitalList = () => {
       .get(`/api/hospital-info/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
       .then((response) => {
         console.log(response.data);
-        setHospitalInfo(response.data);
+        const updateData = response.data.map((board) => {
+          if (board.customerProfileBase64 && board.customerProfileType) {
+            board.img = `data:${board.customerProfileType};base64,${board.customerProfileBase64}`;
+          } else {
+            board.img = profile;
+          }
+          return board;
+        });
+        setHospitalInfo(updateData);
       })
       .catch((error) => {
         console.error("병원 정보 리스트 조회 에러 : ", error);
@@ -74,7 +82,14 @@ const HospitalList = () => {
         {hospitalInfo.map((hospital) => (
           <li key={hospital.hospitalInfo_seq} className={styles.hospitalItem}>
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              {/* <img src={profile} alt="프로필" className={styles.profile} /> */}
+              {hospital.img && (
+                <img
+                  src={hospital.img}
+                  alt="자게 작성자 프사"
+                  className={styles.profile}
+                />
+              )}
             </div>
             <div
               className={styles.hosInfo}

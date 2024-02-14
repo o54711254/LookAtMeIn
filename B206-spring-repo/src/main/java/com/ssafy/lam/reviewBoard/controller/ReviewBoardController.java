@@ -111,6 +111,7 @@ public class ReviewBoardController {
                         .reviewBoard_content(review.getContent())
                         .reviewBoard_score(review.getScore())
                         .customer_name(review.getUser().getName())
+                        .user_seq(review.getUser().getUserSeq())
                         .reviewBoard_doctor(review.getDoctor())
                         .reviewBoard_region(review.getRegion())
                         .reviewBoard_surgery(review.getSurgery())
