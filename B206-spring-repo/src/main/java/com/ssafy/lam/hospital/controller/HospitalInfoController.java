@@ -63,6 +63,8 @@ public class HospitalInfoController {
                         .hospitalInfo_close(h.getCloseTime())
                         .hospitalInfo_url(h.getUrl())
                         .userSeq(h.getUser().getUserSeq())
+                        .hospitalInfo_avgScore(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_avgScore())
+                        .hospitalInfo_cntReviews(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_cntReviews())
                         .hospitalInfo_category(hospitalService.getHospital(h.getUser().getUserSeq()).getHospitalInfo_category())
                         .build();
                 if(h.getProfileFile() != null) {
