@@ -17,8 +17,8 @@ from mysql.surgery_img import add_img
 
 app = FastAPI();
 
-from sqlalchemy.orm import declarative_base
-Base = declarative_base()
+# from sqlalchemy.orm import declarative_base
+# Base = declarative_base()
 
 
 def encodeToBase64(path):
@@ -47,6 +47,7 @@ async def sketch(file: UploadFile = File(...), points: str=File(...), customerId
     points = json.loads(points)
     mask_points = json.loads(points["mask_points"])    
     sketch_pints = json.loads(points["sketch_points"])
+    stroke_points = json.loads(points["stroke_points"])
     
 
     
@@ -72,7 +73,7 @@ async def sketch(file: UploadFile = File(...), points: str=File(...), customerId
     backend = Backend(singletonModel)
 
     backend.open(uploadPath)
-    backend.complete(mask_points, sketch_pints)
+    backend.complete(mask_points, sketch_pints, stroke_points)
 
     after = f"{uuid.uuid4()}.png"
     savePath = os.path.join(uploaded_dir, after)
