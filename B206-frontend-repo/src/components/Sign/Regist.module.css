@@ -1,0 +1,67 @@
+.container {
+  margin: 0 auto;
+  width: 725px;
+  height: 700px;
+  display: flex;
+  background: rgba(239, 232, 222, 0.2);
+  margin-bottom: 50px;
+  border-radius: 15px;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  padding-top: -300px;
+}
+
+/* App.css 또는 해당 컴포넌트의 스타일시트에 추가 */
+.agreementSection {
+  height: 300px; /* 원하는 높이 설정 */
+  overflow-y: auto; /* 세로 스크롤만 허용 */
+  margin-bottom: 20px; /* 여백 설정 */
+  border: 1px solid #ccc; /* 테두리 설정 */
+  padding: 10px; /* 패딩 설정 */
+  width: 80%;
+  background: rgba(217, 217, 217, 0.31);
+}
+
+/* Chrome, Edge, Safari 등 대부분의 브라우저에서 작동 */
+.agreementSection::-webkit-scrollbar {
+  display: none; /* 스크롤바 숨기기 */
+}
+
+/* Firefox */
+.agreementSection {
+  scrollbar-width: none; /* 스크롤바 숨기기 */
+}
+
+.registBox {
+  font-size: 40px; /* 글자 크기 16px */
+  display: flex;
+  justify-content: space-between;
+  width: 82%;
+  margin-bottom: 30px;
+}
+
+.check {
+  margin-left: 330px;
+  margin-bottom: 15px;
+}
+
+.select {
+  width: 48%;
+  height: 65px;
+  background: rgba(254, 202, 171, 0.38);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  text-decoration-line: none;
+  font-size: 23px;
+  color: black;
+  font-weight: bold;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 250px;
+  margin-bottom: 20px;
+}

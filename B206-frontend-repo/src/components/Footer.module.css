@@ -1,0 +1,20 @@
+.container {
+  background-color: rgba(254, 202, 171, 0.36);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-gap: 20px;
+  padding: 3% 2%;
+  margin-top: 4%;
+}
+.container h2 {
+  color: #3f3f3f;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+p {
+  color: #777777;
+}
+.container li {
+  margin: 3%;
+}

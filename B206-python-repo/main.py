@@ -12,56 +12,31 @@ import uuid
 from dotenv import load_dotenv
 from model.models import create_model
 from sftp import Sftp
-
+import base64
 from mysql.surgery_img import add_img
 
 app = FastAPI();
 
-from sqlalchemy.orm import declarative_base
-Base = declarative_base()
+# from sqlalchemy.orm import declarative_base
+# Base = declarative_base()
 
 
+def encodeToBase64(path):
+    with open(path, "rb") as image_file:
+        image_data = image_file.read()
+        base64_data = base64.b64encode(image_data)
+        base64_data = base64_data.decode('utf-8')
+        return base64_data
 
-
-
-@app.post("/api/surgery/save")
-async def save(afterImgPath: str = File(...), customerId : str=File(...)):
-    # 상담 종료 버튼누를 때 저장됨
-    # MySQL DB에 저장해야함
-    # MySQL DB에 사진원본에 원본의 경로, 사진복사본에 성형된 사진의 경로 저장되야함
-    # 단 여기서 경로는 MySQL이 돌아가는 컨테이너의 로컬 경로
-
-    filename = afterImgPath.split("/")[-1]
-    afterImgPath = '/'.join(afterImgPath.split('/')[3:])
-    print("afterImgPath: ", afterImgPath)
-
-    uploaded_dir = "uploaded"
-    uploaded_dir = os.path.join(uploaded_dir, customerId) # 한글 처리 안되는 문제 있음
-    uploadImgPath = os.path.join(uploaded_dir, filename)
-    print("uploadPath: ", uploadImgPath)
+def decodeFromBase64(base64Data, path):
+    if(base64Data.startswith("data:image")):
+        header, base64Data = base64Data.split(',', 1)
+    imgdata = base64.b64decode(base64Data)
     
-    load_dotenv()
-    sftp_host = os.getenv("SFTP_HOST")
-    sftp_user = os.getenv("SFTP_USER")
-    sftp_key_file = os.getenv("SFTP_KEY_FILE_PATH")
-    sftp = Sftp(host=sftp_host, user=sftp_user, key_file=sftp_key_file)
-    
-    # arr = [["before", uploadImgPath], ["after", afterImgPath ]]
-    stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/before/{customerId}")
-    
-    stdin, stdout, stderr = sftp.client.exec_command(f"mkdir -p /home/ubuntu/image/after/{customerId}")
-    # remotePath = f"/home/ubuntu/image/origin/{customerId}/{filename}"
+    with open(path, 'wb') as f:
+        f.write(imgdata)   
 
-    # for name, path in arr:
-    #     remote_path = f"/home/ubuntu/image/{name}/{customerId}/{filename}"
-    #     local_path = path
-    #     # print("local_path: ", local_path, "remote_path: ", remote_path)    
-    #     sftp.upload(local_path=local_path, remote_path=remote_path)  
-
-    before_local_path = uploadImgPath
-    before_remote_path = f"/home/ubuntu/image/before/{customerId}/{filename}"
-    sftp.upload(local_path=before_local_path, remote_path=before_remote_path)
-
+    return path, header 
 
                                  
 
@@ -80,21 +55,32 @@ async def save(afterImgPath: str = File(...), customerId : str=File(...)):
         "hello" : "hello"
     }
 
-@app.post("/api/send/sketchPoints")
-async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), customerId : str=File(...)):
-    filename = f"{uuid.uuid4()}.png"
+@app.post("/api/send/points")
+async def sketch(file: UploadFile = File(...), points: str=File(...), customerId : str=File(...)):
+    before = f"{uuid.uuid4()}.png"
 
     contents = await file.read()
-    sketch_points = json.loads(sketch_points)
-    uploaded_dir = "uploaded"
-    uploaded_dir = os.path.join(uploaded_dir, customerId) # 한글 처리 안되는 문제 있음
+    points = json.loads(points)
+    mask_points = json.loads(points["mask_points"])    
+    sketch_pints = json.loads(points["sketch_points"])
+    stroke_points = json.loads(points["stroke_points"])
+    
+
+    
+    
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    uploaded_dir = os.path.join(current_dir, "upload")
+    
+    
     if os.path.exists(uploaded_dir) is False:
         os.makedirs(uploaded_dir)
     else:
         for name in os.listdir(uploaded_dir):
             os.remove(os.path.join(uploaded_dir, name))
+
     
-    uploadPath = os.path.join(uploaded_dir, filename)
+    
+    uploadPath = os.path.join(uploaded_dir, before)
     with open(uploadPath, "wb") as f:
         f.write(contents)
     
@@ -103,31 +89,21 @@ async def sketch(file: UploadFile = File(...), sketch_points: str=File(...), cus
     backend = Backend(singletonModel)
 
     backend.open(uploadPath)
-    backend.complete(sketch_points)
+    backend.complete(mask_points, sketch_pints, stroke_points)
 
+    after = f"{uuid.uuid4()}.png"
+    savePath = os.path.join(uploaded_dir, after)
 
-    saveDir = "./save"
-    saveDir = os.path.join(saveDir, customerId)
-    if  os.path.exists(saveDir) is False:
-        os.makedirs(saveDir)
-    else:
-        for name in os.listdir(saveDir):
-            os.remove(os.path.join(saveDir, name))
-
-  
-    print("savePath: ", os.path.join(saveDir,filename))
-    backend.save_img(os.path.join(saveDir,filename))
-
-
-    # 
-    return {
-        "url":f"http://localhost:8000/save/{customerId}/{filename}"
+    backend.save_img(savePath)
+    encodedImg = encodeToBase64(savePath)
+    return{
+        "base64": encodedImg,
+        "type": "image/png",
+        "filename": "result.png"
     }
 
-@app.get("/save/{customerId}/{fileName}")
-async def hello(customerId: str, fileName: str):
-    return FileResponse(f"./save/{customerId}/{fileName}", media_type="image/png",filename="result.png")
-
+    
+    
 
 @app.on_event("startup")
 async def on_startup():
@@ -139,4 +115,4 @@ async def on_startup():
 
 if __name__ == "__main__":
     
-    uvicorn.run("main:app", host="localhost", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

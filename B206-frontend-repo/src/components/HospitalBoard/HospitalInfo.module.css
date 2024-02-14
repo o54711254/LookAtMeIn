@@ -1,0 +1,205 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(239, 232, 222, 0.2); /* 배경색 */
+  border-radius: 10px; /* 모서리 둥글기 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  padding: 2%;
+}
+
+.part1 {
+  width: 20%;
+  padding: 0% 3% 3% 0%;
+  border-right: thin solid #cdcdcd;
+}
+.part2 {
+  width: 55%;
+  padding: 2% 3% 3% 2%;
+  border-right: thin solid #cdcdcd;
+}
+.part3 {
+  width: 25%;
+  padding: 2% 5% 3% 2%;
+}
+
+.profile img {
+  border-radius: 5%; /* 프로필 이미지를 원형으로 */
+  width: 80px; /* 프로필 이미지 크기 */
+  height: 80px; /* 프로필 이미지 크기 */
+  object-fit: cover; /* 이미지 비율 유지 */
+
+  /* 이미지와 제목 사이의 여백 */
+}
+
+.imgTitle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.title {
+  font-size: 18px; /* 제목의 글자 크기 */
+  font-weight: bold; /* 글자 굵기 */
+  color: #2a2a2a; /* 글자 색상 */
+  margin-left: 40px;
+}
+
+.tt {
+  /* 타이틀들 */
+  color: #2a2a2a;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.text {
+  /* 요소들 */
+  font-size: 13px;
+  font-weight: bold;
+  color: #7f7f7f;
+  margin-top: 5px;
+}
+
+.address {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.url {
+  padding-bottom: 15px;
+  padding-top: 15px;
+  color: #0077cc; /* 링크 색상 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+.link {
+  font-size: 15px;
+  color: #7f7f7f;
+  margin-top: 5px;
+}
+
+.link:hover {
+  text-decoration: underline; /* 마우스 오버시 밑줄 */
+  color: #0077cc; /* 링크 색상 */
+}
+
+.time {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.weeks {
+  font-size: 15px;
+  color: #7f7f7f;
+  margin-top: 10px;
+  padding-left: 5%;
+}
+
+.Number {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+.info {
+  margin-bottom: 15px;
+  margin-top: 15px;
+}
+
+/* 병원 소개 텍스트에 대한 스타일 */
+.info {
+  font-size: 15px; /* 글자 크기 */
+  line-height: 1.5; /* 줄 간격 */
+}
+
+/* 전화번호 텍스트에 대한 스타일 */
+.Number {
+  font-size: 16px;
+  color: #333; /* 글자 색상 */
+}
+/* 여기까지가 왼쪽 병원 정보 */
+
+/* 링크 스타일 */
+a {
+  color: inherit; /* 상위 요소로부터 글자 색상을 상속받음 */
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+a:hover {
+  text-decoration: underline; /* 마우스 오버시 밑줄 */
+}
+
+.reviewItem {
+  border: 1px solid #ddd; /* 테두리 */
+  padding: 7px; /* 내부 여백 */
+  margin-bottom: 25px;
+  list-style-type: none; /* 기본 목록 스타일 제거 */
+  background: rgba(239, 232, 222, 0.2);
+  border: 1px solid #efe8de;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 300px;
+}
+.reviewItem:hover {
+  background-color: #f8f8f8;
+  cursor: pointer;
+}
+
+.profile {
+  border-radius: 30px;
+  width: 50px;
+}
+
+.writer {
+  display: flex;
+  flex-direction: column;
+  /* margin-left: 20px; */
+}
+
+.writer > div {
+  margin-top: 10px;
+}
+
+.price {
+  margin-left: auto;
+  margin-right: 30px;
+}
+.docName {
+  color: #2a2a2a;
+  font-weight: bold;
+}
+.doctor {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.hashtagButton {
+  display: inline-block; /* 버튼처럼 만들기 위해 */
+  padding: 5px 13px; /* 내부 여백 */
+  width: auto;
+  min-width: 15px;
+  max-width: 70px;
+  margin: 5px; /* 주변 요소와의 간격 */
+  background-color: rgba(254, 202, 171, 0.38); /* 버튼 배경색 */
+  color: #333; /* 글자색 */
+  border-radius: 15px; /* 모서리 둥글게 */
+  font-size: 0.8rem; /* 글자 크기 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
+  border: none; /* 테두리 제거 */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+  text-decoration: none; /* 링크 밑줄 제거 */
+  text-align: center;
+  transition: background-color 0.3s; /* 배경색 변경에 애니메이션 효과를 줍니다 */
+  white-space: nowrap;
+}
+
+.hashtagButton:hover {
+  background-color: #ffbe98; /* 마우스 오버 시 배경색 변경 */
+  color: #efe8de;
+}
+.day {
+  margin-bottom: 3%;
+}
