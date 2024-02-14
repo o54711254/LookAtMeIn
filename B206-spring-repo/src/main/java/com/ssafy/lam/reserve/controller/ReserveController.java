@@ -1,6 +1,8 @@
 package com.ssafy.lam.reserve.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
@@ -11,11 +13,15 @@ import com.ssafy.lam.reserve.dto.ReserveRequestDto;
 import com.ssafy.lam.reserve.service.ReserveService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +29,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/reserve")
 public class ReserveController {
+
+    MultipartConfig multipartConfig = new MultipartConfig();
+    Logger log = LoggerFactory.getLogger(ReserveController.class);
+
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
 
     private final ReserveService reserveService;
 
@@ -32,7 +43,8 @@ public class ReserveController {
     @PostMapping
     @Operation(summary = "상담등록")
     public ResponseEntity<?> createReserve(@RequestBody ReserveRequestDto dto) {
-        reserveService.saveReserve(dto);
+        Reserve reserve = reserveService.saveReserve(dto);
+        log.info("reserve " + reserve);
         return ResponseEntity.ok().build();
     }
 
@@ -43,6 +55,9 @@ public class ReserveController {
     @Operation(summary = "상담예약 전체 가져오기")
     public ResponseEntity<List<ReserveResponseDto>> getAllReservesByUser(@PathVariable long userSeq) {
         List<ReserveResponseDto> reserves = reserveService.findByUserSeq(userSeq);
+        for (ReserveResponseDto reserve : reserves) {
+            log.info("reserve : " + reserve);
+        }
         return ResponseEntity.ok(reserves);
     }
 
@@ -51,15 +66,27 @@ public class ReserveController {
     @Operation(summary = "상담예약 상세보기")
     public ResponseEntity<ReserveResponseDto> getReserveDetail(@PathVariable Long reserveSeq) {
         Reserve reserve = reserveService.getDetailReserveNotCompleted(reserveSeq);
-
+        log.info("reserve : " + reserve.getSeq());
         Questionnaire questionnaire = reserve.getQuestionnaire();
         QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
-                .reserveSeq(questionnaire.getReserve().getSeq())
+                .reserveSeq(reserve.getSeq())
                 .questionnaireSeq(questionnaire.getSeq())
                 .blood(questionnaire.getBlood())
-                .title(questionnaire.getTitle())
                 .remark(questionnaire.getRemark())
+                .content(questionnaire.getContent())
+                .title(questionnaire.getTitle())
                 .build();
+
+        if(questionnaire.getUploadFile() != null){
+            try{
+                Path path = Paths.get(uploadPath +"/"+ questionnaire.getUploadFile().getName());
+                String encodeFile = EncodeFile.encodeFileToBase64(path);
+                String type = questionnaire.getUploadFile().getType();
+                questionnaireResponseDto.setBase64("data:"+type+";base64,"+encodeFile);
+            }catch (Exception e){
+                log.error("문진서 이미지를 찾을 수 없습니다.");
+            }
+        }
 
         ReserveResponseDto responseDto = ReserveResponseDto.builder()
                 .reserveSeq(reserve.getSeq())
