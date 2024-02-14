@@ -78,7 +78,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 //        Doctor doctor = doctorRepository.findById(doctorSeq).orElse(null);
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
-
+        log.info("후기 제목: "+reviewBoardRegister.getReviewBoard_title());
+        log.info("후기 평점: "+reviewBoardRegister.getReviewBoard_score());
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
@@ -98,18 +99,18 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
             uploadFile = uploadFileService.store(file);
         reviewBoard.setUploadFile(uploadFile);
 
-        if(reviewBoardRegister.getHashtags()!=null) {
-            reviewBoardRegister.getHashtags().forEach(tagName -> {
-                Hashtag hashtag = hashtagRepository.findByTagName(tagName)
-                        .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
-                ReviewHashtag reviewHashtag = ReviewHashtag.builder()
-                        .reviewBoard(reviewBoard)
-                        .hashtag(hashtag)
-                        .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
-                        .build();
-                reviewBoard.addReviewHashtag(reviewHashtag);
-            });
-        }
+//        if(reviewBoardRegister.getHashtags()!=null) {
+//            reviewBoardRegister.getHashtags().forEach(tagName -> {
+//                Hashtag hashtag = hashtagRepository.findByTagName(tagName)
+//                        .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
+//                ReviewHashtag reviewHashtag = ReviewHashtag.builder()
+//                        .reviewBoard(reviewBoard)
+//                        .hashtag(hashtag)
+//                        .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
+//                        .build();
+//                reviewBoard.addReviewHashtag(reviewHashtag);
+//            });
+//        }
 
 
         return reviewBoardRepository.save(reviewBoard);
