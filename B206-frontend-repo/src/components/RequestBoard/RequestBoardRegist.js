@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
+import styles from "./RequestBoardRegist.module.css";
 
 function RequestBoardRegist() {
   const [open, setOpen] = useState(false);
@@ -50,17 +51,14 @@ function RequestBoardRegist() {
     setPost({ ...post, surgeries: newSurgeries });
   };
 
-  const addSurgeryField = () => {
-    setPost({
-      ...post,
-      surgeries: [...post.surgeries, { part: "" }],
-    });
-  };
-
   return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        게시물 작성하기
+    <div className={styles.registContainer}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        className={styles.button}
+      >
+        게시글 등록
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>게시물을 작성해주세요.</DialogTitle>
@@ -102,16 +100,13 @@ function RequestBoardRegist() {
               />
             </div>
           ))}
-          <Button onClick={addSurgeryField} color="primary">
-            수술 정보 추가
-          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>취소</Button>
           <Button onClick={handleRegist}>등록하기</Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }
 
