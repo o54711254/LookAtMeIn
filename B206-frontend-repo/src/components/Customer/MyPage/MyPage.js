@@ -15,6 +15,7 @@ import consult from "../../../assets/mypage/consult.png";
 import reserve from "../../../assets/mypage/reserve.png";
 import wish from "../../../assets/mypage/wish.png";
 import ProposeList from "./Post/ProposeList";
+import ReservationDetail from "./ReservationDetail";
 
 function MyPage() {
   const user = useSelector((state) => state.user);
@@ -102,7 +103,7 @@ function MyPage() {
           <Route path="wish" element={<WishList />} />
           <Route path="mypost/*" element={<MyPost />} />
           <Route path="consult" element={<ConsultingList />} />
-          <Route path="reserve" element={<ReservationList />} />
+          <Route path="reserve/*" element={<ReservationList />} />
           <Route path="propose" element={<ProposeList />} />
         </Routes>
       </div>

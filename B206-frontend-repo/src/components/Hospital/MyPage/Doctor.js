@@ -1,40 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axiosApi from "../../../api/axiosApi";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Doctor() {
   const [doctorList, setDoctorList] = useState([]);
+  const hospital = useSelector((state) => state.hospital);
 
   useEffect(() => {
-    const fetchDoctorList = async () => {
-      try {
-        const response = await axiosApi.get(`/api/hospital/doctors`);
-        const { statusCode, message, responseObj } = response.data;
-        if (statusCode === '상태 코드' && message === 'success') {
-          setDoctorList(responseObj);
-        } else {
-          console.error('의사 정보를 불러오는데 실패했습니다.');
-        }
-      } catch (error) {
-        console.error('의사 정보를 불러오는데 실패했습니다:', error);
-      }
-    };
-
-    fetchDoctorList();
+    axiosApi
+      .get(`/api/hospital/${hospital.hospitalSeq}/doctors`)
+      .then((res) => {
+        console.log(res.data);
+        setDoctorList(res.data);
+      })
+      .catch((error) => {
+        console.log("의사목록 불러오기 실패", error);
+      });
   }, []);
 
   return (
     <div>
       <h2>의사 리스트</h2>
-      <ul>
+      <div>
         {doctorList.map((doctor) => (
-          <li key={doctor.id}>
+          <div>
             <Link to={`/list/${doctor.id}`}>{doctor.doctor_name}</Link>
-          </li>
+            <div>{doctor.docInfoName}</div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
-};
+}
 export default Doctor;
