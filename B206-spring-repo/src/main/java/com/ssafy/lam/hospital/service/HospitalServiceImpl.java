@@ -155,8 +155,10 @@ public class HospitalServiceImpl implements HospitalService {
         log.info("createDoctor : {}", doctorDto);
         Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
 
-        Doctor doctor = Doctor.builder().docInfoName(doctorDto.getDoc_info_name())
-                .hospital(hospital).build();
+        Doctor doctor = Doctor.builder()
+                .docInfoName(doctorDto.getDoc_info_name())
+                .hospital(hospital)
+                .build();
         if(doctorProfile != null){
             UploadFile uploadFile = uploadFileService.store(doctorProfile);
             doctor.setProfile(uploadFile);
@@ -185,6 +187,7 @@ public class HospitalServiceImpl implements HospitalService {
             Hospital hospital = hospitalOptional.get();
 
             double avgScore = hospitalRepository.findAvgByHospitalSeq(hospitalSeq).orElse(0.0);
+            int cntReviews = hospitalRepository.countByHospitalSeq(hospitalSeq);
             HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
                     .hospitalInfo_seq(hospitalSeq)
                     .hospitalInfo_name(hospital.getUser().getName())
@@ -197,7 +200,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_url(hospital.getUrl())
                     .userSeq(hospital.getUser().getUserSeq())
                     .hospitalInfo_avgScore(avgScore)
-                    .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
+                    .hospitalInfo_cntReviews(cntReviews)
                     .build();
             if(hospital.getProfileFile() != null){
                 Path path = Paths.get(uploadPath +"/" + hospital.getProfileFile().getName());
@@ -212,9 +215,8 @@ public class HospitalServiceImpl implements HospitalService {
                 }
             }
             return hospitalDetailDto;
-        } else {
-            return null;
         }
+        return null;
     }
     @Override
     public HospitalDetailDto getHospitalLikeInfo(Long hospitalSeq, Long userSeq) { // 고객이 병원 페이지 조회 + 찜
