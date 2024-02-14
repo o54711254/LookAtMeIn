@@ -59,7 +59,6 @@ const HospitalInfo = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    
     axiosApi
       .get(`/api/hospital-info/reviews/${hospitalInfo_seq}`)
       .then((response) => {
@@ -109,7 +108,10 @@ const HospitalInfo = () => {
               <img src={basicHos} alt="병원 기본 프사" />
             )}
           </div>
-          <div className={styles.title}>{hospitalData.hospitalInfo_name}</div>
+          <div className={styles.title}>
+            {hospitalData.hospitalInfo_name}
+            <Wish />
+          </div>
         </div>
         <div className={styles.address}>
           <div className={styles.tt}>주소</div>
@@ -158,7 +160,7 @@ const HospitalInfo = () => {
       </div>
       <div className={styles.part2}>
         <div>리뷰 목록</div>
-        <Wish />
+
         {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}

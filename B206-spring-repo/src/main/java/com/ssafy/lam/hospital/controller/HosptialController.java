@@ -47,8 +47,8 @@ public class HosptialController {
 
     // 병원에서 의사 정보 추가
     @PostMapping("/{hospital_seq}/doctors/regist")
-    @Operation(summary = "병원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가")
-    public ResponseEntity<Void> createDoctor(@PathVariable Long hospital_seq, @RequestParam("doctorData") String doctorData, @RequestParam("doctorProfile") MultipartFile doctorProfile) {
+    @Operation(summary = "병")
+    public ResponseEntity<Void> createDoctor(@PathVariable Long hospital_seq, @RequestParam("docto원 마이페이지에서 해당 병원에 해당하는 의사(의사 정보, 카테고리 목록, 경력 목록) 추가rData") String doctorData, @RequestParam("doctorProfile") MultipartFile doctorProfile) {
         try{
             DoctorDto doctorDto = new ObjectMapper().readValue(doctorData, DoctorDto.class);
             hospitalService.createDoctor(hospital_seq, doctorDto, doctorDto.getDoc_info_category(), doctorDto.getDoc_info_career(), doctorProfile);

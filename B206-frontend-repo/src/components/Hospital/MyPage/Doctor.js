@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axiosApi from "../../../api/axiosApi";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import DoctorRegist from "./DoctorRegist";
 
 function Doctor() {
   const [doctorList, setDoctorList] = useState([]);
@@ -22,6 +23,7 @@ function Doctor() {
 
   return (
     <div>
+      <DoctorRegist />
       <h2>의사 리스트</h2>
       <div>
         {doctorList.map((doctor) => (
