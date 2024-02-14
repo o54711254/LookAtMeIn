@@ -28,7 +28,7 @@ function ReservationList() {
   const goDetailPage = (reserveSeq) => {
     navigate(`/mypage/reserve/detail/${reserveSeq}`);
   };
-
+  
   return (
     <div className={styles.reserveContainer}>
       {reservations.map((reservation) => (

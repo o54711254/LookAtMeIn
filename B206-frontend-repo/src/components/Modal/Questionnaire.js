@@ -12,10 +12,11 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import axiosApi from "../../api/axiosApi"; // AxiosApi 임포트
 import styles from "./Questionnaire.module.css";
 
-export default function FormDialog() {
+export default function FormDialog(props) {
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState(null);
   const [questionnaire, setQuestionnaire] = React.useState({
+    reserveSeq:props.reserveSeq,
     questionnaire_remark: "",
     questionnaire_blood: "",
     questionnaire_content: "",

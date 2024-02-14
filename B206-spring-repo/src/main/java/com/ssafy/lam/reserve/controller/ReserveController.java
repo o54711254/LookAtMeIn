@@ -11,6 +11,8 @@ import com.ssafy.lam.reserve.dto.ReserveRequestDto;
 import com.ssafy.lam.reserve.service.ReserveService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class ReserveController {
 
     private final ReserveService reserveService;
+
+    Logger log = LoggerFactory.getLogger(ReserveController.class);
 
     // ===================== 등 록 =====================
     //클라이언트에서는 예약 시간을 Long 타입의 타임스탬프 형식으로 전송해야 함 예를 들어, 자바스크립트에서 현재 시간을 타임스탬프로 전송하는 예시
@@ -51,8 +55,9 @@ public class ReserveController {
     @Operation(summary = "상담예약 상세보기")
     public ResponseEntity<ReserveResponseDto> getReserveDetail(@PathVariable Long reserveSeq) {
         Reserve reserve = reserveService.getDetailReserveNotCompleted(reserveSeq);
-
+        log.info("reserve : " + reserve.getSeq());
         Questionnaire questionnaire = reserve.getQuestionnaire();
+        log.info("questionnaire : " + questionnaire.getSeq());
         QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
                 .reserveSeq(questionnaire.getReserve().getSeq())
                 .questionnaireSeq(questionnaire.getSeq())
