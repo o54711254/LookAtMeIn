@@ -59,7 +59,7 @@ function ChatApp() {
   // 기존 채팅 메시지를 서버로부터 가져오는 함수
   const fetchMessages = () => {
     axiosApi
-      .get(`/chatroom/${roomId}/messages`)
+      .get(`/api/chatroom/${roomId}/messages`)
       .then((response) => {
         console.log("메시지 목록", response.data);
         const customerProfileBase64 = response.data.customerProfileBase64;
@@ -81,8 +81,8 @@ function ChatApp() {
         sender: currentUser.userId,
         message: message,
       };
-
-      stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
+      stompClient.current.send(`/pub/api/message`, {}, JSON.stringify(messageObj));
+      // stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
       setMessage(""); // 입력 필드 초기화
     }
   };
