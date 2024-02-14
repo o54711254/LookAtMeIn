@@ -103,7 +103,11 @@ function MyPage() {
           <Route path="wish" element={<WishList />} />
           <Route path="mypost/*" element={<MyPost />} />
           <Route path="consult" element={<ConsultingList />} />
-          <Route path="reserve/*" element={<ReservationList />} />
+          <Route path="reserve" element={<ReservationList />} />
+          <Route
+            path="reserve/detail/:reserveSeq"
+            element={<ReservationDetail />}
+          />
           <Route path="propose" element={<ProposeList />} />
         </Routes>
       </div>
