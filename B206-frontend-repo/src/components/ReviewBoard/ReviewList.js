@@ -22,6 +22,10 @@ function ReviewList() {
     navigate(`/reviewdetail/${reviewBoard_seq}`);
   };
 
+  const goregist = () => {
+    navigate("/reviewregist");
+  }
+
   return (
     <div>
       <div className={styles.boardhead}>
@@ -56,6 +60,11 @@ function ReviewList() {
             </div>
           </li>
         ))}
+      </div>        
+      <div>
+      <button variant="contained" color="error" onClick={goregist}>
+        후기 등록
+      </button>
       </div>
     </div>
   );
