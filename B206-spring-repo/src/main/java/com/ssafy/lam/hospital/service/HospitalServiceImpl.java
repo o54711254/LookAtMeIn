@@ -144,11 +144,11 @@ public class HospitalServiceImpl implements HospitalService {
         return hospitalRepository.findByIsApprovedTrue();
     }
     @Override
-    public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList, MultipartFile doctorProfile) {
+    public Doctor createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList, MultipartFile doctorProfile) {
         log.info("createDoctor : {}", doctorDto);
         Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
 
-        Doctor doctor = Doctor.builder().docInfoSeq(doctorDto.getDoc_info_seq()).docInfoName(doctorDto.getDoc_info_name())
+        Doctor doctor = Doctor.builder().docInfoName(doctorDto.getDoc_info_name())
                 .hospital(hospital).build();
         if(doctorProfile != null){
             UploadFile uploadFile = uploadFileService.store(doctorProfile);
@@ -169,6 +169,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .careerContent(c.getCareer_content()).doctor(doctor).build();
             careerRepository.save(career);
         }
+        return doctor;
     }
     @Override
     public HospitalDetailDto getHospitalInfo(Long hospitalSeq) { // 고객이 병원 페이지 조회

@@ -50,7 +50,11 @@ public class DoctorController {
         List<Career> career = doctorService.getCareer(doctor_seq);
         List<CareerDto> careerDto = new ArrayList<>();
         for(Career c : career) {
-            careerDto.add(new CareerDto(c.getCareerStart(), c.getCareerEnd(), c.getCareerContent()));
+            careerDto.add(CareerDto.builder()
+                            .career_start(c.getCareerStart())
+                            .career_end(c.getCareerEnd())
+                            .career_content(c.getCareerContent())
+                    .build());
         }
 
         Doctor doctor = doctorService.getDoctor(doctor_seq);
