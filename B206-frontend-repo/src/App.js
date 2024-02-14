@@ -52,7 +52,7 @@ import HospitalReservation from "./components/Modal/HospitalReservation.js";
 import ReservationDetail from "./components/Customer/MyPage/ReservationDetail";
 
 function App() {
-  console.log("REACT_APP_API_URL", process.env.REACT_APP_API_URL);
+  console.log("REACT_APP_URL", process.env.REACT_APP_URL);
   return (
     <div>
       <div className="app-container">
