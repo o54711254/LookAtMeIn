@@ -22,6 +22,7 @@ function Doctor() {
 
   return (
     <div>
+      
       <h2>의사 리스트</h2>
       <div>
         {doctorList.map((doctor) => (

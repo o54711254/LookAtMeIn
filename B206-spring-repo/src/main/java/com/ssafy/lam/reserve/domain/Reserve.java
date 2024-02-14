@@ -4,11 +4,9 @@ import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@ToString
 @Entity
 @Getter
 @Setter
@@ -51,7 +49,8 @@ public class Reserve {
     private int time;
 
     private boolean deleted;
-    private boolean completed;
+    private boolean completed; // 상담이 끝난건지 안끝난건지
+    private boolean questionOk; // 문진표가 등록이 됐는지 안됐는지 확인
 
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -64,7 +63,7 @@ public class Reserve {
 
 
     @Builder
-    public Reserve(Long seq, User customer, User hospital, Questionnaire questionnaire, String content, int price, int year, int month, int day, String dayofweek, int time, boolean deleted, boolean completed, UploadFile beforeImg, UploadFile afterImg) {
+    public Reserve(Long seq, User customer, User hospital, Questionnaire questionnaire, String content, int price, int year, int month, int day, String dayofweek, int time, boolean deleted, boolean completed, UploadFile beforeImg, UploadFile afterImg, boolean questionOk) {
         this.seq = seq;
         this.customer = customer;
         this.hospital = hospital;
@@ -80,5 +79,6 @@ public class Reserve {
         this.completed = completed;
         this.beforeImg = beforeImg;
         this.afterImg = afterImg;
+        this.questionOk = questionOk;
     }
 }
