@@ -11,7 +11,7 @@ pipeline {
                 sh "pwd"
                 dir("B206-frontend-repo"){
                     sh "pwd"
-                    sh "npm install"
+                    sh "npm install --force"
                     sh "CI=false npm run build"
                     sh 'ssh -i ~/.ssh/id_rsa ubuntu@i10b206.p.ssafy.io "rm -rf /home/ubuntu/frontend/build/"'
                     sh 'ssh -i ~/.ssh/id_rsa ubuntu@i10b206.p.ssafy.io "mkdir /home/ubuntu/frontend/build/"'
