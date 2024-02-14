@@ -22,6 +22,9 @@ const Canvas = ()=>{
     const [mode, setMode] = useState("mask")
     const [file, setFile] = useState(null)
     const [surgeryImg, setSurgeryImg] = useState('')    
+
+    const [penColor, setPenColor] = useState('#000000'); // 초기 펜 색상을 검은색으로 설정
+
     // 사진에 그림 그리는 부분
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -52,53 +55,49 @@ const Canvas = ()=>{
     const startDrawing = ({ nativeEvent }) => {
         setIsDrawing(true);
         const { offsetX, offsetY } = nativeEvent;
-        
-        // setMaskLines([...maskLines, { x: offsetX, y: offsetY }])
-        addPoint(offsetX, offsetY, true);
+        // 시작점에 색상 정보를 추가하여 addPoint 함수 호출
+        addPoint(offsetX, offsetY, true, penColor);
     }
-    const draw = ({nativeEvent}) => {
-        if(!isDrawing)
-            return;
-        const {offsetX, offsetY} = nativeEvent;
-        addPoint(offsetX, offsetY, false);
-    }
-    const addPoint = (x, y, isStartPoint) => {
-        let newPoints;
-        let newLines;
     
-        if(!isStartPoint){
+    const draw = ({ nativeEvent }) => {
+        if (!isDrawing) return;
+        const { offsetX, offsetY } = nativeEvent;
+        // 이동하는 동안에 색상 정보를 추가하여 addPoint 함수 호출
+        addPoint(offsetX, offsetY, false, penColor);
+    }
+    
+    const addPoint = (x, y, isStartPoint, color) => {
+        let newLines;
+        if (!isStartPoint) {
+            // 모드에 따라 적절한 상태 업데이트
             if (mode === 'mask') {
-                newLines = [...maskLines, { x, y }];
+                color = 'white';
+                newLines = [...maskLines, { x, y, color }];
                 setMaskLines(newLines);
-                newPoints = [...maskPoints, {
-                    "prev":[maskLines[maskLines.length-1].x, maskLines[maskLines.length-1].y],
-                    "curr":[x, y]
-                }]
-                setMaskPoints(newPoints);
             } else if (mode === 'sketch') {
-                newLines = [...sketchLines, { x, y }];
+                newLines = [...sketchLines, { x, y, color }];
                 setSketchLines(newLines);
-                newPoints = [...sketchPoints, {
-                    "prev":[sketchLines[sketchLines.length-1].x, sketchLines[sketchLines.length-1].y],
-                    "curr":[x, y]
-                }]
-                setSketchPoints(newPoints);
-            }    
-        }else{
-            if(mode === 'mask'){
-                setMaskLines([...maskLines, { x, y }]);
-            }else if(mode === 'sketch'){
-                setSketchLines([...sketchLines, { x, y }]);
+            }
+        } else {
+            // 시작점이면 해당 모드의 선 배열에 새로운 시작점 추가
+            if (mode === 'mask') {
+                color = 'white';
+                setMaskLines([...maskLines, { x, y, color }]);
+            } else if (mode === 'sketch') {
+                setSketchLines([...sketchLines, { x, y, color }]);
             }
         }
-        
     
-        drawLine(x, y, isStartPoint);
+        // 그리는 동작을 수행
+        drawLine(x, y, isStartPoint, color);
     };
-    const drawLine = (x, y, isStartPoint) => {
+    
+    const drawLine = (x, y, isStartPoint, color) => {
         const context = canvasRef.current.getContext('2d');
-        context.strokeStyle = mode === 'mask' ? 'white' : 'black';
-        context.lineWidth = mode === 'mask' ? 10 : 5;
+        // 색상을 설정
+        context.strokeStyle = color;
+        context.lineWidth = 5;
+        context.lineJoin = 'round';
         context.lineCap = 'round';
     
         const lines = mode === 'mask' ? maskLines : sketchLines;
@@ -109,6 +108,7 @@ const Canvas = ()=>{
             context.stroke();
         }
     };
+    
     // 그림 그리기 멈춤
     const stopDrawing = () => {
         setIsDrawing(false);
@@ -208,6 +208,12 @@ const Canvas = ()=>{
             img.src = image;
         }
     };
+
+    // 색상 선택기 변경 이벤트 핸들러
+    const handleColorPickerChange = (event) => {
+        setPenColor(event.target.value); // 사용자가 선택한 색상으로 펜 색상 상태 업데이트
+    };
+    
     return (
         <div style={{backgroundColor :'black'}}>
             <canvas
@@ -222,6 +228,12 @@ const Canvas = ()=>{
             <button onClick={()=>setMode("sketch")}>sketch</button>
             <button onClick={clearCanvas}>clear</button>
              <button onClick={complete}>complete</button>
+             <input 
+                    type="color" 
+                    value={penColor} 
+                    onChange={handleColorPickerChange} 
+                    style={{ marginLeft: '10px' }}
+                />
              {surgeryImg && <img src={surgeryImg} alt="surgeryImg" />}
              {/* 저장 버튼은 나중에 지워야함. 상담 화면에서 종료 버튼 누르면 이미지가 DB에 저장 */}
              <button onClick={save}>저장</button> 
