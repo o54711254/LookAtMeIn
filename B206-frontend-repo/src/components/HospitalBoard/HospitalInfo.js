@@ -208,11 +208,14 @@ const HospitalInfo = () => {
                 </div>
               </div>
               <div className={styles.hashtagButton}>
-                {doctor.doctorCategory.map((category, index) => (
+                {/* {doctor.doctorCategory.map((category, index) => (
                   <div key={index} onClick={() => handleSearch(category.part)}>
                     {category.part}
                   </div>
-                ))}
+                ))} */}
+                <div onClick={() => handleSearch(doctor.doctorCategory)}>
+                  {doctor.doctorCategory}
+                </div>
               </div>
             </div>
           </li>
