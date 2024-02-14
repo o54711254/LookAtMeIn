@@ -52,6 +52,7 @@ export default function FormDialog() {
     }
     
     try{
+      console.log("questionnaireData: ", questionnaireData);
       const response = await axiosApi.post('/api/questionnaire/regist', formData, {
         headers:{
           'Content-Type': 'multipart/form-data',
