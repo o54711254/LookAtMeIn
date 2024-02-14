@@ -174,10 +174,16 @@ const Canvas = ()=>{
         // console.log("points: ", points)
         formData.append("points", JSON.stringify(points))
         try{
-            const python_server_url = "https://lookatmein.duckdns.org/python/send/points"
+            // const python_server_url = "https://lookatmein.duckdns.org/python/send/points"
             
-            // const python_server_url = "http://localhost:8000/api/send/points"
-            const response = await axios.post(python_server_url, formData,{
+            // // const python_server_url = "http://localhost:8000/api/send/points"
+            // const response = await axios.post(python_server_url, formData,{
+            //     headers:{
+            //         'Content-Type': 'multipart/form-data'
+            //     }
+            // })
+
+            const response = await axiosApi.post("/python/send/points", formData,{
                 headers:{
                     'Content-Type': 'multipart/form-data'
                 }
