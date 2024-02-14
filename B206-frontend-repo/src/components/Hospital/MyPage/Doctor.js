@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import axiosApi from "../../../api/axiosApi";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import DoctorRegist from "./DoctorResgist";
 
+//test  2
 function Doctor() {
   const [doctorList, setDoctorList] = useState([]);
   const hospital = useSelector((state) => state.hospital);
@@ -24,6 +26,7 @@ function Doctor() {
     <div>
       <h2>의사 리스트</h2>
       <div>
+        <DoctorRegist />
         {doctorList.map((doctor) => (
           <div>
             <Link to={`/list/${doctor.id}`}>{doctor.doctor_name}</Link>

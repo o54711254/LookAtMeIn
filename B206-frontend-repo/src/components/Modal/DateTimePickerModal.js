@@ -49,7 +49,7 @@ export default function ResponsiveModal({ hospitalInfoSeq }) {
 
     const reservationData = {
       customerUserSeq,
-      hospitalSeq: parseInt(hospitalInfoSeq, 10),
+      hospitalUserSeq: parseInt(hospitalInfoSeq, 10),
       year,
       month,
       day,

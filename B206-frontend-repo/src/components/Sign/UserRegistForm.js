@@ -107,9 +107,9 @@ function UserRegistForm() {
             customerAddress,
           });
           window.alert("회원가입이 완료되었습니다.");
-          // setTimeout(() => {
-          navigate("/login"); //로그인창으로 바로 이동
-          // }, 3000);
+          setTimeout(() => {
+            navigate("/login"); //로그인창으로 바로 이동
+          }, 3000);
         } catch {}
       }
     },

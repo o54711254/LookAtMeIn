@@ -1,5 +1,6 @@
 package com.ssafy.lam.questionnaire.service;
 
+
 import com.ssafy.lam.file.domain.UploadFile;
 import com.ssafy.lam.file.service.UploadFileService;
 import com.ssafy.lam.questionnaire.domain.QuesionnareRepository;
@@ -7,7 +8,7 @@ import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.domain.ReserveRepository;
-import com.ssafy.lam.user.domain.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +29,13 @@ public class QuestionnaireService {
     private ReserveRepository reserveRepository;
 
 
+    @Transactional
     public Questionnaire createQuestionnaire(QuestionnaireRequestDto questionRequestDto, MultipartFile file) {
-//        User customer = User.builder().userSeq(questionRequestDto.getCusomter_seq()).build();
-//        User hospital = User.builder().userSeq(questionRequestDto.getHospital_seq()).build();
-
         UploadFile uploadFile = null;
         if(file != null)
             uploadFile = uploadFileService.store(file);
 
-        log.info("문진서 등록 정보 : {}", questionRequestDto.getReserveSeq());
-        Reserve reserve = reserveRepository.findById(questionRequestDto.getReserveSeq())
-                .orElseThrow(() -> new IllegalArgumentException("없는 예약임 : " + questionRequestDto.getReserveSeq()));
-
+        Reserve reserve = reserveRepository.findById(questionRequestDto.getReserveSeq()).get();
 
         Questionnaire questionnaire = Questionnaire.builder()
                 .blood(questionRequestDto.getQuestionnaire_blood())
@@ -51,8 +47,11 @@ public class QuestionnaireService {
                 .build();
 
         reserve.setQuestionnaire(questionnaire);
+        reserve.setQuestionOk(true);
 
         Questionnaire saveQuesionnaire = quesionnareRepository.save(questionnaire);
+        reserveRepository.save(reserve);
+
         return saveQuesionnaire;
 
     }

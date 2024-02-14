@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 
 const StyledStar = styled.span`
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: orange;
   position: relative;
 
@@ -36,11 +36,23 @@ const StarRatingDisplay = ({ score }) => {
   let stars = [];
   for (let i = 1; i <= 5; i++) {
     if (i <= score) {
-      stars.push(<StyledStar key={i} isHalf={false}><FaStar /></StyledStar>);
+      stars.push(
+        <StyledStar key={i} isHalf={false}>
+          <FaStar />
+        </StyledStar>
+      );
     } else if (i === Math.ceil(score) && !Number.isInteger(score)) {
-      stars.push(<StyledStar key={i} isHalf={true}><FaStarHalf /></StyledStar>);
+      stars.push(
+        <StyledStar key={i} isHalf={true}>
+          <FaStarHalf />
+        </StyledStar>
+      );
     } else {
-      stars.push(<StyledStar key={i} isHalf={false}><FaRegStar /></StyledStar>);
+      stars.push(
+        <StyledStar key={i} isHalf={false}>
+          <FaRegStar />
+        </StyledStar>
+      );
     }
   }
 

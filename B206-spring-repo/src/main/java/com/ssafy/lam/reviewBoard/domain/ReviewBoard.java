@@ -2,9 +2,6 @@ package com.ssafy.lam.reviewBoard.domain;
 
 
 import com.ssafy.lam.file.domain.UploadFile;
-import com.ssafy.lam.hashtag.domain.ReviewHashtag;
-import com.ssafy.lam.hospital.domain.Doctor;
-import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -68,16 +65,8 @@ public class ReviewBoard {
     @JoinColumn(name = "upload_file_seq")
     private UploadFile uploadFile;
 
-    @OneToMany(mappedBy = "reviewBoard", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReviewHashtag> reviewHashtags = new ArrayList<>();
-
-    public void addReviewHashtag(ReviewHashtag reviewHashtag) {
-        this.reviewHashtags.add(reviewHashtag);
-        reviewHashtag.setReviewBoard(this);
-    }
-
     @Builder
-    public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, String hospital, String doctor, User user, UploadFile uploadFile, List<ReviewHashtag> reviewHashtags) {
+    public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, String hospital, String doctor, User user, UploadFile uploadFile) {
         this.seq = seq;
         this.title = title;
         this.content = content;
@@ -94,6 +83,5 @@ public class ReviewBoard {
         this.doctor = doctor;
         this.user = user;
         this.uploadFile = uploadFile;
-        this.reviewHashtags = reviewHashtags;
     }
 }
