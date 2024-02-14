@@ -37,24 +37,35 @@ function ReservationList() {
           className={styles.reserveItem}
         >
           {/* <p>Customer Name: {reservation.customerName}</p> */}
-          <div className={styles.hospitalName}>{reservation.hospitalName}</div>
-          <div>
-            상담 예약 날짜: {reservation.year}-
-            {String(reservation.month).padStart(2, "0")}-
-            {String(reservation.day).padStart(2, "0")}
+          <div className={styles.head}>
+            <div className={styles.hospitalName}>
+              {reservation.hospitalName}
+            </div>
+            <div>님과의 상담 예약</div>
           </div>
-          <div>{reservation.dayofweek}</div>
-          <div>
-            {" "}
-            {reservation.time < 12
-              ? `${reservation.time} AM`
-              : `${
-                  reservation.time === 12
-                    ? reservation.time
-                    : reservation.time - 12
-                } PM`}
+          <div className={styles.contents}>
+            <div className={styles.date}>
+              <div>
+                상담 예약 날짜: {reservation.year}년
+                {String(reservation.month).padStart(2, "0")}월
+                {String(reservation.day).padStart(2, "0")}일
+              </div>
+              <div>{reservation.dayofweek}</div>
+              <div>
+                {" "}
+                {reservation.time < 12
+                  ? `${reservation.time} AM`
+                  : `${
+                      reservation.time === 12
+                        ? reservation.time
+                        : reservation.time - 12
+                    } PM`}
+              </div>
+            </div>
+            <div className={styles.button}>
+              <Questionnaire />
+            </div>
           </div>
-          <Questionnaire className={styles.button} />
         </div>
       ))}
 
