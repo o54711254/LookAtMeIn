@@ -147,9 +147,9 @@ function HospitalRegistForm() {
         });
         
         window.alert("회원가입이 완료되었습니다. 승인을 대기해주세요");
-        setTimeout(() => {
-          navigate("/");
-        }, 2000);
+        // setTimeout(() => {
+        navigate("/");
+        // }, 2000);
       } catch (e) {
         console.log(e.message);
       }

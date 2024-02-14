@@ -166,15 +166,18 @@ public class ChatService {
 
         User customer = userRepository.findById(chatRoomRequestDto.getCustomerSeq()).get();
 
+        // 채팅방 entity 생성
         ChatRoom chatroom = ChatRoom.builder().build();
         ChatRoom chatRoom = chatRoomRepository.save(chatroom);
 
+        // 채팅방 참여자인 Hospital entity 생성
         ChatParticipant chatParticipant1 = ChatParticipant.builder()
                 .user(hospital)
                 .chatRoom(chatroom)
                 .chatRoomName(customer.getName())
                 .build();
 
+        // 채팅방 참여자인 Customer entity 생성
         ChatParticipant chatParticipant2 = ChatParticipant.builder()
                 .user(customer)
                 .chatRoom(chatroom)

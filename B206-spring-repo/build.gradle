@@ -68,7 +68,7 @@ dependencies {
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
     //openvidu
-    implementation 'io.openvidu:openvidu-java-client:2.25.0'
+    implementation 'io.openvidu:openvidu-java-client:2.29.0'
 
 }
 

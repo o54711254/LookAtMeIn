@@ -44,11 +44,12 @@ import HospitalDetail from "./pages/HospitalDetail.js";
 import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
-import RequestRegist from "./components/RequestBoard/RequestRegist";
+import RequestBoardRegist from "./components/RequestBoard/RequestBoardRegist";
 
 // openvidu
 import WaitingRoom from "./pages/Openvidu.js";
 import HospitalReservation from "./components/Modal/HospitalReservation.js";
+import ReservationDetail from "./components/Customer/MyPage/ReservationDetail";
 
 function App() {
   return (
@@ -117,7 +118,7 @@ function App() {
                   />
                   <Route
                     path="/requestBoard/regist"
-                    element={<RequestRegist />}
+                    element={<RequestBoardRegist />}
                   />
 
                   {/*병원 게시판*/}
@@ -128,7 +129,7 @@ function App() {
                   />
 
                   {/*이상향 월드컵*/}
-                  {/* <Route path="/worldcup/*" element={<Worldcup />} /> */}
+                  <Route path="/worldcup/*" element={<Worldcup />} />
 
                   <Route path="/worldcup/man" element={<WorldcupMan />}></Route>
                   <Route
@@ -161,7 +162,6 @@ function App() {
             {/* <ReviewDelete /> */}
             {/* <Favorite /> */}
           </div>
-          {<Questionnaire />}
           <FloatingChat />
         </div>
       </div>

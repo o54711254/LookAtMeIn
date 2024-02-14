@@ -11,6 +11,7 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { useNavigate } from "react-router-dom";
+import styles from "./FreeBoardRegist.module.css";
 
 function FreeBoardRegist() {
   const [open, setOpen] = React.useState(false); // 모달의 열림/닫힘 상태를 관리하는 state입니다. 처음에는 false로 모달이 닫혀있는 상태입니다.
@@ -72,10 +73,14 @@ function FreeBoardRegist() {
     }
   };
   return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <div className={styles.registContainer}>
+      <button
+        variant="outlined"
+        onClick={handleClickOpen}
+        className={styles.button}
+      >
         게시물 작성하기
-      </Button>
+      </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>게시물을 작성해주세요.</DialogTitle>
         <DialogContent>
@@ -125,7 +130,7 @@ function FreeBoardRegist() {
           <Button onClick={handleRegist}>등록하기</Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }
 
