@@ -66,7 +66,7 @@ public class ReserveServiceImpl implements ReserveService {
                     .day(reserve.getDay())
                     .dayofweek(reserve.getDayofweek())
                     .time(reserve.getTime())
-                    .questionnaired(reserve.getQuestionnaire() != null)
+
                     .build();
 
             if(hospital.getProfileFile() != null){
@@ -191,17 +191,136 @@ public class ReserveServiceImpl implements ReserveService {
 
     // ===================== 상담한 내역 전체 조회 =====================
     @Override
-    public List<Reserve> getAllByUserSeqCompleted(Long userSeq) {
-        return reserveRepository.findAllByUserSeqAndCompletedTrue(userSeq);
+    public List<ReserveResponseDto> getAllByUserSeqCompleted(Long userSeq) {
+        List<Reserve> reserves = reserveRepository.findAllByUserSeqAndCompletedTrue(userSeq);
+        List<ReserveResponseDto> reserveResponseDtos = new ArrayList<>();
+        for(Reserve r : reserves){
+
+
+
+            ReserveResponseDto responseDto = ReserveResponseDto.builder()
+                    .reserveSeq(r.getSeq())
+                    .customerUserSeq(r.getCustomer().getUserSeq())
+                    .customerName(r.getCustomer().getName())
+                    .hospitalUserSeq(r.getHospital().getUserSeq())
+                    .hospitalName(r.getHospital().getName())
+                    .year(r.getYear())
+                    .month(r.getMonth())
+                    .day(r.getDay())
+                    .dayofweek(r.getDayofweek())
+                    .time(r.getTime())
+
+                    .content(r.getContent())
+                    .price(r.getPrice())
+                    .completed(r.isCompleted())
+                    .build();
+            Hospital hospital = hospitalRepository.findByUserUserSeq(r.getHospital().getUserSeq()).get();
+            if(hospital.getProfileFile() != null){
+                try{
+                    Path path = Paths.get(uploadPath +"/"+ hospital.getProfileFile().getName());
+                    String hospitalProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                    String hospitalProfileType = hospital.getProfileFile().getType();
+                    responseDto.setHospitalProfileBase64(hospitalProfileBase64);
+                    responseDto.setHospitalProfileType(hospitalProfileType);
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+
+//            if(r.getAfterImg() != null){
+//                try{
+//                    Path path = Paths.get(uploadPath +"/"+ r.getAfterImg().getName());
+//                    String afterImgBase64 = EncodeFile.encodeFileToBase64(path);
+//                    String afterImgType = r.getAfterImg().getType();
+//                    responseDto.setAfterImgBase64(afterImgBase64);
+//                    responseDto.setAfterImgType(afterImgType);
+//                }catch (IOException e){
+//                    e.printStackTrace();
+//                }
+//            }
+
+//            if(r.getBeforeImg() != null){
+//                try{
+//                    Path path = Paths.get(uploadPath +"/"+ r.getBeforeImg().getName());
+//                    String beforeImgBase64 = EncodeFile.encodeFileToBase64(path);
+//                    String beforeImgType = r.getBeforeImg().getType();
+//                    responseDto.setBeforeImgBase64(beforeImgBase64);
+//                    responseDto.setBeforeImgType(beforeImgType);
+//                }catch (IOException e){
+//                    e.printStackTrace();
+//                }
+//            }
+
+            reserveResponseDtos.add(responseDto);
+
+        }
+        return reserveResponseDtos;
     }
     // ===================== 상담한 내역 전체 조회 =====================
 
     // ===================== 상담한 내역 상세 조회 =====================
 
     @Override
-    public Reserve getDetailReseveCompleted(Long reserveSeq) {
-        return reserveRepository.findBySeqAndCompletedTrue(reserveSeq)
+    public ReserveResponseDto getDetailReseveCompleted(Long reserveSeq) {
+        Reserve reserve = reserveRepository.findBySeqAndCompletedTrue(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
+
+        ReserveResponseDto responseDto = ReserveResponseDto.builder()
+                .reserveSeq(reserve.getSeq())
+                .customerUserSeq(reserve.getCustomer().getUserSeq())
+                .customerName(reserve.getCustomer().getName())
+                .hospitalUserSeq(reserve.getHospital().getUserSeq())
+                .hospitalName(reserve.getHospital().getName())
+                .year(reserve.getYear())
+                .month(reserve.getMonth())
+                .day(reserve.getDay())
+                .dayofweek(reserve.getDayofweek())
+                .time(reserve.getTime())
+                .content(reserve.getContent())
+                .price(reserve.getPrice())
+                .completed(reserve.isCompleted())
+                .build();
+        Hospital hospital = hospitalRepository.findByUserUserSeq(reserve.getHospital().getUserSeq()).get();
+        if(hospital.getProfileFile() != null){
+            try{
+                Path path = Paths.get(uploadPath +"/"+ hospital.getProfileFile().getName());
+                String hospitalProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                String hospitalProfileType = hospital.getProfileFile().getType();
+                responseDto.setHospitalProfileBase64(hospitalProfileBase64);
+                responseDto.setHospitalProfileType(hospitalProfileType);
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        if(reserve.getAfterImg() != null){
+            try{
+                Path path = Paths.get(uploadPath +"/"+ reserve.getAfterImg().getName());
+                String afterImgBase64 = EncodeFile.encodeFileToBase64(path);
+                String afterImgType = reserve.getAfterImg().getType();
+                responseDto.setAfterImgBase64(afterImgBase64);
+                responseDto.setAfterImgType(afterImgType);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        if (reserve.getBeforeImg() != null) {
+            try {
+                Path path = Paths.get(uploadPath + "/" + reserve.getBeforeImg().getName());
+                String beforeImgBase64 = EncodeFile.encodeFileToBase64(path);
+                String beforeImgType = reserve.getBeforeImg().getType();
+                responseDto.setBeforeImgBase64(beforeImgBase64);
+                responseDto.setBeforeImgType(beforeImgType);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        return responseDto;
     }
     // ===================== 상담한 내역 상세 조회 =====================
 }

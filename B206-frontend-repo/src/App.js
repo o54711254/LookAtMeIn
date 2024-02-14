@@ -49,6 +49,7 @@ import RequestRegist from "./components/RequestBoard/RequestRegist";
 // openvidu
 import WaitingRoom from "./pages/Openvidu.js";
 import HospitalReservation from "./components/Modal/HospitalReservation.js";
+import ReservationDetail from "./components/Customer/MyPage/ReservationDetail";
 
 function App() {
   return (

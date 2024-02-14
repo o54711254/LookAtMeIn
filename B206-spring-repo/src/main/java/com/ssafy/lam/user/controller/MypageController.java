@@ -15,7 +15,6 @@ import com.ssafy.lam.requestboard.domain.RequestboardRepository;
 import com.ssafy.lam.requestboard.domain.Response;
 import com.ssafy.lam.requestboard.domain.ResponseRepository;
 import com.ssafy.lam.requestboard.dto.NotificationDto;
-import com.ssafy.lam.requestboard.dto.RequestResponDto;
 import com.ssafy.lam.requestboard.dto.ResponseDto;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
 import com.ssafy.lam.reserve.domain.Reserve;
@@ -126,7 +125,7 @@ public class MypageController {
         return new ResponseEntity<>(reserveList, HttpStatus.OK);
     }
 
-    @GetMapping("/suggest/{userSeq}")
+    @GetMapping("/request/{userSeq}")
     @Operation(summary = "제안을 수락한 병원 목록")
     public ResponseEntity<?> getResponse(@PathVariable long userSeq) {
         List<ResponseDto> responseDtos = requestBoardService.findAllresponse(userSeq);
@@ -138,12 +137,5 @@ public class MypageController {
     public ResponseEntity<List<NotificationDto>> getNotificationsByUser(@PathVariable Long userSeq) {
         List<NotificationDto> notifications = requestBoardService.findAllNotificationsByUser(userSeq);
         return ResponseEntity.ok(notifications);
-    }
-
-    @GetMapping("/request/{userSeq}")
-    @Operation(summary = "고객이 작성한 요청게시판 조회")
-    public ResponseEntity<?> getRequestboard(@PathVariable long userSeq){
-       List<RequestResponDto> requestResponDtos = requestBoardService.findByUserUserSeqAndIsDeletedFalse(userSeq);
-        return new ResponseEntity<>(requestResponDtos, HttpStatus.OK);
     }
 }

@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import axiosApi from "../../../api/axiosApi"; // axiosApi 모듈을 불러옵니다.
 import { useSelector } from "react-redux"; // useSelector를 불러옵니다.
 import Questionnaire from "../../Modal/Questionnaire";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import ReservationDetail from "./ReservationDetail";
 // Axios 연결 확인 완료
 
 function ReservationList() {
   // Redux store에서 userId를 가져옵니다.
   const userSeq = useSelector((state) => state.user.userSeq);
-
   const [reservations, setReservations] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosApi
@@ -22,12 +24,16 @@ function ReservationList() {
       });
   }, []);
 
+  const goDetailPage = (reserveSeq) => {
+    navigate(`/mypage/reserve/detail/${reserveSeq}`);
+  };
+
   return (
     <div>
       <h2>Reservation List</h2>
-      <ul>
-        {reservations.map((reservation, index) => (
-          <li key={index}>
+      <div>
+        {reservations.map((reservation) => (
+          <div onClick={() => goDetailPage(reservation.reserveSeq)}>
             {/* <p>Customer Name: {reservation.customerName}</p> */}
             <p>Hospital Name: {reservation.hospitalName}</p>
 
@@ -48,9 +54,14 @@ function ReservationList() {
                   } PM`}
             </p>
             <Questionnaire />
-          </li>
+            <button>이동</button>
+          </div>
         ))}
-      </ul>
+      </div>
+
+      <Routes>
+        <Route path="detail/:reserveSeq" element={<ReservationDetail />} />
+      </Routes>
     </div>
   );
 }

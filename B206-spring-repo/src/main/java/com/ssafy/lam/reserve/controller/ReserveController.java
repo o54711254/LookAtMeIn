@@ -2,7 +2,9 @@ package com.ssafy.lam.reserve.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
+import com.ssafy.lam.questionnaire.dto.QuestionnaireResponseDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveRequestDto;
@@ -50,6 +52,15 @@ public class ReserveController {
     public ResponseEntity<ReserveResponseDto> getReserveDetail(@PathVariable Long reserveSeq) {
         Reserve reserve = reserveService.getDetailReserveNotCompleted(reserveSeq);
 
+        Questionnaire questionnaire = reserve.getQuestionnaire();
+        QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
+                .reserveSeq(questionnaire.getReserve().getSeq())
+                .questionnaireSeq(questionnaire.getSeq())
+                .blood(questionnaire.getBlood())
+                .title(questionnaire.getTitle())
+                .remark(questionnaire.getRemark())
+                .build();
+
         ReserveResponseDto responseDto = ReserveResponseDto.builder()
                 .reserveSeq(reserve.getSeq())
                 .customerUserSeq(reserve.getCustomer().getUserSeq())
@@ -61,7 +72,7 @@ public class ReserveController {
                 .day(reserve.getDay())
                 .dayofweek(reserve.getDayofweek())
                 .time(reserve.getTime())
-                .questionnaired(reserve.getQuestionnaire() != null) // 문진표가 있는지 없는지
+                .questionnaireResponseDto(questionnaireResponseDto)
                 .build();
 
         return ResponseEntity.ok(responseDto);
@@ -101,10 +112,24 @@ public class ReserveController {
         }
     }
 
-//    @GetMapping("/user/{userSeq}/completed/list")
-//    @Operation(summary = "상담한 내역 전체 조회")
-//    public ResponseEntity<List<ReserveResponseDto>> getAllReservesByUserCompleted(@PathVariable Long userSeq) {
-//
-//    }
+    @GetMapping("/user/{userSeq}/completed/list")
+    @Operation(summary = "상담한 내역 전체 조회")
+    public ResponseEntity<List<ReserveResponseDto>> getAllReservesByUserCompleted(@PathVariable Long userSeq) {
+        return ResponseEntity.ok(reserveService.getAllByUserSeqCompleted(userSeq));
+    }
+
+    @GetMapping("/detail/{reserveSeq}/completed")
+    @Operation(summary = "상담한 내역 상세 조회")
+    public ResponseEntity<ReserveResponseDto> getReserveDetailCompleted(@PathVariable Long reserveSeq) {
+        return ResponseEntity.ok(reserveService.getDetailReseveCompleted(reserveSeq));
+    }
+
+    @PutMapping("/detail/{reserveSeq}/completed/delete")
+    @Operation(summary = "상담한 내역 삭제")
+    public ResponseEntity<Void> deleteReserveCompleted(@PathVariable Long reserveSeq) {
+        reserveService.deleteReserve(reserveSeq);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }

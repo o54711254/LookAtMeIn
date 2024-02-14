@@ -69,7 +69,7 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .build();
         log.info("유저 정보: " + user);
 
-
+        
 //        Hospital hospital = Hospital.builder().hospitalSeq(reviewBoardRegister.getHospital_seq()).build();
 //        Doctor doctor = Doctor.builder().docInfoSeq(reviewBoardRegister.getDoctor_seq()).build();
 //        Long hospitalSeq = hospitalRepository.findHospitalSeqByName(reviewBoardRegister.getReviewBoard_hospital());
@@ -92,26 +92,25 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
                 .hospital(reviewBoardRegister.getReviewBoard_hospital())
                 .doctor(reviewBoardRegister.getReviewBoard_doctor())
                 .build();
-
         log.info("후기 정보: " + reviewBoard);
         UploadFile uploadFile = null;
         if (file != null)
             uploadFile = uploadFileService.store(file);
         reviewBoard.setUploadFile(uploadFile);
 
-        List<String> hashtags = reviewBoardRegister.getHashtags(); // DTO에 해시태그 리스트 필드가 추가되었다고 가정
-        if (hashtags != null && !hashtags.isEmpty()) {
-            for (String tagName : hashtags) {
+        if(reviewBoardRegister.getHashtags()!=null) {
+            reviewBoardRegister.getHashtags().forEach(tagName -> {
                 Hashtag hashtag = hashtagRepository.findByTagName(tagName)
-                        .orElseGet(() -> hashtagRepository.save(new Hashtag(tagName)));
+                        .orElseGet(() -> hashtagRepository.save(Hashtag.builder().tagName(tagName).build()));
                 ReviewHashtag reviewHashtag = ReviewHashtag.builder()
                         .reviewBoard(reviewBoard)
                         .hashtag(hashtag)
-                        .regDate(LocalDate.now()) // 등록 날짜 설정
+                        .regDate(LocalDate.now()) // LocalDate.now() 또는 다른 날짜 로직
                         .build();
-                reviewBoard.addReviewHashtag(reviewHashtag); // ReviewBoard 엔터티에 ReviewHashtag 연결
-            }
+                reviewBoard.addReviewHashtag(reviewHashtag);
+            });
         }
+
 
         return reviewBoardRepository.save(reviewBoard);
     }

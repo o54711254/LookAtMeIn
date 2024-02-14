@@ -1,5 +1,6 @@
 package com.ssafy.lam.reserve.dto;
 
+import com.ssafy.lam.questionnaire.dto.QuestionnaireResponseDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,17 +25,25 @@ public class ReserveResponseDto {
     private String content;
     private int price;
 
-    private boolean questionnaired;
-    private Long questionnaireSeq;
 
     private String hospitalProfileBase64;
     private String hospitalProfileType;
 
     private boolean completed;
 
+
+    private String afterImgBase64;
+    private String afterImgType;
+
+    private String beforeImgBase64;
+    private String beforeImgType;
+
+    private QuestionnaireResponseDto questionnaireResponseDto;
+
+
     @Builder
 
-    public ReserveResponseDto(Long customerUserSeq, Long hospitalUserSeq, Long reserveSeq, String customerName, String hospitalName, int year, int month, int day, String dayofweek, int time, String content, int price, boolean questionnaired, Long questionnaireSeq, String hospitalProfileBase64, String hospitalProfileType, boolean completed) {
+    public ReserveResponseDto(Long customerUserSeq, Long hospitalUserSeq, Long reserveSeq, String customerName, String hospitalName, int year, int month, int day, String dayofweek, int time, String content, int price, String hospitalProfileBase64, String hospitalProfileType, boolean completed, String afterImgBase64, String afterImgType, String beforeImgBase64, String beforeImgType, QuestionnaireResponseDto questionnaireResponseDto) {
         this.customerUserSeq = customerUserSeq;
         this.hospitalUserSeq = hospitalUserSeq;
         this.reserveSeq = reserveSeq;
@@ -47,10 +56,13 @@ public class ReserveResponseDto {
         this.time = time;
         this.content = content;
         this.price = price;
-        this.questionnaired = questionnaired;
-        this.questionnaireSeq = questionnaireSeq;
         this.hospitalProfileBase64 = hospitalProfileBase64;
         this.hospitalProfileType = hospitalProfileType;
         this.completed = completed;
+        this.afterImgBase64 = afterImgBase64;
+        this.afterImgType = afterImgType;
+        this.beforeImgBase64 = beforeImgBase64;
+        this.beforeImgType = beforeImgType;
+        this.questionnaireResponseDto = questionnaireResponseDto;
     }
 }
