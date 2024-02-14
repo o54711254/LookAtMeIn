@@ -83,6 +83,12 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public HospitalDto getHospital(long userSeq) {
         Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
+        Long hospitalSeq = hospital.getHospitalSeq();
+        List<HospitalCategory> hospitalCategoryList  = hospitalCategoryRepository.findAllByHospitalHospitalSeq(hospitalSeq);
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        for(HospitalCategory hc : hospitalCategoryList) {
+            categoryDtoList.add(new CategoryDto(hc.getPart()));
+        }
         HospitalDto dto = HospitalDto.builder()
                 .hospitalInfo_seq(hospital.getHospitalSeq())
                 .hospitalInfo_id(hospital.getUser().getUserId())
@@ -96,6 +102,7 @@ public class HospitalServiceImpl implements HospitalService {
                 .hospitalInfo_close(hospital.getCloseTime())
                 .hospitalInfo_url(hospital.getUrl())
                 .hospitalInfo_rejected(hospital.isRejected())
+                .hospitalInfo_category(categoryDtoList)
                 .build();
 
         if(hospital.getProfileFile() != null){
