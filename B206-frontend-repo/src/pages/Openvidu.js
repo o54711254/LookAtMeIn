@@ -9,6 +9,7 @@ function OpenViduRoom() {
   const role = useSelector((state)=> state.user.role);
   const hosSeq = 1;
   const userSeq = 2;
+  const reserveSeq = 1;
   console.log(hosSeq);
   return (
     <div>
@@ -16,6 +17,7 @@ function OpenViduRoom() {
       role={role}
       hosSeq={hosSeq}
       userSeq={userSeq}
+      reserveSeq={reserveSeq}
       />
     </div>
   );

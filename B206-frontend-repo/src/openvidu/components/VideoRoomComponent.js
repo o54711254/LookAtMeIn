@@ -13,7 +13,6 @@ import { useSelector } from "react-redux"
 import OpenViduLayout from '../layout/openvidu-layout';
 import UserModel from '../models/user-model';
 import ToolbarComponent from './toolbar/ToolbarComponent';
-import Canvas from  "../../components/Canvas/canvas"
 
 var localUser = new UserModel();
 const APPLICATION_SERVER_URL = 'http://localhost:80/';
@@ -37,7 +36,6 @@ class VideoRoomComponent extends Component {
         subscribers: [],
         entered: false,
         currentVideoDevice: undefined,
-        showCanvas: false,
       };
   
       this.joinSession = this.joinSession.bind(this);
@@ -56,8 +54,6 @@ class VideoRoomComponent extends Component {
       this.checkNotification = this.checkNotification.bind(this);
       // this.checkSize = this.checkSize.bind(this);
       this.enteredChanged = this.enteredChanged.bind(this);
-      this.toggleCanvas = this.toggleCanvas.bind(this);
-
     }
     componentDidMount() {
       const openViduLayoutOptions = {
@@ -212,9 +208,6 @@ class VideoRoomComponent extends Component {
           });
         }
       );
-    }
-    toggleCanvas() {
-        this.setState(prevState => ({ showCanvas: !prevState.showCanvas }));
     }
   
     updateSubscribers() {
@@ -572,9 +565,6 @@ class VideoRoomComponent extends Component {
                   <div>
                     <hr className={styles.hr} />
                     <div className={styles.divnext}>
-                    {
-    this.props.showCanvas && <Canvas />
-}
                       {localUser !== undefined &&
                         localUser.getStreamManager() !== undefined && (
                           <div className={styles.me}>
@@ -673,8 +663,6 @@ class VideoRoomComponent extends Component {
                   switchCamera={this.switchCamera}
                   leaveSession={this.leaveSession}
                   toggleChat={this.toggleChat}
-                  toggleCanvas={this.toggleCanvas} // Canvas 토글 함수
-                  showCanvas={this.state.showCanvas} // Canvas 상태
                 />
               </div>
             </div>

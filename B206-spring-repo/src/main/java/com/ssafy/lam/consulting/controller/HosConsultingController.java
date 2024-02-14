@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@RequestMapping("/api")
+@RequestMapping("/openvidu/api")
 @RequiredArgsConstructor
 public class HosConsultingController {
 
