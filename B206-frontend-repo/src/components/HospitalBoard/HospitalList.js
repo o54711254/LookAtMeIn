@@ -18,9 +18,8 @@ const HospitalList = () => {
     axiosApi
       .get(`/api/hospital-info/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         setHospitalInfo(response.data);
-        
       })
       .catch((error) => {
         console.error("병원 정보 리스트 조회 에러 : ", error);
@@ -102,7 +101,13 @@ const HospitalList = () => {
             </div>
             <div className={styles.intro}>
               <div>{hospital.hospitalInfo_introduce}</div>
-              <div className={styles.hashtagButton}>해시태그</div>
+              <div className={styles.b}>
+                {hospital.hospitalInfo_category.map((category, index) => (
+                  <button key={index} className={styles.hashtagButton}>
+                    {category.part}
+                  </button>
+                ))}
+              </div>
             </div>
           </li>
         ))}

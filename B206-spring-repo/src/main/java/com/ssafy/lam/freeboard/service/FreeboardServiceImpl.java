@@ -63,7 +63,7 @@ public class FreeboardServiceImpl implements FreeboardService {
 
         Freeboard savedFreeboard =freeboardRepository.save(freeboard);
 
-        freeboardHashtagService.saveHashtag(savedFreeboard,freeboardRequestDto.getTagNames());
+//        freeboardHashtagService.saveHashtag(savedFreeboard,freeboardRequestDto.getTagNames());
 
         return savedFreeboard;
     }

@@ -58,6 +58,7 @@ public class ReviewBoardController {
     public ResponseEntity<List<ReviewListDisplay>> getAllReview() {
         List<ReviewBoard> reviews = reviewBoardService.getAllReviews();
         List<ReviewListDisplay> reviewDisplay = new ArrayList<>();
+        log.info("리뷰 목록: {}", reviews);
         for(ReviewBoard r : reviews) {
             ReviewListDisplay reviewListDisplay = ReviewListDisplay.builder()
                     .reviewBoard_seq(r.getSeq())

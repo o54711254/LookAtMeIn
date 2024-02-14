@@ -113,3 +113,6 @@ li {
   background-color: #ffbe98; /* 마우스 오버 시 배경색 변경 */
   color: #efe8de;
 }
+.b {
+  display: flex;
+}
