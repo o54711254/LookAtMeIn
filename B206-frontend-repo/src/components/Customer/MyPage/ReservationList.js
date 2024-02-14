@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axiosApi from "../../../api/axiosApi"; // axiosApi 모듈을 불러옵니다.
-import { useSelector } from "react-redux"; // useSelector를 불러옵니다.
+import axiosApi from "../../../api/axiosApi";
+import { useSelector } from "react-redux";
 import Questionnaire from "../../Modal/Questionnaire";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ReservationDetail from "./ReservationDetail";
 import styles from "./ReservationList.module.css";
-// Axios 연결 확인 완료
 
 function ReservationList() {
-  // Redux store에서 userId를 가져옵니다.
   const userSeq = useSelector((state) => state.user.userSeq);
   const [reservations, setReservations] = useState([]);
   const navigate = useNavigate();
@@ -21,23 +19,25 @@ function ReservationList() {
         setReservations(response.data);
       })
       .catch((error) => {
-        console.log("고객 마이페이지 상담할 예약 내역 조회 에러 : ", error);
+        console.error("고객 마이페이지 상담할 예약 내역 조회 에러 : ", error);
       });
-  }, []);
+  }, [userSeq]); // userSeq를 의존성 배열에 추가했습니다.
 
   const goDetailPage = (reserveSeq) => {
     navigate(`/mypage/reserve/detail/${reserveSeq}`);
   };
-  
+
   return (
     <div className={styles.reserveContainer}>
       {reservations.map((reservation) => (
         <div
-          onClick={() => goDetailPage(reservation.reserveSeq)}
+          key={reservation.reserveSeq} // 고유 key 값을 추가했습니다.
           className={styles.reserveItem}
         >
-          {/* <p>Customer Name: {reservation.customerName}</p> */}
-          <div className={styles.head}>
+          <div
+            className={styles.head}
+            onClick={() => goDetailPage(reservation.reserveSeq)}
+          >
             <div className={styles.hospitalName}>
               {reservation.hospitalName}
             </div>
@@ -52,7 +52,6 @@ function ReservationList() {
               </div>
               <div>{reservation.dayofweek}</div>
               <div>
-                {" "}
                 {reservation.time < 12
                   ? `${reservation.time} AM`
                   : `${
@@ -62,17 +61,11 @@ function ReservationList() {
                     } PM`}
               </div>
             </div>
-            <div className={styles.button}>
-              <Questionnaire />
-            </div>
           </div>
+          <Questionnaire />
         </div>
       ))}
-
-      <Routes>
-        <Route path="detail/:reserveSeq" element={<ReservationDetail />} />
-      </Routes>
-    </div>
+    </div> // 이전에 누락된 닫는 괄호를 추가했습니다.
   );
 }
 

@@ -13,14 +13,15 @@ import axiosApi from "../../api/axiosApi"; // AxiosApi 임포트
 import styles from "./Questionnaire.module.css";
 
 export default function FormDialog(props) {
+  // console.log(props.reserveSeq)
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState(null);
   const [questionnaire, setQuestionnaire] = React.useState({
-    reserveSeq:props.reserveSeq,
     questionnaire_remark: "",
     questionnaire_blood: "",
     questionnaire_content: "",
   });
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,11 +33,10 @@ export default function FormDialog(props) {
 
   const handleRegist = async () => {
     const formData = new FormData();
-    // formData.append("customer_seq", 1);
-    // formData.append("hospital_seq", 2);
 
+    questionnaire.reserveSeq = props.reserveSeq;
     // const
-
+    console.log("questionnaire: ", questionnaire);
     const questionnaireData = {};
 
     // 기존 questionnaire 데이터를 FormData에 추가
@@ -45,6 +45,7 @@ export default function FormDialog(props) {
       questionnaireData[key] = questionnaire[key];
     });
 
+    console.log("questionnaireData: ", questionnaireData);
     formData.append("questionnaireData", JSON.stringify(questionnaireData));
 
     if (image) {
