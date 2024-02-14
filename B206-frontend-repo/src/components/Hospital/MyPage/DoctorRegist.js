@@ -1,4 +1,3 @@
-// ReviewBoardForm.js
 import React, { useState } from "react";
 import axiosApi from "../../../api/axiosApi";
 import { useSelector } from "react-redux";
@@ -13,72 +12,64 @@ import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
 function DoctorRegist() {
-  const [open, setOpen] = useState(false); // 모달의 열림/닫힘 상태를 관리하는 state입니다. 처음에는 false로 모달이 닫혀있는 상태입니다.
-  const [image, setImage] = useState(null); // 사용자가 업로드한 이미지 파일을 저장할 state입니다. 초기값은 null입니다.
+  const [open, setOpen] = useState(false);
+  const [image, setImage] = useState(null);
   const [doctor, setDoctor] = useState({
     doc_info_name: "",
     doc_info_category: [],
-    doc_info_career: {
-      career_start: "",
-      career_end: "",
-      career_content: "",
-    },
+    doc_info_career: [
+      {
+        career_start: "",
+        career_end: "",
+        career_content: "",
+      },
+    ],
   });
 
   const hospital_seq = useSelector((state) => state.hospital.hospitalSeq);
   const [tempCategory, setTempCategory] = useState("");
+
   const handleClickOpen = () => {
-    // 모달을 열기 위한 함수
     setOpen(true);
   };
 
   const handleClose = () => {
-    // 모달을 닫기 위한 함수
     setOpen(false);
   };
 
-  // 이미지 파일을 선택했을 때 실행되는 함수
   const handleImageChange = (event) => {
     if (event.target.files && event.target.files[0]) {
-      setImage(event.target.files[0]); // 선택된 파일을 image state에 저장
+      setImage(event.target.files[0]);
     }
   };
 
   const handleAddCategory = () => {
     setDoctor((prev) => ({
       ...prev,
-      doc_info_category: [...prev.doc_info_category, tempCategory],
+      doc_info_category: [...prev.doc_info_category, { part: tempCategory }],
     }));
     setTempCategory("");
   };
 
-  //등록 버튼을 클릭했을 때 실행되는 함수
   const handleRegist = async () => {
     const formData = new FormData();
 
     if (image) {
-      formData.append("uploadFile", image); //이미지파일 있으면 FormData에 추가
+      formData.append("doctorProfile", image);
     }
-    formData.append("doc_info_name", doctor.doc_info_name);
 
-    doctor.doc_info_category.forEach((category, index) => {
-      formData.append(
-        `doc_info_category[${index}]`,
-        JSON.stringify({ part: category })
-      );
+    // Adjusting the structure of doctorData to match the backend expectation
+    const doctorData = JSON.stringify({
+      doc_info_name: doctor.doc_info_name,
+      doc_info_category: doctor.doc_info_category,
+      doc_info_career: doctor.doc_info_career,
     });
-    formData.append("doc_info_career", JSON.stringify(doctor.doc_info_career));
-    // Object.keys(doctor).forEach((key) => {
-    //   formData.append(key, doctor[key]);
-    // });
 
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    formData.append("doctorData", doctorData);
 
     try {
       const response = await axiosApi.post(
-        `api/hospital/${hospital_seq}/doctors/regist`,
+        `/api/hospital/${hospital_seq}/doctors/regist`,
         formData,
         {
           headers: {
@@ -87,24 +78,25 @@ function DoctorRegist() {
         }
       );
       alert("의사가 성공적으로 등록되었습니다");
-      console.log("의사 등록 성공 : ", response.data);
-      setOpen(false); //다이얼로그 닫기
+      setOpen(false); // Close the dialog
 
-      //폼 상태 초기화
+      // Reset form state
       setDoctor({
         doc_info_name: "",
         doc_info_category: [],
-        doc_info_career: {
-          career_start: "",
-          career_end: "",
-          career_content: "",
-        },
+        doc_info_career: [
+          {
+            career_start: "",
+            career_end: "",
+            career_content: "",
+          },
+        ],
       });
       setImage(null);
       window.location.reload();
     } catch (error) {
-      console.log("의사 등록 에러남 : ", error);
       alert("의사 등록 실패");
+      console.error("Registration error: ", error);
     }
   };
 
@@ -146,7 +138,7 @@ function DoctorRegist() {
             {doctor.doc_info_category.map((category, index) => (
               <Chip
                 key={index}
-                label={category}
+                label={category.part}
                 onDelete={() => {
                   setDoctor((prev) => ({
                     ...prev,
@@ -158,7 +150,7 @@ function DoctorRegist() {
               />
             ))}
           </Stack>
-          {/* 경력 정보 입력 필드 */}
+          {/* Dynamic fields for career information could be added here */}
           <TextField
             margin="dense"
             id="career_start"
@@ -166,14 +158,16 @@ function DoctorRegist() {
             type="text"
             fullWidth
             variant="outlined"
-            value={doctor.doc_info_career.career_start}
+            value={doctor.doc_info_career[0].career_start}
             onChange={(e) =>
               setDoctor({
                 ...doctor,
-                doc_info_career: {
-                  ...doctor.doc_info_career,
-                  career_start: e.target.value,
-                },
+                doc_info_career: [
+                  {
+                    ...doctor.doc_info_career[0],
+                    career_start: e.target.value,
+                  },
+                ],
               })
             }
           />
@@ -184,14 +178,13 @@ function DoctorRegist() {
             type="text"
             fullWidth
             variant="outlined"
-            value={doctor.doc_info_career.career_end}
+            value={doctor.doc_info_career[0].career_end}
             onChange={(e) =>
               setDoctor({
                 ...doctor,
-                doc_info_career: {
-                  ...doctor.doc_info_career,
-                  career_end: e.target.value,
-                },
+                doc_info_career: [
+                  { ...doctor.doc_info_career[0], career_end: e.target.value },
+                ],
               })
             }
           />
@@ -204,18 +197,19 @@ function DoctorRegist() {
             multiline
             rows={4}
             variant="outlined"
-            value={doctor.doc_info_career.career_content}
+            value={doctor.doc_info_career[0].career_content}
             onChange={(e) =>
               setDoctor({
                 ...doctor,
-                doc_info_career: {
-                  ...doctor.doc_info_career,
-                  career_content: e.target.value,
-                },
+                doc_info_career: [
+                  {
+                    ...doctor.doc_info_career[0],
+                    career_content: e.target.value,
+                  },
+                ],
               })
             }
           />
-
           <IconButton
             color="primary"
             aria-label="upload picture"
@@ -238,7 +232,6 @@ function DoctorRegist() {
           )}
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleClose}>취소</Button> */}
           <Button onClick={handleRegist}>등록하기</Button>
         </DialogActions>
       </Dialog>
