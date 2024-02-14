@@ -65,30 +65,6 @@ public class ReserveController {
     public ResponseEntity<ReserveResponseDto> getReserveDetail(@PathVariable Long reserveSeq) {
         Reserve reserve = reserveService.getDetailReserveNotCompleted(reserveSeq);
         log.info("reserve : " + reserve.getSeq());
-        Questionnaire questionnaire = reserve.getQuestionnaire();
-        log.info("questionnaire : " + questionnaire.getSeq());
-
-        QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
-                .reserveSeq(questionnaire.getReserve().getSeq())
-                .questionnaireSeq(questionnaire.getSeq())
-                .blood(questionnaire.getBlood())
-                .title(questionnaire.getTitle())
-                .remark(questionnaire.getRemark())
-                .build();
-
-        if(questionnaire.getUploadFile() != null){
-            try{
-                Path path = Paths.get(uploadPath +"/"+ questionnaire.getUploadFile().getName());
-                String encodeFile = EncodeFile.encodeFileToBase64(path);
-                String type = questionnaire.getUploadFile().getType();
-                questionnaireResponseDto.setBase64("data:"+type+";base64,"+encodeFile);
-            }catch (Exception e){
-                log.error("문진서 이미지를 찾을 수 없습니다.");
-            }
-        }
-
-        log.info("questionnaireResponseDto : " + questionnaireResponseDto);
-
         ReserveResponseDto responseDto = ReserveResponseDto.builder()
                 .reserveSeq(reserve.getSeq())
                 .customerUserSeq(reserve.getCustomer().getUserSeq())
@@ -100,8 +76,38 @@ public class ReserveController {
                 .day(reserve.getDay())
                 .dayofweek(reserve.getDayofweek())
                 .time(reserve.getTime())
-                .questionnaireResponseDto(questionnaireResponseDto)
                 .build();
+
+
+        Questionnaire questionnaire = reserve.getQuestionnaire();
+        if(questionnaire != null){
+            log.info("questionnaire : " + questionnaire.getSeq());
+
+            QuestionnaireResponseDto questionnaireResponseDto = QuestionnaireResponseDto.builder()
+                    .reserveSeq(questionnaire.getReserve().getSeq())
+                    .questionnaireSeq(questionnaire.getSeq())
+                    .blood(questionnaire.getBlood())
+                    .title(questionnaire.getTitle())
+                    .remark(questionnaire.getRemark())
+                    .build();
+
+            if(questionnaire.getUploadFile() != null){
+                try{
+                    Path path = Paths.get(uploadPath +"/"+ questionnaire.getUploadFile().getName());
+                    String encodeFile = EncodeFile.encodeFileToBase64(path);
+                    String type = questionnaire.getUploadFile().getType();
+                    questionnaireResponseDto.setBase64("data:"+type+";base64,"+encodeFile);
+                }catch (Exception e){
+                    log.error("문진서 이미지를 찾을 수 없습니다.");
+                }
+            }
+
+            responseDto.setQuestionnaireResponseDto(questionnaireResponseDto);
+            log.info("questionnaireResponseDto : " + questionnaireResponseDto);
+        }
+
+
+
 
         return ResponseEntity.ok(responseDto);
     }
