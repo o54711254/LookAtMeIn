@@ -5,6 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import axiosApi from "../../api/axiosApi";
 
 function ReviewReportModal({ reviewBoard_seq }) {
   const [open, setOpen] = useState(false);
@@ -18,12 +19,21 @@ function ReviewReportModal({ reviewBoard_seq }) {
   };
 
   const reviewReport = () => {
-    // 여기에 신고 처리 로직을 추가하세요. 예시로 console.log를 사용합니다.
-    console.log('리뷰 신고 완료:', reviewBoard_seq);
-    // 신고 완료 후 모달 닫기
-    setOpen(false);
+    // 올바르게 axios 호출 시작
+    axiosApi.put(`/api/reviewBoard/report/${reviewBoard_seq}`)
+      .then((response) => {
+        // 성공적으로 리뷰 신고가 완료되었을 때 실행될 코드
+        console.log('리뷰 신고 완료:', reviewBoard_seq);
+  
+        // 신고 완료 후 모달 닫기 또는 다른 UI 업데이트
+        setOpen(false);
+      })
+      .catch((error) => {
+        // 에러 처리
+        console.error('리뷰 신고 중 에러 발생:', error);
+      });
   };
-
+  
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen}>

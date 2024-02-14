@@ -53,7 +53,7 @@ function ReservationList() {
                       : reservation.time - 12
                   } PM`}
             </p>
-            <Questionnaire />
+            <Questionnaire/>
             <button>이동</button>
           </div>
         ))}
