@@ -4,23 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.dto.CustomerDto;
 import com.ssafy.lam.customer.service.CustomerService;
-import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.freeboard.service.FreeboardService;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.hospital.service.HospitalService;
-import com.ssafy.lam.requestboard.domain.Requestboard;
-import com.ssafy.lam.requestboard.domain.RequestboardRepository;
-import com.ssafy.lam.requestboard.domain.Response;
-import com.ssafy.lam.requestboard.domain.ResponseRepository;
 import com.ssafy.lam.requestboard.dto.NotificationDto;
 import com.ssafy.lam.requestboard.dto.ResponseDto;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
-import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.service.ReserveService;
-import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
 import com.ssafy.lam.user.service.UserService;
@@ -34,7 +27,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController

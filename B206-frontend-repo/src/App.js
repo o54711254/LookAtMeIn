@@ -44,7 +44,7 @@ import HospitalDetail from "./pages/HospitalDetail.js";
 import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
 import Canvas from "./components/Canvas/canvas.js";
-import RequestBoardRegist from "./components/RequestBoard/RequestBoardRegist";
+import RequestRegist from "./components/RequestBoard/RequestRegist";
 
 // openvidu
 import WaitingRoom from "./pages/Openvidu.js";
@@ -119,14 +119,14 @@ function App() {
                   />
                   <Route
                     path="/requestBoard/regist"
-                    element={<RequestBoardRegist />}
+                    element={<RequestRegist />}
                   />
 
                   {/*병원 게시판*/}
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
                   <Route
                     path="/hospital-info/detail/:hospitalInfo_seq"
-                    element={<HospitalInfo />}
+                    element={<HospitalDetail />}
                   />
 
                   {/*이상향 월드컵*/}

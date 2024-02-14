@@ -83,6 +83,12 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public HospitalDto getHospital(long userSeq) {
         Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq).get();
+        Long hospitalSeq = hospital.getHospitalSeq();
+        List<HospitalCategory> hospitalCategoryList  = hospitalCategoryRepository.findAllByHospitalHospitalSeq(hospitalSeq);
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
+        for(HospitalCategory hc : hospitalCategoryList) {
+            categoryDtoList.add(new CategoryDto(hc.getPart()));
+        }
         HospitalDto dto = HospitalDto.builder()
                 .hospitalInfo_seq(hospital.getHospitalSeq())
                 .hospitalInfo_id(hospital.getUser().getUserId())
@@ -95,6 +101,8 @@ public class HospitalServiceImpl implements HospitalService {
                 .hospitalInfo_open(hospital.getOpenTime())
                 .hospitalInfo_close(hospital.getCloseTime())
                 .hospitalInfo_url(hospital.getUrl())
+                .hospitalInfo_rejected(hospital.isRejected())
+                .hospitalInfo_category(categoryDtoList)
                 .build();
 
         if(hospital.getProfileFile() != null){
@@ -131,6 +139,9 @@ public class HospitalServiceImpl implements HospitalService {
         hospital.setCloseTime(hospitalDto.getHospitalInfo_close());
         hospital.setAddress(hospitalDto.getHospitalInfo_address());
         hospital.setUrl(hospitalDto.getHospitalInfo_url());
+        if(hospital.isRejected()) {
+            hospital.setRejected(false);
+        }
         userRepository.save(user);
         return hospitalRepository.save(hospital);
     }
@@ -140,30 +151,20 @@ public class HospitalServiceImpl implements HospitalService {
         return hospitalRepository.findByIsApprovedTrue();
     }
     @Override
-    public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList, MultipartFile doctorProfile) {
-        Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
+    public Doctor createDoctor(Long hospitalSeq, DoctorDto doctorDto, MultipartFile doctorProfile) {
+        log.info("createDoctor : {}", doctorDto);
+        Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
 
-
-        Doctor doctor = Doctor.builder().docInfoSeq(doctorDto.getDoc_info_seq()).docInfoName(doctorDto.getDoc_info_name())
-                .hospital(hospital).build();
+        Doctor doctor = Doctor.builder()
+                .docInfoName(doctorDto.getDoc_info_name())
+                .docInfoCategory(doctorDto.getDoc_info_category())
+                .hospital(hospital)
+                .build();
         if(doctorProfile != null){
             UploadFile uploadFile = uploadFileService.store(doctorProfile);
             doctor.setProfile(uploadFile);
         }
-
-        doctor = doctorRepository.save(doctor);
-        for(CategoryDto c : categoryDtoList) {
-            DoctorCategory doctorCategory = DoctorCategory.builder()
-                    .part(c.getPart())
-                    .doctor(doctor)
-                    .build();
-            doctorCategoryRepository.save(doctorCategory);
-        }
-        for(CareerDto c : careerDtoList) {
-            Career career = Career.builder().careerStart(c.getCareer_start()).careerEnd(c.getCareer_end())
-                    .careerContent(c.getCareer_content()).doctor(doctor).build();
-            careerRepository.save(career);
-        }
+        return doctorRepository.save(doctor);
     }
     @Override
     public HospitalDetailDto getHospitalInfo(Long hospitalSeq) { // 고객이 병원 페이지 조회
@@ -172,6 +173,7 @@ public class HospitalServiceImpl implements HospitalService {
             Hospital hospital = hospitalOptional.get();
 
             double avgScore = hospitalRepository.findAvgByHospitalSeq(hospitalSeq).orElse(0.0);
+            int cntReviews = hospitalRepository.countByHospitalSeq(hospitalSeq);
             HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
                     .hospitalInfo_seq(hospitalSeq)
                     .hospitalInfo_name(hospital.getUser().getName())
@@ -184,7 +186,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .hospitalInfo_url(hospital.getUrl())
                     .userSeq(hospital.getUser().getUserSeq())
                     .hospitalInfo_avgScore(avgScore)
-                    .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
+                    .hospitalInfo_cntReviews(cntReviews)
                     .build();
             if(hospital.getProfileFile() != null){
                 Path path = Paths.get(uploadPath +"/" + hospital.getProfileFile().getName());
@@ -199,9 +201,8 @@ public class HospitalServiceImpl implements HospitalService {
                 }
             }
             return hospitalDetailDto;
-        } else {
-            return null;
         }
+        return null;
     }
     @Override
     public HospitalDetailDto getHospitalLikeInfo(Long hospitalSeq, Long userSeq) { // 고객이 병원 페이지 조회 + 찜
