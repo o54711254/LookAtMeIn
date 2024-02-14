@@ -4,7 +4,7 @@ import axiosApi from "../../../api/axiosApi";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-//test  
+//test  2
 function Doctor() {
   const [doctorList, setDoctorList] = useState([]);
   const hospital = useSelector((state) => state.hospital);
