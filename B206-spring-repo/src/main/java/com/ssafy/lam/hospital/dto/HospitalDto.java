@@ -19,7 +19,7 @@ public class HospitalDto {
     private String hospitalInfo_open;
     private String hospitalInfo_close;
     private String hospitalInfo_url;
-
+    private boolean hospitalInfo_rejected;
 
     private String hospitalProfileBase64;
     private String hospitalProfileType;
@@ -28,7 +28,7 @@ public class HospitalDto {
 
     @Builder
 
-    public HospitalDto(Long hospitalInfo_seq, String hospitalInfo_id, String hospitalInfo_password, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_email, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, String hospitalProfileBase64, String hospitalProfileType) {
+    public HospitalDto(Long hospitalInfo_seq, String hospitalInfo_id, String hospitalInfo_password, String hospitalInfo_name, String hospitalInfo_phoneNumber, String hospitalInfo_email, String hospitalInfo_introduce, String hospitalInfo_address, String hospitalInfo_open, String hospitalInfo_close, String hospitalInfo_url, boolean hospitalInfo_rejected, String hospitalProfileBase64, String hospitalProfileType) {
         this.hospitalInfo_seq = hospitalInfo_seq;
         this.hospitalInfo_id = hospitalInfo_id;
         this.hospitalInfo_password = hospitalInfo_password;
@@ -40,6 +40,7 @@ public class HospitalDto {
         this.hospitalInfo_open = hospitalInfo_open;
         this.hospitalInfo_close = hospitalInfo_close;
         this.hospitalInfo_url = hospitalInfo_url;
+        this.hospitalInfo_rejected = hospitalInfo_rejected;
         this.hospitalProfileBase64 = hospitalProfileBase64;
         this.hospitalProfileType = hospitalProfileType;
     }

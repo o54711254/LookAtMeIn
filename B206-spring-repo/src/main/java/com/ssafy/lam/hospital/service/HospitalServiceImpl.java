@@ -95,6 +95,7 @@ public class HospitalServiceImpl implements HospitalService {
                 .hospitalInfo_open(hospital.getOpenTime())
                 .hospitalInfo_close(hospital.getCloseTime())
                 .hospitalInfo_url(hospital.getUrl())
+                .hospitalInfo_rejected(hospital.isRejected())
                 .build();
 
         if(hospital.getProfileFile() != null){
@@ -144,8 +145,8 @@ public class HospitalServiceImpl implements HospitalService {
     }
     @Override
     public void createDoctor(Long hospitalSeq, DoctorDto doctorDto, List<CategoryDto> categoryDtoList, List<CareerDto> careerDtoList, MultipartFile doctorProfile) {
-        Hospital hospital = Hospital.builder().hospitalSeq(hospitalSeq).build();
-
+        log.info("createDoctor : {}", doctorDto);
+        Hospital hospital = hospitalRepository.findById(hospitalSeq).orElse(null);
 
         Doctor doctor = Doctor.builder().docInfoSeq(doctorDto.getDoc_info_seq()).docInfoName(doctorDto.getDoc_info_name())
                 .hospital(hospital).build();
@@ -153,8 +154,8 @@ public class HospitalServiceImpl implements HospitalService {
             UploadFile uploadFile = uploadFileService.store(doctorProfile);
             doctor.setProfile(uploadFile);
         }
-
         doctor = doctorRepository.save(doctor);
+
         for(CategoryDto c : categoryDtoList) {
             DoctorCategory doctorCategory = DoctorCategory.builder()
                     .part(c.getPart())
@@ -162,6 +163,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .build();
             doctorCategoryRepository.save(doctorCategory);
         }
+
         for(CareerDto c : careerDtoList) {
             Career career = Career.builder().careerStart(c.getCareer_start()).careerEnd(c.getCareer_end())
                     .careerContent(c.getCareer_content()).doctor(doctor).build();
