@@ -12,7 +12,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import axiosApi from "../../api/axiosApi"; // AxiosApi 임포트
 import styles from "./Questionnaire.module.css";
 
-export default function FormDialog(props) {
+export default function FormDialog({ reserveSeq }) {
   // console.log(props.reserveSeq)
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState(null);
@@ -21,7 +21,6 @@ export default function FormDialog(props) {
     questionnaire_blood: "",
     questionnaire_content: "",
   });
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,10 +33,10 @@ export default function FormDialog(props) {
   const handleRegist = async () => {
     const formData = new FormData();
 
-    questionnaire.reserveSeq = props.reserveSeq;
     // const
     console.log("questionnaire: ", questionnaire);
     const questionnaireData = {};
+    questionnaireData["reserveSeq"] = reserveSeq;
 
     // 기존 questionnaire 데이터를 FormData에 추가
     Object.keys(questionnaire).forEach((key) => {
@@ -53,6 +52,7 @@ export default function FormDialog(props) {
     }
 
     try {
+      console.log("문진표데이터", questionnaireData);
       const response = await axiosApi.post(
         "/api/questionnaire/regist",
         formData,

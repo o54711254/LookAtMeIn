@@ -62,7 +62,7 @@ function ReservationList() {
               </div>
             </div>
           </div>
-          <Questionnaire />
+          <Questionnaire reserveSeq={reservation.reserveSeq} />
         </div>
       ))}
     </div> // 이전에 누락된 닫는 괄호를 추가했습니다.
