@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
-import Typography from "@mui/material/Typography";
 import styles from "./HospitalList.module.css";
 import profile from "../../assets/gun.png";
 import { useNavigate } from "react-router-dom";
-import StarResult from "../ReviewBoard/StarRating/StarResult";
 import styled from "@emotion/styled";
+import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { FaStar, FaStarHalf, FaRegStar } from "react-icons/fa";
 import { css } from "@emotion/react";
 
@@ -18,9 +17,8 @@ const HospitalList = () => {
     axiosApi
       .get(`/api/hospital-info/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
       .then((response) => {
-        console.log(response.data)
+        console.log(response.data);
         setHospitalInfo(response.data);
-        
       })
       .catch((error) => {
         console.error("병원 정보 리스트 조회 에러 : ", error);
@@ -85,12 +83,6 @@ const HospitalList = () => {
                 <div className={styles.hosName}>
                   {hospital.hospitalInfo_name} &nbsp;
                 </div>
-                <div>
-                  {/* <StarResult score={hospital.reviewBoard_score} /> */}
-                  <StyledStar isHalf={false}>
-                    <FaStar />
-                  </StyledStar>
-                </div>
               </div>
               <div className={styles.hosAddress}>
                 {hospital.hospitalInfo_address}
@@ -103,6 +95,10 @@ const HospitalList = () => {
             <div className={styles.intro}>
               <div>{hospital.hospitalInfo_introduce}</div>
               <div className={styles.hashtagButton}>해시태그</div>
+            </div>
+            <div className={styles.star}>
+              <StarResult score={hospital.hospitalInfo_avgScore} />(
+              {hospital.hospitalInfo_avgScore})
             </div>
           </li>
         ))}

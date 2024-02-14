@@ -12,8 +12,8 @@ import com.ssafy.lam.questionnaire.domain.Questionnaire;
 import com.ssafy.lam.questionnaire.dto.QuestionnaireRequestDto;
 import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.domain.ReserveRepository;
-import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.dto.ReserveRequestDto;
+import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.user.domain.User;
 import com.ssafy.lam.user.domain.UserRepository;
 import jakarta.transaction.Transactional;
@@ -66,6 +66,8 @@ public class ReserveServiceImpl implements ReserveService {
                     .day(reserve.getDay())
                     .dayofweek(reserve.getDayofweek())
                     .time(reserve.getTime())
+                    .completed(reserve.isCompleted())
+                    .questionOk(reserve.isQuestionOk())
 
                     .build();
 
@@ -93,8 +95,10 @@ public class ReserveServiceImpl implements ReserveService {
     // 상담 예약 내역 상세조회
     @Override
     public Reserve getDetailReserveNotCompleted(Long reserveSeq) {
-        return reserveRepository.findBySeqAndCompletedFalse(reserveSeq)
+        Reserve reserve =  reserveRepository.findBySeqAndCompletedFalse(reserveSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 예약을 찾을 수 없습니다. reserveSeq=" + reserveSeq));
+        log.info("reserve: {}", reserve.getCustomer());
+        return reserve;
     }
 
     @Override
@@ -104,13 +108,13 @@ public class ReserveServiceImpl implements ReserveService {
         User customerUser = userRepository.findById(dto.getCustomerUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getCustomerUserSeq()));
 
-        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalSeq())
-                .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalSeq()));
-        log.info("customerUser : {}", customerUser.getUserId());
-        log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
+        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalUserSeq())
+                .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
 
         if (customerUser.getUserType().equals("CUSTOMER") && hospitalUser.getUser().getUserType().equals("HOSPITAL")) {
             Reserve reserve = dto.toEntity(customerUser, hospitalUser.getUser());
+        log.info("customerUser : {}", customerUser.getUserId());
+        log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
 
 
             return reserveRepository.save(reserve);
@@ -152,7 +156,7 @@ public class ReserveServiceImpl implements ReserveService {
                     .build();
 
             User hospital = User.builder()
-                    .userSeq(reserveRequestDto.getHospitalSeq())
+                    .userSeq(reserveRequestDto.getHospitalUserSeq())
                     .build();
 
             UploadFile beforeFile =  uploadFileService.store(beforeImg);

@@ -5,6 +5,7 @@
   border-radius: 10px; /* 모서리 둥글기 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
   padding: 2%;
+  box-sizing: border-box;
 }
 
 .part1 {
@@ -18,8 +19,8 @@
   border-right: thin solid #cdcdcd;
 }
 .part3 {
-  width: 25%;
-  padding: 2% 5% 3% 2%;
+  width: 20%;
+  padding: 2%;
 }
 
 .profile img {
@@ -141,7 +142,8 @@ a:hover {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 300px;
+  width: 100%;
+  justify-content: space-between;
 }
 .reviewItem:hover {
   background-color: #f8f8f8;
@@ -162,7 +164,10 @@ a:hover {
 .writer > div {
   margin-top: 10px;
 }
-
+.prices{
+  font-size: 15px;
+  font-weight: 500;
+}
 .price {
   margin-left: auto;
   margin-right: 30px;
@@ -202,4 +207,24 @@ a:hover {
 }
 .day {
   margin-bottom: 3%;
+}
+.doctorItem{
+  border: 1px solid #ddd; /* 테두리 */
+  padding: 7px; /* 내부 여백 */
+  margin-bottom: 25px;
+  list-style-type: none; /* 기본 목록 스타일 제거 */
+  background: rgba(239, 232, 222, 0.2);
+  border: 1px solid #efe8de;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.score{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
 }
