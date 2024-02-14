@@ -20,7 +20,10 @@ import ReservationDetail from "./ReservationDetail";
 function MyPage() {
   const user = useSelector((state) => state.user);
   const customer = useSelector((state) => state.customer);
-
+  useEffect(() => {
+    console.log(user);
+    console.log("customer", customer);
+  });
   return (
     <div className={styles.mypageContainer}>
       <NavLink to="info" className={styles.profile}>
@@ -100,7 +103,11 @@ function MyPage() {
           <Route path="wish" element={<WishList />} />
           <Route path="mypost/*" element={<MyPost />} />
           <Route path="consult" element={<ConsultingList />} />
-          <Route path="reserve/*" element={<ReservationList />} />
+          <Route path="reserve" element={<ReservationList />} />
+          <Route
+            path="reserve/detail/:reserveSeq"
+            element={<ReservationDetail />}
+          />
           <Route path="propose" element={<ProposeList />} />
         </Routes>
       </div>

@@ -20,7 +20,6 @@ function ReservationDetail() {
     axiosApi
       .get(`/api/reserve/detail/${reserveSeq}`)
       .then((res) => {
-        console.log(res.data);
         setReserveDetail(res.data);
         setMeetingData((prevData) => ({
           ...prevData,

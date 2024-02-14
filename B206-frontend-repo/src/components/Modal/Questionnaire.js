@@ -109,13 +109,13 @@ export default function FormDialog({ reserveSeq }) {
 
   return (
     <div className={styles.buttonContainer}>
-      <Button
+      <button
         variant="outlined"
         onClick={handleClickOpen}
         className={styles.button}
       >
-        문진표
-      </Button>
+        문진표 등록
+      </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>상담받고 싶은 부위를 작성해주세요.</DialogTitle>
         <DialogContent>
