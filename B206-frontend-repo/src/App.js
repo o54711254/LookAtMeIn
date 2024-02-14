@@ -125,7 +125,7 @@ function App() {
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
                   <Route
                     path="/hospital-info/detail/:hospitalInfo_seq"
-                    element={<HospitalInfo />}
+                    element={<HospitalDetail />}
                   />
 
                   {/*이상향 월드컵*/}

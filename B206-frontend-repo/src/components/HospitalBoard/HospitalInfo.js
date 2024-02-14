@@ -25,8 +25,8 @@ const HospitalInfo = () => {
     hospitalInfo_close: "",
     hospitalInfo_url: "",
     userSeq: "",
-    avgScore: "",
-    cntReviews: "",
+    hospitalInfo_avgScore: "",
+    hospitalInfo_cntReviews: "",
   });
 
   const [img, setImg] = useState(null);
@@ -59,12 +59,9 @@ const HospitalInfo = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    
     axiosApi
       .get(`/api/hospital-info/reviews/${hospitalInfo_seq}`)
       .then((response) => {
-        console.log(userSeq);
-        console.log(response.data);
         setReviews(response.data);
       })
       .catch((error) => {
@@ -78,10 +75,10 @@ const HospitalInfo = () => {
 
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
+    console.log("병원정보", hospitalData);
     axiosApi
       .get(`api/hospital-info/doctors/${hospitalInfo_seq}`)
       .then((response) => {
-        console.log(response.data);
         setDoctors(response.data);
       })
       .catch((error) => {
@@ -110,6 +107,7 @@ const HospitalInfo = () => {
             )}
           </div>
           <div className={styles.title}>{hospitalData.hospitalInfo_name}</div>
+          <Wish />
         </div>
         <div className={styles.address}>
           <div className={styles.tt}>주소</div>
@@ -153,12 +151,14 @@ const HospitalInfo = () => {
           </div>
         </div>
 
-        {/* <div>avgScore: {hospitalData.avgScore}</div> */}
+        <div className={styles.score}>
+          <StarResult score={hospitalData.hospitalInfo_avgScore} />(
+          {hospitalData.hospitalInfo_avgScore},
+          {hospitalData.hospitalInfo_cntReviews})
+        </div>
         <Reserve hospitalInfoSeq={hospitalInfo_seq} />
       </div>
       <div className={styles.part2}>
-        <div>리뷰 목록</div>
-        <Wish />
         {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}
@@ -179,8 +179,13 @@ const HospitalInfo = () => {
             <div className={styles.title}>
               <div>{review.reviewBoard_title}</div>
             </div>
-            <div className={styles.price}>
-              시술가 : {review.reviewBoard_price} 원
+            <div className={styles.prices}>
+              <div className={styles.price}>
+                견적가 : {review.reviewBoard_expected_price} 원
+              </div>
+              <div className={styles.price}>
+                시술가 : {review.reviewBoard_surgery_price} 원
+              </div>
             </div>
           </li>
         ))}
@@ -189,7 +194,7 @@ const HospitalInfo = () => {
         {doctors.map((doctor) => (
           <li
             key={doctor.doctorSeq}
-            className={styles.reviewItem}
+            className={styles.doctorItem}
             onClick={() => viewDoctorInfo}
           >
             <div>
