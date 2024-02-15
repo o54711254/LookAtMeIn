@@ -11,7 +11,7 @@ import profile from "../../assets/profile2.png";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { useSelector } from "react-redux";
 import Wish from "./HospitalWish.js";
-
+// axios
 const HospitalInfo = () => {
   const dispatch = useDispatch();
   const { hospitalInfo_seq } = useParams();
