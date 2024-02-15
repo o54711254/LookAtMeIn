@@ -27,12 +27,6 @@ public class QuestionnaireService {
     @Autowired
     private ReserveRepository reserveRepository;
 
-    @Autowired
-    private ReserveRepository reserveRepository;
-
-    @Autowired
-    private ReserveRepository reserveRepository;
-
 
     @Transactional
     public Questionnaire createQuestionnaire(QuestionnaireRequestDto questionRequestDto, MultipartFile file) {
