@@ -83,8 +83,21 @@ public class QuestionnaireController {
             e.printStackTrace();
             return  ResponseEntity.badRequest().body("문진서 상세보기 실패 : "+e.getMessage());
         }
+    }
 
 
+    // 수정할때는 문진표seq와 수정할 정보만 들어오면 됨
+    @PutMapping("/update/{questionnareSeq}")
+    @Operation(summary = "문진표 수정")
+    public ResponseEntity<?> updateQuestionnaire(@PathVariable Long questionnareSeq, @RequestBody QuestionnaireRequestDto questionnarieRequest){
+        log.info("문진서 수정 정보 : {}", questionnarieRequest);
+        try{
+            questionnaireService.updateQuestionnaire(questionnareSeq, questionnarieRequest);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 

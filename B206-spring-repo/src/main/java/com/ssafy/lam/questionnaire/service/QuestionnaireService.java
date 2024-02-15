@@ -65,4 +65,17 @@ public class QuestionnaireService {
 
         return questionnaire;
     }
+
+
+    public void updateQuestionnaire(Long questionnareSeq, QuestionnaireRequestDto requestDto){
+        Questionnaire q = quesionnareRepository.findById(questionnareSeq)
+                .orElseThrow(() -> new IllegalArgumentException("없는 문진서임 : " + questionnareSeq));
+
+        q.setBlood(requestDto.getQuestionnaire_blood());
+        q.setRemark(requestDto.getQuestionnaire_remark());
+        q.setContent(requestDto.getQuestionnaire_content());
+        quesionnareRepository.save(q);
+
+    }
+
 }
