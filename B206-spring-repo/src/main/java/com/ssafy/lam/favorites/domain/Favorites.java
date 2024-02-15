@@ -17,22 +17,22 @@ public class Favorites {
     @Column(name = "favorites_seq")
     private Long seq;
 
-    @OneToOne
-    @JoinColumn(name = "user_seq")
-    private User user;
+    @Column(name = "user_seq")
+    private Long userSeq;
 
-    @OneToOne
-    @JoinColumn(name = "hos_info_seq")
-    private Hospital hospital;
+    @Column(name = "hos_info_seq")
+    private Long hospitalSeq;
 
     @Column(name = "favorites_isLiked")
     private boolean isLiked;
 
+    public void setLike(boolean like) { this.isLiked = like; }
+
     @Builder
-    public Favorites(Long seq, User user, Hospital hospital, boolean isLiked) {
+    public Favorites(Long seq, Long userSeq, Long hospitalSeq, boolean isLiked) {
         this.seq = seq;
-        this.user = user;
-        this.hospital = hospital;
+        this.userSeq = userSeq;
+        this.hospitalSeq = hospitalSeq;
         this.isLiked = isLiked;
     }
 }
