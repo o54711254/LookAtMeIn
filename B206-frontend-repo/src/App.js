@@ -43,7 +43,7 @@ import HospitalDetail from "./pages/HospitalDetail.js";
 
 import Search from "./components/Search/SearchInput.js";
 import WorldcupChampion from "./components/WorldCup/WorldcupChampion.js";
-import Canvas from "./components/Canvas/Canvas.js";
+import Canvas from "./components/Canvas/canvas.js";
 import RequestRegist from "./components/RequestBoard/RequestRegist";
 
 // openvidu
