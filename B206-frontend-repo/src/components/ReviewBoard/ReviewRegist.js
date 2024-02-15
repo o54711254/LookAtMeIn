@@ -6,27 +6,30 @@ import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import TextField from "@mui/material/TextField";
+import styles from "./ReviewRegist.module.css";
 import Button from "@mui/material/Button";
 
 function ReviewRegist() {
   const navigate = useNavigate();
-  const userSeq = useSelector((store) => store.user.userSeq); // 사용자 ID 추출
-  const userName = useSelector((store) => store.user.userName); // 사용자 ID 추출
-  const [reviewImage, setReviewImage] = useState(''); // 리뷰 이미지 상태
+  const user = useSelector((state) => state.user);
+  const customer = useSelector((state) => state.customer);
+  const [reviewImage, setReviewImage] = useState(""); // 리뷰 이미지 상태
+  // const [tag, setTag] = useState(""); // 현재 입력 중인 해시태그를 관리하는 상태
+  // const [tags, setTags] = useState([]); // 추가된 해시태그 목록을 관리하는 상태
 
-  // 리뷰 데이터 상태 초기화
   const [reviewData, setReviewData] = useState({
-    user_seq: userSeq,
+    user_seq: user.userSeq,
     reviewBoard_title: "",
     reviewBoard_content: "",
-    reviewBoard_score: 0,
-    username: userName,
+    reviewBoard_score: 0.0,
+    username: customer.customerName,
     reviewBoard_doctor: "",
     reviewBoard_region: "",
     reviewBoard_surgery: "",
     reviewBoard_hospital: "",
     reviewBoard_expected_price: 0,
     reviewBoard_surgery_price: 0,
+    // hashtags: [],
   });
 
   // 입력 필드 변경 핸들러
@@ -34,6 +37,19 @@ function ReviewRegist() {
     const { name, value } = e.target;
     setReviewData({ ...reviewData, [name]: value });
   };
+
+  // 해시태그 입력 변경 핸들러
+  // const handleTagChange = (e) => {
+  //   setTag(e.target.value); // 입력 필드가 변경될 때마다 tag 상태 업데이트
+  // };
+
+  // 해시태그 추가 핸들러
+  // const addTag = () => {
+  //   if (tag && !tags.includes(tag)) {
+  //     setTags([...tags, tag]); // 현재 입력된 태그를 태그 목록에 추가
+  //     setTag(""); // 입력 필드 초기화
+  //   }
+  // };
 
   // 이미지 변경 핸들러
   const handleImageChange = (e) => {
@@ -43,51 +59,35 @@ function ReviewRegist() {
   };
 
   // 폼 제출 핸들러
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
+    const reviewBoardData = { ...reviewData };
 
-    const reviewBoardData ={}
-    
-
-    // reviewData의 키와 값을 FormData에 추가
-    Object.keys(reviewData).forEach((key) => {
-      
-      reviewBoardData[key] = reviewData[key];
-      // formData.append(key, reviewData[key]);
-    });
+    console.log("reviewBoardData", reviewBoardData);
     formData.append("reviewBoardData", JSON.stringify(reviewBoardData));
 
-
-    
-
-    // 이미지 파일 추가
-    
-    if (reviewImage) {  
+    if (reviewImage) {
       formData.append("uploadFile", reviewImage);
     }
-    
-    // for(let [key, value] of formData.entries()){
-    //   console.log(key, value);
-    // }
 
-    try{ 
-      const response = await axiosApi.post("/api/reviewBoard/regist", formData, {
-        headers:{ "Content-Type": "multipart/form-data" }       
-      })
-      console.log("리뷰 등록 성공", response.data);
-      navigate("/reviewList"); // 성공 후 리뷰 목록 페이지로 이동
-    }catch(error){
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    try {
+      await axiosApi.post("/api/reviewBoard/regist", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      navigate("/reviewBoard/list"); // 리뷰 목록 페이지로 이동
+    } catch (error) {
       console.error("리뷰 등록 실패", error);
     }
-
-    // API 호출
   };
 
   return (
     <div>
-      <h1>리뷰 등록</h1>
       <form onSubmit={handleSubmit}>
+        {/* 입력 필드들 */}
         <TextField
           label="제목"
           name="reviewBoard_title"
@@ -152,13 +152,50 @@ function ReviewRegist() {
         />
         <StarRating
           value={reviewData.reviewBoard_score}
-          onChange={(value) => setReviewData({ ...reviewData, reviewBoard_score: value })}
+          onChange={(value) =>
+            setReviewData({ ...reviewData, reviewBoard_score: value })
+          }
         />
+        {/* <TextField
+          label="해시태그"
+          value={tag}
+          onChange={handleTagChange}
+          fullWidth
+          margin="normal"
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={addTag}
+          style={{ margin: "10px" }}
+        >
+          해시태그 추가
+        </Button>
+        <div>
+          {tags.map((tag, index) => (
+            <span key={index} style={{ marginRight: "10px" }}>
+              {tag}
+            </span>
+          ))}
+        </div> */}
         <IconButton color="primary" component="label">
-          <input hidden accept="image/*" type="file" onChange={handleImageChange} />
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            onChange={handleImageChange}
+          />
           <PhotoCamera />
         </IconButton>
-        <Button type="submit" variant="contained" color="primary">등록하기</Button>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ marginTop: "20px" }}
+          className={styles.button}
+        >
+          등록하기
+        </Button>
       </form>
     </div>
   );

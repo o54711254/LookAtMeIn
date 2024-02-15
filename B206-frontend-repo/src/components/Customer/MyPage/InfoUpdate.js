@@ -1,31 +1,40 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { loginUser } from "../../../redux/user";
 import axiosApi from "../../../api/axiosApi";
-import styles from "./InfoUpdate.module.css"; // MyInfo의 CSS를 그대로 사용
-import profile from "../../../assets/man/유승호.jpg"; // 프로필 이미지 경로
-import check from "../../../assets/check.png";
+import styles from "./InfoUpdate.module.css";
+import profile from "../../../assets/man/유승호.jpg"; // 데모 이미지로 가정
+import check from "../../../assets/check.png"; // 데모 체크 이미지로 가정
+
+function base64ToBlob(base64, mimeType) {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType });
+}
 
 function InfoUpdate() {
-  const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const initialData = location.state || {};
-  const [updateData, setUpdateData] = useState(initialData);
+  const [initialData, setInitialData] = useState({});
+  const [updateData, setUpdateData] = useState({});
 
   useEffect(() => {
-    if (!initialData.customerName) {
-      // location.state가 비어있을 경우, 사용자 정보를 다시 로드
-      axiosApi
-        .get(`/api/mypage/${user.userSeq}`)
-        .then((res) => {
-          setUpdateData(res.data);
-        })
-        .catch((error) => {
-          console.error("데이터를 불러오는 중 에러 발생", error);
-        });
-    }
-  }, [user.userSeq, initialData]);
+    axiosApi
+      .get(`/api/mypage/${user.userSeq}`)
+      .then((res) => {
+        setInitialData(res.data);
+        setUpdateData(res.data);
+      })
+      .catch((error) => {
+        console.error("데이터를 불러오는 중 에러 발생", error);
+      });
+  }, [user.userSeq]); // userSeq가 변경될 때마다 데이터를 다시 불러옵니다.
 
   const handleInputChange = (e) => {
     setUpdateData({
@@ -36,22 +45,57 @@ function InfoUpdate() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Base64 이미지 데이터에서 실제 데이터만 추출
+    const base64Data = user.profileImg.split(",")[1];
+    const imageBlob = base64ToBlob(base64Data, "image/png");
+
+    const formData = new FormData();
+    formData.append("profile", imageBlob, "profile.png");
+    formData.append(
+      "customerData",
+      JSON.stringify({
+        userId: updateData.userId,
+        userPassword: updateData.userPassword,
+        customerName: updateData.customerName,
+        customerGender: updateData.customerGender,
+        customerAddress: updateData.customerAddress,
+        customerEmail: updateData.customerEmail,
+        customerPhoneNumber: updateData.customerPhoneNumber,
+      })
+    );
+
     axiosApi
-      .put(`/api/mypage/user/${user.userSeq}`, updateData)
-      .then(() => {
-        navigate(`/mypage/info`);
+      .put(`/api/customer/mypage/modify/${user.userSeq}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log("수정성공", res);
+        dispatch(
+          loginUser({
+            ...user,
+            ...updateData,
+            profileImg: user.profileImg, // 기존 이미지 정보를 유지
+          })
+        );
+        navigate(-1); // 이전 페이지로 이동
       })
       .catch((error) => {
-        console.error("유저 정보 수정 중 에러 발생", error);
+        console.error("업로드 중 에러 발생", error);
       });
   };
-
   return (
     <div className={styles.infoContainer}>
       <div className={styles.infoTop}>
-        <img src={profile} alt="profileImg" className={styles.profileImg} />
+        <img
+          src={user.profileImg}
+          alt="profileImg"
+          className={styles.profileImg}
+        />
         <div className={styles.infoName}>
-          {updateData.customerName}싸피 님 반갑습니다!
+          {updateData.customerName}님 반갑습니다!
           <div className={styles.infoId}>ID : {updateData.userId}</div>
         </div>
       </div>
@@ -71,14 +115,14 @@ function InfoUpdate() {
             <input
               className={styles.contents}
               name="customerGender"
-              value={updateData.customerGender}
+              value={updateData.customerGender || ""}
               onChange={handleInputChange}
             />
             <div className={styles.title}>주소</div>
             <input
               className={styles.contents}
               name="customerAddress"
-              value={updateData.customerAddress}
+              value={updateData.customerAddress || ""}
               onChange={handleInputChange}
             />
             <div className={styles.title}>이메일</div>
@@ -86,14 +130,14 @@ function InfoUpdate() {
               className={styles.contents}
               name="customerEmail"
               type="email"
-              value={updateData.customerEmail}
+              value={updateData.customerEmail || ""}
               onChange={handleInputChange}
             />
             <div className={styles.title}>전화번호</div>
             <input
               className={styles.contents}
               name="customerPhoneNumber"
-              value={updateData.customerPhoneNumber}
+              value={updateData.customerPhoneNumber || ""}
               onChange={handleInputChange}
             />
           </div>

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,7 +26,7 @@ public class Freeboard {
     private String content;
 
     @Column(name = "free_board_cnt")
-    private Integer cnt;
+    private int cnt;
 
     @Column(name = "free_board_regdate")
     private LocalDateTime registerDate;
@@ -45,13 +46,16 @@ public class Freeboard {
         this.isDeleted = deleted;
     }
 
+    public void setReport(boolean complain) { this.complain = complain; }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "free_board_customer_seq")
     private User user;
 
 
     @Builder
-    public Freeboard(Long freeboardSeq, String title, String content, Integer cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, UploadFile uploadFile, User user) {
+
+    public Freeboard(Long freeboardSeq, String title, String content, int cnt, LocalDateTime registerDate, boolean complain, boolean isDeleted, UploadFile uploadFile, User user) {
         this.freeboardSeq = freeboardSeq;
         this.title = title;
         this.content = content;

@@ -1,36 +1,32 @@
 package com.ssafy.lam.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.lam.customer.domain.Customer;
 import com.ssafy.lam.customer.dto.CustomerDto;
 import com.ssafy.lam.customer.service.CustomerService;
-import com.ssafy.lam.freeboard.domain.Freeboard;
 import com.ssafy.lam.freeboard.dto.FreeboardResponseDto;
 import com.ssafy.lam.freeboard.service.FreeboardService;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.hospital.service.HospitalService;
-import com.ssafy.lam.requestboard.domain.Requestboard;
-import com.ssafy.lam.requestboard.domain.RequestboardRepository;
-import com.ssafy.lam.requestboard.domain.Response;
-import com.ssafy.lam.requestboard.domain.ResponseRepository;
 import com.ssafy.lam.requestboard.dto.NotificationDto;
 import com.ssafy.lam.requestboard.dto.ResponseDto;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
-import com.ssafy.lam.reserve.domain.Reserve;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
 import com.ssafy.lam.reserve.service.ReserveService;
-import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.dto.ReviewListDisplay;
 import com.ssafy.lam.reviewBoard.service.ReviewBoardService;
 import com.ssafy.lam.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -44,12 +40,12 @@ public class MypageController {
     private final ReviewBoardService reviewBoardService;
     private final ReserveService reserveService;
     private final RequestBoardService requestBoardService;
-
+    private Logger log = LoggerFactory.getLogger(MypageController.class);
     @GetMapping("/{userSeq}")
     @Operation(summary = "유저 타입에 따라 고객 정보나 병원 정보를 조회")
     public ResponseEntity<?> getMypageByUser(@PathVariable long userSeq) {
         String role = userService.getUser(userSeq).getUserType();
-
+        log.info("role : {}", role);
         if (role.equals("CUSTOMER")) {
             CustomerDto dto = customerService.getCustomer(userSeq);
             if (dto != null) {
@@ -59,6 +55,7 @@ public class MypageController {
             }
         } else {
             HospitalDto dto = hospitalService.getHospital(userSeq);
+            log.info("dto : {}", dto.getHospitalInfo_id());
             if (dto != null) {
                 return new ResponseEntity<HospitalDto>(dto, HttpStatus.OK);
             } else {
@@ -69,16 +66,34 @@ public class MypageController {
 
     @PutMapping("/user/{userSeq}")
     @Operation(summary = "고객 정보 수정")
-    public ResponseEntity<?> updateCustomer(@PathVariable long userSeq, @ModelAttribute CustomerDto customerDto) {
-        Customer customerSaveDto = customerService.updateCustomer(userSeq, customerDto);
-        return new ResponseEntity<Customer>(customerSaveDto, HttpStatus.OK);
+    public ResponseEntity<?> updateCustomer(@PathVariable long userSeq,
+                                            @RequestParam("customerData") String customerData,
+                                            @RequestParam(value = "profile", required = false) MultipartFile profile){
+        try{
+            CustomerDto customerDto = new ObjectMapper().readValue(customerData, CustomerDto.class);
+            Customer customerSaveDto = customerService.updateCustomer(userSeq, customerDto, profile);
+            return new ResponseEntity<Customer>(customerSaveDto, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/hospital/{userSeq}")
     @Operation(summary = "병원 정보 수정.")
-    public ResponseEntity<?> updateHospital(@PathVariable long userSeq, @ModelAttribute HospitalDto hospitalDto) {
-        Hospital hospitalSaveDto = hospitalService.updateHospital(userSeq, hospitalDto);
-        return new ResponseEntity<Hospital>(hospitalSaveDto, HttpStatus.OK);
+    public ResponseEntity<?> updateHospital(@PathVariable long userSeq,
+                                            @RequestParam("hospitalData") String hospitalData,
+                                            @RequestParam(value = "profile", required = false) MultipartFile profile){
+        try{
+            HospitalDto hospitalDto = new ObjectMapper().readValue(hospitalData, HospitalDto.class);
+            Hospital hospitalSaveDto = hospitalService.updateHospital(userSeq, hospitalDto, profile);
+            return new ResponseEntity<Hospital>(hospitalSaveDto, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/free/{userSeq}")

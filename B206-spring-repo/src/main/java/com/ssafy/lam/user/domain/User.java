@@ -37,11 +37,6 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "user")
-//    @JoinColumn(name = "free_board_seq")
-//    private List<Freeboard> freeboards = new ArrayList<>();
-
-
     public User() {
 
     }

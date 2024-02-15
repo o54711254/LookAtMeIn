@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axiosApi from "../../../api/axiosApi";
+import styles from "./HospitalList.module.css";
 
 function HospitalList() {
   const [postList, setPostList] = useState([]);
@@ -31,32 +32,49 @@ function HospitalList() {
   };
   const handleReject = (userSeq) => {
     axiosApi
-      .patch(`/api/admin/approveHos/${userSeq}`)
+      .patch(`/api/admin/disapproveHos/${userSeq}`)
       .then((res) => {
-        console.log("승인 성공");
+        console.log("반려 성공");
         setListType("all");
       })
       .catch((error) => {
-        console.log("승인 실패", error);
+        console.log("반려 실패", error);
       });
   };
 
   return (
-    <div>
-      <button onClick={() => setListType("all")}>전체 병원 목록</button>
-      <button onClick={() => setListType("reject")}>미승인 병원 목록</button>
+    <div className={styles.hospitalContainer}>
+      <div className={styles.hospitalButton}>
+        <button className={styles.button} onClick={() => setListType("all")}>
+          전체 병원 목록
+        </button>
+        <button className={styles.button} onClick={() => setListType("reject")}>
+          미승인 병원 목록
+        </button>
+      </div>
       {postList.length > 0 ? (
         <ul>
           {postList.map((post, index) => (
-            <li key={index}>
-              <div>{post.hospitalInfo_name}</div>
-              <div>승인 상태: {post.approved ? "승인됨" : "미승인"}</div>
-              {!post.approve && (
-                <div>
-                  <button onClick={() => handleApprove(post.userSeq)}>
+            <li key={index} className={styles.container}>
+              <div className={styles.title}>{post.hospitalInfo_name}</div>
+
+              <div
+                className={post.approved ? styles.approved : styles.notApproved}
+              >
+                {post.approved ? "승인됨" : "미승인"}
+              </div>
+              {listType === "reject" && !post.approve && (
+                <div className={styles.btns}>
+                  <button
+                    onClick={() => handleApprove(post.userSeq)}
+                    className={styles.btn}
+                  >
                     승인
                   </button>
-                  <button onClick={() => handleReject(post.userSeq)}>
+                  <button
+                    onClick={() => handleReject(post.userSeq)}
+                    className={styles.btn}
+                  >
                     반려
                   </button>
                 </div>

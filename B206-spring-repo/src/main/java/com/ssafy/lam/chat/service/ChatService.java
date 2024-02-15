@@ -1,9 +1,14 @@
 package com.ssafy.lam.chat.service;
 
 import com.ssafy.lam.chat.domain.*;
-import com.ssafy.lam.chat.dto.ChatMessageDto;
-import com.ssafy.lam.chat.dto.ChatRoomRequestDto;
-import com.ssafy.lam.chat.dto.ChatRoomResponseDto;
+import com.ssafy.lam.chat.dto.*;
+import com.ssafy.lam.common.EncodeFile;
+import com.ssafy.lam.config.MultipartConfig;
+import com.ssafy.lam.customer.domain.Customer;
+import com.ssafy.lam.customer.domain.CustomerRepository;
+import com.ssafy.lam.file.domain.UploadFile;
+import com.ssafy.lam.hospital.domain.Hospital;
+import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.requestboard.domain.Response;
 import com.ssafy.lam.requestboard.domain.ResponseRepository;
 import com.ssafy.lam.user.domain.User;
@@ -13,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -36,26 +43,102 @@ public class ChatService {
     @Autowired
     private ResponseRepository responseRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
+    private HospitalRepository hospitalRepository;
+
+    MultipartConfig multipartConfig = new MultipartConfig();
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+
+
     private Logger log = LoggerFactory.getLogger(ChatService.class);
 
-    public List<Long> getChatRoomIdsByUserSeq(Long userSeq) {
-//        List<ChatParticipant> participants = chatParticipantRepository.findByUserId(userId);
+    public List<ChatRoomInfoDto> getChatRoomIdsByUserSeq(Long userSeq) {
+//        List<ChatParticipant> participants = chatParticipantRepository.findByUserUserSeqAndDeletedFalse(userSeq);
+//        Set<Long> uniqueIds = new HashSet<>();
+//        List<Long> chatRoomSeqs = new ArrayList<>();
+//        for (ChatParticipant participant : participants) {
+//            Long chatroomSeq = participant.getChatRoom().getChatroomSeq();
+//            if (uniqueIds.add(chatroomSeq)) {
+//                chatRoomSeqs.add(chatroomSeq);
+//            }
+//        }
+//        return chatRoomSeqs;
         List<ChatParticipant> participants = chatParticipantRepository.findByUserUserSeqAndDeletedFalse(userSeq);
-        Set<Long> uniqueIds = new HashSet<>();
-        List<Long> chatRoomSeqs = new ArrayList<>();
+        List<ChatRoomInfoDto> chatRoomInfos = new ArrayList<>();
+
         for (ChatParticipant participant : participants) {
             Long chatroomSeq = participant.getChatRoom().getChatroomSeq();
-            if (uniqueIds.add(chatroomSeq)) {
-                chatRoomSeqs.add(chatroomSeq);
-            }
+            String chatRoomName = participant.getChatRoomName(); // 사용자별 채팅방 이름 가져오기
+            chatRoomInfos.add(new ChatRoomInfoDto(chatroomSeq, chatRoomName));
         }
-        return chatRoomSeqs;
+
+        return chatRoomInfos;
     }
 
     // 특정 채팅방의 모든 메시지 조회
-    public List<ChatMessage> getMessagesByChatRoomId(Long chatroomSeq) {
+    public List<ChatMessageReadDto> getMessagesByChatRoomId(Long chatroomSeq) {
         log.info("chatroomSeq : {}", chatroomSeq);
-        return chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(chatroomSeq);
+
+        List<ChatMessage> chatMessages = chatMessageRepository.findByChatroomChatroomSeqAndDeletedFalse(chatroomSeq);
+        List<ChatMessageReadDto> chatMessageReadDtos = new ArrayList<>();
+
+        for (ChatMessage chatMessage : chatMessages) {
+            log.info("chatMessage : {}", chatMessage.getUser().getUserId());
+            log.info("chatUser:{}, ", chatMessage.getUser().getUserType());
+            ChatMessageReadDto chatMessageReadDto = ChatMessageReadDto.builder()
+                    .chatroomSeq(chatMessage.getChatroom().getChatroomSeq())
+                    .sender(chatMessage.getUser().getUserId()) // getUser()가 발신자 User를 반환한다고 가정
+                    .senderSeq(chatMessage.getUser().getUserSeq())
+                    .message(chatMessage.getMessage())
+                    .messageSeq(chatMessage.getMessageSeq())
+                    .build();
+
+            if(chatMessage.getUser().getUserType().equals("HOSPITAL")) {
+                Hospital hospital = hospitalRepository.findByUserUserSeq(chatMessage.getUser().getUserSeq())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 병원이 없습니다."));
+
+                if(hospital.getProfileFile() != null){
+                    UploadFile hospitalProfile = hospital.getProfileFile();
+                    Path path = Paths.get(uploadPath + "/" + hospitalProfile.getName());
+                    try {
+                        String hospitalProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                        String hospitalProfileType = hospitalProfile.getType();
+                        chatMessageReadDto.setHospitalProfileBase64(hospitalProfileBase64);
+                        chatMessageReadDto.setHospitalProfileType(hospitalProfileType);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }else if(chatMessage.getUser().getUserType().equals("CUSTOMER")) {
+
+              Customer customer = customerRepository.findByUserUserSeq(chatMessage.getUser().getUserSeq())
+                  .orElseThrow(() -> new IllegalArgumentException("해당 고객이 없습니다."));
+                  if (customer.getProfile() != null) {
+                    UploadFile customerProfile = customer.getProfile();
+                    Path path = Paths.get(uploadPath + "/" + customerProfile.getName());
+                    try {
+                        String customerProfileBase64 = EncodeFile.encodeFileToBase64(path);
+                        String customerProfileType = customerProfile.getType();
+                        chatMessageReadDto.setCustomerProfileBase64(customerProfileBase64);
+                        chatMessageReadDto.setCustomerProfileType(customerProfileType);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
+
+
+
+
+            chatMessageReadDtos.add(chatMessageReadDto);
+        }
+        return chatMessageReadDtos;
     }
 
     public ChatMessage saveMessage(ChatMessageDto messageDto) {
@@ -84,25 +167,25 @@ public class ChatService {
         User customer = userRepository.findById(chatRoomRequestDto.getCustomerSeq()).get();
 
         // 채팅방 entity 생성
-        ChatRoom chatroom = ChatRoom.builder()
-                .build();
-
+        ChatRoom chatroom = ChatRoom.builder().build();
+        ChatRoom chatRoom = chatRoomRepository.save(chatroom);
 
         // 채팅방 참여자인 Hospital entity 생성
         ChatParticipant chatParticipant1 = ChatParticipant.builder()
                 .user(hospital)
                 .chatRoom(chatroom)
+                .chatRoomName(customer.getName())
                 .build();
 
         // 채팅방 참여자인 Customer entity 생성
         ChatParticipant chatParticipant2 = ChatParticipant.builder()
                 .user(customer)
                 .chatRoom(chatroom)
+                .chatRoomName(hospital.getName())
                 .build();
 
-        ChatRoom chatRoom = chatRoomRepository.save(chatroom);
-        chatParticipant1 = chatParticipantRepository.save(chatParticipant1);
-        chatParticipant2 = chatParticipantRepository.save(chatParticipant2);
+        chatParticipantRepository.save(chatParticipant1);
+        chatParticipantRepository.save(chatParticipant2);
 
         ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder()
                 .chatroomSeq(chatRoom.getChatroomSeq())
@@ -157,9 +240,10 @@ public class ChatService {
         User hospital = response.getUser();
 
         if (!hospital.getUserType().equals("HOSPITAL")) {
-            throw new IllegalArgumentException("Response not from a hospital user.");
+            throw new IllegalArgumentException("병원사용자가 아님");
         }
 
+        responseRepository.deleteById(responseId);
         ChatRoomRequestDto chatRoomRequestDto = new ChatRoomRequestDto(hospital.getUserSeq(), customer.getUserSeq());
         return createChatRoom(chatRoomRequestDto);
     }

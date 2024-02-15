@@ -1,17 +1,19 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import axiosApi from '../../api/axiosApi'; // AxiosApi 임포트
+import * as React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import axiosApi from "../../api/axiosApi"; // AxiosApi 임포트
+import styles from "./Questionnaire.module.css";
 
-export default function FormDialog() {
+export default function FormDialog({ reserveSeq }) {
+  // console.log(props.reserveSeq)
   const [open, setOpen] = React.useState(false);
   const [image, setImage] = React.useState(null);
   const [questionnaire, setQuestionnaire] = React.useState({
@@ -30,37 +32,40 @@ export default function FormDialog() {
 
   const handleRegist = async () => {
     const formData = new FormData();
-    // formData.append("customer_seq", 1);
-    // formData.append("hospital_seq", 2);
 
-    // const 
-
-    const questionnaireData = {}
-
-
+    // const
+    console.log("questionnaire: ", questionnaire);
+    const questionnaireData = {};
+    questionnaireData["reserveSeq"] = reserveSeq;
 
     // 기존 questionnaire 데이터를 FormData에 추가
-    Object.keys(questionnaire).forEach(key => {
+    Object.keys(questionnaire).forEach((key) => {
       // formData.append(key, questionnaire[key]);
       questionnaireData[key] = questionnaire[key];
     });
 
+    console.log("questionnaireData: ", questionnaireData);
     formData.append("questionnaireData", JSON.stringify(questionnaireData));
-    
+
     if (image) {
-      formData.append('image', image); // 서버에서 사용하는 필드명('image' 등)으로 교체 가능
+      formData.append("image", image); // 서버에서 사용하는 필드명('image' 등)으로 교체 가능
     }
-    
-    try{
-      const response = await axiosApi.post('/api/questionnaire/regist', formData, {
-        headers:{
-          'Content-Type': 'multipart/form-data',
+
+    try {
+      console.log("문진표데이터", questionnaireData);
+      const response = await axiosApi.post(
+        "/api/questionnaire/regist",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-      });
+      );
 
       console.log("success: ", response.data);
 
-      setOpen(false)
+      setOpen(false);
       setOpen(false); // 다이얼로그 닫기
       // 폼 상태 초기화
       setQuestionnaire({
@@ -69,8 +74,7 @@ export default function FormDialog() {
         questionnaire_content: "",
       });
       setImage(null);
-
-    }catch(e){
+    } catch (e) {
       console.log("error: ", e);
     }
 
@@ -104,10 +108,14 @@ export default function FormDialog() {
   };
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <div className={styles.buttonContainer}>
+      <button
+        variant="outlined"
+        onClick={handleClickOpen}
+        className={styles.button}
+      >
         문진표 등록
-      </Button>
+      </button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>상담받고 싶은 부위를 작성해주세요.</DialogTitle>
         <DialogContent>
@@ -121,7 +129,10 @@ export default function FormDialog() {
             variant="standard"
             value={questionnaire.questionnaire_remark}
             onChange={(e) =>
-              setQuestionnaire({ ...questionnaire, questionnaire_remark: e.target.value })
+              setQuestionnaire({
+                ...questionnaire,
+                questionnaire_remark: e.target.value,
+              })
             }
           />
           <TextField
@@ -135,7 +146,10 @@ export default function FormDialog() {
             variant="standard"
             value={questionnaire.questionnaire_content}
             onChange={(e) =>
-              setQuestionnaire({ ...questionnaire, questionnaire_content: e.target.value })
+              setQuestionnaire({
+                ...questionnaire,
+                questionnaire_content: e.target.value,
+              })
             }
           />
           <ToggleButtonGroup
@@ -144,7 +158,10 @@ export default function FormDialog() {
             exclusive
             onChange={(event, newBloodType) => {
               if (newBloodType !== null) {
-                setQuestionnaire({ ...questionnaire, questionnaire_blood: newBloodType });
+                setQuestionnaire({
+                  ...questionnaire,
+                  questionnaire_blood: newBloodType,
+                });
               }
             }}
             aria-label="blood type"
@@ -154,11 +171,26 @@ export default function FormDialog() {
             <ToggleButton value="AB">AB형</ToggleButton>
             <ToggleButton value="O">O형</ToggleButton>
           </ToggleButtonGroup>
-          <IconButton color="primary" aria-label="upload picture" component="label">
-            <input hidden accept="image/*" type="file" onChange={handleImageChange} />
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="label"
+          >
+            <input
+              hidden
+              accept="image/*"
+              type="file"
+              onChange={handleImageChange}
+            />
             <PhotoCamera />
           </IconButton>
-          {image && <img src={URL.createObjectURL(image)} alt="Preview" style={{ maxWidth: '100px', maxHeight: '100px' }} />}
+          {image && (
+            <img
+              src={URL.createObjectURL(image)}
+              alt="Preview"
+              style={{ maxWidth: "100px", maxHeight: "100px" }}
+            />
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>취소</Button>

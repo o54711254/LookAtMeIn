@@ -36,15 +36,6 @@ public class CustomerServiceTest {
     @Transactional
     public void updateCustomerTest(){
 
-
-        CustomerDto updatedCustomerDto = CustomerDto.builder()
-                .userId("ssafy")
-                .userPassword("1234")
-                .customerName("kimheesu")
-                .build();
-        Customer updatedCustomer = customerService.updateCustomer(1L, updatedCustomerDto);
-        System.out.println("updatedCustomer = " + updatedCustomer);
-
     }
 
 

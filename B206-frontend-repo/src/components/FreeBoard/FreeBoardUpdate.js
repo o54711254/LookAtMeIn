@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { useNavigate } from "react-router-dom";
+import styles from "./FreeBoardUpdate.module.css";
 
 function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
   const [open, setOpen] = React.useState(false); // 모달의 열림/닫힘 상태를 관리하는 state입니다. 처음에는 false로 모달이 닫혀있는 상태입니다.
@@ -18,8 +19,8 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [post, setPost] = React.useState({
-    freeBoard_title: freeboardTitle,
-    freeBoard_content: freeboardContent,
+    freeboardTitle: freeboardTitle,
+    freeboardContent: freeboardContent,
     user_seq: user.userSeq,
   });
 
@@ -44,7 +45,6 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
     });
 
     try {
-      //희수오빠가 freeboradseq 넘겨주면 뒤에 추가하기
       const response = await axiosApi.put(
         `/api/freeBoard/update/${freeboardSeq}`,
         formData,
@@ -79,9 +79,11 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
   };
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        게시물 수정하기
-      </Button>
+      <button
+        variant="outlined"
+        onClick={handleClickOpen}
+        className={styles.button}
+      ></button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>게시물을 수정해주세요.</DialogTitle>
         <DialogContent>

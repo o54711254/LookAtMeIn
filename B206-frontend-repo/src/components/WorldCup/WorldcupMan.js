@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import styles from "./WorldcupMan.module.css";
+import Aos from "aos";
+import { useNavigate } from "react-router-dom";
 
 const items = [
   {
@@ -36,42 +39,60 @@ const items = [
 ];
 
 const WorldcupMan = () => {
+  const navigate = useNavigate();
   const [cellebs, setCellebs] = useState([]);
   const [displays, setDisplays] = useState([]);
   const [winners, setWinners] = useState([]);
+
   useEffect(() => {
     items.sort(() => Math.random() - 0.5);
     setCellebs(items);
     setDisplays([items[0], items[1]]);
   }, []);
 
-  const clickHandler = (food) => () => {
-    if (cellebs.length <= 2) {
-      if (winners.length === 0) {
-        setDisplays([food]);
+  const clickHandler = (celeb) => () => {
+    if (cellebs.length <= 2 && winners.length === 0) {
+      navigate("/worldcup/champion", { state: { winner: celeb } });
+    } else {
+      const newWinners = [...winners, celeb];
+      const nextDisplays = cellebs.slice(2, 4);
+
+      setCellebs((prev) => prev.slice(2));
+      setDisplays(nextDisplays);
+
+      if (nextDisplays.length < 2) {
+        if (newWinners.length === 1) {
+          navigate("/worldcup/champion", { state: { winner: newWinners[0] } });
+        } else {
+          setCellebs(newWinners);
+          setDisplays([newWinners[0], newWinners[1]]);
+          setWinners([]);
+        }
       } else {
-        let updatedFood = [...winners, food];
-        setCellebs(updatedFood);
-        setDisplays([updatedFood[0], updatedFood[1]]);
-        setWinners([]);
+        setWinners(newWinners);
       }
-    } else if (cellebs.length > 2) {
-      setWinners([...winners, food]);
-      setDisplays([cellebs[2], cellebs[3]]);
-      setCellebs(cellebs.slice(2));
     }
   };
+
+  useEffect(() => {
+    Aos.init({ duration: 800 });
+  }, []);
   return (
-    <div>
-      <h1 className="title">Favorite Worldcup</h1>
-      {displays.map((d) => {
-        return (
-          <div className="flex-1" key={d.name} onClick={clickHandler(d)}>
-            <img className="food-img" src={d.src} />
-            <div className="name">{d.name}</div>
+    <div className={styles.worldcupContainer}>
+      <div className={styles.head}>이상향 월드컵</div>
+      <div className={styles.middle}>
+        {displays.map((d) => (
+          <div
+            className={styles.contents}
+            key={d.name}
+            onClick={clickHandler(d)}
+            data-aos="flip-left"
+          >
+            <img src={d.src} className={styles.img} />
+            <div className={styles.name}>{d.name}</div>
           </div>
-        );
-      })}
+        ))}
+      </div>
     </div>
   );
 };

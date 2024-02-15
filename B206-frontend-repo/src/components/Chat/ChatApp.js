@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import { Stomp } from "@stomp/stompjs";
+import Reserve from "../Modal/DateTimePickerModalForChat";
+import styles from "./ChatApp.module.css";
 function ChatApp() {
   // URL에서 채팅방 ID를 가져옴
   const { roomId } = useParams();
@@ -17,6 +19,9 @@ function ChatApp() {
   // 채팅 메시지 목록의 끝을 참조하는 ref. 이를 이용해 새 메시지가 추가될 때 스크롤을 이동
   const messagesEndRef = useRef(null);
   // 컴포넌트 마운트 시 실행. 웹소켓 연결 및 초기 메시지 로딩
+  const [profileImg, setProfileImg] = useState(null);
+  const [customerSeq, setCustomerSeq] = useState("");
+
   useEffect(() => {
     connect();
     fetchMessages();
@@ -38,6 +43,10 @@ function ChatApp() {
       stompClient.current.subscribe(`/sub/chatroom/${roomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+        if (newMessage.senderSeq !== currentUser.userSeq) {
+          setCustomerSeq(newMessage.senderSeq);
+        }
       });
     });
     console.log("방 번호", roomId);
@@ -54,6 +63,12 @@ function ChatApp() {
       .get(`/chatroom/${roomId}/messages`)
       .then((response) => {
         console.log("메시지 목록", response.data);
+        const customerProfileBase64 = response.data.customerProfileBase64;
+        const customerProfileType = response.data.customerProfileType;
+        const profileData = `data:${customerProfileType};base64,${customerProfileBase64}`;
+        if (customerProfileBase64) {
+          setProfileImg(profileData);
+        }
         setMessages(response.data);
       })
       .catch((error) => console.error("Failed to fetch chat messages.", error));
@@ -61,10 +76,9 @@ function ChatApp() {
   // 새 메시지를 보내는 함수
   const sendMessage = () => {
     if (stompClient.current && message) {
-      // senderSeq에는 현재 사용자의 ID를 넣어야 함. 지금은 일단 1로 설정
       const messageObj = {
         chatroomSeq: roomId,
-        senderSeq: 1,
+        senderSeq: currentUser.userSeq,
         sender: currentUser.userId,
         message: message,
       };
@@ -74,16 +88,19 @@ function ChatApp() {
     }
   };
   return (
-    <div>
+    <div className={styles.container}>
       {/* 메시지 목록을 표시하는 부분 */}
-      <div style={{ height: "300px", overflowY: "auto" }}>
+      <div className={styles.messageList}>
         {messages.map((msg, index) => (
           <div
             key={index}
-            style={{
-              textAlign: msg.sender === currentUser.userId ? "right" : "left",
-            }}
+            className={
+              msg.sender === currentUser.userId
+                ? styles.messageItemCurrentUser
+                : styles.messageItem
+            }
           >
+            <img src={profileImg} alt="Profile" />
             {msg.sender !== currentUser.userId && <p>{msg.sender}</p>}
             <p>{msg.message}</p>
           </div>
@@ -92,14 +109,23 @@ function ChatApp() {
         <div ref={messagesEndRef} />
       </div>
       {/* 메시지 입력 및 전송 부분 */}
-      <div>
+      <div className={styles.inputContainer}>
         <input
+          className={styles.inputField}
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={sendMessage}>Send</button>
+        <button className={styles.sendButton} onClick={sendMessage}>
+          보내기
+        </button>
       </div>
+      {currentUser.role === "HOSPITAL" && (
+        <Reserve
+          customerUserSeq={customerSeq}
+          className={styles.reserveButton}
+        />
+      )}
     </div>
   );
 }

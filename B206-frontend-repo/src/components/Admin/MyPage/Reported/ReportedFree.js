@@ -1,36 +1,68 @@
 import { useEffect, useState } from "react";
 import axiosApi from "../../../../api/axiosApi";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import styles from "./ReportedFree.module.css";
+import profile from "../../../../assets/gun.png";
 
 function ReportedFree() {
-  const [boardList, setBoardList] = useState([]);
+  const [postList, setPostList] = useState([]);
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
   useEffect(() => {
     axiosApi
-      .get(`/freeBoard/report/list`)
-      .then((res) => {
-        setBoardList(res.data);
+      .get(`api/admin/freeComplain`)
+      .then((response) => {
+        console.log(response.data);
+        const sortedData = response.data.sort(
+          (a, b) => new Date(b.freeboardSeq) - new Date(a.freeboardSeq)
+        );
+        setPostList(sortedData);
       })
       .catch((error) => {
-        console.log("신고된 자유게시판 목록을 불러오는데 실패했습니다.", error);
+        console.log("자유게시판 불러오기 에러: ", error);
       });
-  });
+  }, []);
+
+  const goDetailPage = (freeboardSeq) => {
+    if (freeboardSeq) {
+      navigate(`/freeBoard/freeBoardList/${freeboardSeq}`);
+    } else {
+      console.log("freeBoardSeq is undefined");
+    }
+  };
+
   return (
     <div>
-      {boardList.length > 0 ? (
+      {postList.length > 0 ? (
         <div>
-          {boardList.map((board, index) => {
-            <li key={index}>
-              <div>No. {board.free_board_seq}</div>
-              <div>프로필 사진 : {board.customer_img}</div>
-              <div>작성자 : {board.customer_info_name}</div>
-              <div>제목: {board.free_board_title}</div>
-              <div>댓글 수: {board.comment_cnt}</div>
-              <div>조회수: {board.free_board_cnt}</div>
-              <div>작성날짜: {board.free_board_regdate}</div>
-            </li>;
-          })}
+          {postList.map((board, index) => (
+            <li
+              key={index}
+              onClick={() => goDetailPage(board.freeboardSeq)}
+              className={styles.reviewItem}
+            >
+              <div>No. {index}</div>
+              <div>
+                <img src={profile} alt="프로필" className={styles.profile} />
+              </div>
+              {/* <div>No. {index + 1}</div> */}
+              <div className={styles.writer}>
+                <div>{board.userId}</div>
+              </div>
+              <div className={styles.title}>
+                <div>{board.freeboardTitle}</div>
+              </div>
+
+              {/* <div>댓글 수: {board.comment_cnt}</div> */}
+              {/* <div className={styles.cnt}>{board.freeboardCnt}</div> */}
+              <div className={styles.date}>{board.freeboardRegisterdate}</div>
+            </li>
+          ))}
         </div>
       ) : (
-        <div>자유게시판에 신고된 글이 없습니다.</div>
+        <div>신고된 자유게시판 글 목록이 비어있습니다.</div>
       )}
     </div>
   );

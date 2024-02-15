@@ -3,6 +3,8 @@
   display: flex;
   flex-wrap: wrap;
   background-color: rgba(239, 232, 222, 0.2);
+  margin-bottom: 80;
+  border-radius: 20px;
 }
 
 .profile {
@@ -27,7 +29,6 @@
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 .profileImage {
-  background-image: url("../../../assets/man/유승호.jpg");
   background-color: #ffffff;
   background-position: center;
   background-size: cover;

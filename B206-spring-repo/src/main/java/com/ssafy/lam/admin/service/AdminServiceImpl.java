@@ -8,6 +8,7 @@ import com.ssafy.lam.freeboard.dto.FreeboardAdminDto;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
 import com.ssafy.lam.hospital.dto.HospitalAdminDto;
+import com.ssafy.lam.reviewBoard.domain.ReviewBoard;
 import com.ssafy.lam.reviewBoard.domain.ReviewBoardRepository;
 import com.ssafy.lam.reviewBoard.dto.ReviewBoardAdminDto;
 import jakarta.transaction.Transactional;
@@ -56,10 +57,10 @@ public class AdminServiceImpl implements AdminService {
                         .reviewBoard_title(reviewBoard.getTitle())
                         .reviewBoard_content(reviewBoard.getContent())
                         .customer_name(reviewBoard.getUser().getName())
-                        .reviewBoard_doctor(reviewBoard.getDoctor().getDocInfoName())
+                        .reviewBoard_doctor(reviewBoard.getDoctor())
                         .reviewBoard_region(reviewBoard.getRegion())
                         .score(reviewBoard.getScore())
-                        .reviewBoard_hospital(reviewBoard.getHospital().getUser().getName())
+                        .reviewBoard_hospital(reviewBoard.getHospital())
                         .reviewBoard_expected_price(reviewBoard.getExpectedPrice())
                         .reviewBoard_surgery_price(reviewBoard.getSurgeryPrice())
                         .regdate(reviewBoard.getRegdate())
@@ -73,7 +74,7 @@ public class AdminServiceImpl implements AdminService {
     public List<HospitalAdminDto> findUnapprovedHospitals() {
 
         List<HospitalAdminDto> hospitalAdminDtoList = new ArrayList<>();
-        List<Hospital> hospitals = hospitalRepository.findByIsApprovedFalse();
+        List<Hospital> hospitals = hospitalRepository.findAllByIsApprovedFalseAndIsRejectedFalse();
 
             for(Hospital hospital : hospitals){
                 try {
@@ -121,8 +122,9 @@ public class AdminServiceImpl implements AdminService {
                 if(hospital.getRegistrationFile() != null){
                     Path path = Paths.get(uploadPath + "/" + hospital.getRegistrationFile().getName());
                     String registrationFileBase64 = EncodeFile.encodeFileToBase64(path);
-
+                    String type = hospital.getRegistrationFile().getType();
                     hospitalAdminDto.setRegistrationFileBase64(registrationFileBase64);
+
                 }
 
 
@@ -140,6 +142,51 @@ public class AdminServiceImpl implements AdminService {
         Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq)
                 .orElseThrow(() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. ID: " + userSeq));
         hospital.approve();
+        return true;
+    }
+    
+    @Override
+    @Transactional
+    public boolean disapproveHospital(Long userSeq) {
+        Hospital hospital = hospitalRepository.findByUserUserSeq(userSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 병원이 존재하지 않습니다. ID: " + userSeq));
+        hospital.reject();
+        return true;
+    }
+
+    @Override
+    public boolean deactivateReviewBoard(Long reviewBoardSeq) {
+        ReviewBoard reviewBoard = reviewBoardRepository.findById(reviewBoardSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 후기가 존재하지 않습니다. boardSeq: " + reviewBoardSeq));
+        reviewBoard.delete();
+        reviewBoardRepository.save(reviewBoard);
+        return true;
+    }
+
+   @Override
+    public boolean cancelReportReviewBoard(Long reviewBoardSeq) {
+        ReviewBoard reviewBoard = reviewBoardRepository.findById(reviewBoardSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. boardSeq: " + reviewBoardSeq));
+        reviewBoard.cancelReport();
+        reviewBoardRepository.save(reviewBoard);
+        return true;
+    }
+
+    @Override
+    public boolean deactivateFreeBoard(Long freeBoardSeq) {
+        Freeboard freeboard = freeboardRepository.findById(freeBoardSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. boardSeq: " + freeBoardSeq));
+        freeboard.setDeleted(true);
+        freeboardRepository.save(freeboard);
+        return true;
+    }
+
+    @Override
+    public boolean cancelReportFreeBoard(Long freeBoardSeq) {
+        Freeboard freeboard = freeboardRepository.findById(freeBoardSeq)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다. boardSeq: " + freeBoardSeq));
+        freeboard.setReport(false);
+        freeboardRepository.save(freeboard);
         return true;
     }
 

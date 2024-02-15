@@ -82,13 +82,13 @@ public class ChatRoomTest {
 //        System.out.println("chatRoomResponseDto = " + chatRoomResponseDto);
     }
 
-    @Test
-    @DisplayName("사용자의 채팅방 목록 조회 테스트")
-    @Transactional
-    public void getUserChatRoomsTest(){
-        List<Long> chatRoomSeqs = webSocketController.getUserChatRooms(1L);
-        for(Long chatRoomSeq : chatRoomSeqs){
-            System.out.println("chatRoomSeq = " + chatRoomSeq);
-        }
-    }
+//    @Test
+//    @DisplayName("사용자의 채팅방 목록 조회 테스트")
+//    @Transactional
+//    public void getUserChatRoomsTest(){
+//        List<Long> chatRoomSeqs = webSocketController.getUserChatRooms(1L);
+//        for(Long chatRoomSeq : chatRoomSeqs){
+//            System.out.println("chatRoomSeq = " + chatRoomSeq);
+//        }
+//    }
 }

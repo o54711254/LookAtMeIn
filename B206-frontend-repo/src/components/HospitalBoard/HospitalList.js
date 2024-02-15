@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
-import Typography from "@mui/material/Typography";
 import styles from "./HospitalList.module.css";
-import profile from "../../assets/gun.png";
+import profile from "../../assets/profile2.png";
 import { useNavigate } from "react-router-dom";
-import StarResult from "../ReviewBoard/StarRating/StarResult";
 import styled from "@emotion/styled";
+import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { FaStar, FaStarHalf, FaRegStar } from "react-icons/fa";
 import { css } from "@emotion/react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const HospitalList = () => {
   const [hospitalInfo, setHospitalInfo] = useState([]);
@@ -18,8 +19,16 @@ const HospitalList = () => {
     axiosApi
       .get(`/api/hospital-info/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
       .then((response) => {
-        setHospitalInfo(response.data);
-        console.log(hospitalInfo);
+        console.log(response.data);
+        const updateData = response.data.map((board) => {
+          if (board.customerProfileBase64 && board.customerProfileType) {
+            board.img = `data:${board.customerProfileType};base64,${board.customerProfileBase64}`;
+          } else {
+            board.img = profile;
+          }
+          return board;
+        });
+        setHospitalInfo(updateData);
       })
       .catch((error) => {
         console.error("병원 정보 리스트 조회 에러 : ", error);
@@ -30,35 +39,11 @@ const HospitalList = () => {
     navigate(`/hospital-info/detail/${hospital_seq}`);
   };
 
-  const StyledStar = styled.span`
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: orange;
-    position: relative;
-
-    ${({ isHalf }) =>
-      isHalf &&
-      css`
-        width: 12px;
-        overflow: hidden;
-
-        &:nth-of-type(10) {
-          transform: translate(-108px);
-        }
-        &:nth-of-type(8) {
-          transform: translate(-84px);
-        }
-        &:nth-of-type(6) {
-          transform: translate(-60px);
-        }
-        &:nth-of-type(4) {
-          transform: translate(-36px);
-        }
-        &:nth-of-type(2) {
-          transform: translate(-12px);
-        }
-      `}
-  `;
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
+  });
 
   return (
     <>
@@ -72,9 +57,20 @@ const HospitalList = () => {
       </div>
       <div>
         {hospitalInfo.map((hospital) => (
-          <li key={hospital.hospitalInfo_seq} className={styles.hospitalItem}>
+          <li
+            key={hospital.hospitalInfo_seq}
+            className={styles.hospitalItem}
+            data-aos="fade-up"
+          >
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              {/* <img src={profile} alt="프로필" className={styles.profile} /> */}
+              {hospital.img && (
+                <img
+                  src={hospital.img}
+                  alt="자게 작성자 프사"
+                  className={styles.profile}
+                />
+              )}
             </div>
             <div
               className={styles.hosInfo}
@@ -83,12 +79,6 @@ const HospitalList = () => {
               <div className={styles.nameStar}>
                 <div className={styles.hosName}>
                   {hospital.hospitalInfo_name} &nbsp;
-                </div>
-                <div>
-                  {/* <StarResult score={hospital.reviewBoard_score} /> */}
-                  <StyledStar isHalf={false}>
-                    <FaStar />
-                  </StyledStar>
                 </div>
               </div>
               <div className={styles.hosAddress}>
@@ -101,7 +91,17 @@ const HospitalList = () => {
             </div>
             <div className={styles.intro}>
               <div>{hospital.hospitalInfo_introduce}</div>
-              <div className={styles.hashtagButton}>해시태그</div>
+              <div className={styles.b}>
+                {hospital.hospitalInfo_category.map((category, index) => (
+                  <button key={index} className={styles.hashtagButton}>
+                    {category.part}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className={styles.star}>
+              <StarResult score={hospital.hospitalInfo_avgScore} />(
+              {hospital.hospitalInfo_avgScore})
             </div>
           </li>
         ))}

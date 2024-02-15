@@ -7,6 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class CustomerDto {
+    private long customerSeq;
     private String userId;
     private String userPassword;
     private String customerName;
@@ -14,9 +15,13 @@ public class CustomerDto {
     private String customerPhoneNumber;
     private String customerEmail;
     private String customerAddress;
+    private String base64;
+    private String type;
 
     @Builder
-    public CustomerDto(String userId, String userPassword, String customerName, String customerGender, String customerPhoneNumber, String customerEmail, String customerAddress) {
+
+    public CustomerDto(long customerSeq, String userId, String userPassword, String customerName, String customerGender, String customerPhoneNumber, String customerEmail, String customerAddress, String base64, String type) {
+        this.customerSeq = customerSeq;
         this.userId = userId;
         this.userPassword = userPassword;
         this.customerName = customerName;
@@ -24,5 +29,7 @@ public class CustomerDto {
         this.customerPhoneNumber = customerPhoneNumber;
         this.customerEmail = customerEmail;
         this.customerAddress = customerAddress;
+        this.base64 = base64;
+        this.type = type;
     }
 }
