@@ -7,6 +7,8 @@ import FreeBoardRegist from "./FreeBoardRegist.js";
 import styles from "./FreeBoardList.module.css";
 import profile from "../../assets/profile2.png";
 // import profile from "../../assets/gun.png";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function FreeBoardList() {
   const navigate = useNavigate();
@@ -43,6 +45,12 @@ function FreeBoardList() {
       });
   }, []);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
+  });
+
   const goDetailPage = (freeboardSeq) => {
     if (freeboardSeq) {
       navigate(`/freeBoard/freeBoardList/${freeboardSeq}`);
@@ -66,6 +74,7 @@ function FreeBoardList() {
             key={index}
             onClick={() => goDetailPage(board.freeboardSeq)}
             className={styles.reviewItem}
+            data-aos="fade-up"
           >
             <div className={styles.index}>No. {index + 1}</div>
             <div>
