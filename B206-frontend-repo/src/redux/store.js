@@ -13,8 +13,10 @@ import consultingReducer from "./consulting";
 // persist-reducer 및 persistStore 관련
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
+import rtcSlice from "../peerStore/rtcSlice";
 
 const reducers = combineReducers({
+  rtc : rtcSlice,
   user: userReducer,
   auth: tokenReducer,
   requestBoard: requestBoardReducer,

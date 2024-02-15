@@ -1,7 +1,9 @@
 import React, {useRef, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
 
 import axiosApi from '../../api/axiosApi';
+
 const Canvas = ()=>{
     /**
      * 1. mask 모드(o)
@@ -12,6 +14,13 @@ const Canvas = ()=>{
      * 6. 오른쪽에 성형 후 사진 보이게 하기 (o)
      * 7. 파일 선택 다시하면 바뀐 사진 보이게 하기 (o)
      */
+
+    const user = useSelector((state) => state.user);
+    
+    
+    
+
+
     const canvasRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);   
     const [image, setImage] = useState(null); // 업로드한 이미지
@@ -201,7 +210,7 @@ const Canvas = ()=>{
         // console.log(surgeryImg)
         try{
             const formData = new FormData();
-            formData.append("after", file)
+            formData.append("before", file)
             const base64 = surgeryImg.split(',')[1] 
             const byteCharacters = atob(base64);
             const byteNumbers = new Array(byteCharacters.length);
@@ -213,8 +222,8 @@ const Canvas = ()=>{
             // 바이트 배열을 Blob 객체로 변환
             const blob = new Blob([byteArray], {type: 'image/png'});
             
-            formData.append("before", blob ,"after.png")
-            const response = await axiosApi.post("/api/canvas/save", formData,{
+            formData.append("after", blob ,"after.png")
+            const response = await axiosApi.post(`/api/canvas/save/${user.userSeq}`, formData,{
                 headers:{
                     'Content-Type': 'multipart/form-data'
                 }

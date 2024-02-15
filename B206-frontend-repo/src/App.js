@@ -50,6 +50,7 @@ import RequestRegist from "./components/RequestBoard/RequestRegist";
 import WaitingRoom from "./pages/Openvidu.js";
 import HospitalReservation from "./components/Modal/HospitalReservation.js";
 import ReservationDetail from "./components/Customer/MyPage/ReservationDetail";
+import Peer from "./components/Peer/Peer";
 
 function App() {
   console.log("REACT_APP_URL", process.env.REACT_APP_URL);
@@ -151,6 +152,8 @@ function App() {
                   <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
                   <Route path="/meeting/*" element={<WaitingRoom />} />
+
+                  <Route path="/peer" element={<Peer/>}/>
                 </Routes>
               </div>
 
