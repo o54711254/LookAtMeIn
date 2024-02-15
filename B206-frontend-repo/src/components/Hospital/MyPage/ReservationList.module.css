@@ -1,0 +1,57 @@
+.reserveContainer {
+    width: 100%;
+  }
+  .reserveItem {
+    border: 1px solid #ddd; /* 테두리 */
+    padding: 30px; /* 내부 여백 */
+    margin-bottom: 10px; /* 하단 마진 */
+    list-style-type: none; /* 기본 목록 스타일 제거 */
+    background: rgba(239, 232, 222, 0.2);
+    border: 1px solid #efe8de;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+  .forMove{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .head {
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  .reserveContents {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .date {
+    margin-left: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    gap: 10px;
+  }
+  .hospitalName {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .profileImg {
+    border-radius: 30px;
+    width: 50px;
+    margin-right: 20px;
+  }

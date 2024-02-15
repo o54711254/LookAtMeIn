@@ -39,6 +39,7 @@ public class Questionnaire {
         this.remark = remark;
         this.title = title;
         this.content = content;
+        this.reserve = reserve;
         this.uploadFile = uploadFile;
     }
 }

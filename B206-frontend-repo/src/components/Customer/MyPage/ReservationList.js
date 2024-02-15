@@ -18,7 +18,7 @@ function ReservationList() {
     axiosApi
       .get(`api/reserve/user/${userSeq}`)
       .then((response) => {
-        console.log(response.data);
+        console.log("reservations", response.data);
         setReservations(response.data);
 
         const hospitalProfileBase64 = response.data.hospitalProfileBase64;

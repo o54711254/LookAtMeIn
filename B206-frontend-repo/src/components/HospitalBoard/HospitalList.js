@@ -13,6 +13,7 @@ import "aos/dist/aos.css";
 const HospitalList = () => {
   const [hospitalInfo, setHospitalInfo] = useState([]);
   const [category, setCategory] = useState(null);
+  const [profileImg, setProfileImg] = useState(profile);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,8 +22,8 @@ const HospitalList = () => {
       .then((response) => {
         console.log(response.data);
         const updateData = response.data.map((board) => {
-          if (board.customerProfileBase64 && board.customerProfileType) {
-            board.img = `data:${board.customerProfileType};base64,${board.customerProfileBase64}`;
+          if (board.profileBase64 && board.profileType) {
+            board.img = `data:${board.profileType};base64,${board.profileBase64}`;
           } else {
             board.img = profile;
           }

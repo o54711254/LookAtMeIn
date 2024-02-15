@@ -24,6 +24,11 @@ public class QuestionnaireService {
     private QuesionnareRepository quesionnareRepository;
     @Autowired
     private UploadFileService uploadFileService;
+    @Autowired
+    private ReserveRepository reserveRepository;
+
+    @Autowired
+    private ReserveRepository reserveRepository;
 
     @Autowired
     private ReserveRepository reserveRepository;

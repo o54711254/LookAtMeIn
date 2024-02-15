@@ -1,3 +1,4 @@
+
 package com.ssafy.lam.hospital.controller;
 
 import com.ssafy.lam.common.EncodeFile;
@@ -73,6 +74,8 @@ public class HospitalInfoController {
                     try{
                         String profileBase64 = EncodeFile.encodeFileToBase64(path);
                         hospitalDetailDto.setProfileBase64(profileBase64);
+
+                    hospitalDetailDto.setProfileType(h.getProfileFile().getType());
 
                 }catch (Exception e) {
                     e.printStackTrace();

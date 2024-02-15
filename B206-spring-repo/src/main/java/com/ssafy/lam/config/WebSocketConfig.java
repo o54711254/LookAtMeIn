@@ -18,8 +18,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry){
         // /sub가 prefix로 붙은 destination의 클라이언트에게 메세지 보낼 수 있도록
-        registry.enableSimpleBroker("/sub");
-        registry.setApplicationDestinationPrefixes("/pub");     // /pub가 prefix로 붙은 메세지들은
+        registry.enableSimpleBroker("/api/sub");
+        registry.setApplicationDestinationPrefixes("/api/pub");     // /pub가 prefix로 붙은 메세지들은
                                                                 // @MessageMapping이 붙은 method로 바운드
 
     }

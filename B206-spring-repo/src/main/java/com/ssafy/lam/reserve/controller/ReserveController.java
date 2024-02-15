@@ -31,6 +31,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/reserve")
 public class ReserveController {
 
+    MultipartConfig multipartConfig = new MultipartConfig();
+    Logger log = LoggerFactory.getLogger(ReserveController.class);
+
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+
     private final ReserveService reserveService;
 
     MultipartConfig multipartConfig = new MultipartConfig();
