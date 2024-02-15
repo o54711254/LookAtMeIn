@@ -1,5 +1,7 @@
-
-
+.container{
+  width: 100%;
+  flex-wrap: wrap;
+}
 .hospitalItem {
     border: 1px solid #ddd; /* 테두리 */
     padding: 10px; /* 내부 여백 */
@@ -13,6 +15,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
   }
   .hospitalItem:hover {
     background-color: #f8f8f8;
@@ -28,6 +31,7 @@
     border-radius: 15px;
     margin-bottom: 15px;
     background: rgba(254, 202, 171, 0.38);
+    width: 100%;
   }
   
   .headtitle {
@@ -51,7 +55,7 @@
     display: flex;
     flex-direction: column;
     margin-left: 20px;
-    width: 20%;
+    width: 25%;
     overflow-wrap: break-word;
   }
   
@@ -60,7 +64,7 @@
   }
   
   .hosName {
-    font-size: 20px;
+    font-size: 18px;
     margin-bottom: 3px;
   }
   
@@ -79,8 +83,7 @@
   .intro {
     display: flex;
     flex-direction: column;
-    margin-left: 70px;
-    width: 70%;
+    width: 60%;
     overflow-wrap: break-word;
   }
   
@@ -115,4 +118,8 @@
     background-color: #ffbe98; /* 마우스 오버 시 배경색 변경 */
     color: #efe8de;
   }
-  
+  .itemContainer{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
