@@ -46,6 +46,8 @@ public class Freeboard {
         this.isDeleted = deleted;
     }
 
+    public void setReport(boolean complain) { this.complain = complain; }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "free_board_customer_seq")
     private User user;

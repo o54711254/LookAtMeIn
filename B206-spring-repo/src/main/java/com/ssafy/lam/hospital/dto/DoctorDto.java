@@ -27,5 +27,7 @@ public class DoctorDto {
         this.doc_info_category = doc_info_category;
         this.doc_info_avgScore = doc_info_avgScore;
         this.doc_info_cntReviews = doc_info_cntReviews;
+        this.doctorProfileBase64 = doctorProfileBase64;
+        this.doctorProfileType = doctorProfileType;
     }
 }

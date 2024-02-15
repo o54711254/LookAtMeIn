@@ -51,28 +51,28 @@ public class HospitalInfoController {
         List<Hospital> hospitalList = hospitalService.getAllHospitalInfo();
         List<HospitalDetailDto> hospitalDetailDtoList = new ArrayList<>();
         log.info("병원 목록: " + hospitalList);
-        for(Hospital h : hospitalList) {
-            log.info("병원 정보: " + h);
-            HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
-                    .hospitalInfo_seq(h.getHospitalSeq())
-                    .hospitalInfo_name(h.getUser().getName())
-                    .hospitalInfo_phoneNumber(h.getTel())
-                    .hospitalInfo_introduce(h.getIntro())
-                    .hospitalInfo_address(h.getAddress())
-                    .hospitalInfo_open(h.getOpenTime())
-                    .hospitalInfo_close(h.getCloseTime())
-                    .hospitalInfo_url(h.getUrl())
-                    .userSeq(h.getUser().getUserSeq())
-                    .hospitalInfo_avgScore(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_avgScore())
-                    .hospitalInfo_cntReviews(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_cntReviews())
-                    .hospitalInfo_category(hospitalService.getHospital(h.getUser().getUserSeq()).getHospitalInfo_category())
-                    .build();
-            if(h.getProfileFile() != null) {
-                // 병원 등록증 base64로 인코딩해서 보내줘야함
-                Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
-                try{
-                    String profileBase64 = EncodeFile.encodeFileToBase64(path);
-                    hospitalDetailDto.setProfileBase64(profileBase64);
+            for(Hospital h : hospitalList) {
+                log.info("병원 정보: " + h);
+                HospitalDetailDto hospitalDetailDto = HospitalDetailDto.builder()
+                        .hospitalInfo_seq(h.getHospitalSeq())
+                        .hospitalInfo_name(h.getUser().getName())
+                        .hospitalInfo_phoneNumber(h.getTel())
+                        .hospitalInfo_introduce(h.getIntro())
+                        .hospitalInfo_address(h.getAddress())
+                        .hospitalInfo_open(h.getOpenTime())
+                        .hospitalInfo_close(h.getCloseTime())
+                        .hospitalInfo_url(h.getUrl())
+                        .userSeq(h.getUser().getUserSeq())
+                        .hospitalInfo_avgScore(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_avgScore())
+                        .hospitalInfo_cntReviews(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_cntReviews())
+                        .hospitalInfo_category(hospitalService.getHospital(h.getUser().getUserSeq()).getHospitalInfo_category())
+                        .build();
+                if(h.getProfileFile() != null) {
+                    // 병원 등록증 base64로 인코딩해서 보내줘야함
+                    Path path = Paths.get(uploadPath + "/" + h.getProfileFile().getName());
+                    try{
+                        String profileBase64 = EncodeFile.encodeFileToBase64(path);
+                        hospitalDetailDto.setProfileBase64(profileBase64);
 
                     hospitalDetailDto.setProfileType(h.getProfileFile().getType());
 

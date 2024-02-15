@@ -32,7 +32,7 @@ function MyInfo() {
         } else {
           setProfileImg(profile);
         }
-        console.log("이미지", profileImg);
+        // console.log("이미지", profileImg);
       })
       .catch((error) => {
         console.log("데이터를 불러오는 중 에러 발생", error);
