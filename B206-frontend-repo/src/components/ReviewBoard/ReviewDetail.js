@@ -75,26 +75,49 @@ function ReviewDetail() {
           <div className={styles.name}>{reviewDetail.customer_name}</div>
         </div>
         <div className={styles.title}>{reviewDetail.reviewBoard_title}</div>
-        <div className={styles.buttonbox}>
-          {showButton && canEditOrDelete && (
-            <>
-              <Button onClick={onReviewUpdate}>수정</Button>
-              <ReviewDelete
-                reviewBoard_seq={reviewBoard_seq}
-                onUpdated={onReviewDeleted}
-              ></ReviewDelete>
-            </>
-          )}
-        </div>
       </div>
       <div className={styles.main}>
-        <div className={styles.mainleft}>
-          <div>시술 병원: {reviewDetail.reviewBoard_hospital}</div>
-          <div>시술 부위: {reviewDetail.reviewBoard_surgery}</div>
-          <div>담당 의사: {reviewDetail.reviewBoard_doctor}</div>
-          <div>지역: {reviewDetail.reviewBoard_region}</div>
+        <div className={styles.left}>
+          <div className={styles.leftContainer}>
+            <div className={styles.bottom}>
+              <div className={styles.a}>
+                <div className={styles.tt}>시술 병원</div>
+                <div className={styles.cc}>
+                  {reviewDetail.reviewBoard_hospital}
+                </div>
+              </div>
+              <div className={styles.a}>
+                <div className={styles.tt}>시술 부위 </div>
+                <div className={styles.cc}>
+                  {reviewDetail.reviewBoard_surgery}
+                </div>
+              </div>
+              <div className={styles.a}>
+                <div className={styles.tt}>담당 의사 </div>
+                <div className={styles.cc}>
+                  {reviewDetail.reviewBoard_doctor}
+                </div>
+              </div>
+              <div className={styles.a}>
+                <div className={styles.tt}>지역</div>
+                <div className={styles.cc}>
+                  {reviewDetail.reviewBoard_region}
+                </div>
+              </div>
+            </div>
+            <div className={styles.bottom}>
+              <div className={styles.p}>
+                상담 견적가 : <em>{reviewDetail.reviewBoard_expected_price}</em>
+                원
+              </div>
+              <div className={styles.p}>
+                실제 시술가 : <em>{reviewDetail.reviewBoard_surgery_price}</em>
+                원
+              </div>
+            </div>
+          </div>
         </div>
-        <div className={styles.maincenter}>
+        <div className={styles.right}>
           <div className={styles.imgcon}>
             {img ? (
               <img src={img} alt="글 사진" className={styles.reviewImage} />
@@ -102,11 +125,32 @@ function ReviewDetail() {
               <div>이미지 없음</div>
             )}
           </div>
-          <div>내용: {reviewDetail.reviewBoard_content}</div>
+
+          <div className={styles.content}>
+            {reviewDetail.reviewBoard_content}
+          </div>
           <div className={styles.star}>
             <StarResult score={reviewDetail.reviewBoard_score} />
           </div>
+        </div>
+      </div>
+      <div className={styles.buttonbox}>
+        <div>
           <Report reviewBoard_seq={reviewBoard_seq} />
+        </div>
+        <div>
+          {showButton && canEditOrDelete && (
+            <div className={styles.bb}>
+              <button
+                className={styles.update}
+                onClick={onReviewUpdate}
+              ></button>
+              <ReviewDelete
+                reviewBoard_seq={reviewBoard_seq}
+                onUpdated={onReviewDeleted}
+              ></ReviewDelete>
+            </div>
+          )}
         </div>
       </div>
     </div>
