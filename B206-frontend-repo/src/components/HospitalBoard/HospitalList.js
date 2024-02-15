@@ -7,6 +7,8 @@ import styled from "@emotion/styled";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { FaStar, FaStarHalf, FaRegStar } from "react-icons/fa";
 import { css } from "@emotion/react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const HospitalList = () => {
   const [hospitalInfo, setHospitalInfo] = useState([]);
@@ -37,35 +39,11 @@ const HospitalList = () => {
     navigate(`/hospital-info/detail/${hospital_seq}`);
   };
 
-  const StyledStar = styled.span`
-    cursor: pointer;
-    font-size: 1.5rem;
-    color: orange;
-    position: relative;
-
-    ${({ isHalf }) =>
-      isHalf &&
-      css`
-        width: 12px;
-        overflow: hidden;
-
-        &:nth-of-type(10) {
-          transform: translate(-108px);
-        }
-        &:nth-of-type(8) {
-          transform: translate(-84px);
-        }
-        &:nth-of-type(6) {
-          transform: translate(-60px);
-        }
-        &:nth-of-type(4) {
-          transform: translate(-36px);
-        }
-        &:nth-of-type(2) {
-          transform: translate(-12px);
-        }
-      `}
-  `;
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
+  });
 
   return (
     <>
@@ -79,7 +57,11 @@ const HospitalList = () => {
       </div>
       <div>
         {hospitalInfo.map((hospital) => (
-          <li key={hospital.hospitalInfo_seq} className={styles.hospitalItem}>
+          <li
+            key={hospital.hospitalInfo_seq}
+            className={styles.hospitalItem}
+            data-aos="fade-up"
+          >
             <div>
               {/* <img src={profile} alt="프로필" className={styles.profile} /> */}
               {hospital.img && (

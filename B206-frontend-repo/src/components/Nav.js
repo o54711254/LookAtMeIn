@@ -91,6 +91,9 @@ className={`${styles.navbar} ${isScrolled ? styles.navbarScrolled : ""}`}
               <Link to="/worldcup" className={styles.menu}>
                 이상향 월드컵
               </Link>
+              <Link to="/canvas" className={styles.menu}>
+                얼굴 성형
+              </Link>
             </div>
           )}
         </div>

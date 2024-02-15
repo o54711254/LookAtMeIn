@@ -1,71 +1,83 @@
 import React, { useEffect, useState } from "react";
 import axiosApi from "../../../../api/axiosApi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import profile from "../../../../assets/gun.png";
+import profile from "../../../../assets/profile2.png";
 import styles from "./ReviewList.module.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-// axios 완료
 function ConsultRequestList() {
-  const [requestBoardList, setRequestBoardList] = useState([]);
-  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
+  const [requestBoardList, setRequestBoardList] = useState([]);
   useEffect(() => {
     axiosApi
-      .get(`/api/mypage/request/${user.userSeq}`)
-      .then((res) => {
-        console.log(res.data);
-        setRequestBoardList(res.data);
-        console(requestBoardList);
+      .get(`api/mypage/myrequest/${user.userSeq}`)
+      .then((response) => {
+        console.log(response.data);
+        const sortedData = response.data.sort(
+          (a, b) => new Date(b.requestboardSeq) - new Date(a.requestboardSeq)
+        );
+        setRequestBoardList(sortedData);
       })
       .catch((error) => {
-        console.log("시술 후기 데이터를 가져오는데 실패했습니다.", error);
+        console.log("상담요청게시판 불러오기 에러: ", error);
       });
   }, []);
+
+  const goDetailPage = (requestboardSeq) => {
+    if (requestboardSeq) {
+      navigate(`/requestBoard/requestBoardList/${requestboardSeq}`);
+    } else {
+      console.log("requestBoardSeq is undefined");
+    }
+  };
 
   useEffect(() => {
     AOS.init({
       duration: 200,
     });
   });
-
-  const handleClick = (reviewBoard_seq) => {
-    navigate(`/requestBoard/requestBoardList/${reviewBoard_seq}`);
-  };
-
   return (
-    <div>
-      {requestBoardList.length >= 0 ? (
-        <div>
-          {requestBoardList.map((board) => (
-            <div
-              key={board.requestBoard_seq}
-              onClick={() => handleClick(board.requestBoard_seq)}
-              className={styles.requestItem}
-              data-aos="fade-up"
-            >
-              <div>
-                <img src={profile} alt="프로필" className={styles.profile} />
-              </div>
-              <div className={styles.writer}>
-                <div>{board.customer_name}</div>
-              </div>
-              <div className={styles.title}>
-                <div>{board.reviewBoard_title}</div>
-              </div>
-              <div className={styles.price}>
-                시술가 : {board.reviewBoard_price} 원
-              </div>
-            </div>
-          ))}
+    <>
+      <div className={styles.boardhead}>
+        <div className={styles.headtitle}>
+          <p>상담요청 게시판</p>
         </div>
-      ) : (
-        <div>작성한 시술 후기가 없습니다.</div>
-      )}
-    </div>
+        <div className={styles.headtext}>
+          <p>전문가에게 상담을 요청하세요</p>
+        </div>
+      </div>
+      <div>
+        {requestBoardList.map((board, index) => (
+          <li
+            key={index}
+            onClick={() => goDetailPage(board.seq)}
+            className={styles.reviewItem}
+            data-aos="fade-up"
+          >
+            <div className={styles.index}>No. {index + 1}</div>
+            <div>
+              <img src={profile} alt="프로필" className={styles.profile} />
+            </div>
+            {/* <div>No. {index + 1}</div> */}
+            <div className={styles.writer}>
+              <div>{board.userName}</div>
+            </div>
+            <div className={styles.title}>
+              <div>{board.title}</div>
+            </div>
+
+            {/* <div>댓글 수: {board.comment_cnt}</div> */}
+            {/* <div className={styles.cnt}>{board.freeboardCnt}</div> */}
+            <div className={styles.date}>{board.regDate}</div>
+          </li>
+        ))}
+      </div>
+    </>
   );
 }
 export default ConsultRequestList;

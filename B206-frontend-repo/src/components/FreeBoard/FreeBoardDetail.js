@@ -60,16 +60,11 @@ function FreeBoardDetail() {
   return (
     <div className={styles.FreeBoardContainer}>
       <div className={styles.Head}>
-        <div className={styles.writer}>
-          <img src={profileImg} alt="프로필" className={styles.profileImg} />
-          <div className={styles.idEmail}>
+        <img src={profileImg} className={styles.profileImg} />
+        <div className={styles.headBox}>
+          <div className={styles.headInfo1}>
             <div className={styles.userId}>{post.userId}</div>
-            <div className={styles.email}>{post.userEmail}</div>
-          </div>
-        </div>
-        <div className={styles.buttons}>
-          {canEditOrDelete && (
-            <div className={styles.bb}>
+            <div className={styles.buttons}>
               <FreeBoardUpdate
                 freeboardContent={post.freeboardContent}
                 freeboardTitle={post.freeboardTitle}
@@ -77,22 +72,24 @@ function FreeBoardDetail() {
               />
               <FreeBoardDelete freeBoardSeq={freeboardSeq} />
             </div>
-          )}
-        </div>
-      </div>
-      <div className={styles.main}>
-        <div className={styles.title}>{post.freeboardTitle}</div>
-        <div className={styles.contents}>
-          {/* <img src={img} alt="게시글 이미지" /> */}
-          {img && (
-            <img src={img} alt="게시글 이미지" className={styles.contentImg} />
-          )}
-          <div className={styles.contentText}>
-            <div>{post.freeboardContent}</div>
+          </div>
+          <div className={styles.headInfo2}>
+            <div>{post.userEmail}</div>
+            <div>작성 날짜: {post.freeboardRegisterdate}</div>
           </div>
         </div>
       </div>
-      {/* <div className={styles.horizon} /> */}
+      <div className={styles.title}>{post.freeboardTitle}</div>
+      <div className={styles.contents}>
+        {/* <img src={img} alt="게시글 이미지" /> */}
+        {img && (
+          <img src={img} alt="게시글 이미지" className={styles.contentImg} />
+        )}
+        <div className={styles.horizon} />
+        <div className={styles.contentText}>
+          <div>{post.freeboardContent}</div>
+        </div>
+      </div>
       {/* <div>해시태그: {post.hashTag}</div> */}
 
       <Comment comments={post.comments} freeboardSeq={post.freeboardSeq} />
