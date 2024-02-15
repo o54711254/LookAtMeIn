@@ -1,0 +1,18 @@
+.btn {
+  width: 130px;
+  height: 60px;
+  padding: 10px 20px;
+  background-color: #ffdbc6; /* 호버시 배경색 변경 */
+  color: #2a2a2a; /* 기본 글자색 */
+  font-weight: 700;
+  border: 0;
+  border-radius: 16px; /* 둥근 모서리 */
+  cursor: pointer; /* 마우스 오버시 커서 변경 */
+  transition: all 0.3s ease; /* 부드러운 색상 전환 효과 */
+  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.15);
+  font-size: auto;
+}
+.btn:hover {
+  background-color: #fdb788; /* 기본 배경색 */
+  text-decoration: none;
+}
