@@ -1,16 +1,19 @@
 import React from "react";
-import axios from "axios";
 import Button from "@mui/material/Button";
+import axiosApi from "../../api/axiosApi";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ReviewDelete({ reviewBoard_seq, onUpdated }) {
+  const navigate = useNavigate();
   const handleUpdate = () => {
     console.log(reviewBoard_seq);
-    axios
+    axiosApi
       .put(`/api/reviewBoard/delete/${reviewBoard_seq}`, {
         requestBoard_complain: true,
       })
       .then((response) => {
         console.log("Complain flag updated:", response.data);
+        navigate("/reviewBoard/list");
         onUpdated(); // 상위 컴포넌트의 업데이트 처리 콜백
       })
       .catch((error) => {

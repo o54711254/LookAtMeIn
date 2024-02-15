@@ -17,14 +17,13 @@ public class ReserveRequestDto {
     private String dayofweek;
     private int time;
     private long customerUserSeq;
-    private long hospitalUserSeq;
+    private long hospitalSeq;
 
     private int price;
     private String content;
-    private boolean questionnaired;
 
     @Builder
-    public ReserveRequestDto(Long reserveSeq, int year, int month, int day, String dayofweek, int time, long customerUserSeq, long hospitalUserSeq, int price, String content, boolean questionnaired) {
+    public ReserveRequestDto(Long reserveSeq, int year, int month, int day, String dayofweek, int time, long customerUserSeq, long hospitalSeq, int price, String content, boolean questionnaired) {
         this.reserveSeq = reserveSeq;
         this.year = year;
         this.month = month;
@@ -32,10 +31,10 @@ public class ReserveRequestDto {
         this.dayofweek = dayofweek;
         this.time = time;
         this.customerUserSeq = customerUserSeq;
-        this.hospitalUserSeq = hospitalUserSeq;
+        this.hospitalSeq = hospitalSeq;
         this.price = price;
         this.content = content;
-        this.questionnaired = questionnaired;
+        
     }
 
     public Reserve toEntity(User customer, User hospital) {

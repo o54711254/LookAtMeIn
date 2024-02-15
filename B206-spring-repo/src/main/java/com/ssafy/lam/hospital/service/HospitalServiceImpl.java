@@ -78,7 +78,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .build();
             hospitalCategoryRepository.save(hospitalCategoryEntity);
         }
-        return hospital;
+        return hospital;    
     }
     @Override
     public HospitalDto getHospital(long userSeq) {
