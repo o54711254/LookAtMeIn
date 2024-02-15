@@ -173,8 +173,7 @@ const Canvas = ()=>{
         formData.append("customerId", "userId"); // 고객 아이디
         formData.append("file", file) // 업로드한 이미지, 서버쪽에 "file"이라는 이름으로 file 객체가 전송된다
   
-        // const points = JSON.stringify(maskPoints)
-        // formData.append("sketch_points", points) // 그린 그림의 좌표
+        
         const points = {}
         points["mask_points"] = JSON.stringify(maskPoints);
         points["sketch_points"] = JSON.stringify(sketchPoints);
@@ -229,11 +228,7 @@ const Canvas = ()=>{
                 }
             
             })
-            // const response = await axios.post("http://localhost:80/api/canvas/save", formData,{
-            //     headers:{
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // })
+            
                       
             
             console.log(response)
