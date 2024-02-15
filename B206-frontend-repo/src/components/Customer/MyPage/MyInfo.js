@@ -25,6 +25,7 @@ function MyInfo() {
         setInfoData(res.data);
         const base64 = res.data.base64;
         const type = res.data.type;
+        
         if (base64) {
           const data = `data:${type};base64,${base64}`;
           setProfileImg(data);

@@ -11,15 +11,22 @@ import { css } from "@emotion/react";
 const HospitalList = () => {
   const [hospitalInfo, setHospitalInfo] = useState([]);
   const [category, setCategory] = useState(null);
+  const [profileImg, setProfileImg] = useState(profile);
   const navigate = useNavigate();
 
   useEffect(() => {
     axiosApi
       .get(`/api/hospital-info/list`) // API 엔드포인트를 적절한 URL로 변경해주세요.
       .then((response) => {
-        console.log(response.data);
+        console.log("response.data:", response.data);
+       
+       
         setHospitalInfo(response.data);
-      })
+        
+        
+    
+        
+        })
       .catch((error) => {
         console.error("병원 정보 리스트 조회 에러 : ", error);
       });
@@ -73,7 +80,11 @@ const HospitalList = () => {
         {hospitalInfo.map((hospital) => (
           <li key={hospital.hospitalInfo_seq} className={styles.hospitalItem}>
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              <img src={
+                
+                profileImg == null ? profile : `data:${hospital.profileType};base64,${hospital.profileBase64}`
+                
+                } alt="프로필" className={styles.profile} />
             </div>
             <div
               className={styles.hosInfo}

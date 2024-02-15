@@ -23,6 +23,8 @@ function HospitalInfo() {
         setInfoData(res.data);
         const base64 = res.data.hospitalProfileBase64;
         const type = res.data.hospitalProfileType;
+        const profileImg = res.data.profileImg;
+        console.log("profileImg", profileImg);
         if (base64) {
           const data = `data:${type};base64,${base64}`;
           setProfileImg(data);
