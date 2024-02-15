@@ -7,6 +7,7 @@ import FreeBoardUpdate from "./FreeBoardUpdate";
 import Comment from "../Comment/Comment";
 import styles from "./FreeBoardDetail.module.css";
 import profile from "../../assets/profile2.png";
+import { useSelector } from "react-redux";
 
 function FreeBoardDetail() {
   const [post, setPost] = useState(null);
@@ -14,6 +15,10 @@ function FreeBoardDetail() {
   const [profileImg, setProfileImg] = useState(null);
   const { freeboardSeq } = useParams();
   const navigate = useNavigate();
+  const userRole = useSelector((state) => state.user.role);
+  const userSeq = useSelector((state) => state.user.userSeq);
+
+  const canEditOrDelete = userRole === "ADMIN" || userSeq === post.user_seq;
 
   useEffect(() => {
     const fetchPost = async () => {

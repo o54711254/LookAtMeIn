@@ -6,6 +6,8 @@ import RequestBoardRegist from "./RequestRegist";
 import axiosApi from "../../api/axiosApi";
 import styles from "./RequestBoardList.module.css";
 import profile from "../../assets/gun.png";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function RequestBoardList() {
   const navigate = useNavigate();
@@ -35,6 +37,12 @@ function RequestBoardList() {
       console.log("requestBoardSeq is undefined");
     }
   };
+
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
+  });
   return (
     <>
       <div className={styles.boardhead}>
@@ -51,6 +59,7 @@ function RequestBoardList() {
             key={index}
             onClick={() => goDetailPage(board.seq)}
             className={styles.reviewItem}
+            data-aos="fade-up"
           >
             <div className={styles.index}>No. {index + 1}</div>
             <div>

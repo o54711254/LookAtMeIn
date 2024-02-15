@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "./ReviewList.module.css";
 import profile from "../../assets/profile2.png";
 // import viewCnt from "../../assets/viewCnt.png";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 // axios 완료d
 
@@ -36,6 +38,12 @@ function ReviewList() {
     navigate("/reviewregist");
   };
 
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
+  });
+
   return (
     <div>
       <div className={styles.boardhead}>
@@ -52,6 +60,7 @@ function ReviewList() {
             key={board.reviewBoard_seq}
             onClick={() => handleClick(board.reviewBoard_seq)}
             className={styles.reviewItem}
+            data-aos="fade-up"
           >
             <div>
               {/* <img src={profile} alt="프로필" className={styles.profile} /> */}

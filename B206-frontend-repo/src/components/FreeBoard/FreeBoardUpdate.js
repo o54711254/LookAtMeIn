@@ -19,8 +19,8 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [post, setPost] = React.useState({
-    freeBoard_title: freeboardTitle,
-    freeBoard_content: freeboardContent,
+    freeboardTitle: freeboardTitle,
+    freeboardContent: freeboardContent,
     user_seq: user.userSeq,
   });
 
@@ -45,7 +45,6 @@ function FreeBoardUpdate({ freeboardTitle, freeboardContent, freeboardSeq }) {
     });
 
     try {
-      //희수오빠가 freeboradseq 넘겨주면 뒤에 추가하기
       const response = await axiosApi.put(
         `/api/freeBoard/update/${freeboardSeq}`,
         formData,
