@@ -105,11 +105,14 @@ public class ReserveServiceImpl implements ReserveService {
     @Transactional
     public Reserve saveReserve(ReserveRequestDto dto) {
         log.info("ReserveSaveRequestDto : {}", dto);
+        log.info("고객 번호: {}", dto.getCustomerUserSeq());
         User customerUser = userRepository.findById(dto.getCustomerUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getCustomerUserSeq()));
-
-        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalUserSeq())
-                .orElseThrow(() -> new IllegalArgumentException("없는 유저임 : " + dto.getHospitalUserSeq()));
+        log.info("병원 번호: {}", dto.getHospitalSeq());
+        Hospital hospitalUser = hospitalRepository.findById(dto.getHospitalSeq())
+                .orElseThrow(() -> new IllegalArgumentException("없는 병원임 : " + dto.getHospitalSeq()));
+        log.info("customerUser : {}", customerUser.getUserId());
+        log.info("hospitalUser : {}", hospitalUser.getUser().getUserId());
 
         if (customerUser.getUserType().equals("CUSTOMER") && hospitalUser.getUser().getUserType().equals("HOSPITAL")) {
             Reserve reserve = dto.toEntity(customerUser, hospitalUser.getUser());
@@ -156,7 +159,7 @@ public class ReserveServiceImpl implements ReserveService {
                     .build();
 
             User hospital = User.builder()
-                    .userSeq(reserveRequestDto.getHospitalUserSeq())
+                    .userSeq(reserveRequestDto.getHospitalSeq())
                     .build();
 
             UploadFile beforeFile =  uploadFileService.store(beforeImg);

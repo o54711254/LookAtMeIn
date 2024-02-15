@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface HospitalRepository extends JpaRepository<Hospital, Long>, QuerydslPredicateExecutor<Hospital> {
     Optional<Hospital> findByUserUserSeq(Long userSeq);
     List<Hospital> findAllByUserUserSeq(Long userSeq);
-    List<Hospital> findAllByIsApprovedFalse();
+    List<Hospital> findAllByIsApprovedFalseAndIsRejectedFalse();
     List<Hospital> findByIsApprovedTrue();
     @Query(value = "select r from ReviewBoard r where r.hospital = (select u.name from User u where u.userSeq = :userSeq)")
     List<ReviewBoard> findReviewsByUserSeq(@Param("userSeq") Long userSeq);
