@@ -10,6 +10,7 @@ import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.dto.HospitalDto;
 import com.ssafy.lam.hospital.service.HospitalService;
 import com.ssafy.lam.requestboard.dto.NotificationDto;
+import com.ssafy.lam.requestboard.dto.RequestDto;
 import com.ssafy.lam.requestboard.dto.ResponseDto;
 import com.ssafy.lam.requestboard.service.RequestBoardService;
 import com.ssafy.lam.reserve.dto.ReserveResponseDto;
@@ -122,6 +123,13 @@ public class MypageController {
     public ResponseEntity<?> getResponse(@PathVariable long userSeq) {
         List<ResponseDto> responseDtos = requestBoardService.findAllresponse(userSeq);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/myrequest/{userSeq}")
+    @Operation(summary = "고객이 작성한 상담 요청 게시판 목록")
+    public ResponseEntity<?> getRequest(@PathVariable long userSeq) {
+        List<RequestDto> requestDtos = requestBoardService.findAllRequestByUser(userSeq);
+        return new ResponseEntity<>(requestDtos, HttpStatus.OK);
     }
 
     @GetMapping("/notifications/{userSeq}")
