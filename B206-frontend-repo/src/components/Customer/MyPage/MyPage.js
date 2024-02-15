@@ -21,8 +21,8 @@ function MyPage() {
   const user = useSelector((state) => state.user);
   const customer = useSelector((state) => state.customer);
   useEffect(() => {
-    console.log(user);
-    console.log("customer", customer);
+    console.log("user: ", user);
+    // console.log("customer", customer);
   });
   return (
     <div className={styles.mypageContainer}>
