@@ -1,0 +1,123 @@
+.surgeryContainer{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgba(239, 232, 222, 0.2);
+    width: 100%;
+    padding: 30px;
+    border-radius: 20px;
+    justify-content: center;
+}
+.head{
+    padding: 20px;
+    background-color: rgba(254, 202, 171, 0.38);
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 80px;
+}
+.title{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.content{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.5);
+}
+.surgeryBox{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.buttonContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.buttonBox{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.button {
+    padding: 10px 20px;
+    background-color: #ffdbc6; /* 호버시 배경색 변경 */
+    color: #333; /* 기본 글자색 */
+    font-size: 15px;
+    font-weight: 700;
+    width: 100%;
+    border: 2px solid #ffffff; /* 기본 테두리 */
+    border-radius: 20px; /* 둥근 모서리 */
+    cursor: pointer; /* 마우스 오버시 커서 변경 */
+    transition: all 0.3s ease; /* 부드러운 색상 전환 효과 */
+}
+
+.button:hover {
+    background-color: #fdb788; /* 기본 배경색 */
+    text-decoration: none;
+    border: 0;
+}
+
+.buttonBox2{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.button2 {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    background-color: #ffdbc6;
+    height: 40px;
+    width: 100%;
+    border: 0;
+    border-radius: 20px;
+    font-size: 23px;
+    font-weight: 600;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  .button2:hover {
+    background-color: #f8b195;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+  .plusButton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    border: 2px solid;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .plusButton:hover{
+    background-color: #e6e2e2;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+  }
+  .plusImg{
+    width: 7%;
+  }
+  .color{
+    border: 0;
+    border-radius: 50%;
+  }
