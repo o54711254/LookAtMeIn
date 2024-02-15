@@ -1,8 +1,9 @@
 import React, {useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
-
+import styles from "./Canvas.module.css";
 import axiosApi from '../../api/axiosApi';
+import plus from "../../assets/plus.png";
 
 const Canvas = ()=>{
     /**
@@ -36,7 +37,10 @@ const Canvas = ()=>{
 
     const [mode, setMode] = useState("mask")
     const [file, setFile] = useState(null)
-    const [surgeryImg, setSurgeryImg] = useState('')    
+    const [surgeryImg, setSurgeryImg] = useState('')   
+    
+    const fileInputRef = useRef(null);
+    
     // 사진에 그림 그리는 부분
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -182,20 +186,20 @@ const Canvas = ()=>{
         // console.log("points: ", points)
         formData.append("points", JSON.stringify(points))
         try{
-            // const python_server_url = "https://lookatmein.duckdns.org/python/send/points"
+            const python_server_url = "https://lookatmein.duckdns.org/python/send/points"
             
-            // // const python_server_url = "http://localhost:8000/api/send/points"
-            // const response = await axios.post(python_server_url, formData,{
-            //     headers:{
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // })
-
-            const response = await axiosApi.post("/python/send/points", formData,{
+            // const python_server_url = "http://localhost:8000/api/send/points"
+            const response = await axios.post(python_server_url, formData,{
                 headers:{
                     'Content-Type': 'multipart/form-data'
                 }
             })
+
+            // const response = await axiosApi.post("/python/send/points", formData,{
+            //     headers:{
+            //         'Content-Type': 'multipart/form-data'
+            //     }
+            // })
             
             const base64 = response.data.base64
             const type = response.data.type
@@ -236,62 +240,73 @@ const Canvas = ()=>{
             console.error("저장 오류: ", error)
         }
     }
-    const clearCanvas = () => {
-        const canvas = canvasRef.current;
-        const context = canvas.getContext('2d');
-        // 캔버스의 전체 영역을 지우는 대신, 그림을 그리는 영역만 지웁니다.
-        context.clearRect(0, 0, canvas.width, canvas.height);
-    
-        // 그린 선들의 데이터를 초기화합니다.
-        setMaskPoints([]);
-        setSketchPoints([]);
-        setMaskLines([]);
-        setSketchLines([]);
-    
-        // 업로드한 이미지가 있다면 캔버스에 다시 그립니다.
-        if (image) {
-            const img = new Image();
-            img.onload = () => {
-                context.drawImage(img, 0, 0, canvas.width, canvas.height);
-            };
-            img.src = image;
-        }
-    };
+
 
     const handleColorPickerChange = (event) => {
         setPenColor(event.target.value); // 사용자가 선택한 색상으로 펜 색상 상태 업데이트
         setMode("color")
     };
 
+    const handlePlusClick = ()=>{
+        fileInputRef.current.click();
+    }
+
     return (
-        <div style={{backgroundColor :'black'}}>
-            <canvas
-                ref={canvasRef}
-                width={512}
-                height={512}
-                onMouseDown={startDrawing}
-                onMouseUp={stopDrawing}
-                onMouseMove={draw}
-            />    
-            <button onClick={()=>setMode("mask")}>mask</button>
-            <button onClick={()=>setMode("sketch")}>sketch</button>
-            <button onClick={clearCanvas}>clear</button>
-             <button onClick={complete}>complete</button>
-             <input 
-                    type="color" 
-                    value={penColor} 
-                    onChange={handleColorPickerChange} 
-                    style={{ marginLeft: '10px' }}
-            />
-             {surgeryImg && <img src={surgeryImg} alt="surgeryImg" />}
-             {/* 저장 버튼은 나중에 지워야함. 상담 화면에서 종료 버튼 누르면 이미지가 DB에 저장 */}
-             <button onClick={save}>저장</button> 
-            <div>
-                <input type="file" onChange={handleFileChange} accept="image/*" />
+        <div className={styles.surgeryContainer}>
+            <div className={styles.head}>
+                <div className={styles.title}>얼굴 성형</div>
+                <div className={styles.content}>
+                    인공지능 얼굴 성형 기능을 통해 원하는 모습을 미리 경험하세요
+                </div>
             </div>
+
+            <div className={styles.surgeryBox}>
+                <canvas ref={canvasRef}
+                        width={512}
+                        height={512}
+                        onMouseDown={startDrawing}
+                        onMouseMove={draw}
+                        onMouseUp={stopDrawing}
+                />
+                {surgeryImg && <img src={surgeryImg} alt="surgeryImg"/>}
+            </div>
+
+            <div className={styles.buttonContainer}>
+                <input 
+                    type="file" 
+                    onChange={handleFileChange}
+                    accept="image/*"
+                    style={{display: 'none'}}
+                    ref={fileInputRef}
+                />
+
+                {!image && (
+                    <div className={styles.plusButton} onClick={handlePlusClick}>
+                        <img src={plus} alt="Upload" className={styles.plusImg}/>
+                    </div>
+                )}
+
+                <input
+                    type="color"
+                    value={penColor}
+                    onChange={handleColorPickerChange}
+                    className={styles.color}
+                />
+
+                <div className={styles.buttonBox}>
+                    <button onClick={()=>setMode("mask")} className={styles.button}>지우기</button>
+                    <button onClick={()=>setMode("sketch")} className={styles.button}>그리기</button>
+                </div>
+
+                <div className={styles.buttonBox2}>
+                    <button onClick={complete} className={styles.button2}>완료</button>
+                    <button onClick={save} className={styles.button2}>
+                        저장
+                    </button>
+                </div>
+            </div>
+
         </div>
-          
-        
     );
 }
 export default Canvas;
