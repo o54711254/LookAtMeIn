@@ -2,6 +2,7 @@ import React from "react";
 import Button from "@mui/material/Button";
 import axiosApi from "../../api/axiosApi";
 import { useNavigate, useParams } from "react-router-dom";
+import styles from "./ReviewDelete.module.css";
 
 function ReviewDelete({ reviewBoard_seq, onUpdated }) {
   const navigate = useNavigate();
