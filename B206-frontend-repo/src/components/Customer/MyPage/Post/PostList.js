@@ -4,6 +4,8 @@ import styles from "./PostList.module.css";
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../../../../api/axiosApi";
 import profile from "../../../../assets/gun.png";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 function PostList() {
   const [postList, setPostList] = useState([]);
@@ -32,6 +34,11 @@ function PostList() {
       console.log("freeBoardSeq is undefined");
     }
   };
+  useEffect(() => {
+    AOS.init({
+      duration: 200,
+    });
+  });
 
   return (
     <div>
@@ -42,6 +49,7 @@ function PostList() {
               key={index}
               onClick={() => goDetailPage(board.freeboardSeq)}
               className={styles.reviewItem}
+              data-aos="fade-up"
             >
               <div>No. {index}</div>
               <div>

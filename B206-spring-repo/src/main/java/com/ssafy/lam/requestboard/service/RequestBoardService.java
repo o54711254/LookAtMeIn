@@ -99,6 +99,37 @@ public class RequestBoardService {
                 .collect(Collectors.toList());
     }
 
+    public List<RequestDto> findAllRequestByUser(Long userSeq) {
+        List<Requestboard> requestboardList = requestboardRepository.findAllByUserUserSeqAndIsDeletedFalse(userSeq);
+        List<RequestDto> requestDtoList = new ArrayList<>();
+        for(Requestboard r : requestboardList) {
+            List<Surgery> surgeries = r.getSurgeries();
+            List<SurgeryDto> surgeryDtos = new ArrayList<>();
+            for(Surgery s : surgeries) {
+                surgeryDtos.add(SurgeryDto.builder()
+                            .seq(s.getSeq())
+                            .part(s.getPart())
+                            .type(s.getType())
+                            .regDate(s.getRegDate())
+                            .isDeleted(s.isDeleted())
+                        .build());
+            }
+
+            requestDtoList.add(RequestDto.builder()
+                            .seq(r.getSeq())
+                            .title(r.getTitle())
+                            .content(r.getContent())
+                            .userSeq(r.getUser().getUserSeq())
+                            .userName(r.getUser().getName())
+                            .regDate(r.getRegDate())
+                            .cnt(r.getCnt())
+                            .isDeleted(r.isDeleted())
+                            .surgeries(surgeryDtos)
+                    .build());
+        }
+        return requestDtoList;
+    }
+
     public RequestResponDto toRequestResponDto(Requestboard requestboard) {
         Customer customer = customerRepository.findByUserUserSeq(requestboard.getUser().getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
