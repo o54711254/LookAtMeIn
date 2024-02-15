@@ -18,8 +18,7 @@ function FreeBoardDetail() {
   const userRole = useSelector((state) => state.user.role);
   const userSeq = useSelector((state) => state.user.userSeq);
 
-  const canEditOrDelete =
-    userRole === "ADMIN" || userSeq === reviewDetail.user_seq;
+  const canEditOrDelete = userRole === "ADMIN" || userSeq === post.user_seq;
 
   useEffect(() => {
     const fetchPost = async () => {
