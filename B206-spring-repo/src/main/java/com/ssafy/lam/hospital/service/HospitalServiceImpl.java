@@ -222,7 +222,7 @@ public class HospitalServiceImpl implements HospitalService {
                     .userSeq(hospital.getUser().getUserSeq())
                     .hospitalInfo_avgScore(avgScore)
                     .hospitalInfo_cntReviews(hospitalRepository.countByHospitalSeq(hospitalSeq))
-                    .hospitalInfo_isLiked(favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeqAndIsLikedTrue(hospitalSeq, userSeq).isLiked())
+                    .hospitalInfo_isLiked(favoritesRepository.findFavoritesByUserSeqAndHospitalSeqAndIsLikedTrue(hospitalSeq, userSeq).isLiked())
                     .build();
             return hospitalDetailDto;
         } else {
