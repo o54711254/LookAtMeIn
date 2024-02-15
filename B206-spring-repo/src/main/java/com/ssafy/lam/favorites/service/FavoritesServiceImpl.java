@@ -1,11 +1,13 @@
 package com.ssafy.lam.favorites.service;
 
+
+
 import com.ssafy.lam.favorites.domain.Favorites;
 import com.ssafy.lam.favorites.domain.FavoritesRepository;
 import com.ssafy.lam.favorites.dto.FavoritesRequestDto;
-import com.ssafy.lam.freeboard.service.FreeboardServiceImpl;
 import com.ssafy.lam.hospital.domain.Hospital;
 import com.ssafy.lam.hospital.domain.HospitalRepository;
+import com.ssafy.lam.reserve.service.ReserveServiceImpl;
 import com.ssafy.lam.user.domain.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +24,8 @@ public class FavoritesServiceImpl implements FavoritesService {
     UserRepository userRepository;
     HospitalRepository hospitalRepository;
 
+    private Logger log = LoggerFactory.getLogger(ReserveServiceImpl.class);
+
     @Autowired
     public FavoritesServiceImpl(FavoritesRepository favoritesRepository, UserRepository userRepository, HospitalRepository hospitalRepository) {
         this.favoritesRepository = favoritesRepository;
@@ -31,11 +35,11 @@ public class FavoritesServiceImpl implements FavoritesService {
 
     @Override
     public List<Hospital> getAllFavorites(Long userSeq) {
-        List<Favorites> favoritesList = favoritesRepository.findAllByUserUserSeqAndIsLikedTrue(userSeq).orElse(null);
+        List<Favorites> favoritesList = favoritesRepository.findAllByUserSeqAndIsLikedTrue(userSeq).orElse(null);
         List<Hospital> hospitalList = new ArrayList<>();
         if(favoritesList != null) {
             for(Favorites f : favoritesList) {
-                Long hospitalSeq = f.getHospital().getHospitalSeq();
+                Long hospitalSeq = f.getHospitalSeq();
                 hospitalList.add(hospitalRepository.findById(hospitalSeq).orElse(null));
             }
         }
@@ -46,22 +50,22 @@ public class FavoritesServiceImpl implements FavoritesService {
     public Favorites addFavorites(FavoritesRequestDto favoritesRequestDto) {
         Long userSeq = favoritesRequestDto.getUserSeq();
         Long hospitalSeq = favoritesRequestDto.getHospitalSeq();
-        Favorites favorites = favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeq(userSeq, hospitalSeq);
+        Favorites favorites = favoritesRepository.findFavoritesByUserSeqAndHospitalSeq(userSeq, hospitalSeq);
         if(favorites==null) { // 고객이 찜한 적이 없는 병원인 경우 - 새로 고객과 병원 연결 후 추가
-            favorites = Favorites.builder()
-                .user(userRepository.findById(userSeq).orElse(null))
-                .hospital(hospitalRepository.findById(hospitalSeq).orElse(null))
-                .isLiked(true)
-                .build();
+            Favorites newFavorites = Favorites.builder()
+                    .userSeq(userSeq)
+                    .hospitalSeq(hospitalSeq)
+                    .isLiked(true)
+                    .build();
+            log.info("새 찜 정보: {}", newFavorites);
+            favoritesRepository.save(newFavorites);
         }
         else {
-            favorites = Favorites.builder() // 고객이 과거에 찜한 적이 있는 병원인 경우 - 이미 있는 찜을 불러온 후 isLiked = True로 update
-                    .seq(favorites.getSeq())
-                    .user(favorites.getUser())
-                    .hospital(favorites.getHospital())
-                    .isLiked(true).build();
+            log.info("과거에 찜한 적이 있습니다.");
+            // 고객이 과거에 찜한 적이 있는 병원인 경우 - 이미 있는 찜을 불러온 후 isLiked = True로 update
+            favorites.setLike(true);
+            favoritesRepository.save(favorites);
         }
-        favoritesRepository.save(favorites);
         return favorites;
     }
 
@@ -69,13 +73,9 @@ public class FavoritesServiceImpl implements FavoritesService {
     public Favorites deleteFavorites(FavoritesRequestDto favoritesRequestDto) {
         Long userSeq = favoritesRequestDto.getUserSeq();
         Long hospitalSeq = favoritesRequestDto.getHospitalSeq();
-        Favorites favorites = favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeqAndIsLikedTrue(userSeq, hospitalSeq);
+        Favorites favorites = favoritesRepository.findFavoritesByUserSeqAndHospitalSeqAndIsLikedTrue(userSeq, hospitalSeq);
         if(favorites!=null) {
-            favorites = Favorites.builder()
-                    .seq(favorites.getSeq())
-                    .user(favorites.getUser())
-                    .hospital(favorites.getHospital())
-                    .isLiked(false).build();
+            favorites.setLike(false);
             favoritesRepository.save(favorites);
         }
         return favorites;
@@ -83,7 +83,7 @@ public class FavoritesServiceImpl implements FavoritesService {
 
     @Override
     public Boolean isHospitalFavorite(Long userSeq, Long hospitalSeq) {
-        Favorites favorites = favoritesRepository.findFavoritesByUserUserSeqAndHospitalHospitalSeqAndIsLikedTrue(userSeq, hospitalSeq);
+        Favorites favorites = favoritesRepository.findFavoritesByUserSeqAndHospitalSeqAndIsLikedTrue(userSeq, hospitalSeq);
         if(favorites!=null)
             return true;
         else

@@ -66,6 +66,7 @@ public class HospitalInfoController {
                         .userSeq(h.getUser().getUserSeq())
                         .hospitalInfo_avgScore(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_avgScore())
                         .hospitalInfo_cntReviews(hospitalService.getHospitalInfo(h.getHospitalSeq()).getHospitalInfo_cntReviews())
+                        .hospitalInfo_category(hospitalService.getHospital(h.getUser().getUserSeq()).getHospitalInfo_category())
                         .build();
                 if(h.getProfileFile() != null) {
                     // 병원 등록증 base64로 인코딩해서 보내줘야함
@@ -74,16 +75,18 @@ public class HospitalInfoController {
                         String profileBase64 = EncodeFile.encodeFileToBase64(path);
                         hospitalDetailDto.setProfileBase64(profileBase64);
 
-                    }catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    hospitalDetailDto.setProfileType(h.getProfileFile().getType());
+
+                }catch (Exception e) {
+                    e.printStackTrace();
                 }
-
-
-                log.info("병원 정보: " + hospitalDetailDto);
-
-                hospitalDetailDtoList.add(hospitalDetailDto);
             }
+
+
+            log.info("병원 정보: " + hospitalDetailDto);
+
+            hospitalDetailDtoList.add(hospitalDetailDto);
+        }
 
         return new ResponseEntity<>(hospitalDetailDtoList, HttpStatus.OK);
     }
@@ -130,18 +133,13 @@ public class HospitalInfoController {
                     e.printStackTrace();
                 }
             }
-            List<DoctorCategory> doctorCategories = doctorService.getCategory(d.getDocInfoSeq());
-            List<CategoryDto> categoryDto = new ArrayList<>();
-            for(DoctorCategory c : doctorCategories) {
-                categoryDto.add(new CategoryDto(c.getPart()));
-            }
             double avgScore = doctorService.getAvgScore(d.getDocInfoSeq());
             int cntReviews = doctorService.getCntReviews(d.getDocInfoSeq());
             dto.setDoctorSeq(d.getDocInfoSeq());
             dto.setDoctorName(d.getDocInfoName());
             dto.setDoctorAvgScore(avgScore);
             dto.setDoctorCntReviews(cntReviews);
-            dto.setDoctorCategory(categoryDto);
+            dto.setDoctorCategory(d.getDocInfoCategory());
             doctorDtoList.add(dto);
         }
         return new ResponseEntity<>(doctorDtoList, HttpStatus.OK);

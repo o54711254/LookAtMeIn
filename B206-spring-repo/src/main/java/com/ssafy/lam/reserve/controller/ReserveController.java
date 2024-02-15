@@ -38,6 +38,13 @@ public class ReserveController {
 
     private final ReserveService reserveService;
 
+    MultipartConfig multipartConfig = new MultipartConfig();
+    // 파일이 업로드될 디렉토리 경로
+    private String uploadPath = multipartConfig.multipartConfigElement().getLocation();
+
+
+    Logger log = LoggerFactory.getLogger(ReserveController.class);
+
     // ===================== 등 록 =====================
     //클라이언트에서는 예약 시간을 Long 타입의 타임스탬프 형식으로 전송해야 함 예를 들어, 자바스크립트에서 현재 시간을 타임스탬프로 전송하는 예시
     //const reserveTime = new Date().getTime();

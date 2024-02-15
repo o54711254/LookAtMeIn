@@ -50,8 +50,10 @@ import RequestRegist from "./components/RequestBoard/RequestRegist";
 import WaitingRoom from "./pages/Openvidu.js";
 import HospitalReservation from "./components/Modal/HospitalReservation.js";
 import ReservationDetail from "./components/Customer/MyPage/ReservationDetail";
+import WebRTC from "./components/WebRTC/WebRTC";
 
 function App() {
+  console.log("REACT_APP_URL", process.env.REACT_APP_URL);
   return (
     <div>
       <div className="app-container">
@@ -125,7 +127,7 @@ function App() {
                   <Route path="/hospitalList" element={<HospitalBoardList />} />
                   <Route
                     path="/hospital-info/detail/:hospitalInfo_seq"
-                    element={<HospitalInfo />}
+                    element={<HospitalDetail />}
                   />
 
                   {/*이상향 월드컵*/}
@@ -150,6 +152,8 @@ function App() {
                   <Route path="/reviewregist" element={<ReviewRegist />} />
                   <Route path="/canvas" element={<Canvas />} />
                   <Route path="/meeting/*" element={<WaitingRoom />} />
+
+                  <Route path="/webrtc" element={<WebRTC/>}/>
                 </Routes>
               </div>
 

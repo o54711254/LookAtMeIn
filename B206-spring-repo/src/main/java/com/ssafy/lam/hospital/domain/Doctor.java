@@ -20,6 +20,8 @@ public class Doctor {
 
     private String docInfoName;
 
+    private String docInfoCategory;
+
     @ManyToOne
     @JoinColumn(name = "hos_info_seq")
     private Hospital hospital;
@@ -33,9 +35,10 @@ public class Doctor {
     }
 
     @Builder
-    public Doctor(Long docInfoSeq, String docInfoName, Hospital hospital) {
+    public Doctor(Long docInfoSeq, String docInfoName, String docInfoCategory, Hospital hospital) {
         this.docInfoSeq = docInfoSeq;
         this.docInfoName = docInfoName;
+        this.docInfoCategory = docInfoCategory;
         this.hospital = hospital;
     }
 }

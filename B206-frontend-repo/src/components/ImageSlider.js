@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper";
 import Banner1 from "./Banner/Banner1";
+import Banner2 from "./Banner/Banner2";
 import styles from "./ImageSlider.module.css";
 
 import "swiper/css";
@@ -22,7 +23,9 @@ function ImageSlider() {
         <SwiperSlide>
           <Banner1 />
         </SwiperSlide>
-        <SwiperSlide>Slide 2</SwiperSlide>
+        <SwiperSlide>
+          <Banner2 />
+        </SwiperSlide>
         <SwiperSlide>Slide 3</SwiperSlide>
         <SwiperSlide>Slide 4</SwiperSlide>
       </Swiper>

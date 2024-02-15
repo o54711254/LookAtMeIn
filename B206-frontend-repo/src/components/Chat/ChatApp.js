@@ -4,6 +4,7 @@ import axiosApi from "../../api/axiosApi";
 import { useSelector } from "react-redux";
 import { Stomp } from "@stomp/stompjs";
 import Reserve from "../Modal/DateTimePickerModalForChat";
+import styles from "./ChatApp.module.css";
 function ChatApp() {
   // URL에서 채팅방 ID를 가져옴
   const { roomId } = useParams();
@@ -36,10 +37,10 @@ function ChatApp() {
   };
   // 웹소켓 연결 설정
   const connect = () => {
-    const socket = new WebSocket("ws://localhost:80/ws");
+    const socket = new WebSocket("wss://i10b206.p.ssafy.io/ws");
     stompClient.current = Stomp.over(socket);
     stompClient.current.connect({}, () => {
-      stompClient.current.subscribe(`/sub/chatroom/${roomId}`, (message) => {
+      stompClient.current.subscribe(`/api/sub/chatroom/${roomId}`, (message) => {
         const newMessage = JSON.parse(message.body);
         setMessages((prevMessages) => [...prevMessages, newMessage]);
 
@@ -59,7 +60,7 @@ function ChatApp() {
   // 기존 채팅 메시지를 서버로부터 가져오는 함수
   const fetchMessages = () => {
     axiosApi
-      .get(`/chatroom/${roomId}/messages`)
+      .get(`/api/chatroom/${roomId}/messages`)
       .then((response) => {
         console.log("메시지 목록", response.data);
         const customerProfileBase64 = response.data.customerProfileBase64;
@@ -81,25 +82,26 @@ function ChatApp() {
         sender: currentUser.userId,
         message: message,
       };
-
-      stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
+      stompClient.current.send(`/api/pub/message`, {}, JSON.stringify(messageObj));
+      // stompClient.current.send(`/pub/message`, {}, JSON.stringify(messageObj));
       setMessage(""); // 입력 필드 초기화
     }
   };
   return (
-    <div>
+    <div className={styles.container}>
       {/* 메시지 목록을 표시하는 부분 */}
-      <div style={{ height: "300px", overflowY: "auto" }}>
+      <div className={styles.messageList}>
         {messages.map((msg, index) => (
           <div
             key={index}
-            style={{
-              textAlign: msg.sender === currentUser.userId ? "right" : "left",
-            }}
+            className={
+              msg.sender === currentUser.userId
+                ? styles.messageItemCurrentUser
+                : styles.messageItem
+            }
           >
-            <img src={profileImg} />
+            <img src={profileImg} alt="Profile" />
             {msg.sender !== currentUser.userId && <p>{msg.sender}</p>}
-
             <p>{msg.message}</p>
           </div>
         ))}
@@ -107,16 +109,22 @@ function ChatApp() {
         <div ref={messagesEndRef} />
       </div>
       {/* 메시지 입력 및 전송 부분 */}
-      <div>
+      <div className={styles.inputContainer}>
         <input
+          className={styles.inputField}
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={sendMessage}>Send</button>
+        <button className={styles.sendButton} onClick={sendMessage}>
+          보내기
+        </button>
       </div>
       {currentUser.role === "HOSPITAL" && (
-        <Reserve customerUserSeq={customerSeq} />
+        <Reserve
+          customerUserSeq={customerSeq}
+          className={styles.reserveButton}
+        />
       )}
     </div>
   );

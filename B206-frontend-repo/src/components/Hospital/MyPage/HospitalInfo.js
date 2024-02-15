@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { loginHospital } from "../../../redux/hospital";
 import axiosApi from "../../../api/axiosApi";
 import update from "../../../assets/update.png";
-import profile from "../../../assets/profile.png";
+import profile from "../../../assets/profile2.png";
 import styles from "./HospitalInfo.module.css";
 
 function HospitalInfo() {
@@ -18,19 +18,19 @@ function HospitalInfo() {
 
   useEffect(() => {
     axiosApi
-      .get(`/api/mypage/${hospital.userSeq}`)
+      .get(`/api/mypage/${user.userSeq}`)
       .then((res) => {
-        console.log(hospital);
         setInfoData(res.data);
         const base64 = res.data.hospitalProfileBase64;
         const type = res.data.hospitalProfileType;
+      
         if (base64) {
           const data = `data:${type};base64,${base64}`;
           setProfileImg(data);
         } else {
           setProfileImg(profile);
         }
-        console.log("이미지", profileImg);
+        // console.log("이미지", profileImg);
       })
       .catch((error) => {
         console.log("데이터를 불러오는 중 에러 발생", error);
@@ -70,7 +70,7 @@ function HospitalInfo() {
     );
 
     axiosApi
-      .put(`/api/hospital/mypage/modify/${hospital.userSeq}`, formData, {
+      .put(`/api/hospital/mypage/modify/${user.userSeq}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

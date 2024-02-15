@@ -26,7 +26,7 @@ public interface ReviewBoardService {
     void deactivateReview(long seq);
     
     // 게시글 신고
-    void reportReview(Long seq);
+    boolean reportReview(Long seq);
 
  
 

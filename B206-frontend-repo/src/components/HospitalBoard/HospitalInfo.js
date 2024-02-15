@@ -7,7 +7,7 @@ import Reserve from "../Modal/DateTimePickerModal";
 import { useDispatch } from "react-redux";
 import styles from "./HospitalInfo.module.css";
 import basicHos from "../../assets/basicHos.png";
-import profile from "../../assets/gun.png";
+import profile from "../../assets/profile2.png";
 import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { useSelector } from "react-redux";
 import Wish from "./HospitalWish.js";
@@ -25,8 +25,8 @@ const HospitalInfo = () => {
     hospitalInfo_close: "",
     hospitalInfo_url: "",
     userSeq: "",
-    avgScore: "",
-    cntReviews: "",
+    hospitalInfo_avgScore: "",
+    hospitalInfo_cntReviews: "",
   });
 
   const [img, setImg] = useState(null);
@@ -57,15 +57,23 @@ const HospitalInfo = () => {
   const userSeq = useSelector((state) => state.hospital.hospitalSeq);
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
+  const [profileImg, setProfileImg] = useState(null);
 
   useEffect(() => {
-    
     axiosApi
       .get(`/api/hospital-info/reviews/${hospitalInfo_seq}`)
       .then((response) => {
-        console.log(userSeq);
         console.log(response.data);
-        setReviews(response.data);
+
+        const updateData = response.data.map((board) => {
+          if (board.customerProfileBase64 && board.customerProfileType) {
+            board.img = `data:${board.customerProfileType};base64,${board.customerProfileBase64}`;
+          } else {
+            board.img = profile;
+          }
+          return board;
+        });
+        setReviews(updateData);
       })
       .catch((error) => {
         console.log("병원별 후기 목록 불러오기 실패", error);
@@ -78,11 +86,21 @@ const HospitalInfo = () => {
 
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
+    console.log("병원정보", hospitalData);
     axiosApi
       .get(`api/hospital-info/doctors/${hospitalInfo_seq}`)
       .then((response) => {
         console.log(response.data);
-        setDoctors(response.data);
+
+        const updateData = response.data.map((board) => {
+          if (board.doctorProfileBase64 && board.doctorProfileType) {
+            board.img = `data:${board.doctorProfileType};base64,${board.doctorProfileBase64}`;
+          } else {
+            board.img = profile;
+          }
+          return board;
+        });
+        setDoctors(updateData);
       })
       .catch((error) => {
         console.log("의사 목록 불러오기 실패 : ", error);
@@ -110,6 +128,7 @@ const HospitalInfo = () => {
             )}
           </div>
           <div className={styles.title}>{hospitalData.hospitalInfo_name}</div>
+          <Wish />
         </div>
         <div className={styles.address}>
           <div className={styles.tt}>주소</div>
@@ -153,12 +172,23 @@ const HospitalInfo = () => {
           </div>
         </div>
 
-        {/* <div>avgScore: {hospitalData.avgScore}</div> */}
+        <div className={styles.score}>
+          <StarResult score={hospitalData.hospitalInfo_avgScore} />
+          <div className={styles.avg}>{hospitalData.hospitalInfo_avgScore}</div>
+          <div className={styles.reviewCnt}>
+            ({hospitalData.hospitalInfo_cntReviews})
+          </div>
+        </div>
         <Reserve hospitalInfoSeq={hospitalInfo_seq} />
       </div>
       <div className={styles.part2}>
-        <div>리뷰 목록</div>
-        <Wish />
+        <div className={styles.ttt}>
+          <div className={styles.reviewT}>시술 후기</div>
+          <div className={styles.cnt}>
+            {" "}
+            ({hospitalData.hospitalInfo_cntReviews}개의 평가)
+          </div>
+        </div>
         {reviews.map((review) => (
           <li
             key={review.reviewBoard_seq}
@@ -166,7 +196,14 @@ const HospitalInfo = () => {
             onClick={() => handleClick(review.reviewBoard_seq)}
           >
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              {/* <img src={profile} alt="프로필" className={styles.profile} /> */}
+              {review.img && (
+                <img
+                  src={review.img}
+                  alt="병원 상세 후기 프사"
+                  className={styles.profile}
+                />
+              )}
             </div>
             <div className={styles.writer}>
               <div>{review.customer_name}</div>
@@ -179,21 +216,34 @@ const HospitalInfo = () => {
             <div className={styles.title}>
               <div>{review.reviewBoard_title}</div>
             </div>
-            <div className={styles.price}>
-              시술가 : {review.reviewBoard_price} 원
+            <div className={styles.prices}>
+              <div className={styles.price}>
+                견적가 : {review.reviewBoard_expected_price} 원
+              </div>
+              <div className={styles.price}>
+                시술가 : {review.reviewBoard_surgery_price} 원
+              </div>
             </div>
           </li>
         ))}
       </div>
       <div className={styles.part3}>
+        <div className={styles.doctorT}>소속 의사</div>
         {doctors.map((doctor) => (
           <li
             key={doctor.doctorSeq}
-            className={styles.reviewItem}
+            className={styles.doctorItem}
             onClick={() => viewDoctorInfo}
           >
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              {/* <img src={profile} alt="프로필" className={styles.profile} /> */}
+              {doctor.img && (
+                <img
+                  src={doctor.img}
+                  alt="자게 작성자 프사"
+                  className={styles.profile}
+                />
+              )}
             </div>
             <div className={styles.doctor}>
               <div className={styles.writer}>
@@ -203,11 +253,14 @@ const HospitalInfo = () => {
                 </div>
               </div>
               <div className={styles.hashtagButton}>
-                {doctor.doctorCategory.map((category, index) => (
+                {/* {doctor.doctorCategory.map((category, index) => (
                   <div key={index} onClick={() => handleSearch(category.part)}>
                     {category.part}
                   </div>
-                ))}
+                ))} */}
+                <div onClick={() => handleSearch(doctor.doctorCategory)}>
+                  {doctor.doctorCategory}
+                </div>
               </div>
             </div>
           </li>

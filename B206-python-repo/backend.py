@@ -85,10 +85,10 @@ class Backend:
 
 
 
-    def complete(self, mask_points,sketch_points):
+    def complete(self, mask_points,sketch_points, stroke_points):
         
         sketch = self.make_sketch(sketch_points)
-        stroke, stroke_down = self.make_stroke(self.stroke_points)
+        stroke, stroke_down = self.make_stroke(stroke_points)
         mask = self.make_mask(mask_points)
 
 
@@ -191,7 +191,7 @@ class Backend:
     def make_stroke(self, pts):
         if len(pts) > 0:
             stroke = np.ones((512, 512, 3)) * 127.5
-            stroke_down = np.ones((256,256,3)) * 255.0
+            stroke_down = np.ones((512,512,3)) * 255.0
 
             for pt in pts:
                 c = pt['color'].lstrip('#')

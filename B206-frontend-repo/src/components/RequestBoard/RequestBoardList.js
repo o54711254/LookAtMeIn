@@ -10,6 +10,7 @@ import profile from "../../assets/gun.png";
 function RequestBoardList() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [profileImg, setProfileImg] = useState(profile);
 
   const [requestBoardList, setRequestBoardList] = useState([]);
   useEffect(() => {
@@ -53,7 +54,9 @@ function RequestBoardList() {
           >
             <div className={styles.index}>No. {index + 1}</div>
             <div>
-              <img src={profile} alt="프로필" className={styles.profile} />
+              <img src={
+                board.customerProfileBase64 && board.customerProfileType ? `data:${board.customerProfileType};base64,${board.customerProfileBase64}` : profile
+              } alt="프로필" className={styles.profile} />
             </div>
             {/* <div>No. {index + 1}</div> */}
             <div className={styles.writer}>

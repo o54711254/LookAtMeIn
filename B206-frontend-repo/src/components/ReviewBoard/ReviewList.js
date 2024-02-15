@@ -4,7 +4,7 @@ import StarResult from "./StarRating/StarResult";
 import { useNavigate } from "react-router-dom";
 import styles from "./ReviewList.module.css";
 import profile from "../../assets/profile2.png";
-import viewCnt from "../../assets/viewCnt.png";
+// import viewCnt from "../../assets/viewCnt.png";
 
 // axios 완료d
 
@@ -74,7 +74,7 @@ function ReviewList() {
                 <div>{board.reviewBoard_title}</div>
               </div>
               <div className={styles.viewCount}>
-                <img src={viewCnt} alt="조회수 아이콘" className={styles.eye} />
+                {/* <img src={viewCnt} alt="조회수 아이콘" className={styles.eye} /> */}
                 조회수 : {board.reviewBoard_cnt}
               </div>
             </div>

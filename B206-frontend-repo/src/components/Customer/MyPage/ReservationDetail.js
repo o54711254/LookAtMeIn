@@ -20,12 +20,11 @@ function ReservationDetail() {
     axiosApi
       .get(`/api/reserve/detail/${reserveSeq}`)
       .then((res) => {
-        console.log(res.data);
         setReserveDetail(res.data);
         setMeetingData((prevData) => ({
           ...prevData,
           userSeq: res.data.customerUserSeq,
-          hospitalSeq: res.data.hospitalUserSeq,
+          hospitalSeq: res.data.hospitalSeq,
           reserveSeq: res.data.reserveSeq,
         }));
         setQuestionnaire(res.data.questionnaireResponseDto);
