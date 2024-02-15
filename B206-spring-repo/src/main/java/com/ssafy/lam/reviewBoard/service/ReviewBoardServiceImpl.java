@@ -77,7 +77,8 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
 //        Doctor doctor = doctorRepository.findById(doctorSeq).orElse(null);
         LocalDate now = LocalDate.now();
         long date = now.getYear() * 10000L + now.getMonthValue() * 100 + now.getDayOfMonth();
-
+        log.info("후기 제목: "+reviewBoardRegister.getReviewBoard_title());
+        log.info("후기 평점: "+reviewBoardRegister.getReviewBoard_score());
         ReviewBoard reviewBoard = ReviewBoard.builder()
                 .title(reviewBoardRegister.getReviewBoard_title())
                 .content(reviewBoardRegister.getReviewBoard_content())
@@ -151,13 +152,15 @@ public class ReviewBoardServiceImpl implements ReviewBoardService {
     }
 
     @Override
-    public void reportReview(Long seq) {
+    public boolean reportReview(Long seq) {
         Optional<ReviewBoard> reportedReview = reviewBoardRepository.findById(seq);
         if (reportedReview.isPresent()) {
             ReviewBoard selectedReview = reportedReview.get();
             selectedReview.setComplain(true);
             reviewBoardRepository.save(selectedReview);
+            return true;
         }
+        else return false;
     }
 
 }

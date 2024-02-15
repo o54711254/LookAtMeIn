@@ -11,6 +11,7 @@ import { loginCustomer } from "../../../redux/customer";
 // axios 완료
 function MyInfo() {
   const user = useSelector((state) => state.user);
+
   const customer = useSelector((state) => state.customer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,13 +26,14 @@ function MyInfo() {
         setInfoData(res.data);
         const base64 = res.data.base64;
         const type = res.data.type;
+        
         if (base64) {
           const data = `data:${type};base64,${base64}`;
           setProfileImg(data);
         } else {
           setProfileImg(profile);
         }
-        console.log("이미지", profileImg);
+        // console.log("이미지", profileImg);
       })
       .catch((error) => {
         console.log("데이터를 불러오는 중 에러 발생", error);

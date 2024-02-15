@@ -23,13 +23,14 @@ function HospitalInfo() {
         setInfoData(res.data);
         const base64 = res.data.hospitalProfileBase64;
         const type = res.data.hospitalProfileType;
+      
         if (base64) {
           const data = `data:${type};base64,${base64}`;
           setProfileImg(data);
         } else {
           setProfileImg(profile);
         }
-        console.log("이미지", profileImg);
+        // console.log("이미지", profileImg);
       })
       .catch((error) => {
         console.log("데이터를 불러오는 중 에러 발생", error);

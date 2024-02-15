@@ -1,8 +1,3 @@
-.buttonContainer{
-    display: flex;
-    justify-content: flex-end;
-    
-}
 .button {
     padding: 10px 20px;
     background-color: #ffdbc6; /* 호버시 배경색 변경 */

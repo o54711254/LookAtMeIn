@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import TextField from "@mui/material/TextField";
+import styles from "./ReviewRegist.module.css";
 import Button from "@mui/material/Button";
 
 function ReviewRegist() {
@@ -85,7 +86,6 @@ function ReviewRegist() {
 
   return (
     <div>
-      <h1>리뷰 등록</h1>
       <form onSubmit={handleSubmit}>
         {/* 입력 필드들 */}
         <TextField
@@ -192,6 +192,7 @@ function ReviewRegist() {
           variant="contained"
           color="primary"
           style={{ marginTop: "20px" }}
+          className={styles.button}
         >
           등록하기
         </Button>

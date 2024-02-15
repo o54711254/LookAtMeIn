@@ -84,7 +84,7 @@ public class WebSocketController {
         ChatMessage chatMessage = chatService.saveMessage(messageDto);
 
         // 메시지를 해당 채팅방 구독자들에게 전송
-        messagingTemplate.convertAndSend("/sub/chatroom/" + messageDto.getChatroomSeq(), messageDto);
+        messagingTemplate.convertAndSend("/api/sub/chatroom/" + messageDto.getChatroomSeq(), messageDto);
         System.out.println(messageDto.toString());
 
         return ResponseEntity.ok("메시지 전송 완료");

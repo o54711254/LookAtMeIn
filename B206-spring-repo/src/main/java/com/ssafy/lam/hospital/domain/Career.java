@@ -14,15 +14,15 @@ public class Career {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long careerSeq;
 
-    private int careerStart;
-    private int careerEnd;
+    private String careerStart;
+    private String careerEnd;
     private String careerContent;
 
     @ManyToOne
     private Doctor doctor;
 
     @Builder
-    public Career(Long careerSeq, Integer careerStart, Integer careerEnd, String careerContent, Doctor doctor) {
+    public Career(Long careerSeq, String careerStart, String careerEnd, String careerContent, Doctor doctor) {
         this.careerSeq = careerSeq;
         this.careerStart = careerStart;
         this.careerEnd = careerEnd;

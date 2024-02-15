@@ -65,6 +65,9 @@ public class ReviewBoard {
     @JoinColumn(name = "upload_file_seq")
     private UploadFile uploadFile;
 
+    public void delete() { this.isdeleted = true; }
+    public void cancelReport() { this.complain = false; }
+
     @Builder
     public ReviewBoard(Long seq, String title, String content, String surgery, String region, double score, int expectedPrice, int surgeryPrice, long regdate, boolean complain, boolean isdeleted, int cnt, String hospital, String doctor, User user, UploadFile uploadFile) {
         this.seq = seq;
