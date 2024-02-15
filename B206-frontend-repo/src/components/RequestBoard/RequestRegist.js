@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
+import styles from "./RequestRegist.module.css";
 
 function RequestBoardRegist() {
   const [open, setOpen] = useState(false);
@@ -58,9 +59,13 @@ function RequestBoardRegist() {
   };
 
   return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        게시물 작성하기
+    <div className={styles.buttonContainer}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        className={styles.button}
+      >
+        게시물 등록
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>게시물을 작성해주세요.</DialogTitle>
@@ -111,7 +116,7 @@ function RequestBoardRegist() {
           <Button onClick={handleRegist}>등록하기</Button>
         </DialogActions>
       </Dialog>
-    </>
+    </div>
   );
 }
 

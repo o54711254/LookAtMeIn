@@ -78,8 +78,7 @@
   display: flex;
   flex-direction: column;
   margin-left: 70px;
-  width: 70%;
-  overflow-wrap: break-word;
+  width: 40%;
 }
 
 .intro > div:first-child {
@@ -113,6 +112,12 @@ li {
   background-color: #ffbe98; /* 마우스 오버 시 배경색 변경 */
   color: #efe8de;
 }
+.star{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: rgba(0, 0, 0, 0.5);
+  }
 .b {
   display: flex;
 }

@@ -1,4 +1,4 @@
-import styles from "./Banner.module.css";
+import styles from "./Banner1.module.css";
 function Banner1() {
   return (
     <div className={styles.container}>

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axiosApi from "../../api/axiosApi";
-import Typography from "@mui/material/Typography";
 import styles from "./HospitalList.module.css";
 import profile from "../../assets/profile2.png";
 import { useNavigate } from "react-router-dom";
-import StarResult from "../ReviewBoard/StarRating/StarResult";
 import styled from "@emotion/styled";
+import StarResult from "../ReviewBoard/StarRating/StarResult.js";
 import { FaStar, FaStarHalf, FaRegStar } from "react-icons/fa";
 import { css } from "@emotion/react";
 
@@ -99,12 +98,6 @@ const HospitalList = () => {
                 <div className={styles.hosName}>
                   {hospital.hospitalInfo_name} &nbsp;
                 </div>
-                <div>
-                  {/* <StarResult score={hospital.reviewBoard_score} /> */}
-                  <StyledStar isHalf={false}>
-                    <FaStar />
-                  </StyledStar>
-                </div>
               </div>
               <div className={styles.hosAddress}>
                 {hospital.hospitalInfo_address}
@@ -123,6 +116,10 @@ const HospitalList = () => {
                   </button>
                 ))}
               </div>
+            </div>
+            <div className={styles.star}>
+              <StarResult score={hospital.hospitalInfo_avgScore} />(
+              {hospital.hospitalInfo_avgScore})
             </div>
           </li>
         ))}
