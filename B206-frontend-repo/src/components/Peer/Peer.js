@@ -2,37 +2,49 @@ import { useEffect, useRef } from "react"
 import { useSelector } from "react-redux"
 import * as RTC from "../../utils"
 const Peer = ()=>{
-    const {localStream, remoteStream} = useSelector((state)=>state.rtc)
-
-    const localVideoRef = useRef();
-    const remoteVideoRef = useRef();
-
+    const {localStream,remoteStream}=useSelector((state)=>state.rtc)
+    const localVideoRef=useRef()
+    const removeVideoRef=useRef()
+      useEffect(()=>{
+          RTC.connectWithWebSocket()
+          RTC.connectWithPeer()
+          RTC.getLocalStream()
+      },[])
     useEffect(()=>{
-        RTC.connectWithWebSocket()
-    },[])
-
-    useEffect(()=>{
-        console.log('ls', localStream)
+      if(localStream && localStream.id){
+        localVideoRef.current.srcObject=localStream
+        localVideoRef.current.onloadmetadata=()=>{
+          localVideoRef.current.play()
+        }
+      }
     },[localStream])
-
     useEffect(()=>{
-        console.log('rs', remoteStream)
+      if(remoteStream && remoteStream.id){
+        removeVideoRef.current.srcObject=remoteStream
+        removeVideoRef.current.onloadmetadata=()=>{
+          removeVideoRef.current.play()
+        }
+      }
     },[remoteStream])
-
-
     return (
-        <div className="Peer">
-            <div>
-                local video
-                <video autoPlay muted with={400} height={400} ref={localVideoRef} />
-            </div>
-
-            <div>
-                remote video
-                <video autoPlay muted with={400} height={400} ref={remoteVideoRef} />
-            </div>
+      <div className="App">
+      
+        <div>
+          local video
+      <video autoPlay muted width={400} height={400} ref={localVideoRef} />
         </div>
-    )
+        <button onClick={()=>{
+        RTC.callRequest({
+          socketId:window.mySocketId,
+          peerId:window.myPeer
+        })
+      }}>hello</button>
+        <div>
+          remote video
+       <video autoPlay muted width={400} height={400} ref={removeVideoRef} />
+        </div>
+      </div>
+    );
 }
 
 export default Peer
