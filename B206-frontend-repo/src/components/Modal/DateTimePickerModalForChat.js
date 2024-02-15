@@ -26,7 +26,7 @@ export default function ResponsiveModal({ customerUserSeq }) {
 
   // const hospitalUserSeq = useSelector((state) => state.hospital.userSeq);
 
-  const hospitalUserSeq = useSelector((state) => state.hospital.hospitalSeq);
+  const hospitalSeq = useSelector((state) => state.hospital.hospitalSeq);
 
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
@@ -48,7 +48,7 @@ export default function ResponsiveModal({ customerUserSeq }) {
 
     const reservationData = {
       customerUserSeq,
-      hospitalUserSeq,
+      hospitalSeq,
       year,
       month,
       day,
@@ -57,7 +57,7 @@ export default function ResponsiveModal({ customerUserSeq }) {
     };
 
     try {
-      console.log(reservationData);
+      console.log("reservationData");
       // 백엔드 API로 예약 데이터 전송
       await axiosApi.post("/api/reserve", reservationData);
       window.alert("예약이 완료되었습니다.");
