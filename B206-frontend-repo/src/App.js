@@ -50,7 +50,7 @@ import RequestRegist from "./components/RequestBoard/RequestRegist";
 import WaitingRoom from "./pages/Openvidu.js";
 import HospitalReservation from "./components/Modal/HospitalReservation.js";
 import ReservationDetail from "./components/Customer/MyPage/ReservationDetail";
-import Peer from "./components/Peer/Peer";
+import WebRTC from "./components/WebRTC/WebRTC";
 
 function App() {
   console.log("REACT_APP_URL", process.env.REACT_APP_URL);
@@ -153,7 +153,7 @@ function App() {
                   <Route path="/canvas" element={<Canvas />} />
                   <Route path="/meeting/*" element={<WaitingRoom />} />
 
-                  <Route path="/peer" element={<Peer/>}/>
+                  <Route path="/webrtc" element={<WebRTC/>}/>
                 </Routes>
               </div>
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, getDoc} from 'firebase/firestore';
-import styles from './Peer.module.css'; // CSS 모듈 임포트
+// import styles from './Peer.module.css'; // CSS 모듈 임포트
 
 const firebaseConfig = {
     apiKey: "AIzaSyB1XuVmay25vZVzGzhF7DCAHl161KecOSI",
