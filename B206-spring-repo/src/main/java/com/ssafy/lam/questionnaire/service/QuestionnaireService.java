@@ -35,7 +35,10 @@ public class QuestionnaireService {
         if(file != null)
             uploadFile = uploadFileService.store(file);
 
-        Reserve reserve = reserveRepository.findById(questionRequestDto.getReserveSeq()).get();
+        log.info("문진서 등록 정보 : {}", questionRequestDto.getReserveSeq());
+        Reserve reserve = reserveRepository.findById(questionRequestDto.getReserveSeq())
+                .orElseThrow(() -> new IllegalArgumentException("없는 예약임 : " + questionRequestDto.getReserveSeq()));
+
 
         Questionnaire questionnaire = Questionnaire.builder()
                 .blood(questionRequestDto.getQuestionnaire_blood())
