@@ -100,7 +100,7 @@ function ChatApp() {
                 : styles.messageItem
             }
           >
-            <img src={profileImg} alt="Profile" />
+            {/* <img src={profileImg} alt="Profile" /> */}
             {msg.sender !== currentUser.userId && <p>{msg.sender}</p>}
             <p>{msg.message}</p>
           </div>
