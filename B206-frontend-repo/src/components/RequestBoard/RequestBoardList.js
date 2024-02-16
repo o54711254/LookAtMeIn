@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import RequestBoardRegist from "./RequestRegist";
 import axiosApi from "../../api/axiosApi";
 import styles from "./RequestBoardList.module.css";
-import profile from "../../assets/gun.png";
+import profile from "../../assets/profile2.png";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

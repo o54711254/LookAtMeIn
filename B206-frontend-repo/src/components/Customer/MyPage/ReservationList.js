@@ -16,7 +16,7 @@ function ReservationList() {
 
   useEffect(() => {
     axiosApi
-      .get(`api/reserve/user/${userSeq}`)
+      .get(`/api/reserve/user/${userSeq}`)
       .then((response) => {
         console.log("reservations", response.data);
         setReservations(response.data);

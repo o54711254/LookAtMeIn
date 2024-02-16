@@ -30,7 +30,7 @@ function ImageSlider() {
         <SwiperSlide>
           <Banner3 />
         </SwiperSlide>
-        <SwiperSlide>Slide 4</SwiperSlide>
+     
       </Swiper>
     </div>
   );

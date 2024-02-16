@@ -3,7 +3,7 @@ import axiosApi from "../../api/axiosApi";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import styles from "./RequestBoardDetail.module.css";
-import profile from "../../assets/man/유승호.jpg";
+import profile from "../../assets/gun.png";
 import RequestBoardDelete from "./RequestBoardDelete";
 import RequestBoardUpdate from "./RequestBoardUpdate";
 import { useSelector } from "react-redux";
@@ -12,17 +12,18 @@ import SuggestModal from "../Modal/SuggestModal";
 function RequestBoardDetail() {
   const [post, setPost] = useState(null);
   const [img, setImg] = useState(null);
+  const [profileImg, setProfileImg] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const user = useSelector((state) => state.user);
   const hospital = useSelector((state) => state.hospital);
-  const customer = useSelector((state)=>state.customer)
+  const customer = useSelector((state) => state.customer);
   const { requestboardSeq } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("zz",hospital)
-    console.log("AFDSADF", user)
-    console.log("cust",customer)
+    console.log("zz", hospital);
+    console.log("AFDSADF", user);
+    console.log("cust", customer);
     const fetchPost = async () => {
       try {
         let response = await axiosApi.get(
@@ -31,6 +32,14 @@ function RequestBoardDetail() {
         setPost(response.data); // 먼저 게시글 정보를 설정
         console.log(response.data);
 
+        const customerProfileBase64 = response.data.customerProfileBase64;
+        const customerProfileType = response.data.customerProfileType;
+        const profileData = `data:${customerProfileType};base64,${customerProfileBase64}`;
+        if (customerProfileBase64) {
+          setProfileImg(profileData);
+        } else {
+          setProfileImg(profile);
+        }
         const base64 = response.data.base64;
         const type = response.data.type;
         const data = `data:${type};base64,${base64}`;
@@ -44,7 +53,6 @@ function RequestBoardDetail() {
       fetchPost();
     }
   }, []);
-
   const handleOpenModal = () => {
     setModalOpen(true);
   };
@@ -81,7 +89,7 @@ function RequestBoardDetail() {
   return (
     <div className={styles.FreeBoardContainer}>
       <div className={styles.Head}>
-        <img src={profile} className={styles.profileImg} />
+        <img src={profileImg} className={styles.profileImg} />
         <div className={styles.headBox}>
           <div className={styles.headInfo1}>
             <div className={styles.userId}>{post.userName}</div>
