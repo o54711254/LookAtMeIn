@@ -35,7 +35,7 @@ function ReservationDetail() {
   }, []);
 
   const handleMeetingClick = () => {
-    navigate("/meeting", { state: { meetingData } });
+    navigate("/webrtc", { state: { meetingData } });
   };
 
   return (

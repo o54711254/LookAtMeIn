@@ -38,7 +38,7 @@ function FloatingChat() {
 
   return (
     <BrowserRouter>
-      <Draggable>
+      {/* <Draggable> olk        */}
         <Paper className={styles.floatingChatContainer}>
           <button
             onClick={handleToggleChat}
@@ -66,7 +66,7 @@ function FloatingChat() {
             </Box>
           )}
         </Paper>
-      </Draggable>
+      {/* </Draggable> */}
     </BrowserRouter>
   );
 }
