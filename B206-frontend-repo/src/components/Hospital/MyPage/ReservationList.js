@@ -44,7 +44,7 @@ function ReservationList() {
           <div className={styles.head}>
             <img src={profile} className={styles.profileImg} />
             <div className={styles.hospitalName}>
-              {reservation.hospitalName}
+              {reservation.customerName}
             </div>
             <div>님과의 상담 예약</div>
           </div>
