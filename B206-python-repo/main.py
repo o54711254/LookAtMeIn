@@ -9,9 +9,9 @@ from config.test_config import TestConfig
 from backend import Backend
 from model.SingletonModel import SingletonModel
 import uuid
-from dotenv import load_dotenv
+
 from model.models import create_model
-from sftp import Sftp
+
 import base64
 from mysql.surgery_img import add_img
 
@@ -28,32 +28,6 @@ def encodeToBase64(path):
         base64_data = base64_data.decode('utf-8')
         return base64_data
 
-def decodeFromBase64(base64Data, path):
-    if(base64Data.startswith("data:image")):
-        header, base64Data = base64Data.split(',', 1)
-    imgdata = base64.b64decode(base64Data)
-    
-    with open(path, 'wb') as f:
-        f.write(imgdata)   
-
-    return path, header 
-
-                                 
-
-    after_local_path = afterImgPath
-    after_remote_path = f"/home/ubuntu/image/after/{customerId}/{filename}"
-    sftp.upload(local_path=after_local_path, remote_path=after_remote_path)
-
-    add_img(before_remote_path, after_remote_path) 
-
-
-    sftp.client.close()  
-
-    # sftp.upload(local_path=uploadImgPath, remote_path=remotePath)
-    # sftp
-    return {
-        "hello" : "hello"
-    }
 
 @app.post("/python/send/points")
 async def sketch(file: UploadFile = File(...), points: str=File(...), customerId : str=File(...)):
