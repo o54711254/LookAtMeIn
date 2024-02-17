@@ -55,7 +55,7 @@ def decodeFromBase64(base64Data, path):
         "hello" : "hello"
     }
 
-@app.post("/api/send/points")
+@app.post("/python/send/points")
 async def sketch(file: UploadFile = File(...), points: str=File(...), customerId : str=File(...)):
     before = f"{uuid.uuid4()}.png"
 
