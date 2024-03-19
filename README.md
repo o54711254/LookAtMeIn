@@ -1,6 +1,6 @@
 
 ## 💡 서비스 소개
-![Untitled (2)](https://github.com/Junikarp/lookatmein/assets/118621835/6d3d44a1-a785-4ff6-b967-083faa222e27)
+![Untitled (2)](https://github.com/o54711254/lookatmein/assets/118621835/6d3d44a1-a785-4ff6-b967-083faa222e27)
 ---
 
 ## 손쉽게 상담부터 예약까지, 내 손 안에 성형서비스
@@ -24,12 +24,12 @@
 ### 🗓️ 개발 기간 : 2024.01.08 - 2024.02.16 (6주)
 
 ## 🛠️ 기술스택
-![Untitled (1)](https://github.com/Junikarp/lookatmein/assets/118621835/6a51a956-5a1b-4c77-bba9-5b6b93006e87)
+![Untitled (1)](https://github.com/o54711254/lookatmein/assets/118621835/6a51a956-5a1b-4c77-bba9-5b6b93006e87)
 ---
 
 
 ## ⚙️ 아키텍처
-![Untitled](https://github.com/Junikarp/lookatmein/assets/118621835/44716b67-a708-43b9-a6b4-f991bc2534f8)
+![Untitled](https://github.com/o54711254/lookatmein/assets/118621835/44716b67-a708-43b9-a6b4-f991bc2534f8)
 
 ---
 
@@ -51,13 +51,13 @@
     
 
 
-https://github.com/Junikarp/lookatmein/assets/118621835/a3cf1a83-6603-438c-9e15-4a659ee67340
+https://github.com/o54711254/lookatmein/assets/118621835/a3cf1a83-6603-438c-9e15-4a659ee67340
 
 
 - **채팅을 통한 상담** : webRTC를 통한 채팅 기능으로 병원과 직접 대화를 할 수 있으며, 화상 상담 예약도 실시간으로 잡을 수 있습니다.
 
 
-https://github.com/Junikarp/lookatmein/assets/118621835/32b83e5e-70ac-46fc-97c7-d687a02cb3f0
+https://github.com/o54711254/lookatmein/assets/118621835/32b83e5e-70ac-46fc-97c7-d687a02cb3f0
 
 
     
@@ -65,7 +65,7 @@ https://github.com/Junikarp/lookatmein/assets/118621835/32b83e5e-70ac-46fc-97c7-
     
 
 
-https://github.com/Junikarp/lookatmein/assets/118621835/a1bfc07f-e2d5-4adf-9897-7bf706db626a
+https://github.com/o54711254/lookatmein/assets/118621835/a1bfc07f-e2d5-4adf-9897-7bf706db626a
 
 
     
@@ -73,7 +73,7 @@ https://github.com/Junikarp/lookatmein/assets/118621835/a1bfc07f-e2d5-4adf-9897-
     
 
 
-https://github.com/Junikarp/lookatmein/assets/118621835/153b96d7-9999-4850-b0da-9f13239e7307
+https://github.com/o54711254/lookatmein/assets/118621835/153b96d7-9999-4850-b0da-9f13239e7307
 
 
     
@@ -81,7 +81,7 @@ https://github.com/Junikarp/lookatmein/assets/118621835/153b96d7-9999-4850-b0da-
     
 
 
-https://github.com/Junikarp/lookatmein/assets/118621835/f29c5f48-66ec-456c-abd0-1c271f2f2358
+https://github.com/o54711254/lookatmein/assets/118621835/f29c5f48-66ec-456c-abd0-1c271f2f2358
 
 
     
@@ -89,7 +89,7 @@ https://github.com/Junikarp/lookatmein/assets/118621835/f29c5f48-66ec-456c-abd0-
     
 
 
-https://github.com/Junikarp/lookatmein/assets/118621835/699acad6-17f5-4b91-ba3f-fea7c84faed7
+https://github.com/o54711254/lookatmein/assets/118621835/699acad6-17f5-4b91-ba3f-fea7c84faed7
 
 
     
@@ -97,14 +97,14 @@ https://github.com/Junikarp/lookatmein/assets/118621835/699acad6-17f5-4b91-ba3f-
 - **얼굴 비대칭 검사** : 사진을 업로드 하면 얼굴 비대칭 검사를 통해 얼마나 대칭이 맞는지 알려드립니다.
     
 
-https://github.com/Junikarp/lookatmein/assets/118621835/3330ef38-9d8f-4a79-b891-0772dc79892a
+https://github.com/o54711254/lookatmein/assets/118621835/3330ef38-9d8f-4a79-b891-0772dc79892a
 
 
 - **얼굴 성형 기능** : 룩엣미인에서 제공하는 가상 성형 기능을 통해 성형결과를 예측해 볼 수 있습니다.
     
  
 
-https://github.com/Junikarp/lookatmein/assets/118621835/8aa8ffb5-a847-47a5-bfda-69f2537293f8
+https://github.com/o54711254/lookatmein/assets/118621835/8aa8ffb5-a847-47a5-bfda-69f2537293f8
 
 
 ## 📽️ UCC
